@@ -103,7 +103,7 @@
 			<t>Add this RFC number to the list of obsoleted RFCs.</t>
 		  </li>
           <li>RFCBBBB --> the assigned numerical RFC value for <xref target="I-D.ietf-lamps-lightweight-cmp-profile" format="default"/></li>
-          <li>RFCCCCC --> the assigned numerical RFC value for <xref target="RFC4210bis" format="default"/></li>
+          <li>RFCCCCC --> the assigned numerical RFC value for <xref target="I-D.ietf-lamps-rfc4210bis" format="default"/></li>
 		  </ul>
 	  <t>]</t>
       <t>
@@ -173,12 +173,12 @@
         <name>HTTP Versions</name>
         <t>
    Implementations MUST support HTTP/1.0 <xref target="RFC1945" format="default"/> and SHOULD support
-   HTTP/1.1 <xref target="RFC2616" format="default"/>.</t>
+   HTTP/1.1 <xref target="RFC9112" format="default"/>.</t>
       </section>
       <section anchor="sect-3.2" numbered="true" toc="default">
         <name>Persistent Connections</name>
         <t>
-   HTTP persistent connections <xref target="RFC2616" format="default"/> allow multiple interactions to
+   HTTP persistent connections <xref target="RFC9112" format="default"/> allow multiple interactions to
    take place on the same HTTP connection.  However, neither HTTP nor
    the protocol specified in this document are designed to correlate
    messages on the same connection in any meaningful way; persistent
@@ -215,10 +215,11 @@
    MAY be used to inform the client about errors.</t>
       </section>
       <section anchor="sect-3.4" numbered="true" toc="default">
-        <name>Media Type</name>
+        <name>Header Fields</name>
         <t>
    The Internet Media Type "application/pkixcmp" MUST be set in the HTTP
    Content-Type header field when conveying a PKIMessage.</t>
+		<t>The Content-Length header field SHOULD be provided, giving the length of the ASN.1-encoded PKIMessages.</t>
       </section>
       <section anchor="sect-3.5" numbered="true" toc="default">
         <name>Communication Workflow</name>
@@ -310,7 +311,7 @@
    starting to send it.</t>
         <t>
    There is no need for the clients to send an "Expect" request-header
-   field with the "100-continue" expectation and wait for a "100 Continue" status as described in Section 8.2.3 of <xref target="RFC2616" format="default"/>.  The CMP
+   field with the "100-continue" expectation and wait for a "100 Continue" status as described in Section 8.2.3 of <xref target="RFC9112" format="default"/>.  The CMP
    payload sent by a client is relatively small, so having extra
    messages exchanged is inefficient, as the server will only seldom
    reject a message without evaluating the body.</t>
@@ -337,7 +338,7 @@
        close the connection, even if the CMP transaction is not yet
        fully completed.</li>
         <li>Without being encapsulated in effective security protocols, such
-       as Transport Layer Security (TLS) <xref target="RFC5246" format="default"/>, there is no
+       as Transport Layer Security (TLS) <xref target="RFC5246" format="default"/> or <xref target="RFC8446" format="default"/>, there is no
        integrity protection at the HTTP protocol level.  Therefore,
        information from the HTTP protocol should not be used to change
        state of the transaction.</li>
@@ -358,7 +359,7 @@
        eavesdropper to utilize the available information to gather
        confidential technical or business critical information.
        Therefore, users of the HTTP transfer for CMP might want to
-       consider using HTTP over TLS according to <xref target="RFC2818" format="default"/> or virtual
+       consider using HTTP over TLS according to <xref target="RFC9110" format="default"/> or virtual
        private networks created, for example, by utilizing Internet
        Protocol Security according to <xref target="RFC4301" format="default"/>.  Compliant
        implementations MUST support TLS with the option to authenticate
@@ -383,18 +384,10 @@
         <name>Normative References</name>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1945.xml"/>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2616.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8615.xml"/>
-		<reference anchor="RFC4210bis">
-		  <front>
-			<title>Internet X.509 Public Key Infrastructure -- Certificate Management Protocol (CMP)</title>
-			<author>
-				<organization showOnFrontPage="true">IETF</organization>
-				</author>
-			<date year="2022" month="June"/>
-			</front>
-		  </reference>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9112.xml"/>
+		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-lamps-rfc4210bis.xml"/>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml2/reference.ITU.X690.1994.xml"/>
       </references>
       <references>
@@ -402,16 +395,23 @@
         <xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-lamps-cmp-updates.xml"/>
 	    <xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-lamps-lightweight-cmp-profile.xml"/>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2510.xml"/>
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2818.xml"/>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4210.xml"/>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4301.xml"/>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6712.xml"/>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml"/>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9110.xml"/>
       </references>
     </references>
     <section anchor="History" numbered="true" toc="default">
       <name>History of Changes</name>
       <t>Note: This appendix will be deleted in the final version of the document.</t>
+      <t keepWithNext="true">From version 01 -&gt; 02:</t>
+      <ul spacing="compact">
+        <li>Updated Section 3.4 including the requirement to add the content-length filed into the HTTP header.</li>
+        <li>Added a reference to TLS 1.3.</li>
+        <li>Addressed idnits feedback, specifically changing the following RFC references: RFC2616 -> RFC9112; RFC2818 -> RFC9110, and RFC5246 -> RFC8446</li>
+      </ul>
       <t keepWithNext="true">From version 00 -&gt; 01:</t>
       <ul spacing="compact">
         <li>Performed all updates specified in CMP Updates Section 3.</li>
