@@ -1358,7 +1358,7 @@ follows:
     kem              AlgorithmIdentifier,
     -- AlgId for a Key Encapsulation Mechanism
     kdf              AlgorithmIdentifier,
-    -- AlgId for a Key Derication Function
+    -- AlgId for a Key Derivation Function
     enc              OCTET STRING
     -- Encrypted symmetric key from HPKE SendExportBase
   }
@@ -1450,7 +1450,7 @@ Step# PKI entity                           PKI management entity
   SendExportBase(pkS, "round2", context2, L) = (enc2, ss2)
 ]]></sourcecode>
 			    <t>Note: The shared secret ss2 is the shared symmetric key to be used for MAC-based protection of all subsequent messages of this PKI management operation.</t>
-			    <t>The request message is of any type. The generalInfo field contains a ITAV element of type id-it-HpkeCiphertext and the value is of type HpkeCiphertext containing OIDs of the used KEM and KDF functions and the ciphertext enc2. The message has a MAC-based protection using the protectionAlg id-hpke-mac and the shared secret ss2.</t>
+			    <t>The request message is of any type. The generalInfo field contains a InfoTypeAndValue element of type id-it-HpkeCiphertext and the value is of type HpkeCiphertext containing OIDs of the used KEM and KDF functions and the ciphertext enc2. The message has a MAC-based protection using the protectionAlg id-hpke-mac and the shared secret ss2.</t>
 			  </li>
               <li>
 			    <t>PKI management entity concatenates the shared secret ss1, with the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the received genp message to context2 as described above.</t>
