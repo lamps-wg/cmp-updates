@@ -148,6 +148,7 @@
 		  <li>Offer an optional hashAlg field in CertStatus supporting case that a certificate needs to be confirmed that has a signature algorithm that does not indicate a specific hash algorithm to use for computing the certHash.</li>
           <li>Add new general message types to request CA certificates, a root CA update, a certificate request template, or CRL updates.</li>
           <li>Extend the use of polling to p10cr, certConf, rr, genm, and error messages.</li>
+		  <li>Incorporated the request message behavioral clarifications from former Appendix C to <xref target="sect-5" format="default"/>. The definition of altCertTemplate was incorporated into <xref target="sect-5.2.1" format="default"/>, the clarification on POPOSigningKey was incorporated into <xref target="sect-5.2.8" format="default"/>, and the clarification on POPOPrivKey was incorporated into <xref target="sect-5.2.8.1" format="default"/>.</li>
 		  <li>Delete the mandatory algorithm profile in <xref target="sect-d.2" format="default"/> and refer instead to CMP Algorithms Section 7 [RFCCCCC].</li>
         </ul>
       </section>
@@ -585,7 +586,7 @@
             <t>In this specification, such authentication is achieved by two different means:</t>
  			<ul spacing="normal">
 				<li>symmetric: The PKI (CA/RA) issuing the end entity with a secret value (initial authentication key) and reference value (used to identify the secret value) via some out-of-band means.  The initial authentication key can then be used to protect relevant PKI messages.</li>
-				<li>asymmetric: Using a private key and certificate issued by another PKI trusted for initial authentication, e.g., an IDevID <xref target="IEEE_802.1AR_2018" format="default">IEEE&nbsp;802.1AR</xref>.  The trust establishment in this external PKI is out of scope of this document.</li>
+				<li>asymmetric: Using a private key and certificate issued by another PKI trusted for initial authentication, e.g., an IDevID <xref target="IEEE.802.1AR_2018" format="default">IEEE&nbsp;802.1AR</xref>.  The trust establishment in this external PKI is out of scope of this document.</li>
 				</ul>
            <t>
    Thus, we can classify the initial registration/certification scheme
@@ -698,6 +699,7 @@ follows:
       </section>
       <section anchor="sect-4.3" numbered="true" toc="default">
         <name>Proof-of-Possession (POP) of Private Key</name>
+		<t>&lt; ToDo: To be aligned with <xref target="sect-5.2.8" format="default"/> if needed. &gt;</t>
         <t>
    In order to prevent certain attacks and to allow a CA/RA to properly
    check the validity of the binding between an end entity and a key
@@ -846,6 +848,10 @@ follows:
    CA public key will remain in use for some time.  The old CA public
    key is no longer required (other than for non-repudiation) when all
    end entities of this CA have securely acquired the new CA public key.</t>
+          <t>The "old with new" certificate must have a validity period with the same notBefore and notAfter time as the "old with old" certificate.</t>
+          <t>The "new with old" certificate must have a validity period with the same notBefore time as the "new with new" certificate and a notAfter time by which all end entities of this CA will securely possess the new CA public key (at the latest, at the notAfter time of the "old with old" certificate).</t>
+          <t>The "new with new" certificate must have a validity period with a notBefore time that is before the notAfter time of the "old with old" certificate and a notAfter time that is after the notBefore time of the next update of this certificate.</t>
+          <t>Note:  Further operational considerations on transition from one root CA self-signed certificate to the next is available in <xref target="RFC8649" format="default">RFC&nbsp;8649 Section 5</xref>.</t>
           <t>
    The "old with new" certificate must have a validity period starting
    at the generation time of the old key pair and ending at the expiry
@@ -1382,9 +1388,16 @@ follows:
    CertHash), or does include this certificate (via a CertHash) along
    with a status of "rejected".  See <xref target="sect-5.3.18" format="default"/> for the definition
    and use of CertHash and the certConf message.</t>
-		  <t>Note: Before requesting a new certificate, an end entity can request a certTemplate structure as a kind of certificate request template, in order to learn which data the CA expects to be present in the certificate request, see <xref target="sect-5.3.19.16" format="default"/>.</t>
-          <t>
-   See <xref target="sect-c" format="default"/> and <xref target="RFC4211" format="default"/> for CertTemplate syntax.</t>
+		  <t>Note: Before requesting a new certificate, an end entity can request a certTemplate structure as a kind of certificate request blueprint, in order to learn which data the CA expects to be present in the certificate request, see <xref target="sect-5.3.19.16" format="default"/>.</t>
+          <t>See <xref target="RFC4211" format="default">CRMF</xref> for CertTemplate syntax.</t>
+		  <t>If certTemplate is an empty SEQUENCE (i.e., all fields omitted), then the controls field in the CertRequest structure MAY contain the id-regCtrl-altCertTemplate control, specifying a template for a certificate other than an X.509v3 public-key certificate.  Conversely, if certTemplate is not empty (i.e., at least one field is present), then controls MUST NOT contain id-regCtrl-altCertTemplate.  The new control is defined as follows:</t>
+          <sourcecode type="asn.1" ><![CDATA[  
+  id-regCtrl-altCertTemplate OBJECT IDENTIFIER ::= { iso(1)
+     identified-organization(3) dod(6) internet(1) security(5)
+     mechanisms(5) pkix(7) pkip(5) regCtrl(1) 7}
+
+  AltCertTemplate ::= AttributeTypeAndValue
+          ]]></sourcecode>
         </section>
         <section anchor="sect-5.2.2" numbered="true" toc="default">
           <name>Encrypted Values</name>
@@ -1534,35 +1547,45 @@ follows:
         </section>
         <section anchor="sect-5.2.8" numbered="true" toc="default">
           <name>Proof-of-Possession Structures</name>
-          <t>
-   If the certification request is for a signing key pair (i.e., a
-   request for a verification certificate), then the proof-of-possession
-   of the private signing key is demonstrated through use of the
-   POPOSigningKey structure.</t>
-          <t>
-   See <xref target="sect-c" format="default"/> and <xref target="RFC4211" format="default"/> for POPOSigningKey syntax, but note that
-   POPOSigningKeyInput has the following semantic stipulations in this
-   specification.</t>
+		  <t>&lt; ToDo: This section should be aligned with <xref target="sect-4.3" format="default"/> of this document and RFC 4211 Section 4. It should potentially be restructured and updated for better readability. It could be sorted like RFC 4211 Section 4 based on the capabilities of the keys.  As discussed at interim-2022-lamps-02 the authors wait for the definition of proof-of-possession for KEM keys. &gt;</t>
+          <t>If the certification request is for a key pair that supports signing , then the proof-of-possession of the private signing key is demonstrated through use of the POPOSigningKey structure as defined in <xref target="RFC4211" format="default">RFC&nbsp;4211</xref>.</t>
 		  <sourcecode type="asn.1" ><![CDATA[  
+  POPOSigningKey ::= SEQUENCE {
+     poposkInput          [0] POPOSigningKeyInput OPTIONAL,
+     algorithmIdentifier  AlgorithmIdentifier,
+     signature            BIT STRING
+  }
+
   POPOSigningKeyInput ::= SEQUENCE {
      authInfo             CHOICE {
-        sender              [0] GeneralName,
-        publicKeyMAC            PKMACValue
+        sender            [0] GeneralName,
+        publicKeyMAC      PKMACValue
      },
      publicKey            SubjectPublicKeyInfo
   }
-]]></sourcecode>
-		  <t>On the other hand, if the certification request is for an encryption
-		  key pair (i.e., a request for an encryption certificate), then the
-		  proof-of-possession of the private decryption key may be demonstrated
-		  in one of three ways.</t>
+          ]]></sourcecode>
+		  <t>The signature (using "algorithmIdentifier") is on the DER-encoded value of poposkInput (i.e., the "value" OCTETs of the POPOSigningKeyInput DER).</t>
+		  <t>If certTemplate (or the altCertTemplate control as defined in <xref target="sect-5.2.1" format="default"/>) contains the subject and publicKey values, then poposkInput MUST be omitted and the signature MUST be computed on the DER-encoded value of certReq field if the CertReqMsg (or the DER-encoded value of AltCertTemplate).  If certTemplate/altCertTemplate does not contain both the subject and public key values (i.e., if it contains only one of these, or neither), then poposkInput MUST be present and MUST be signed.</t>
+		  <t>On the other hand, if the certification request is for a key pair that does not support signing (i.e., a request for an encryption or KEM certificate), then the proof-of-possession of the private decryption key may be demonstrated in one of three ways, as detailed in the following subsections.</t>
           <section anchor="sect-5.2.8.1" numbered="true" toc="default">
             <name>Inclusion of the Private Key</name>
             <t>
    By the inclusion of the private key (encrypted) in the CertRequest
-   (in the thisMessage field of POPOPrivKey (see <xref target="sect-c" format="default"/>) or in the
+   (in the thisMessage field of POPOPrivKey or in the
    PKIArchiveOptions control structure, depending upon whether or not
    archival of the private key is also desired).</t>
+            <sourcecode type="asn.1" ><![CDATA[  
+  POPOPrivKey ::= CHOICE {
+     thisMessage       [0] BIT STRING,   -- deprecated
+     subsequentMessage [1] SubsequentMessage,
+     dhMAC             [2] BIT STRING,   -- deprecated
+     agreeMAC          [3] PKMACValue,
+     encryptedKey      [4] EnvelopedData
+  }
+          ]]></sourcecode>
+		  <t>Note: When using CMP V2 with EcryptedValue, <xref target="RFC4210" format="default">RFC&nbsp;4210 Appendix C</xref> made the behavioral clarification of specifying that the contents of "thisMessage" MUST be encoded as an EncryptedValue and then wrapped in a BIT STRING.  This allows the necessary conveyance and protection of the private key while maintaining bits-on-the-wire compatibility with <xref target="RFC4211" format="default">RFC&nbsp;4211</xref>.</t>
+		  <t>&lt; Explanation: RFC4211 extended the POPOPrivKey CHOICE adding choice [3] and [4]. As there is now the EnvelopedData choice [4] available in the extended definition, this should be used for CMP V3 syntax.  In case of CMP V2 syntax the former specification of RFC4210 Appendix C should apply, see the Note above. &gt;</t>
+		  <t>&lt; ToDo: Section 2.27 of CMP Updated should be updated during AUTH48 specifying the use of encryptedKey field instead of thisMessage when EnvelopedData is used. &gt;</t>
           </section>
           <section anchor="sect-5.2.8.2" numbered="true" toc="default">
             <name>Indirect Method</name>
@@ -1749,7 +1772,7 @@ follows:
    message is intended to be used for entities when first initializing
    into the PKI.</t>
           <t>
-   See <xref target="sect-c" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.</t>
+   See <xref target="sect-5.2.1" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.</t>
         </section>
         <section anchor="sect-5.3.2" numbered="true" toc="default">
           <name>Initialization Response</name>
@@ -1771,7 +1794,7 @@ follows:
    certificates (see the profiles defined in [RFCBBBB] Section 4.1.2 and <xref target="sect-d.2" format="default"/> for further information).  This message is intended to be used for existing PKI
    entities who wish to obtain additional certificates.</t>
           <t>
-   See <xref target="sect-c" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.</t>
+   See <xref target="sect-5.2.1" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.</t>
           <t>
    Alternatively, the PKIBody MAY be a CertificationRequest (this
    structure is fully specified by the ASN.1 structure
@@ -1849,7 +1872,7 @@ follows:
    subject public key (although the latter practice may not be
    appropriate for some environments).</t>
           <t>
-   See<xref target="sect-c" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.</t>
+   See<xref target="sect-5.2.1" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.</t>
         </section>
         <section anchor="sect-5.3.6" numbered="true" toc="default">
           <name>Key Update Response Content</name>
@@ -1868,7 +1891,7 @@ follows:
    used to supply a signature public key for which a certificate is
    required (see <xref target="sect-d" format="default"/> profiles for further information).</t>
           <t>
-   See <xref target="sect-c" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.  Note that if a
+   See <xref target="sect-5.2.1" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.  Note that if a
    key history is required, the requester must supply a Protocol
    Encryption Key control in the request message.</t>
         </section>
@@ -1929,7 +1952,7 @@ follows:
    MUST NOT be sent to the responding CA (see the profiles defined in <xref target="sect-e.6" format="default"/> for further information).  This request MAY also be used
    by subordinate CAs to get their certificates signed by the parent CA.</t>
           <t>
-   See <xref target="sect-c" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.</t>
+   See <xref target="sect-5.2.1" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.</t>
         </section>
         <section anchor="sect-5.3.12" numbered="true" toc="default">
           <name>Cross Certification Response Content</name>
@@ -2801,7 +2824,7 @@ follows:
       </section>
       <section anchor="sect-8.5" numbered="true" toc="default">
         <name>Entropy of Random Numbers, Key Pairs, and Shared Secret Information</name>
-		<t>Implementations must generate nonces and private keys from random input. The use of inadequate pseudo-random number generators (PRNGs) to generate cryptographic keys can result in little or no security. An attacker may find it much easier to reproduce the PRNG environment that produced the keys and to search the resulting small set of possibilities than brute-force searching the whole key space. As an example of predictable random numbers see <xref target="CVE-2008-0166" format="default"/>; consequences of low-entropy random numbers are discussed in <xref target="MiningPsQs" format="default">Mining Your Ps and Qs</xref>. The generation of quality random numbers is difficult. <xref target="ISO.20543-2019" format="default">ISO/IEC 20543:2019</xref>, <xref target="NIST_SP_800_90Ar1" format="default">NIST SP 800-90A Rev.1</xref>, <xref target="AIS31" format="default">BSI AIS 31 V2.0</xref>, and others offer valuable guidance in this area.</t>
+		<t>Implementations must generate nonces and private keys from random input. The use of inadequate pseudo-random number generators (PRNGs) to generate cryptographic keys can result in little or no security. An attacker may find it much easier to reproduce the PRNG environment that produced the keys and to search the resulting small set of possibilities than brute-force searching the whole key space. As an example of predictable random numbers see <xref target="CVE-2008-0166" format="default"/>; consequences of low-entropy random numbers are discussed in <xref target="MiningPsQs" format="default">Mining Your Ps and Qs</xref>. The generation of quality random numbers is difficult. <xref target="ISO.20543-2019" format="default">ISO/IEC 20543:2019</xref>, <xref target="NIST.SP.800-90Ar1" format="default">NIST SP 800-90A Rev.1</xref>, <xref target="AIS31" format="default">BSI AIS 31 V2.0</xref>, and others offer valuable guidance in this area.</t>
 		<t>If shared secret information is generated by a cryptographically secure random-number generator (CSRNG) it is safe to assume that the entropy of the shared secret information equals its bit length. If no CSRNG is used, the entropy of a shared secret information depends on the details of the generation process and cannot be measured securely after it has been generated. If user-generated passwords are used as shared secret information, their entropy cannot be measured and are typically insufficient for protected delivery of centrally generated keys or trust anchors.</t>
 		<t>If the entropy of a shared secret information protecting the delivery of a centrally generated key pair is known, it should not be less than the security strength of that key pair; if the shared secret information is re-used for different key pairs, the security of the shared secret information should exceed the security strength of each individual key pair.</t>
 		<t>For the case of a PKI management operation that delivers a new trust anchor (e.g., a root CA certificate) using caPubs or genm (a) that is not concluded in a timely manner or (b) where the shared secret information is re-used for several key management operations, the entropy of the shared secret information, if known, should not be less than the security strength of the trust anchor being managed by the operation. The shared secret information should have an entropy that at least matches the security strength of the key material being managed by the operation. Certain use cases may require shared secret information that may be of a low security strength, e.g., a human generated password. It is RECOMMENDED that such secret information be limited to a single PKI management operation. </t>
@@ -2873,8 +2896,19 @@ follows:
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4210.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4510.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5912.xml"/>
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml6/reference.R.IEEE.802.1AR-2018.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8649.xml"/>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml-nist/reference.NIST.SP.800-90Ar1.xml"/>
+	  <reference anchor="IEEE.802.1AR_2018" target="https://ieeexplore.ieee.org/document/8423794">
+		<front>
+			<title>IEEE Standard for Local and metropolitan area networks - Secure Device Identity</title>
+			<author>
+				<organization>IEEE</organization>
+			</author>
+			<date day="2" month="August" year="2018"/>
+		</front>
+		<seriesInfo name="IEEE" value="802.1AR-2018"/>
+		<seriesInfo name="DOI" value="10.1109/IEEESTD.2018.8423794"/>
+	  </reference>
 		<reference anchor="CVE-2008-0166" target="https://nvd.nist.gov/vuln/detail/CVE-2008-0166">
 			<front>
 				<title>National Vulnerability Database - CVE-2008-0166</title>
@@ -2974,6 +3008,8 @@ follows:
     </section>
     <section anchor="sect-b" numbered="true" toc="default">
       <name>The Use of Revocation Passphrase</name>
+	  <t>&lt; ToDo: Review this Appendix and try to push the content to Section 4 or Section 5 of this document. &gt;</t>
+	  <t>&lt; ToDo: Possibly add support for certificates containing KEM keys. &gt;</t>
       <t>
    A revocation request must incorporate suitable security mechanisms,
    including proper authentication, in order to reduce the probability
@@ -3016,7 +3052,7 @@ follows:
         <li>The revocation request message is protected by a password-based MAC, see CMP Algorithms [RFCCCCC] Section 6.1,
       with the revocation passphrase as the key.  If appropriate, the
       senderKID field in the PKIHeader MAY contain the value previously
-      transmitted in valueHint.</li>
+      transmitted in localKeyId or valueHint.</li>
       </ul>
       <t>
    Using the technique specified above, the revocation passphrase may be
@@ -3048,7 +3084,7 @@ follows:
     </section>
     <section anchor="sect-c" numbered="true" toc="default">
       <name>Request Message Behavioral Clarifications</name>
-	  <t>&lt; ToDo: This appendix needs more detailed review to decide if something needs to be changed. &gt;</t>
+	  <t>&lt; ToDo: Appendix C will be deleted with the next version of this document. The definition of altCertTemplate was incorporated into Section 5.2.1, the clarification on POPOSigningKey was incorporated into Section 5.2.8, and the clarification on POPOPrivKey was incorporated into Section 5.2.8.1 and must be deleted here. This should also be documented in the Introduction. &gt;</t>
       <t>
    In the case of updates to <xref target="RFC4211" format="default"/>, which cause interpretation or
    interoperability issues, <xref target="RFC4211" format="default"/> SHALL be the normative document.</t>
@@ -3414,8 +3450,8 @@ crc[1].              present if and only if
                      or "grantedWithMods"
 certificate          present
 privateKey           present
-   -- see Appendix C, Request Message Behavioral Clarifications
-   -- for backward compatibility reasons, use EncryptedValue
+   -- Use EnvelopedData; if backward compatibility is required,
+   -- use EncryptedValue, see Section 5.2.2
 publicationInfo      optionally present
   -- indicates where certificate has been published (present
   -- at discretion of CA)
@@ -3928,9 +3964,6 @@ FROM PKIXCRMF-2009
     -- The import of EncryptedKey is added due to the updates made
     -- in CMP Updates [RFCAAAA]. EncryptedValue does not need to
     -- be imported anymore and is therefore removed here.
-
--- see also the behavioral clarifications to CRMF codified in
--- Appendix C of this specification
 
 CertificationRequest
 FROM PKCS-10
@@ -4539,6 +4572,13 @@ END
     <section anchor="sect-g" numbered="true" toc="default">
       <name>History of Changes</name>
       <t>Note: This appendix will be deleted in the final version of the document.</t>
+      <t keepWithNext="true">From version 02 -&gt; 03:</t>
+      <ul spacing="compact">
+        <li>Updated Section 4.4.1 clarifying the definition of "new with new" certificate validity period (see thread "RFC4210bis - notAfter time of newWithNew certificate")</li>
+        <li>Added ToDo to Section 4.3 and 5.2.8 on required alignment regarding POP for KEM keys.</li>
+        <li>Updated Sections 5.2.1, 5.2.8, and 5.2.8.1 incorporating text of former Appendix C (see thread "draft-ietf-lamps-rfc4210bis - ToDo on review of Appendix C")</li>
+        <li>Added a ToDo to Appendix B to indicate additional review need to try pushing the content to Sections 4 and Section 5</li>
+      </ul>
       <t keepWithNext="true">From version 01 -&gt; 02:</t>
       <ul spacing="compact">
         <li>Added Section 3.1.1.4 introducing the Key Generation Authority</li>
