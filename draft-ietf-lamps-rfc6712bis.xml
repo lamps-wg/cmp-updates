@@ -9,7 +9,7 @@
      submissionType="IETF" 
 	 docName="draft-ietf-lamps-rfc6712bis-latest" 
 	 category="std" 
-	 obsoletes="6712" 
+	 obsoletes="6712"
 	 ipr="trust200902" 
 	 updates="" 
 	 xml:lang="en" 
@@ -82,23 +82,32 @@
     <date year="2022"/>
     <workgroup>LAMPS Working Group</workgroup>
     <abstract>
-      <t>
-   This document describes how to layer the Certificate Management
-   Protocol (CMP) over HTTP.  It is the "CMPtrans" document referenced
-   in RFC 4210; therefore, this document updates the reference given
-   therein.</t>
+      <t>This document describes how to layer the Certificate Management Protocol (CMP) over HTTP.</t>
+      <t>It includes the updates on RFC 6712 specified in CMP Updates [RFCAAAA] Section 3 and obsoleted both documents.  These updates introduce CMP URIs using a Well-known prefix.</t>
     </abstract>
   </front>
   <middle>
     <section anchor="sect-1" numbered="true" toc="default">
       <name>Introduction</name>
       <t>[RFC Editor: please delete:</t>
-	  <t>During IESG telechat the CMP Updates document was approved on condition that LAMPS provides a RFC6712bis document.  Version -00 of this document shall be identical to RFC6712 and version -01 incorporates the changes specified in CMP Updates Section 3.</t>
+	  <t>During IESG telechat the CMP Updates document was approved on condition that LAMPS provides a RFC6712bis document.  Version -00 of this document shall be identical to RFC 6712 and version -01 incorporates the changes specified in CMP Updates Section 3.</t>
 	  <t>A history of changes is available in Appendix A of this document.</t>
-	  <t>The authors of this document wish to thank Tomi Kause and Martin Peylo, the original authors of RFC6712, for their work and invite them, next to further volunteers, to join the -bis activity as co-authors.</t>
+	  <t>The authors of this document wish to thank Tomi Kause and Martin Peylo, the original authors of RFC 6712, for their work and invite them, next to further volunteers, to join the -bis activity as co-authors.</t>
+	  <t>]</t>
+	  <t>[RFC Editor:</t>
+	  <t>Please perform the following substitution.</t>
+        <ul spacing="normal">
+          <li>RFCXXXX --> the assigned numerical RFC value for this draft</li>
+          <li>
+			<t>RFCAAAA --> the assigned numerical RFC value for <xref target="I-D.ietf-lamps-cmp-updates" format="default"/></t>
+			<t>Add this RFC number to the list of obsoleted RFCs.</t>
+		  </li>
+          <li>RFCBBBB --> the assigned numerical RFC value for <xref target="I-D.ietf-lamps-lightweight-cmp-profile" format="default"/></li>
+          <li>RFCCCCC --> the assigned numerical RFC value for <xref target="RFC4210bis" format="default"/></li>
+		  </ul>
 	  <t>]</t>
       <t>
-   The Certificate Management Protocol (CMP) <xref target="RFC4210" format="default"/> requires a well-
+   The Certificate Management Protocol (CMP) [RFCCCCC] requires a well-
    defined transfer mechanism to enable End Entities (EEs), Registration
    Authorities (RAs), and Certification Authorities (CAs) to pass
    PKIMessage sequences between them.</t>
@@ -110,21 +119,12 @@
    that PKI messages could also be conveyed using file-, E-mail-, and
    HTTP-based transfer, but those were not specified in detail.</t>
       <t>
-   The current version of the CMP specification <xref target="RFC4210" format="default"/> incorporated
-   its own polling mechanism, and thus the need for a transfer protocol
+   The second version of the CMP specification <xref target="RFC4210" format="default"/> incorporated
+   its own polling mechanism and thus the need for a transfer protocol
    providing this functionality vanished.  The remaining features CMP
    requires from its transfer protocols are connection and error
    handling.</t>
-      <t>
-   Before this document was published as an RFC, the draft version
-   underwent drastic changes during the long-lasting work process.  The
-   so-called "Direct TCP-Based Management Protocol" specified in
-   <xref target="RFC2510" format="default"/> was enhanced, and at some point a version existed where
-   this protocol was again transferred over HTTP.  As both approaches
-   proved to be needless and cumbersome, implementers preferred to use
-   plain HTTP transfer following <xref target="RFC1945" format="default"/> or <xref target="RFC2616" format="default"/>.  This document
-   now reflects that by exclusively describing HTTP as the transfer
-   protocol for CMP.</t>
+	  <t>In addition to reliable transport, CMP requires connection and error handling from the transfer protocol, which is all covered by HTTP.  Additionally, delayed delivery of CMP response messages may be handled at transfer level regardless of the message contents.  Since [RFCAAAA] extends the polling mechanism specified in the second version of <xref target="RFC4210" format="default">CMP</xref> to cover all types of PKI management transactions, delays detected at application level may also be handled within CMP, using pollReq and pollRep messages.</t>
       <t>
    The usage of HTTP for transferring CMP messages exclusively uses the
    POST method for requests, effectively tunneling CMP over HTTP.  While
@@ -146,13 +146,22 @@
    over more than just a single request/response pair, the statelessness
    of HTTP is not blocking its usage as the transfer protocol for CMP
    messages.</t>
+      <section anchor="sect-1.1" numbered="true" toc="default">
+        <name>Changes Since RFC 6712</name>
+        <t>CMP Updates [RFCAAAA] updated <xref target="RFC6712" format="default">RFC&nbsp;6712</xref>, supporting the PKI management operations specified in the Lightweight CMP Profile [RFCBBBB], in the following areas:</t>
+        <ul spacing="normal">
+		  <li>Introduce the HTTP URI path prefix '/.well-known/cmp'.</li>
+          <li>Add options for extending the URI structure with further segments and to this end define a new protocol registry group.</li>
+        </ul>
+      </section>
+      <section anchor="sect-1.2" numbered="true" toc="default">
+        <name>Changes Made by This Document</name>
+        <t>This document obsoletes <xref target="RFC6712" format="default">RFC&nbsp;6712</xref>. It includes the changes specified by CMP Updates [RFCAAAA] Section 3 as described in <xref target="sect-1.1" format="default"/>.</t>
+      </section>
     </section>
     <section anchor="sect-2" numbered="true" toc="default">
       <name>Conventions Used in This Document</name>
-      <t>
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-   document are to be interpreted as described in <xref target="RFC2119" format="default"/>.</t>
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref target="RFC2119" format="default"/> <xref target="RFC8174" format="default"/> when, and only when, they appear in all capitals, as shown here.</t>
     </section>
     <section anchor="sect-3" numbered="true" toc="default">
       <name>HTTP-Based Protocol</name>
@@ -185,7 +194,7 @@
       <section anchor="sect-3.3" numbered="true" toc="default">
         <name>General Form</name>
         <t>
-   A DER-encoded <xref target="ITU.X690.1994" format="default"/> PKIMessage <xref target="RFC4210" format="default"/> is sent as the
+   A DER-encoded <xref target="ITU.X690.1994" format="default"/> PKIMessage [RFCCCCC] is sent as the
    entity-body of an HTTP POST request.  If this HTTP request is
    successful, the server returns the CMP response in the body of the
    HTTP response.  The HTTP response status code in this case MUST be
@@ -229,24 +238,14 @@
       </section>
       <section anchor="sect-3.6" numbered="true" toc="default">
         <name>HTTP Request-URI</name>
-        <t>
-   The Request-URI is formed as specified in <xref target="RFC3986" format="default"/>.</t>
-        <t>
-   A server implementation MUST handle Request-URI paths, with or
-   without a trailing slash, as identical.</t>
-        <t>
-   An example of a Request-Line and a Host header field in an HTTP/1.1
-   header, sending a CMP request to a server, located in the "/cmp" path
-   of the host "example.com", would be</t>
-<artwork>
-   POST /cmp HTTP/1.1
-   Host: example.com
-</artwork>
-<t>or in the absoluteURI form</t>
-<artwork>
-   POST http://example.com/cmp/ HTTP/1.1
-   Host: example.com
-</artwork>
+        <t>Each CMP server on a PKI management entity supporting HTTP or HTTPS transfer MUST support the use of the path prefix '/.well-known/' as defined in <xref target="RFC8615" format="default">RFC&nbsp;8615</xref> and the registered name 'cmp' to ease interworking in a multi-vendor environment.</t>
+        <t keepWithNext="true">The CMP client needs to be configured with sufficient information to form the CMP server URI.  This is at least the authority portion of the URI, e.g., 'www.example.com:80', or the full operation path segment of the PKI management entity. Additionally, OPTIONAL path segments MAY be added after the registered application name as part of the full operation path to provide further distinction.  The path segment 'p' followed by an arbitraryLabel &lt;name&gt; could for example support the differentiation of specific CAs or certificate profiles. Further path segments, e.g., as specified in the Lightweight CMP Profile [RFCBBBB], could indicate PKI management operations using an operationLabel &lt;operation&gt;.  A valid full CMP URI can look like this:</t>
+        <ul empty="true" spacing="compact">
+		  <li>http://www.example.com/.well-known/cmp</li>
+          <li>http://www.example.com/.well-known/cmp/&lt;operation&gt;</li>
+          <li>http://www.example.com/.well-known/cmp/p/&lt;name&gt;</li>
+          <li>http://www.example.com/.well-known/cmp/p/&lt;name&gt;/&lt;operation&gt;</li>
+        </ul>
        </section>
       <section anchor="sect-3.7" numbered="true" toc="default">
         <name>Pushing of Announcements</name>
@@ -260,7 +259,7 @@
         <t>
    If an EE wants to poll for a potential CA Key Update Announcement or
    the current CRL, a PKI Information Request using a General Message as
-   described in Appendix E.5 of <xref target="RFC4210" format="default"/> can be used.</t>
+   described in Appendix E.5 of [RFCCCCC] can be used.</t>
         <t>
    When pushing Announcement messages, PKIMessage structures are sent as
    the entity-body of an HTTP POST request.</t>
@@ -321,9 +320,8 @@
       <name>Implementation Considerations</name>
       <t>
    Implementors should be aware that implementations might exist that
-   use a different approach for transferring CMP over HTTP, because this
-   document has been under development for more than a decade.  Further,
-   implementations based on earlier drafts of this document might use an
+   use a different approach for transferring CMP over HTTP, because <xref target="RFC6712" format="default">RFC&nbsp;6712</xref> has been under development for more than a decade.  Further,
+   implementations based on earlier drafts of <xref target="RFC6712" format="default">RFC&nbsp;6712</xref> might use an
    unregistered "application/pkixcmp-poll" MIME type.</t>
     </section>
     <section anchor="sect-5" numbered="true" toc="default">
@@ -369,48 +367,13 @@
     </section>
     <section anchor="sect-6" numbered="true" toc="default">
       <name>IANA Considerations</name>
-      <t>
-   The IANA has already registered the MIME media type "application/pkixcmp" for identifying CMP sequences due to an request made in
-   connection with <xref target="RFC2510" format="default"/>.</t>
-      <t>
-   No further action by the IANA is necessary for this document or any
-   anticipated updates.</t>
+		<t>The IANA has already registered what is specified in CMP Updates [RFCAAAA].</t>
+		<t>No further action by the IANA is necessary for this document or any anticipated updates.</t>
     </section>
     <section anchor="sect-7" numbered="true" toc="default">
       <name>Acknowledgments</name>
-      <t>
-   Amit Kapoor and Ronald Tschlaer were the original authors of this
-   document, and their version focused on the so-called "TCP-Based Management Protocol", which has been removed from this document.
-   Their contact data, as originally stated by them, is as follows:</t>
-      <artwork name="" type="" align="left" alt=""><![CDATA[
-   Amit Kapoor
-   Certicom
-   25801 Industrial Blvd
-   Hayward, CA
-   US
-   Email: amit@trustpoint.com
-
-   Ronald Tschalaer
-   Certicom
-   25801 Industrial Blvd
-   Hayward, CA
-   US
-   Email: ronald@trustpoint.com
-]]></artwork>
-      <t>
-   The authors gratefully acknowledge the contributions of various
-   members of the IETF PKIX working group and the ICSA CA-talk mailing
-   list (a list solely devoted to discussing CMP interoperability
-   efforts).</t>
-      <t>
-   By providing ideas, giving hints, and doing invaluable review work,
-   the following alphabetically listed individuals have significantly
-   contributed to this document:</t>
-      <artwork name="" type="" align="left" alt=""><![CDATA[
-   Tomas Gustavsson, Primekey
-   Peter Gutmann, University of Auckland
-   Wolf-Dietrich Moeller, Nokia Siemens Networks
-]]></artwork>
+      <t>The authors of this document wish to thank Tomi Kause and Martin Peylo, the original authors of <xref target="RFC6712" format="default"/>, for their work.</t>
+      <t>We also thank all reviewers of this document for their valuable feedback.</t>
     </section>
   </middle>
   <back>
@@ -418,202 +381,41 @@
       <name>References</name>
       <references>
         <name>Normative References</name>
-        <reference anchor="ITU.X690.1994">
-          <front>
-            <title>Information Technology - ASN.1 encoding rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)</title>
-            <author>
-              <organization>International Telecommunications Union</organization>
-            </author>
-            <date year="1994"/>
-          </front>
-          <seriesInfo name="ITU-T" value="Recommendation X.690"/>
-        </reference>
-        <reference anchor="RFC1945" target="https://www.rfc-editor.org/info/rfc1945" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1945.xml">
-          <front>
-            <title>Hypertext Transfer Protocol -- HTTP/1.0</title>
-            <author initials="T." surname="Berners-Lee" fullname="T. Berners-Lee">
-              <organization/>
-            </author>
-            <author initials="R." surname="Fielding" fullname="R. Fielding">
-              <organization/>
-            </author>
-            <author initials="H." surname="Frystyk" fullname="H. Frystyk">
-              <organization/>
-            </author>
-            <date year="1996" month="May"/>
-            <abstract>
-              <t>The Hypertext Transfer Protocol (HTTP) is an application-level protocol with the lightness and speed necessary for distributed, collaborative, hypermedia information systems.  This memo provides information for the Internet community.  This memo does not specify an Internet standard of any kind.</t>
-            </abstract>
-          </front>
-          <seriesInfo name="RFC" value="1945"/>
-          <seriesInfo name="DOI" value="10.17487/RFC1945"/>
-        </reference>
-        <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
-          <front>
-            <title>Key words for use in RFCs to Indicate Requirement Levels</title>
-            <author initials="S." surname="Bradner" fullname="S. Bradner">
-              <organization/>
-            </author>
-            <date year="1997" month="March"/>
-            <abstract>
-              <t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
-            </abstract>
-          </front>
-          <seriesInfo name="BCP" value="14"/>
-          <seriesInfo name="RFC" value="2119"/>
-          <seriesInfo name="DOI" value="10.17487/RFC2119"/>
-        </reference>
-        <reference anchor="RFC2510" target="https://www.rfc-editor.org/info/rfc2510" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2510.xml">
-          <front>
-            <title>Internet X.509 Public Key Infrastructure Certificate Management Protocols</title>
-            <author initials="C." surname="Adams" fullname="C. Adams">
-              <organization/>
-            </author>
-            <author initials="S." surname="Farrell" fullname="S. Farrell">
-              <organization/>
-            </author>
-            <date year="1999" month="March"/>
-            <abstract>
-              <t>This document describes the Internet X.509 Public Key Infrastructure (PKI) Certificate Management Protocols.  [STANDARDS-TRACK]</t>
-            </abstract>
-          </front>
-          <seriesInfo name="RFC" value="2510"/>
-          <seriesInfo name="DOI" value="10.17487/RFC2510"/>
-        </reference>
-        <reference anchor="RFC2616" target="https://www.rfc-editor.org/info/rfc2616" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2616.xml">
-          <front>
-            <title>Hypertext Transfer Protocol -- HTTP/1.1</title>
-            <author initials="R." surname="Fielding" fullname="R. Fielding">
-              <organization/>
-            </author>
-            <author initials="J." surname="Gettys" fullname="J. Gettys">
-              <organization/>
-            </author>
-            <author initials="J." surname="Mogul" fullname="J. Mogul">
-              <organization/>
-            </author>
-            <author initials="H." surname="Frystyk" fullname="H. Frystyk">
-              <organization/>
-            </author>
-            <author initials="L." surname="Masinter" fullname="L. Masinter">
-              <organization/>
-            </author>
-            <author initials="P." surname="Leach" fullname="P. Leach">
-              <organization/>
-            </author>
-            <author initials="T." surname="Berners-Lee" fullname="T. Berners-Lee">
-              <organization/>
-            </author>
-            <date year="1999" month="June"/>
-            <abstract>
-              <t>HTTP has been in use by the World-Wide Web global information initiative since 1990. This specification defines the protocol referred to as "HTTP/1.1", and is an update to RFC 2068.  [STANDARDS-TRACK]</t>
-            </abstract>
-          </front>
-          <seriesInfo name="RFC" value="2616"/>
-          <seriesInfo name="DOI" value="10.17487/RFC2616"/>
-        </reference>
-        <reference anchor="RFC3986" target="https://www.rfc-editor.org/info/rfc3986" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3986.xml">
-          <front>
-            <title>Uniform Resource Identifier (URI): Generic Syntax</title>
-            <author initials="T." surname="Berners-Lee" fullname="T. Berners-Lee">
-              <organization/>
-            </author>
-            <author initials="R." surname="Fielding" fullname="R. Fielding">
-              <organization/>
-            </author>
-            <author initials="L." surname="Masinter" fullname="L. Masinter">
-              <organization/>
-            </author>
-            <date year="2005" month="January"/>
-            <abstract>
-              <t>A Uniform Resource Identifier (URI) is a compact sequence of characters that identifies an abstract or physical resource.  This specification defines the generic URI syntax and a process for resolving URI references that might be in relative form, along with guidelines and security considerations for the use of URIs on the Internet.  The URI syntax defines a grammar that is a superset of all valid URIs, allowing an implementation to parse the common components of a URI reference without knowing the scheme-specific requirements of every possible identifier.  This specification does not define a generative grammar for URIs; that task is performed by the individual specifications of each URI scheme.  [STANDARDS-TRACK]</t>
-            </abstract>
-          </front>
-          <seriesInfo name="STD" value="66"/>
-          <seriesInfo name="RFC" value="3986"/>
-          <seriesInfo name="DOI" value="10.17487/RFC3986"/>
-        </reference>
-        <reference anchor="RFC4210" target="https://www.rfc-editor.org/info/rfc4210" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4210.xml">
-          <front>
-            <title>Internet X.509 Public Key Infrastructure Certificate Management Protocol (CMP)</title>
-            <author initials="C." surname="Adams" fullname="C. Adams">
-              <organization/>
-            </author>
-            <author initials="S." surname="Farrell" fullname="S. Farrell">
-              <organization/>
-            </author>
-            <author initials="T." surname="Kause" fullname="T. Kause">
-              <organization/>
-            </author>
-            <author initials="T." surname="Mononen" fullname="T. Mononen">
-              <organization/>
-            </author>
-            <date year="2005" month="September"/>
-            <abstract>
-              <t>This document describes the Internet X.509 Public Key Infrastructure (PKI) Certificate Management Protocol (CMP).  Protocol messages are defined for X.509v3 certificate creation and management.  CMP provides on-line interactions between PKI components, including an exchange between a Certification Authority (CA) and a client system.  [STANDARDS-TRACK]</t>
-            </abstract>
-          </front>
-          <seriesInfo name="RFC" value="4210"/>
-          <seriesInfo name="DOI" value="10.17487/RFC4210"/>
-        </reference>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1945.xml"/>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2616.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8615.xml"/>
+		<reference anchor="RFC4210bis">
+		  <front>
+			<title>Internet X.509 Public Key Infrastructure -- Certificate Management Protocol (CMP)</title>
+			<author>
+				<organization showOnFrontPage="true">IETF</organization>
+				</author>
+			<date year="2022" month="June"/>
+			</front>
+		  </reference>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml2/reference.ITU.X690.1994.xml"/>
       </references>
       <references>
         <name>Informative References</name>
         <xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-lamps-cmp-updates.xml"/>
-        <reference anchor="RFC2818" target="https://www.rfc-editor.org/info/rfc2818" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2818.xml">
-          <front>
-            <title>HTTP Over TLS</title>
-            <author initials="E." surname="Rescorla" fullname="E. Rescorla">
-              <organization/>
-            </author>
-            <date year="2000" month="May"/>
-            <abstract>
-              <t>This memo describes how to use Transport Layer Security (TLS) to secure Hypertext Transfer Protocol (HTTP) connections over the Internet.  This memo provides information for the Internet community.</t>
-            </abstract>
-          </front>
-          <seriesInfo name="RFC" value="2818"/>
-          <seriesInfo name="DOI" value="10.17487/RFC2818"/>
-        </reference>
-        <reference anchor="RFC4301" target="https://www.rfc-editor.org/info/rfc4301" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4301.xml">
-          <front>
-            <title>Security Architecture for the Internet Protocol</title>
-            <author initials="S." surname="Kent" fullname="S. Kent">
-              <organization/>
-            </author>
-            <author initials="K." surname="Seo" fullname="K. Seo">
-              <organization/>
-            </author>
-            <date year="2005" month="December"/>
-            <abstract>
-              <t>This document describes an updated version of the "Security Architecture for IP", which is designed to provide security services for traffic at the IP layer.  This document obsoletes RFC 2401 (November 1998).  [STANDARDS-TRACK]</t>
-            </abstract>
-          </front>
-          <seriesInfo name="RFC" value="4301"/>
-          <seriesInfo name="DOI" value="10.17487/RFC4301"/>
-        </reference>
-        <reference anchor="RFC5246" target="https://www.rfc-editor.org/info/rfc5246" xml:base="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml">
-          <front>
-            <title>The Transport Layer Security (TLS) Protocol Version 1.2</title>
-            <author initials="T." surname="Dierks" fullname="T. Dierks">
-              <organization/>
-            </author>
-            <author initials="E." surname="Rescorla" fullname="E. Rescorla">
-              <organization/>
-            </author>
-            <date year="2008" month="August"/>
-            <abstract>
-              <t>This document specifies Version 1.2 of the Transport Layer Security (TLS) protocol.  The TLS protocol provides communications security over the Internet.  The protocol allows client/server applications to communicate in a way that is designed to prevent eavesdropping, tampering, or message forgery.  [STANDARDS-TRACK]</t>
-            </abstract>
-          </front>
-          <seriesInfo name="RFC" value="5246"/>
-          <seriesInfo name="DOI" value="10.17487/RFC5246"/>
-        </reference>
-        <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6712.xml"/>
+	    <xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-lamps-lightweight-cmp-profile.xml"/>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2510.xml"/>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2818.xml"/>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4210.xml"/>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4301.xml"/>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6712.xml"/>
       </references>
     </references>
     <section anchor="History" numbered="true" toc="default">
       <name>History of Changes</name>
       <t>Note: This appendix will be deleted in the final version of the document.</t>
+      <t keepWithNext="true">From version 00 -&gt; 01:</t>
+      <ul spacing="compact">
+        <li>Performed all updates specified in CMP Updates Section 3.</li>
+      </ul>
 	  <t keepWithNext="true">Version 00:</t>
 	  <t>This version consists of the text of RFC6712 with the following changes:</t>
 	  <ul spacing="compact">
