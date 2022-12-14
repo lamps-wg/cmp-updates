@@ -5,18 +5,18 @@
   <!ENTITY nbhy   "&#8209;">
   <!ENTITY wj     "&#8288;">
 ]>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" 
-     submissionType="IETF" 
-	 docName="draft-ietf-lamps-rfc4210bis-latest" 
-	 category="std" 
-	 obsoletes="4210" 
-	 ipr="trust200902" 
-	 updates="5912" 
-	 xml:lang="en" 
-	 symRefs="true" 
-	 sortRefs="false" 
-	 tocInclude="true" 
-	 version="3" 
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude"
+     submissionType="IETF"
+	 docName="draft-ietf-lamps-rfc4210bis-latest"
+	 category="std"
+	 obsoletes="4210"
+	 ipr="trust200902"
+	 updates="5912"
+	 xml:lang="en"
+	 symRefs="true"
+	 sortRefs="false"
+	 tocInclude="true"
+	 version="3"
 	 tocDepth="4"
 	 consensus="true">
   <!-- xml2rfc v2v3 conversion 3.12.3 -->
@@ -995,16 +995,16 @@ follows:
         <t>A CA may want to delegate parts of its duties to other PKI management entities. This section provides a mechanism to both prove this delegation and enable automated means for checking the authorization of this delegation. Such delegation may also be expressed by other means, e.g., explicit configuration.</t>
         <t>To offer automatic validation for the delegation of a role by a CA to another entity, the certificates used for CMP message protection or signed data for central key generation MUST be issued by the delegating CA and MUST contain the respective EKUs. This proves the authorization of this entity by the delegating CA to act in the given role as described below.</t>
         <t keepWithNext="true">The OIDs to be used for these EKUs are:</t>
-		<sourcecode type="asn.1" ><![CDATA[  
-  id-kp-cmcCA OBJECT IDENTIFIER ::= { 
+		<sourcecode type="asn.1" ><![CDATA[
+  id-kp-cmcCA OBJECT IDENTIFIER ::= {
      iso(1) identified-organization(3) dod(6) internet(1)
      security(5) mechanisms(5) pkix(7) kp(3) 27 }
 
-  id-kp-cmcRA OBJECT IDENTIFIER ::= { 
+  id-kp-cmcRA OBJECT IDENTIFIER ::= {
      iso(1) identified-organization(3) dod(6) internet(1)
      security(5) mechanisms(5) pkix(7) kp(3) 28 }
 
-  id-kp-cmKGA OBJECT IDENTIFIER ::= { 
+  id-kp-cmKGA OBJECT IDENTIFIER ::= {
      iso(1) identified-organization(3) dod(6) internet(1)
      security(5) mechanisms(5) pkix(7) kp(3) 32 }
 ]]></sourcecode>
@@ -1026,7 +1026,7 @@ follows:
       <section anchor="sect-5.1" numbered="true" toc="default">
         <name>Overall PKI Message</name>
         <t keepWithNext="true">All of the messages used in this specification for the purposes of PKI management use the following structure:</t>
-		<sourcecode type="asn.1" ><![CDATA[  
+		<sourcecode type="asn.1" ><![CDATA[
   PKIMessage ::= SEQUENCE {
      header           PKIHeader,
      body             PKIBody,
@@ -1034,7 +1034,7 @@ follows:
      extraCerts   [1] SEQUENCE SIZE (1..MAX) OF CMPCertificate
                        OPTIONAL
   }
-  
+
   PKIMessages ::= SEQUENCE SIZE (1..MAX) OF PKIMessage
 ]]></sourcecode>
         <t>
@@ -1065,7 +1065,7 @@ follows:
 
             <t>The following data structure is used to contain this information:</t>
 
-		<sourcecode type="asn.1" ><![CDATA[  
+		<sourcecode type="asn.1" ><![CDATA[
   PKIHeader ::= SEQUENCE {
      pvno                INTEGER     { cmp1999(1), cmp2000(2),
                                        cmp2021(3) },
@@ -1180,7 +1180,7 @@ follows:
             <t>
    This is used by the EE to inform the CA that it does not wish to send
    a certificate confirmation for issued certificates.</t>
-		    <sourcecode type="asn.1" ><![CDATA[  
+		    <sourcecode type="asn.1" ><![CDATA[
   id-it-implicitConfirm OBJECT IDENTIFIER ::= {id-it 13}
   ImplicitConfirmValue ::= NULL
 ]]></sourcecode>
@@ -1196,7 +1196,7 @@ follows:
    This is used by the CA to inform the EE how long it intends to wait
    for the certificate confirmation before revoking the certificate and
    deleting the transaction.</t>
-		    <sourcecode type="asn.1" ><![CDATA[  
+		    <sourcecode type="asn.1" ><![CDATA[
   id-it-confirmWaitTime OBJECT IDENTIFIER ::= {id-it 14}
   ConfirmWaitTimeValue ::= GeneralizedTime
 ]]></sourcecode>
@@ -1205,7 +1205,7 @@ follows:
             <name>OrigPKIMessage</name>
             <t>An RA MAY include the original PKIMessage from the EE in this generalInfo field of the PKIHeader of a PKIMessage.  This is used by the RA to inform the CA of the original PKIMessage that it received from the EE and modified in some way (e.g., added or modified particular field values or added new extensions) before forwarding the new PKIMessage.  If the changes made by the RA to the original PKIMessage break the POP of a certificate request, the RA MUST set the popo field to RAVerified, see Section 5.2.8.4.  This accommodates, for example, cases in which the CA wishes to check POP or other information on the original EE message.</t>
 			<t>Although the infoValue is PKIMessages, it MUST contain exactly one PKIMessage.</t>
-		    <sourcecode type="asn.1" ><![CDATA[  
+		    <sourcecode type="asn.1" ><![CDATA[
   id-it-origPKIMessage OBJECT IDENTIFIER ::= {id-it 15}
   OrigPKIMessageValue ::= PKIMessages
 ]]></sourcecode>
@@ -1213,7 +1213,7 @@ follows:
 		  <section anchor="sect-5.1.1.4" numbered="true" toc="default">
 			<name>CertProfile</name>
 			<t>This is used by the EE to indicate specific certificate profiles, e.g., when requesting a new certificate or a certificate request template, see <xref target="sect-5.3.19.16" format="default"/>.</t>
-			<sourcecode type="asn.1" ><![CDATA[  
+			<sourcecode type="asn.1" ><![CDATA[
   id-it-certProfile OBJECT IDENTIFIER ::= {id-it 21}
   CertProfileValue ::= SEQUENCE SIZE (1..MAX) OF UTF8String
 ]]></sourcecode>
@@ -1223,7 +1223,7 @@ follows:
         </section>
         <section anchor="sect-5.1.2" numbered="true" toc="default">
           <name>PKI Message Body</name>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   PKIBody ::= CHOICE {
      ir       [0]  CertReqMessages,       --Initialization Req
      ip       [1]  CertRepMessage,        --Initialization Resp
@@ -1266,13 +1266,13 @@ follows:
    automatically authenticated, but may be authenticated via out-of-band
    means.</t>
           <t keepWithNext="true">When protection is applied, the following structure is used:</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   PKIProtection ::= BIT STRING
 ]]></sourcecode>
           <t keepWithNext="true">
    The input to the calculation of PKIProtection is the DER encoding of
    the following data structure:</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   ProtectedPart ::= SEQUENCE {
      header    PKIHeader,
      body      PKIBody
@@ -1314,7 +1314,7 @@ follows:
    value and the DH public key of the recipient of the PKI message.
    PKIProtection will contain a MAC value keyed with this derived
    symmetric key and the protectionAlg will be the following:</t>
-		<sourcecode type="asn.1" ><![CDATA[  
+		<sourcecode type="asn.1" ><![CDATA[
   id-DHBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 30}
 
   DHBMParameter ::= SEQUENCE {
@@ -1349,11 +1349,11 @@ follows:
 			<t>&lt; Q: In this case, both PKI entities require a certificate of the other side and send a symmetric key in form of a KEM encapsulated cyphertext according to <xref target="RFC9180" format="default">Hybrid Public Key Encryption</xref> to the respective recipient.  Each sender uses the SendExportBase to get the fixed-length symmetric key (the KEM shared secret) and a fixed-length encapsulation of that key and provide it to the recipient using the id-it-KEMCiphertext as defined in Section 5.19.18.  The respective recipient uses ReviepExportBase to recover the ephemeral symmetric key (the KEM shared secret) from the encapsulated representation received from the sender.  Both functions are used as specified in <xref target="RFC9180" format="default">RFC&nbsp;9180 Section 6.2</xref>.  The symmetric key resulting from the first HPKE key exchange is to be part of the input to the second HPKE key exchange.  Doing so, a symmetric key authenticated by both PKI entities is established and used for MAC-based message protection. &gt;</t>
             <t>In this case, an initial exchange using general messages is required to establish a shared symmetric key using two <xref target="RFC9180" format="default">Hybrid Public Key Encryption</xref> exchanges.</t>
             <t>The object identifier used for HPKE key exchanges is id-it-HpkeCiphertext, which is defined in this document as:</t>
-				<sourcecode type="asn.1" ><![CDATA[  
+				<sourcecode type="asn.1" ><![CDATA[
   id-it-HpkeCiphertext OBJECT IDENTIFIER ::= { id-it TBD1 }
 ]]></sourcecode>
             <t>When id-it-HpkeCiphertext is used, the value is either absent or of type HpkeCiphertext.  The syntax for HpkeCiphertext is as follows:</t>
-				<sourcecode type="asn.1" ><![CDATA[  
+				<sourcecode type="asn.1" ><![CDATA[
   HpkeCiphertext ::= SEQUENCE {
     kem              AlgorithmIdentifier,
     -- AlgId for a Key Encapsulation Mechanism
@@ -1364,11 +1364,11 @@ follows:
   }
 ]]></sourcecode>
             <t>The object identifier used in protectionAlg for the MAC-based message protection with HPKE-based key exchange is id-hpke-mac, which is defined in this document as:</t>
-				<sourcecode type="asn.1" ><![CDATA[  
+				<sourcecode type="asn.1" ><![CDATA[
   id-hpke-mac OBJECT IDENTIFIER ::= { TBD2 }
 ]]></sourcecode>
             <t>When id-hpke-mac is used, the parameters MUST employ the HpkeMacParameter syntax.  The syntax for HpkeMacParameter is as follows:</t>
-				<sourcecode type="asn.1" ><![CDATA[  
+				<sourcecode type="asn.1" ><![CDATA[
   HpkeMacParameter ::= SEQUENCE {
      mac                 AlgorithmIdentifier
      -- the MAC AlgId
@@ -1421,12 +1421,12 @@ Step# PKI entity                           PKI management entity
               <li>
 			    <t>The PKI management entity validates the client certificate kemCertC.</t>
 			    <t>The PKI management entity concatenates the transactionID and senderNonce genm_senderNonce from the PKIHeader of the recieved genm message to context1.</t>
-				<sourcecode type="asn.1" ><![CDATA[  
+				<sourcecode type="asn.1" ><![CDATA[
   context1 = concat(transactionID, genm_senderNonce)
 ]]></sourcecode>
 			    <t>Note: The function concat(x0, ..., xN) concatenates the byte strings as specified in RFC 9180 Section 3 [RFC9180].</t>
 			    <t>It generates a shared secret ss1 and the associated ciphertext enc1 using the HPKE export function SendExportBase and the clients public key pkC:</t>
-				<sourcecode type="asn.1" ><![CDATA[  
+				<sourcecode type="asn.1" ><![CDATA[
   SendExportBase(pkC, "round1", context1, L) = (enc1, ss1)
 ]]></sourcecode>
 			    <t>Note: L SHOULD be the maximum key length of the MAC function to be used for MAC-based message protection, but it MUST NOT be bigger that 255*Nh, where Nh is the output size of the extract function of the uses KDF.</t>
@@ -1436,17 +1436,17 @@ Step# PKI entity                           PKI management entity
 			    <t>The PKI entity validates the server certificate kemCertS.</t>
 			    <t>The PKI entity concatenates the transactionID and senderNonce genm_senderNonce from the PKIHeader of the initial genm message to context1 as described above.</t>
 			    <t>It decapsulates the shared secret ss1 from the ciphertext enc1 using the HPKE export function ReceiveExportBase and its private key skC:</t>
-				<sourcecode type="asn.1" ><![CDATA[  
+				<sourcecode type="asn.1" ><![CDATA[
   ReceiveExportBase(enc1, skC, "round1", context1, L) = ss1
 ]]></sourcecode>
 			    <t>Note: If the decapsulation operation outputs an error, output a PKIFailureInfo badMessageCheck &lt; Q: Or addInfoNotAvailable or TBD badKemExchange ... &gt;, and terminate the PKI management operation.</t>
 			    <t>It concatenates the shared secret ss1, with the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the received genp message to context2.</t>
-				<sourcecode type="asn.1" ><![CDATA[  
-  context2 = concat(ss1, transactionID, genp_senderNonce, 
+				<sourcecode type="asn.1" ><![CDATA[
+  context2 = concat(ss1, transactionID, genp_senderNonce,
                     genp_recipNonce)
 ]]></sourcecode>
 			    <t>It generates a shared secret ss2 and the associated ciphertext enc2 using the HPKE export function SendExportBase and the server’s public key pkS:</t>
-				<sourcecode type="asn.1" ><![CDATA[  
+				<sourcecode type="asn.1" ><![CDATA[
   SendExportBase(pkS, "round2", context2, L) = (enc2, ss2)
 ]]></sourcecode>
 			    <t>Note: The shared secret ss2 is the shared symmetric key to be used for MAC-based protection of all subsequent messages of this PKI management operation.</t>
@@ -1454,12 +1454,12 @@ Step# PKI entity                           PKI management entity
 			  </li>
               <li>
 			    <t>PKI management entity concatenates the shared secret ss1, with the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the received genp message to context2 as described above.</t>
-				<sourcecode type="asn.1" ><![CDATA[  
+				<sourcecode type="asn.1" ><![CDATA[
   context2 = concat(ss1, transactionID, genp_senderNonce,
                     genp_recipNonce)
 ]]></sourcecode>
 			    <t>It decapsulates the shared secret ss2 from the ciphertext enc2 using the HPKE export function ReceiveExportBase and its private key skS:</t>
-				<sourcecode type="asn.1" ><![CDATA[  
+				<sourcecode type="asn.1" ><![CDATA[
   ReceiveExportBase(enc2, skC, "round2", context2, L) = ss2
 ]]></sourcecode>
 			    <t>Note: If the decapsulation operation outputs an error, output a PKIFailureInfo badMessageCheck &lt; Q: Or addInfoNotAvailable or TBD badKemExchange ... &gt;, and terminate the PKI management operation.</t>
@@ -1479,7 +1479,7 @@ Step# PKI entity                           PKI management entity
 					<li>A PKI management entity collects several messages that are to be forwarded in the same direction and forwards them in a batch. Request messages can be transferred as batch upstream (towards the CA); response or announce messages can be transferred as batch downstream (towards an RA, but not to the EE). This can for instance be used when bridging an off-line connection between two PKI management entities.</li>
 					</ul>
 				<t keepWithNext="true">These use cases are accomplished by nesting the messages within a new PKI message.  The structure used is as follows:</t>
-				<sourcecode type="asn.1" ><![CDATA[  
+				<sourcecode type="asn.1" ><![CDATA[
   NestedMessageContent ::= PKIMessages
 ]]></sourcecode>
           </section>
@@ -1511,7 +1511,7 @@ Step# PKI entity                           PKI management entity
 		  <t>Note: Before requesting a new certificate, an end entity can request a certTemplate structure as a kind of certificate request blueprint, in order to learn which data the CA expects to be present in the certificate request, see <xref target="sect-5.3.19.16" format="default"/>.</t>
           <t>See <xref target="RFC4211" format="default">CRMF</xref> for CertTemplate syntax.</t>
 		  <t>If certTemplate is an empty SEQUENCE (i.e., all fields omitted), then the controls field in the CertRequest structure MAY contain the id-regCtrl-altCertTemplate control, specifying a template for a certificate other than an X.509v3 public-key certificate.  Conversely, if certTemplate is not empty (i.e., at least one field is present), then controls MUST NOT contain id-regCtrl-altCertTemplate.  The new control is defined as follows:</t>
-          <sourcecode type="asn.1" ><![CDATA[  
+          <sourcecode type="asn.1" ><![CDATA[
   id-regCtrl-altCertTemplate OBJECT IDENTIFIER ::= { iso(1)
      identified-organization(3) dod(6) internet(1) security(5)
      mechanisms(5) pkix(7) pkip(5) regCtrl(1) 7}
@@ -1522,7 +1522,7 @@ Step# PKI entity                           PKI management entity
         <section anchor="sect-5.2.2" numbered="true" toc="default">
           <name>Encrypted Values</name>
 			<t>Where encrypted data (in this specification, private keys, certificates, or revocation passphrase) are sent in PKI messages, the EncryptedKey data structure is used.</t>
-			<sourcecode type="asn.1" ><![CDATA[  
+			<sourcecode type="asn.1" ><![CDATA[
   EncryptedKey ::= CHOICE {
      encryptedValue       EncryptedValue, -- deprecated
      envelopedData    [0] EnvelopedData }
@@ -1551,7 +1551,7 @@ Step# PKI entity                           PKI management entity
           <t>
    All response messages will include some status information.  The
    following values are defined.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   PKIStatus ::= INTEGER {
      accepted               (0),
      grantedWithMods        (1),
@@ -1565,7 +1565,7 @@ Step# PKI entity                           PKI management entity
           <t>
    Responders may use the following syntax to provide more information
    about failure cases.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   PKIFailureInfo ::= BIT STRING {
      badAlg                 (0),
      badMessageCheck        (1),
@@ -1623,7 +1623,7 @@ Step# PKI entity                           PKI management entity
    publishes its self-signed certificate, or this information is
    available via the Directory (or equivalent) and the CA publishes a
    hash of this value to allow verification of its integrity before use.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   OOBCert ::= Certificate
 ]]></sourcecode>
 		  <t>The fields within this certificate are restricted as follows:</t>
@@ -1638,7 +1638,7 @@ Step# PKI entity                           PKI management entity
       signed certificate (e.g., key identifiers for subject and issuer
       must be the same).</li>
           </ul>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   OOBCertHash ::= SEQUENCE {
      hashAlg     [0] AlgorithmIdentifier     OPTIONAL,
      certId      [1] CertId                  OPTIONAL,
@@ -1670,7 +1670,7 @@ Step# PKI entity                           PKI management entity
           <name>Proof-of-Possession Structures</name>
 		  <t>&lt; ToDo: This section should be aligned with <xref target="sect-4.3" format="default"/> of this document and RFC 4211 Section 4. It should potentially be restructured and updated for better readability. It could be sorted like RFC 4211 Section 4 based on the capabilities of the keys.  As discussed at interim-2022-lamps-02 the authors wait for the definition of proof-of-possession for KEM keys. &gt;</t>
           <t>If the certification request is for a key pair that supports signing , then the proof-of-possession of the private signing key is demonstrated through use of the POPOSigningKey structure as defined in <xref target="RFC4211" format="default">RFC&nbsp;4211</xref>.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   POPOSigningKey ::= SEQUENCE {
      poposkInput          [0] POPOSigningKeyInput OPTIONAL,
      algorithmIdentifier  AlgorithmIdentifier,
@@ -1695,7 +1695,7 @@ Step# PKI entity                           PKI management entity
    (in the thisMessage field of POPOPrivKey or in the
    PKIArchiveOptions control structure, depending upon whether or not
    archival of the private key is also desired).</t>
-            <sourcecode type="asn.1" ><![CDATA[  
+            <sourcecode type="asn.1" ><![CDATA[
   POPOPrivKey ::= CHOICE {
      thisMessage       [0] BIT STRING,   -- deprecated
      subsequentMessage [1] SubsequentMessage,
@@ -1790,7 +1790,7 @@ Step# PKI entity                           PKI management entity
    response and confirmation messages) by the transactionID used in the
    PKIHeader and by the protection (MACing or signing) applied to the
    PKIMessage.</t>
-			<sourcecode type="asn.1" ><![CDATA[  
+			<sourcecode type="asn.1" ><![CDATA[
   POPODecKeyChallContent ::= SEQUENCE OF Challenge
 
   Challenge ::= SEQUENCE {
@@ -1813,7 +1813,7 @@ Step# PKI entity                           PKI management entity
    long DNs), then whatever portion will fit should be used (as long as
    it includes at least the common name, and as long as the receiver is
    able to deal meaningfully with the abbreviation).</t>
-			<sourcecode type="asn.1" ><![CDATA[  
+			<sourcecode type="asn.1" ><![CDATA[
   POPODecKeyRespContent ::= SEQUENCE OF INTEGER
 ]]></sourcecode>
           </section>
@@ -1931,7 +1931,7 @@ Step# PKI entity                           PKI management entity
    CertRepMessage data structure, which has a status value for each
    certificate requested, and optionally has a CA public key, failure
    information, a subject certificate, and an encrypted private key.</t>
-		<sourcecode type="asn.1" ><![CDATA[  
+		<sourcecode type="asn.1" ><![CDATA[
   CertRepMessage ::= SEQUENCE {
      caPubs          [1] SEQUENCE SIZE (1..MAX) OF CMPCertificate
                          OPTIONAL,
@@ -1946,7 +1946,7 @@ Step# PKI entity                           PKI management entity
      -- analogous to the id-regInfo-utf8Pairs string defined
      -- for regInfo in CertReqMsg [RFC4211]
   }
-   
+
   CertifiedKeyPair ::= SEQUENCE {
      certOrEncCert       CertOrEncCert,
      privateKey      [0] EncryptedKey         OPTIONAL,
@@ -2022,7 +2022,7 @@ Step# PKI entity                           PKI management entity
    For key recovery responses, the following syntax is used.  For some
    status values (e.g., waiting) none of the optional fields will be
    present.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   KeyRecRepContent ::= SEQUENCE {
      status            PKIStatusInfo,
      newSigCert    [0] Certificate                 OPTIONAL,
@@ -2039,7 +2039,7 @@ Step# PKI entity                           PKI management entity
    When requesting revocation of a certificate (or several
    certificates), the following data structure is used (see the profiles defined in [RFCBBBB] Section 4.2 for further information).  The name of the
    requester is present in the PKIHeader structure.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   RevReqContent ::= SEQUENCE OF RevDetails
 
   RevDetails ::= SEQUENCE {
@@ -2055,7 +2055,7 @@ Step# PKI entity                           PKI management entity
    produced, this is sent to the requester of the revocation.  (A
    separate revocation announcement message MAY be sent to the subject
    of the certificate for which revocation was requested.)</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   RevRepContent ::= SEQUENCE {
      status        SEQUENCE SIZE (1..MAX) OF PKIStatusInfo,
      revCerts  [0] SEQUENCE SIZE (1..MAX) OF CertId OPTIONAL,
@@ -2089,7 +2089,7 @@ Step# PKI entity                           PKI management entity
           <t>
    When a CA updates its own key pair, the following data structure MAY
    be used to announce this event.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   CAKeyUpdAnnContent ::= SEQUENCE {
      oldWithNew         Certificate,
      newWithOld         Certificate,
@@ -2106,7 +2106,7 @@ Step# PKI entity                           PKI management entity
    any) where there is no pre-existing method for publication of
    certificates; it is not intended to be used where, for example, X.500
    is the method for publication of certificates.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   CertAnnContent ::= Certificate
 ]]></sourcecode>
         </section>
@@ -2116,7 +2116,7 @@ Step# PKI entity                           PKI management entity
    When a CA has revoked, or is about to revoke, a particular
    certificate, it MAY issue an announcement of this (possibly upcoming)
    event.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   RevAnnContent ::= SEQUENCE {
      status              PKIStatus,
      certId              CertId,
@@ -2139,7 +2139,7 @@ Step# PKI entity                           PKI management entity
           <t>
    When a CA issues a new CRL (or set of CRLs) the following data
    structure MAY be used to announce this event.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   CRLAnnContent ::= SEQUENCE OF CertificateList
 ]]></sourcecode>
         </section>
@@ -2150,7 +2150,7 @@ Step# PKI entity                           PKI management entity
    PKIMessage.  Its content is the same in all cases -- actually there
    is no content since the PKIHeader carries all the required
    information.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   PKIConfirmContent ::= NULL
 ]]></sourcecode>
           <t>
@@ -2164,7 +2164,7 @@ Step# PKI entity                           PKI management entity
           <t>
    This data structure is used by the client to send a confirmation to
    the CA/RA to accept or reject certificates.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   CertStatus ::= SEQUENCE {
      certHash    OCTET STRING,
      certReqId   INTEGER,
@@ -2191,7 +2191,7 @@ Step# PKI entity                           PKI management entity
         </section>
         <section anchor="sect-5.3.19" numbered="true" toc="default">
           <name>PKI General Message Content</name>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   InfoTypeAndValue ::= SEQUENCE {
      infoType               OBJECT IDENTIFIER,
      infoValue              ANY DEFINED BY infoType  OPTIONAL
@@ -2349,7 +2349,7 @@ Step# PKI entity                           PKI management entity
   GenMsg:    {id-it 20}, RootCaCertValue | < absent >
   GenRep:    {id-it 18}, RootCaKeyUpdateContent | < absent >
 ]]></artwork>
-			<sourcecode type="asn.1" ><![CDATA[  
+			<sourcecode type="asn.1" ><![CDATA[
   RootCaCertValue ::= CMPCertificate
 
   RootCaKeyUpdateValue ::= RootCaKeyUpdateContent
@@ -2373,7 +2373,7 @@ Step# PKI entity                           PKI management entity
   GenMsg:    {id-it 19}, < absent >
   GenRep:    {id-it 19}, CertReqTemplateContent | < absent >
 ]]></artwork>
-			<sourcecode type="asn.1" ><![CDATA[  
+			<sourcecode type="asn.1" ><![CDATA[
   CertReqTemplateValue  ::= CertReqTemplateContent
 
   CertReqTemplateContent ::= SEQUENCE {
@@ -2381,7 +2381,7 @@ Step# PKI entity                           PKI management entity
      keySpec                Controls OPTIONAL }
 
   Controls  ::= SEQUENCE SIZE (1..MAX) OF AttributeTypeAndValue
-   
+
   id-regCtrl-algId OBJECT IDENTIFIER ::= { iso(1)
      identified-organization(3) dod(6) internet(1) security(5)
      mechanisms(5) pkix(7) pkip(5) regCtrl(1) 11 }
@@ -2405,7 +2405,7 @@ Step# PKI entity                           PKI management entity
   GenRep:    {id-it 23}, SEQUENCE SIZE (1..MAX) OF
                            CertificateList  |  < absent >
 ]]></artwork>
-			<sourcecode type="asn.1" ><![CDATA[  
+			<sourcecode type="asn.1" ><![CDATA[
   CRLSource ::= CHOICE {
      dpn          [0] DistributionPointName,
      issuer       [1] GeneralNames }
@@ -2418,7 +2418,7 @@ Step# PKI entity                           PKI management entity
         </section>
         <section anchor="sect-5.3.20" numbered="true" toc="default">
           <name>PKI General Response Content</name>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   GenRepContent ::= SEQUENCE OF InfoTypeAndValue
 ]]></sourcecode>
           <t>
@@ -2428,7 +2428,7 @@ Step# PKI entity                           PKI management entity
         <section anchor="sect-5.3.21" numbered="true" toc="default">
           <name>Error Message Content</name>
           <t>This data structure MAY be used by EE, CA, or RA to convey error info and by a PKI management entity to initiate delayed delivery of responses.</t>
-		  <sourcecode type="asn.1" ><![CDATA[  
+		  <sourcecode type="asn.1" ><![CDATA[
   ErrorMsgContent ::= SEQUENCE {
      pKIStatusInfo          PKIStatusInfo,
      errorCode              INTEGER           OPTIONAL,
@@ -2446,7 +2446,7 @@ Step# PKI entity                           PKI management entity
         <section anchor="sect-5.3.22" numbered="true" toc="default">
 			<name>Polling Request and Response</name>
 			<t>This pair of messages is intended to handle scenarios in which the client needs to poll the server to determine the status of an outstanding response (i.e., when the "waiting" PKIStatus has been received).</t>
-			<sourcecode type="asn.1" ><![CDATA[  
+			<sourcecode type="asn.1" ><![CDATA[
   PollReqContent ::= SEQUENCE OF SEQUENCE {
      certReqId    INTEGER }
 
@@ -2569,10 +2569,10 @@ Step# PKI entity                           PKI management entity
  3                                 Handle genm
  4                                 delay in response is necessary
  5                                 Format error message "waiting"
-                                     with certReqId set to -1 
+                                     with certReqId set to -1
  6                   <- error   <-
- 7   Process error                    
- 8   Format pollReq 
+ 7   Process error
+ 8   Format pollReq
  9                   -> pollReq ->
  10                                Check status of original request
                                    general message response not ready
@@ -3510,7 +3510,7 @@ publicationInfo      optionally present
 protection           present
   -- bits calculated using MSG_MAC_ALG
 extraCerts           optionally present
-  -- the CA MAY provide additional certificates to the end                   
+  -- the CA MAY provide additional certificates to the end
   -- entity
 ]]></artwork>
 		<t keepWithNext="true">Certificate confirm -- certConf</t>
@@ -3975,7 +3975,7 @@ extraCerts            optionally present
     <section anchor="sect-e" numbered="true" toc="default">
       <name>Compilable ASN.1 Definitions</name>
         <t>This section contains the updated 2002 ASN.1 module for <xref target="RFC5912" format="default"/> as updated in [RFCAAAA].  This module replaces the module in Section 9 of <xref target="RFC5912" format="default"/>.  The module contains those changes to the normative ASN.1 module from <xref target="RFC4210" format="default">RFC&nbsp;4210 Appendix F</xref> that were specified in [RFCAAAA] as well as changes made in this document.</t>
-		<sourcecode type="asn.1"><![CDATA[  
+		<sourcecode type="asn.1"><![CDATA[
 PKIXCMP-2021
     { iso(1) identified-organization(3) dod(6) internet(1)
     security(5) mechanisms(5) pkix(7) id-mod(0)
@@ -4025,7 +4025,7 @@ FROM PKCS-10
 -- the [RFC2986] syntax in this module
 
 localKeyId
-FROM PKCS-9 
+FROM PKCS-9
     {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
     modules(0) pkcs-9(1)}
     -- The import of localKeyId is added due to the updates made in
@@ -4401,7 +4401,7 @@ PKIConfirmContent ::= NULL
 
 NestedMessageContent ::= PKIMessages
 
--- CertReqTemplateContent, AttributeTypeAndValue, 
+-- CertReqTemplateContent, AttributeTypeAndValue,
 -- ExpandedRegControlSet, id-regCtrl-altCertTemplate,
 -- AltCertTemplate, regCtrl-algId, id-regCtrl-algId, AlgIdCtrl,
 -- regCtrl-rsaKeyLen, id-regCtrl-rsaKeyLen, and RsaKeyLenCtrl
@@ -4510,7 +4510,7 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --      - Changed from Encrypted Value to EncryptedKey as a CHOICE
 --      - of EncryptedValue and EnvelopedData due to the changes
 --      - made in CMP Updates [RFCAAAA]
---      - Using the choice EncryptedValue is bit-compatible to 
+--      - Using the choice EncryptedValue is bit-compatible to
 --      - the syntax without this change
 --   id-it-implicitConfirm  OBJECT IDENTIFIER ::= {id-it 13}
 --      ImplicitConfirmValue    ::= NULL
