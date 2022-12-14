@@ -9,12 +9,12 @@ This is the working area for IETF [LAMPS Working Group](https://datatracker.ietf
 * [Working Group Draft](https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis)
 * [Compare Editor's Copy to Working Group Draft](https://lamps-wg.github.io/cmp-updates/#go.draft-ietf-lamps-rfc4210bis.diff)
 
-## TODO - Your title
+## Internet X.509 Public Key Infrastructure -- HTTP Transfer for the Certificate Management Protocol (CMP)
 
-* [Editor's Copy](https://lamps-wg.github.io/cmp-updates/#go.draft-todo-yourname-protocol.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-todo-yourname-protocol)
-* [Working Group Draft](https://datatracker.ietf.org/doc/html/draft-todo-yourname-protocol)
-* [Compare Editor's Copy to Working Group Draft](https://lamps-wg.github.io/cmp-updates/#go.draft-todo-yourname-protocol.diff)
+* [Editor's Copy](https://lamps-wg.github.io/cmp-updates/#go.draft-ietf-lamps-rfc6712bis.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-ietf-lamps-rfc6712bis)
+* [Working Group Draft](https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc6712bis)
+* [Compare Editor's Copy to Working Group Draft](https://lamps-wg.github.io/cmp-updates/#go.draft-ietf-lamps-rfc6712bis.diff)
 
 
 ## Contributing
