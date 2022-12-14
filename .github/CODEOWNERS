@@ -1,0 +1,4 @@
+# Automatically generated CODEOWNERS
+# Regenerate with `make update-codeowners`
+draft-ietf-lamps-rfc4210bis.xml hendrik.brockhaus@siemens.com david.von.oheimb@siemens.com mike.ounsworth@entrust.com john.gray@entrust.com
+draft-todo-yourname-protocol.md hendrik.brockhaus@siemens.com
