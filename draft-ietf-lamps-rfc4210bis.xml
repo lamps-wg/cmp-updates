@@ -83,7 +83,8 @@
     <workgroup>LAMPS Working Group</workgroup>
     <abstract>
       <t>This document describes the Internet X.509 Public Key Infrastructure (PKI) Certificate Management Protocol (CMP).  Protocol messages are defined for X.509v3 certificate creation and management. CMP provides interactions between client systems and PKI components such as a Registration Authority (RA) and a Certification Authority (CA).</t>
-      <t>This document includes the updates on RFC 4210 specified by CMP Updates [RFCAAAA] Section 2 and Appendix A.2 maintaining backward compatibility with CMP version 2 wherever possible and obsoleted both documents.  Updates to CMP version 2 are: improving crypto agility, extending the polling mechanism, adding new general message types, and adding extended key usages to identify special CMP server authorizations.  Introducing version 3 to be used only for changes to the ASN.1 syntax, which are: support of EnvelopedData instead of EncryptedValue and hashAlg for indicating a hash AlgorithmIdentifier in certConf messages.</t>
+      <t>This document obsolates RFC 4210 by including the updates specified by CMP Updates [RFCAAAA] Section 2 and Appendix A.2 maintaining backward compatibility with CMP version 2 wherever possible and obsoleted both documents.  Updates to CMP version 2 are: improving crypto agility, extending the polling mechanism, adding new general message types, and adding extended key usages to identify special CMP server authorizations.  Introducing version 3 to be used only for changes to the ASN.1 syntax, which are: support of EnvelopedData instead of EncryptedValue and hashAlg for indicating a hash AlgorithmIdentifier in certConf messages.</t>
+	  <t>In addition to the changes specified in CMP Updates [RFCAAAA] this document adds support for manangement of KEM certificates.</t>
 	  <t>Appendix F of this document contains the updated 2002 ASN.1 module originating from RFC 5912.</t>
     </abstract>
   </front>
@@ -92,7 +93,7 @@
       <name>Introduction</name>
       <t>[RFC Editor: please delete:</t>
 	  <t>During IESG telechat the CMP Updates document was approved on condition that LAMPS provides a RFC4210bis document.  Version -00 of this document shall be identical to RFC 4210 and version -01 incorporates the changes specified in CMP Updates Section 2 and Appendix A.2.</t>
-	  <t>A history of changes is available in <xref target="sect-g" format="default"/> of this document.</t>
+	  <t>A history of changes is available in <xref target="sect-f" format="default"/> of this document.</t>
 	  <t>The authors of this document wish to thank Carlisle Adams, Stephen Farrell, Tomi Kause, and Tero Mononen, the original authors of RFC4210, for their work and invite them, next to further volunteers, to join the -bis activity as co-authors.</t>
       <t>]</t>
 	  <t>[RFC Editor:</t>
@@ -149,12 +150,12 @@
           <li>Add new general message types to request CA certificates, a root CA update, a certificate request template, or CRL updates.</li>
           <li>Extend the use of polling to p10cr, certConf, rr, genm, and error messages.</li>
 		  <li>Incorporated the request message behavioral clarifications from former Appendix C to <xref target="sect-5" format="default"/>. The definition of altCertTemplate was incorporated into <xref target="sect-5.2.1" format="default"/>, the clarification on POPOSigningKey was incorporated into <xref target="sect-5.2.8" format="default"/>, and the clarification on POPOPrivKey was incorporated into <xref target="sect-5.2.8.1" format="default"/>.</li>
-		  <li>Delete the mandatory algorithm profile in <xref target="sect-d.2" format="default"/> and refer instead to CMP Algorithms Section 7 [RFCCCCC].</li>
+		  <li>Delete the mandatory algorithm profile in <xref target="sect-c.2" format="default"/> and refer instead to CMP Algorithms Section 7 [RFCCCCC].</li>
         </ul>
       </section>
       <section anchor="sect-1.3" numbered="true" toc="default">
         <name>Changes Made by This Document</name>
-        <t>This document obsoletes <xref target="RFC4210" format="default">RFC&nbsp;4210</xref>. It includes the changes specified by CMP Updates [RFCAAAA] Section 2 and <xref target="sect-d.2" format="default"/> as described in <xref target="sect-1.2" format="default"/>.</t>
+        <t>This document obsoletes <xref target="RFC4210" format="default">RFC&nbsp;4210</xref>. It includes the changes specified by CMP Updates [RFCAAAA] Section 2 and <xref target="sect-c.2" format="default"/> as described in <xref target="sect-1.2" format="default"/>.</t>
       </section>
     </section>
     <section anchor="sect-2" numbered="true" toc="default">
@@ -776,7 +777,14 @@ follows:
    the end entity may freely choose its algorithm parameters provided
    that the CA can generate a short-term (or one-time) key pair with the
    appropriate parameters when necessary.</t>
-		  <t>&lt; ToDo: Possibly add a section describing a POP mechanism for KEM keys. &gt;</t>
+        </section>
+        <section anchor="sect-4.3.4" numbered="true" toc="default">
+          <name>Key Encapsulation Mechanism Keys</name>
+		  <t>For key encapsulation mechanism keys, the end entity can be required to decrypt a value in order to prove possession of the private key (see <xref target="sect-5.2.8" format="default"/>).  Decrypting a value can be achieved either directly or indirectly.</t>
+          <t>The direct method is for the RA/CA to issue a random challenge to which an immediate response by the EE is required.</t>
+          <t>The indirect method is to issue a certificate that is encrypted for the end entity (and have the end entity demonstrate its ability to decrypt this certificate in the confirmation message).  This allows a CA to issue a certificate in a form that can only be used by the intended end entity.</t>
+          <t>This specification encourages use of the indirect method because it requires no extra messages to be sent (i.e., the proof can be demonstrated using the {request, response, confirmation} triple of messages).</t>
+		  <t>&lt; ToDo: Review by co-authors needed. &gt;</t>
         </section>
       </section>
       <section anchor="sect-4.4" numbered="true" toc="default">
@@ -852,20 +860,6 @@ follows:
           <t>The "new with old" certificate must have a validity period with the same notBefore time as the "new with new" certificate and a notAfter time by which all end entities of this CA will securely possess the new CA public key (at the latest, at the notAfter time of the "old with old" certificate).</t>
           <t>The "new with new" certificate must have a validity period with a notBefore time that is before the notAfter time of the "old with old" certificate and a notAfter time that is after the notBefore time of the next update of this certificate.</t>
           <t>Note:  Further operational considerations on transition from one root CA self-signed certificate to the next is available in <xref target="RFC8649" format="default">RFC&nbsp;8649 Section 5</xref>.</t>
-          <t>
-   The "old with new" certificate must have a validity period starting
-   at the generation time of the old key pair and ending at the expiry
-   date of the old public key.</t>
-          <t>
-   The "new with old" certificate must have a validity period starting
-   at the generation time of the new key pair and ending at the time by
-   which all end entities of this CA will securely possess the new CA
-   public key (at the latest, the expiry date of the old public key).</t>
-          <t>
-   The "new with new" certificate must have a validity period starting
-   at the generation time of the new key pair and ending at or before
-   the time by which the CA will next update its key pair.</t>
-		  <t>&lt; ToDo: The previous paragraph needs to be checked.  The "ending AT OR BEFORE the time by which the CA will NEXT update its key pair" reads wrong. &gt;</t>
         </section>
         <section anchor="sect-4.4.2" numbered="true" toc="default">
           <name>Verifying Certificates</name>
@@ -1309,7 +1303,7 @@ follows:
    cases can occur:</t>
           <section anchor="sect-5.1.3.1" numbered="true" toc="default">
             <name>Shared Secret Information</name>
-		<t keepWithNext="true">In this case, the sender and recipient share secret information with sufficient entropy (established via out-of-band means). PKIProtection will contain a MAC value and the protectionAlg MAY be one of the options described in CMP Algorithms [RFCCCCC].</t>
+		<t keepWithNext="true">In this case, the sender and recipient share secret information with sufficient entropy (established via out-of-band means). PKIProtection will contain a MAC value and the protectionAlg MAY be one of the options described in CMP Algorithms Section 6 [RFCCCCC].</t>
           </section>
           <section anchor="sect-5.1.3.2" numbered="true" toc="default">
             <name>Key Agreement</name>
@@ -1348,10 +1342,136 @@ follows:
    In this case, the sender possesses a signature key pair and simply
    signs the PKI message.  PKIProtection will contain the signature
    value and the protectionAlg will be an AlgorithmIdentifier for a
-   digital signature (e.g., md5WithRSAEncryption or dsaWithSha-1).</t>
-			<t>&lt; ToDo: Possibly add a protection mechanism using KEM keys.  &gt;</t>
+   digital signature MAY be one of the options described in CMP Algorithms Section 3 [RFCCCCC].</t>
           </section>
           <section anchor="sect-5.1.3.4" numbered="true" toc="default">
+            <name>Key Encapsulation</name>
+			<t>&lt; Q: In this case, both PKI entities require a certificate of the other side and send a symmetric key in form of a KEM encapsulated cyphertext according to <xref target="RFC9180" format="default">Hybrid Public Key Encryption</xref> to the respective recipient.  Each sender uses the SendExportBase to get the fixed-length symmetric key (the KEM shared secret) and a fixed-length encapsulation of that key and provide it to the recipient using the id-it-KEMCiphertext as defined in Section 5.19.18.  The respective recipient uses ReviepExportBase to recover the ephemeral symmetric key (the KEM shared secret) from the encapsulated representation received from the sender.  Both functions are used as specified in <xref target="RFC9180" format="default">RFC&nbsp;9180 Section 6.2</xref>.  The symmetric key resulting from the first HPKE key exchange is to be part of the input to the second HPKE key exchange.  Doing so, a symmetric key authenticated by both PKI entities is established and used for MAC-based message protection. &gt;</t>
+            <t>In this case, an initial exchange using general messages is required to establish a shared symmetric key using two <xref target="RFC9180" format="default">Hybrid Public Key Encryption</xref> exchanges.</t>
+            <t>The object identifier used for HPKE key exchanges is id-it-HpkeCiphertext, which is defined in this document as:</t>
+				<sourcecode type="asn.1" ><![CDATA[  
+  id-it-HpkeCiphertext OBJECT IDENTIFIER ::= { id-it TBD1 }
+]]></sourcecode>
+            <t>When id-it-HpkeCiphertext is used, the value is either absent or of type HpkeCiphertext.  The syntax for HpkeCiphertext is as follows:</t>
+				<sourcecode type="asn.1" ><![CDATA[  
+  HpkeCiphertext ::= SEQUENCE {
+    kem              AlgorithmIdentifier,
+    -- AlgId for a Key Encapsulation Mechanism
+    kdf              AlgorithmIdentifier,
+    -- AlgId for a Key Derication Function
+    enc              OCTET STRING
+    -- Encrypted symmetric key from HPKE SendExportBase
+  }
+]]></sourcecode>
+            <t>The object identifier used in protectionAlg for the MAC-based message protection with HPKE-based key exchange is id-hpke-mac, which is defined in this document as:</t>
+				<sourcecode type="asn.1" ><![CDATA[  
+  id-hpke-mac OBJECT IDENTIFIER ::= { TBD2 }
+]]></sourcecode>
+            <t>When id-hpke-mac is used, the parameters MUST employ the HpkeMacParameter syntax.  The syntax for HpkeMacParameter is as follows:</t>
+				<sourcecode type="asn.1" ><![CDATA[  
+  HpkeMacParameter ::= SEQUENCE {
+     mac                 AlgorithmIdentifier
+     -- the MAC AlgId
+  }
+]]></sourcecode>
+            <t>The message flow establishing a shared symmetric key consists of an additional genm/genp with no protection and the desired request/response messages with MAC-based protection and looks like this:</t>
+            <figure anchor="HPKE">
+              <name>Message flow establishing a shared symmetric key for MAC-based protection</name>
+              <artwork name="" type="" align="left" alt=""><![CDATA[
+Message Flow:
+
+Step# PKI entity                           PKI management entity
+  1   format genm without
+        protection
+                         ->   genm    ->
+  2                                        validate certificate of
+                                             PKI entitiy
+                                           perform HPKE
+                                             SendExportBase
+                                           format genp without
+                                             protection
+                         <-   genp    <-
+  3   validate
+        certificate of PKI
+        management entity
+      perform HPKE
+        ReceiveExportBase
+      perform HPKE
+        SendExportBase
+      format request
+        with MAC-based
+        protection
+                         ->  request  ->
+  4                                        perform HPKE
+                                             ReceiveExportBase
+                                           verify MAC-based
+                                             protection
+----------------  client authenticated by the server  ---------------
+                                           format response with
+                                             MAC-based protection
+                         <-  response <-
+  5   verify MAC-based protection
+----------------  server authenticated by the client  ---------------
+        Further messages can be exchanged with MAC-based
+      protection using the established shared symmetric key
+]]></artwork>
+            </figure>
+            <ol spacing="normal" type="1">
+              <li>The PKI entity formats a genm message of type id-it-HPKECiphertext and the value is absent.  The message has no protection and the extraCerts field contains the client KEM-certificate kemCertC.</li>
+              <li>
+			    <t>The PKI management entity validates the client certificate kemCertC.</t>
+			    <t>The PKI management entity concatenates the transactionID and senderNonce genm_senderNonce from the PKIHeader of the recieved genm message to context1.</t>
+				<sourcecode type="asn.1" ><![CDATA[  
+  context1 = concat(transactionID, genm_senderNonce)
+]]></sourcecode>
+			    <t>Note: The function concat(x0, ..., xN) concatenates the byte strings as specified in RFC 9180 Section 3 [RFC9180].</t>
+			    <t>It generates a shared secret ss1 and the associated ciphertext enc1 using the HPKE export function SendExportBase and the clients public key pkC:</t>
+				<sourcecode type="asn.1" ><![CDATA[  
+  SendExportBase(pkC, "round1", context1, L) = (enc1, ss1)
+]]></sourcecode>
+			    <t>Note: L SHOULD be the maximum key length of the MAC function to be used for MAC-based message protection, but it MUST NOT be bigger that 255*Nh, where Nh is the output size of the extract function of the uses KDF.</t>
+			    <t>The genp message is of type id-it-HpkeCiphertext and the value is of type HpkeCiphertext containing OIDs of the used KEM and KDF functions and the ciphertext enc1. The message has no protection and the extraCerts field contains the server KEM-certificate kemCertS.</t>
+			  </li>
+              <li>
+			    <t>The PKI entity validates the server certificate kemCertS.</t>
+			    <t>The PKI entity concatenates the transactionID and senderNonce genm_senderNonce from the PKIHeader of the initial genm message to context1 as described above.</t>
+			    <t>It decapsulates the shared secret ss1 from the ciphertext enc1 using the HPKE export function ReceiveExportBase and its private key skC:</t>
+				<sourcecode type="asn.1" ><![CDATA[  
+  ReceiveExportBase(enc1, skC, "round1", context1, L) = ss1
+]]></sourcecode>
+			    <t>Note: If the decapsulation operation outputs an error, output a PKIFailureInfo badMessageCheck &lt; Q: Or addInfoNotAvailable or TBD badKemExchange ... &gt;, and terminate the PKI management operation.</t>
+			    <t>It concatenates the shared secret ss1, with the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the received genp message to context2.</t>
+				<sourcecode type="asn.1" ><![CDATA[  
+  context2 = concat(ss1, transactionID, genp_senderNonce, 
+                    genp_recipNonce)
+]]></sourcecode>
+			    <t>It generates a shared secret ss2 and the associated ciphertext enc2 using the HPKE export function SendExportBase and the server’s public key pkS:</t>
+				<sourcecode type="asn.1" ><![CDATA[  
+  SendExportBase(pkS, "round2", context2, L) = (enc2, ss2)
+]]></sourcecode>
+			    <t>Note: The shared secret ss2 is the shared symmetric key to be used for MAC-based protection of all subsequent messages of this PKI management operation.</t>
+			    <t>The request message is of any type. The generalInfo field contains a ITAV element of type id-it-HpkeCiphertext and the value is of type HpkeCiphertext containing OIDs of the used KEM and KDF functions and the ciphertext enc2. The message has a MAC-based protection using the protectionAlg id-hpke-mac and the shared secret ss2.</t>
+			  </li>
+              <li>
+			    <t>PKI management entity concatenates the shared secret ss1, with the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the received genp message to context2 as described above.</t>
+				<sourcecode type="asn.1" ><![CDATA[  
+  context2 = concat(ss1, transactionID, genp_senderNonce,
+                    genp_recipNonce)
+]]></sourcecode>
+			    <t>It decapsulates the shared secret ss2 from the ciphertext enc2 using the HPKE export function ReceiveExportBase and its private key skS:</t>
+				<sourcecode type="asn.1" ><![CDATA[  
+  ReceiveExportBase(enc2, skC, "round2", context2, L) = ss2
+]]></sourcecode>
+			    <t>Note: If the decapsulation operation outputs an error, output a PKIFailureInfo badMessageCheck &lt; Q: Or addInfoNotAvailable or TBD badKemExchange ... &gt;, and terminate the PKI management operation.</t>
+			    <t>It verifies the MAC-based protection and thus authenticates the PKI entity as sender of the request message.</t>
+			    <t>The response message has a MAC-based protection using the protectionAlg id-hpke-mac and the shared secret ss2.</t>
+			  </li>
+              <li>The PKI entity verifies the MAC-based protection and thus authenticates the PKI management entity as sender of the response message.</li>
+            </ol>
+            <t>All potential further message of this PKI management operation make use of ss2 for MAC-based protection.</t>
+			<t>&lt; ToDo: Review by co-authors needed. &gt;</t>
+          </section>
+          <section anchor="sect-5.1.3.5" numbered="true" toc="default">
             <name>Multiple Protection</name>
 				<t>When receiving a protected PKI message, a PKI management entity such as an RA MAY forward that message adding its own protection (which is a MAC or a signature, depending on the information and certificates shared between the RA and the CA).  Additionally, multiple PKI messages MAY be aggregated.  There are several use cases for such messages.</t>
 				<ul spacing="normal">
@@ -1423,6 +1543,7 @@ follows:
 				<li>Recipient's certificate that contains a key usage extension asserting keyAgreement: The content-encryption key will be protected using the key agreement key management technique, as specified in <xref target="RFC5652" format="default">CMS section 6.2.2</xref>. This is the preferred technique.</li>
 				<li>Recipient's certificate that contains a key usage extension asserting keyEncipherment: The content-encryption key will be protected using the key transport key management technique, as specified in <xref target="RFC5652" format="default">CMS section 6.2.1</xref>.</li>
 				<li>A password or shared secret: The content-encryption key will be protected using the password-based key management technique, as specified in <xref target="RFC5652" format="default">CMS section 6.2.4</xref>.</li>
+				<li>&lt; ToDo: Depending on the extension of <xref target="RFC5652" format="default">CMS section 6.1</xref> regarding KEM support, the support of KEMRecipientInfo must be added here. &gt;</li>
 				</ul>
         </section>
         <section anchor="sect-5.2.3" numbered="true" toc="default">
@@ -1657,7 +1778,7 @@ follows:
    with the following changes: (1) the parenthetical text of <xref target="sect-5.2.8.2" format="default"/>
    is replaced with "(i.e., the certificate encrypted under the symmetric key derived from the CA's private KAK and the public key for which the certification request is being made)"; (2) the first
    parenthetical text of the challenge field of "Challenge" below is
-   replaced with "(using PreferredSymmAlg (see <xref target="sect-5.3.19.4" format="default"/> and <xref target="sect-e.5" format="default"/>) and a symmetric key derived from the CA's private KAK and the public key for which the certification request is being made)".  Alternatively, the POP can use the POPOSigningKey structure
+   replaced with "(using PreferredSymmAlg (see <xref target="sect-5.3.19.4" format="default"/> and <xref target="sect-d.5" format="default"/>) and a symmetric key derived from the CA's private KAK and the public key for which the certification request is being made)".  Alternatively, the POP can use the POPOSigningKey structure
    given in <xref target="RFC4211" format="default"/> (where the alg field is DHBasedMAC and the signature
    field is the MAC) as a fourth alternative for demonstrating POP if
    the CA already has a D-H certificate that is known to the EE.</t>
@@ -1768,7 +1889,7 @@ follows:
    CertReqMessages data structure, which specifies the requested
    certificate(s).  Typically, SubjectPublicKeyInfo, KeyId, and Validity
    are the template fields which may be supplied for each certificate
-   requested (see the profiles defined in [RFCBBBB] Section 4.1.1, <xref target="sect-d.4" format="default"/> and <xref target="sect-e.7" format="default"/> for further information).  This
+   requested (see the profiles defined in [RFCBBBB] Section 4.1.1, <xref target="sect-c.4" format="default"/> and <xref target="sect-d.7" format="default"/> for further information).  This
    message is intended to be used for entities when first initializing
    into the PKI.</t>
           <t>
@@ -1791,7 +1912,7 @@ follows:
           <t>
    A Certification request message contains as the PKIBody a
    CertReqMessages data structure, which specifies the requested
-   certificates (see the profiles defined in [RFCBBBB] Section 4.1.2 and <xref target="sect-d.2" format="default"/> for further information).  This message is intended to be used for existing PKI
+   certificates (see the profiles defined in [RFCBBBB] Section 4.1.2 and <xref target="sect-c.2" format="default"/> for further information).  This message is intended to be used for existing PKI
    entities who wish to obtain additional certificates.</t>
           <t>
    See <xref target="sect-5.2.1" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.</t>
@@ -1864,7 +1985,7 @@ follows:
           <t>
    For key update requests the CertReqMessages syntax is used.
    Typically, SubjectPublicKeyInfo, KeyId, and Validity are the template
-   fields that may be supplied for each key to be updated (see the profiles defined in [RFCBBBB] Section 4.1.3 and <xref target="sect-d.6" format="default"/> for further information).  This message
+   fields that may be supplied for each key to be updated (see the profiles defined in [RFCBBBB] Section 4.1.3 and <xref target="sect-c.6" format="default"/> for further information).  This message
    is intended to be used to request updates to existing (non-revoked
    and non-expired) certificates (therefore, it is sometimes referred to
    as a "Certificate Update" operation).  An update is a replacement
@@ -1889,7 +2010,7 @@ follows:
    initialization request CertReqMessages.  Typically,
    SubjectPublicKeyInfo and KeyId are the template fields that may be
    used to supply a signature public key for which a certificate is
-   required (see <xref target="sect-d" format="default"/> profiles for further information).</t>
+   required (see <xref target="sect-c" format="default"/> profiles for further information).</t>
           <t>
    See <xref target="sect-5.2.1" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.  Note that if a
    key history is required, the requester must supply a Protocol
@@ -1949,7 +2070,7 @@ follows:
    Cross certification requests use the same syntax (CertReqMessages) as
    normal certification requests, with the restriction that the key pair
    MUST have been generated by the requesting CA and the private key
-   MUST NOT be sent to the responding CA (see the profiles defined in <xref target="sect-e.6" format="default"/> for further information).  This request MAY also be used
+   MUST NOT be sent to the responding CA (see the profiles defined in <xref target="sect-d.6" format="default"/> for further information).  This request MAY also be used
    by subordinate CAs to get their certificates signed by the parent CA.</t>
           <t>
    See <xref target="sect-5.2.1" format="default"/> and <xref target="RFC4211" format="default"/> for CertReqMessages syntax.</t>
@@ -2481,7 +2602,7 @@ follows:
    the PKI management functionality that MUST be supported.  Note,
    however, that the management functions described in this section do
    not need to be accomplished using the PKI messages defined in <xref target="sect-5" format="default"/> if alternate means are suitable for a given environment (see
-   [RFCBBBB] Section 7 and <xref target="sect-d" format="default"/> for profiles of the PKIMessages that MUST be supported).</t>
+   [RFCBBBB] Section 7 and <xref target="sect-c" format="default"/> for profiles of the PKIMessages that MUST be supported).</t>
       <section anchor="sect-6.1" numbered="true" toc="default">
         <name>Root CA Initialization</name>
         <t>
@@ -2824,7 +2945,7 @@ follows:
       </section>
       <section anchor="sect-8.5" numbered="true" toc="default">
         <name>Entropy of Random Numbers, Key Pairs, and Shared Secret Information</name>
-		<t>Implementations must generate nonces and private keys from random input. The use of inadequate pseudo-random number generators (PRNGs) to generate cryptographic keys can result in little or no security. An attacker may find it much easier to reproduce the PRNG environment that produced the keys and to search the resulting small set of possibilities than brute-force searching the whole key space. As an example of predictable random numbers see <xref target="CVE-2008-0166" format="default"/>; consequences of low-entropy random numbers are discussed in <xref target="MiningPsQs" format="default">Mining Your Ps and Qs</xref>. The generation of quality random numbers is difficult. <xref target="ISO.20543-2019" format="default">ISO/IEC 20543:2019</xref>, <xref target="NIST.SP.800-90Ar1" format="default">NIST SP 800-90A Rev.1</xref>, <xref target="AIS31" format="default">BSI AIS 31 V2.0</xref>, and others offer valuable guidance in this area.</t>
+		<t>Implementations must generate nonces and private keys from random input. The use of inadequate pseudo-random number generators (PRNGs) to generate cryptographic keys can result in little or no security. An attacker may find it much easier to reproduce the PRNG environment that produced the keys and to search the resulting small set of possibilities than brute-force searching the whole key space. As an example of predictable random numbers see <xref target="CVE-2008-0166" format="default"/>; consequences of low-entropy random numbers are discussed in <xref target="MiningPsQs" format="default">Mining Your Ps and Qs</xref>. The generation of quality random numbers is difficult. <xref target="ISO.20543-2019" format="default">ISO/IEC 20543:2019</xref>, <xref target="NIST_SP_800_90Ar1" format="default">NIST SP 800-90A Rev.1</xref>, <xref target="AIS31" format="default">BSI AIS 31 V2.0</xref>, and others offer valuable guidance in this area.</t>
 		<t>If shared secret information is generated by a cryptographically secure random-number generator (CSRNG) it is safe to assume that the entropy of the shared secret information equals its bit length. If no CSRNG is used, the entropy of a shared secret information depends on the details of the generation process and cannot be measured securely after it has been generated. If user-generated passwords are used as shared secret information, their entropy cannot be measured and are typically insufficient for protected delivery of centrally generated keys or trust anchors.</t>
 		<t>If the entropy of a shared secret information protecting the delivery of a centrally generated key pair is known, it should not be less than the security strength of that key pair; if the shared secret information is re-used for different key pairs, the security of the shared secret information should exceed the security strength of each individual key pair.</t>
 		<t>For the case of a PKI management operation that delivers a new trust anchor (e.g., a root CA certificate) using caPubs or genm (a) that is not concluded in a timely manner or (b) where the shared secret information is re-used for several key management operations, the entropy of the shared secret information, if known, should not be less than the security strength of the trust anchor being managed by the operation. The shared secret information should have an entropy that at least matches the security strength of the key material being managed by the operation. Certain use cases may require shared secret information that may be of a low security strength, e.g., a human generated password. It is RECOMMENDED that such secret information be limited to a single PKI management operation. </t>
@@ -2869,6 +2990,7 @@ follows:
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6402.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8933.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9180.xml"/>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml2/reference.ITU.X509.2000.xml"/>
 	    <xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-lamps-cmp-algorithms.xml"/>
         <reference anchor="MvOV97">
@@ -3083,82 +3205,11 @@ follows:
    request for revocation of another certificate for that entity).</t>
     </section>
     <section anchor="sect-c" numbered="true" toc="default">
-      <name>Request Message Behavioral Clarifications</name>
-	  <t>&lt; ToDo: Appendix C will be deleted with the next version of this document. The definition of altCertTemplate was incorporated into Section 5.2.1, the clarification on POPOSigningKey was incorporated into Section 5.2.8, and the clarification on POPOPrivKey was incorporated into Section 5.2.8.1 and must be deleted here. This should also be documented in the Introduction. &gt;</t>
-      <t>
-   In the case of updates to <xref target="RFC4211" format="default"/>, which cause interpretation or
-   interoperability issues, <xref target="RFC4211" format="default"/> SHALL be the normative document.</t>
-      <t>
-   The following definitions are from <xref target="RFC4211" format="default"/>.  They are included here in
-   order to codify behavioral clarifications to that request message;
-   otherwise, all syntax and semantics are identical to <xref target="RFC4211" format="default"/>.</t>
-      <artwork name="" type="" align="left" alt=""><![CDATA[
-  CertRequest ::= SEQUENCE {
-     certReqId     INTEGER,
-     certTemplate  CertTemplate,
-     controls      Controls OPTIONAL }
-
--- If certTemplate is an empty SEQUENCE (i.e., all fields
--- omitted), then controls MAY contain the
--- id-regCtrl-altCertTemplate control, specifying a template
--- for a certificate other than an X.509v3 public-key
--- certificate.  Conversely, if certTemplate is not empty
--- (i.e., at least one field is present), then controls MUST
--- NOT contain id-regCtrl-altCertTemplate.  The new control is
--- defined as follows:
-
-  id-regCtrl-altCertTemplate OBJECT IDENTIFIER ::= {id-regCtrl 7}
-  AltCertTemplate ::= AttributeTypeAndValue
-
-  POPOSigningKey ::= SEQUENCE {
-     poposkInput           [0] POPOSigningKeyInput OPTIONAL,
-     algorithmIdentifier   AlgorithmIdentifier,
-     signature             BIT STRING }
-
--- **********
--- * For the purposes of this specification, the ASN.1 comment
--- * given in [RFC4211] pertains not only to certTemplate, but
--- * also to the altCertTemplate control.
--- **********
--- * The signature (using "algorithmIdentifier") is on the
--- * DER-encoded value of poposkInput (i.e., the "value" OCTETs
--- * of the POPOSigningKeyInput DER).  NOTE: If CertReqMsg
--- * certReq certTemplate (or the altCertTemplate control)
--- * contains the subject and publicKey values, then poposkInput
--- * MUST be omitted and the signature MUST be computed on the
--- * DER-encoded value of CertReqMsg certReq (or the DER-
--- * encoded value of AltCertTemplate).  If
--- * certTemplate/altCertTemplate does not contain both the
--- * subject and public key values (i.e., if it contains only
--- * one of these, or neither), then poposkInput MUST be present
--- * and MUST be signed.
--- **********
-
-  POPOPrivKey ::= CHOICE {
-     thisMessage       [0] BIT STRING,
--- **********
--- *  the type of "thisMessage" is given as BIT STRING in RFC 4211
--- *  [RFC4211]; it should be "EncryptedKey" (in accordance with
--- *  Section 5.2.2 of this specification). Therefore, this
--- *  document makes the behavioral clarification of specifying
--- *  that the contents of "thisMessage" MUST be encoded either as
--- *  "EnvelopedData" or "EncryptedValue" (only for backward
--- *  compatibility) and then wrapped in a BIT STRING.  This
--- *  allows the necessary conveyance and protection of the
--- *  private key while maintaining bits-on-the-wire compatibility
--- *  with RFC4210 and [RFCAAAA].
--- **********
-     subsequentMessage [1] SubsequentMessage,
-     dhMAC             [2] BIT STRING
-  }
-]]></artwork>
-    </section>
-    <section anchor="sect-d" numbered="true" toc="default">
       <name>PKI Management Message Profiles (REQUIRED)</name>
       <t>
    This appendix contains detailed profiles for those PKIMessages that
    MUST be supported by conforming implementations (see <xref target="sect-6" format="default"/>).</t>
-	  <t>Note: <xref target="sect-d" format="default"/> and <xref target="sect-e" format="counter"/> focus on PKI management operations managing certificates for human end entities.  In contrast, the Lightweight CMP Profile [RFCBBBB] focuses on typical use cases of industrial and IoT scenarios supporting highly automated certificate lifecycle management scenarios.</t>
+	  <t>Note: <xref target="sect-c" format="default"/> and <xref target="sect-d" format="counter"/> focus on PKI management operations managing certificates for human end entities.  In contrast, the Lightweight CMP Profile [RFCBBBB] focuses on typical use cases of industrial and IoT scenarios supporting highly automated certificate lifecycle management scenarios.</t>
       <t>
    Profiles for the PKIMessages used in the following PKI management
    operations are provided:</t>
@@ -3168,7 +3219,7 @@ follows:
         <li>certificate request</li>
         <li>key update</li>
       </ul>
-      <section anchor="sect-d.1" numbered="true" toc="default">
+      <section anchor="sect-c.1" numbered="true" toc="default">
         <name>General Rules for Interpretation of These Profiles.</name>
         <ol spacing="normal" type="1"><li>Where OPTIONAL or DEFAULT fields are not mentioned in individual
        profiles, they SHOULD be absent from the relevant message (i.e.,
@@ -3198,7 +3249,7 @@ follows:
        array notation is used to describe fields within the SEQUENCE OF
        (e.g., crm[0].certReq.certTemplate.subject refers to a subfield
        of the first CertReqMsg contained in a request message).</li>
-          <li>All PKI message exchanges in <xref target="sect-d.4" format="default"/> to <xref target="sect-d.6" format="counter"/> require a
+          <li>All PKI message exchanges in <xref target="sect-c.4" format="default"/> to <xref target="sect-c.6" format="counter"/> require a
        certConf message to be sent by the initiating entity and a
        PKIConfirm to be sent by the responding entity.  The PKIConfirm
        is not included in some of the profiles given since its body is
@@ -3208,11 +3259,11 @@ follows:
        signature).</li>
         </ol>
       </section>
-      <section anchor="sect-d.2" numbered="true" toc="default">
+      <section anchor="sect-c.2" numbered="true" toc="default">
         <name>Algorithm Use Profile</name>
         <t>For specifications of algorithm identifiers and respective conventions for conforming implementations, please refer to CMP Algorithms Appendix 7.1 [RFCCCCC].</t>
       </section>
-      <section anchor="sect-d.3" numbered="true" toc="default">
+      <section anchor="sect-c.3" numbered="true" toc="default">
         <name>Proof-of-Possession Profile</name>
         <t>
    POP fields for use (in signature field of pop field of
@@ -3244,7 +3295,7 @@ signature           present       bits calculated using MSG_SIG_ALG
    be prepared to provide POP (i.e., these components of the PKIX-CMP
    protocol MUST be supported).</t>
       </section>
-      <section anchor="sect-d.4" numbered="true" toc="default">
+      <section anchor="sect-c.4" numbered="true" toc="default">
         <name>Initial Registration/Certification (Basic Authenticated Scheme)</name>
         <t>
    An (uninitialized) end entity requests a (first) certificate from a
@@ -3516,7 +3567,7 @@ protection           present
   -- bits calculated using MSG_MAC_ALG
 ]]></artwork>
       </section>
-      <section anchor="sect-d.5" numbered="true" toc="default">
+      <section anchor="sect-c.5" numbered="true" toc="default">
         <name>Certificate Request</name>
         <t>
    An (initialized) end entity requests a certificate from a CA (for any
@@ -3525,7 +3576,7 @@ protection           present
    The CA replies with a PKIConfirm, to close the transaction.  All
    messages are authenticated.</t>
         <t>
-   The profile for this exchange is identical to that given in <xref target="sect-d.4"/>,
+   The profile for this exchange is identical to that given in <xref target="sect-c.4"/>,
    with the following exceptions:</t>
         <ul spacing="normal">
           <li>sender name SHOULD be present</li>
@@ -3538,12 +3589,12 @@ protection           present
           <li>body may contain one or two CertReqMsg structures, but either
       CertReqMsg may be used to request certification of a locally-
       generated public key or a centrally-generated public key (i.e.,
-      the position-dependence requirement of <xref target="sect-d.4" format="default"/> is removed);</li>
+      the position-dependence requirement of <xref target="sect-c.4" format="default"/> is removed);</li>
           <li>protection bits are calculated according to the protectionAlg
       field.</li>
         </ul>
       </section>
-      <section anchor="sect-d.6" numbered="true" toc="default">
+      <section anchor="sect-c.6" numbered="true" toc="default">
         <name>Key Update Request</name>
         <t>
    An (initialized) end entity requests a certificate from a CA (to
@@ -3553,7 +3604,7 @@ protection           present
    The CA replies with a PKIConfirm, to close the transaction.  All
    messages are authenticated.</t>
         <t>
-   The profile for this exchange is identical to that given in<xref target="sect-d.4" format="default"/>, with the following exceptions:</t>
+   The profile for this exchange is identical to that given in<xref target="sect-c.4" format="default"/>, with the following exceptions:</t>
         <ol spacing="normal" type="1"><li>sender name SHOULD be present</li>
           <li>protectionAlg of MSG_SIG_ALG MUST be supported (MSG_MAC_ALG MAY
        also be supported) in request, response, certConfirm, and
@@ -3564,7 +3615,7 @@ protection           present
           <li>body may contain one or two CertReqMsg structures, but either
        CertReqMsg may be used to request certification of a locally-
        generated public key or a centrally-generated public key (i.e.,
-       the position-dependence requirement of <xref target="sect-d.4" format="default"/> is removed);</li>
+       the position-dependence requirement of <xref target="sect-c.4" format="default"/> is removed);</li>
           <li>protection bits are calculated according to the protectionAlg
        field;</li>
           <li>regCtrl OldCertId SHOULD be used (unless it is clear to both
@@ -3573,7 +3624,7 @@ protection           present
         </ol>
       </section>
     </section>
-    <section anchor="sect-e" numbered="true" toc="default">
+    <section anchor="sect-d" numbered="true" toc="default">
       <name>PKI Management Message Profiles (OPTIONAL)</name>
       <t>
    This appendix contains detailed profiles for those PKIMessages that
@@ -3596,17 +3647,17 @@ protection           present
         <li>certificate publication</li>
         <li>CRL publication</li>
       </ul>
-      <section anchor="sect-e.1" numbered="true" toc="default">
+      <section anchor="sect-d.1" numbered="true" toc="default">
         <name>General Rules for Interpretation of These Profiles.</name>
         <t>
-   Identical to <xref target="sect-d.1" format="default"/>.</t>
+   Identical to <xref target="sect-c.1" format="default"/>.</t>
       </section>
-      <section anchor="sect-e.2" numbered="true" toc="default">
+      <section anchor="sect-d.2" numbered="true" toc="default">
         <name>Algorithm Use Profile</name>
         <t>
-   Identical to <xref target="sect-d.2" format="default"/>.</t>
+   Identical to <xref target="sect-c.2" format="default"/>.</t>
       </section>
-      <section anchor="sect-e.3" numbered="true" toc="default">
+      <section anchor="sect-d.3" numbered="true" toc="default">
         <name>Self-Signed Certificates</name>
         <t>
    Profile of how a Certificate structure may be "self-signed".  These
@@ -3629,7 +3680,7 @@ newWithOld new root CA public key signed with previous private key
    subjectAltName MUST be identical to issuerAltName, and, when present,
    keyIdentifiers must contain appropriate values, et cetera.</t>
       </section>
-      <section anchor="sect-e.4" numbered="true" toc="default">
+      <section anchor="sect-d.4" numbered="true" toc="default">
         <name>Root CA Key Update</name>
         <t>
    A root CA updates its key pair.  It then produces a CA key update
@@ -3651,7 +3702,7 @@ newWithOld new root CA public key signed with previous private key
                                        the new private key)
 ]]></artwork>
       </section>
-      <section anchor="sect-e.5" numbered="true" toc="default">
+      <section anchor="sect-d.5" numbered="true" toc="default">
         <name>PKI Information Request/Response</name>
         <t>
    The end entity sends a general message to the PKI requesting details
@@ -3735,7 +3786,7 @@ extraCerts           optionally present
   -- entity. An RA MAY add its certificate here.
 ]]></artwork>
       </section>
-      <section anchor="sect-e.6" numbered="true" toc="default">
+      <section anchor="sect-d.6" numbered="true" toc="default">
         <name>Cross Certification Request/Response (1-way)</name>
         <t>
    Creation of a single cross-certificate (i.e., not two at once).  The
@@ -3879,7 +3930,7 @@ extraCerts            optionally present
   -- to include
 ]]></artwork>
       </section>
-      <section anchor="sect-e.7" numbered="true" toc="default">
+      <section anchor="sect-d.7" numbered="true" toc="default">
         <name>In-Band Initialization Using External Identity Certificate</name>
         <t>
    An (uninitialized) end entity wishes to initialize into the PKI with
@@ -3905,7 +3956,7 @@ extraCerts            optionally present
         <t>
    certificate that can be chained to a trust anchor in the EE's PSE).</t>
         <t>
-   The profile for this exchange is identical to that given in <xref target="sect-d.4" format="default"/>, with the following exceptions:</t>
+   The profile for this exchange is identical to that given in <xref target="sect-c.4" format="default"/>, with the following exceptions:</t>
         <ul spacing="normal">
           <li>the EE and CA-1 do not share a symmetric MACing key (i.e., there
       is no out-of-band shared secret information between these
@@ -3921,9 +3972,9 @@ extraCerts            optionally present
         </ul>
       </section>
     </section>
-    <section anchor="sect-f" numbered="true" toc="default">
+    <section anchor="sect-e" numbered="true" toc="default">
       <name>Compilable ASN.1 Definitions</name>
-        <t>This section contains the updated 2002 ASN.1 module for <xref target="RFC5912" format="default"/>.  This module replaces the module in Section 9 of that document.  The module contains those changes to the normative ASN.1 module from <xref target="RFC4210" format="default">RFC4210 Appendix F</xref> that were to update to 2002 ASN.1 standard done in <xref target="RFC5912" format="default"/> as well as changes made in this document.</t>
+        <t>This section contains the updated 2002 ASN.1 module for <xref target="RFC5912" format="default"/> as updated in [RFCAAAA].  This module replaces the module in Section 9 of <xref target="RFC5912" format="default"/>.  The module contains those changes to the normative ASN.1 module from <xref target="RFC4210" format="default">RFC&nbsp;4210 Appendix F</xref> that were specified in [RFCAAAA] as well as changes made in this document.</t>
 		<sourcecode type="asn.1"><![CDATA[  
 PKIXCMP-2021
     { iso(1) identified-organization(3) dod(6) internet(1)
@@ -4569,9 +4620,15 @@ id-kp-cmKGA OBJECT IDENTIFIER ::= { id-kp 32 }
 END
                 ]]></sourcecode>
     </section>
-    <section anchor="sect-g" numbered="true" toc="default">
+    <section anchor="sect-f" numbered="true" toc="default">
       <name>History of Changes</name>
       <t>Note: This appendix will be deleted in the final version of the document.</t>
+      <t keepWithNext="true">From version 03 -&gt; 04:</t>
+      <ul spacing="compact">
+        <li>Addes Section 4.3.4 regarding POP for KEM keys</li>
+        <li>Added Section 5.1.3.4 on message protection using KEM keys and HPKE</li>
+        <li>Deleted former Appendix C as announced in the -03</li>
+      </ul>
       <t keepWithNext="true">From version 02 -&gt; 03:</t>
       <ul spacing="compact">
         <li>Updated Section 4.4.1 clarifying the definition of "new with new" certificate validity period (see thread "RFC4210bis - notAfter time of newWithNew certificate")</li>
