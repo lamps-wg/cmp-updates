@@ -3753,7 +3753,7 @@ appropriately).  Implementers are advised to:
 
 <!-- Note that this has an NBSP here.  Maybe you want to change the -->
 <!-- markup to an actual list (* instead of :) -->
- 
+
 : Exercise caution in selecting and using this particular POP
   mechanism
 

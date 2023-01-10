@@ -11,7 +11,7 @@ pi:
   tocdepth: '4'
   symrefs: 'true'
   sortrefs: 'false'
-title: > 
+title: >
   Internet X.509 Public Key Infrastructure --
   HTTP Transfer for the Certificate Management Protocol (CMP)
 abbrev: RFC6712bis
@@ -113,7 +113,7 @@ Please perform the following substitution.
 
   Add this RFC number to the list of obsoleted RFCs.
 
-  
+
 
 * RFCBBBB ---> the assigned numerical RFC value for {{I-D.ietf-lamps-lightweight-cmp-profile}}
 
@@ -335,7 +335,7 @@ The following PKIMessages are announcements that may be pushed by a
 CA.  The prefixed numbers reflect ASN.1 numbering of the respective
 element.
 
-~~~~ 
+~~~~
    [15] CA Key Update Announcement
    [16] Certificate Announcement
    [17] Revocation Announcement
