@@ -1652,13 +1652,13 @@ Depending on the circumstances, the PKIProtection bits may contain a
 Message Authentication Code (MAC) or signature.  Only the following
 cases can occur:
 
-#### Shared Secret Information
+#### Pre-Shared Secret Information
 {: id="sect-5.1.3.1"}
 
 In this case, the sender and recipient share secret information with sufficient
 entropy (established via out-of-band means). PKIProtection will contain a
 MAC value and the protectionAlg MAY be one of the options described in CMP
-Algorithms Section 6 [RFCCCCC].
+Algorithms Section 6.1 [RFCCCCC].
 
 
 #### Key Agreement
