@@ -1766,23 +1766,9 @@ HpkeCiphertext.  The syntax for HpkeCiphertext is as follows:
   }
 ~~~~
 
-The object identifier used in protectionAlg for the MAC-based message protection
-with HPKE-based key exchange is id-hpke-mac, which is defined in this document
-as:
-
-~~~~ asn.1
-  id-hpke-mac OBJECT IDENTIFIER ::= { TBD2 }
-~~~~
-
-When id-hpke-mac is used, the parameters MUST employ the HpkeMacParameter
-syntax.  The syntax for HpkeMacParameter is as follows:
-
-~~~~ asn.1
-  HpkeMacParameter ::= SEQUENCE {
-     mac                 AlgorithmIdentifier
-     -- the MAC AlgId
-  }
-~~~~
+The messages protected using the key derived from the HPKE-exchanges will contain a MAC value in
+PKIProtection and the protectionAlg MAY be one of the options described
+in CMP Algorithms Section 6.2 [RFCCCCC].
 
 The message flow establishing a shared symmetric key consists of an additional
 genm/genp with no protection and the desired request/response messages with
