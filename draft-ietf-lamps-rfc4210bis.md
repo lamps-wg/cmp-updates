@@ -71,15 +71,6 @@ informative:
   RFC8649:
   NIST.SP.800-90Ar1:
   IEEE.802.1AR_2018:
-    target: https://ieeexplore.ieee.org/document/8423794
-    title: IEEE Standard for Local and metropolitan area networks -
-      Secure Device Identity
-    author:
-    - org: IEEE
-    date: '2018-08-2'
-    seriesinfo:
-      IEEE: 802.1AR-2018
-      DOI: 10.1109/IEEESTD.2018.8423794
   CVE-2008-0166:
     target: https://nvd.nist.gov/vuln/detail/CVE-2008-0166
     title: National Vulnerability Database - CVE-2008-0166
@@ -101,13 +92,6 @@ informative:
       org: University of Michigan
     date: 2012-08
   ISO.20543-2019:
-    title: Information technology -- Security techniques -- Test and analysis methods
-      for random bit generators within ISO/IEC 19790 and ISO/IEC 15408
-    seriesinfo:
-      ISO: Draft Standard 20543-2019
-    author:
-    - org: International Organization for Standardization (ISO)
-    date: 2019-10
   AIS31:
     target: https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Zertifizierung/Interpretationen/AIS_31_Functionality_classes_for_random_number_generators_e.pdf
     title: 'A proposal for: Functionality classes for random number generators, version
