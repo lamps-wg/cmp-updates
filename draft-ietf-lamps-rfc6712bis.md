@@ -121,8 +121,8 @@ Please perform the following substitution.
 
 ]
 
-The Certificate Management Protocol (CMP) [RFCCCCC] requires a well-
-defined transfer mechanism to enable End Entities (EEs), Registration
+The Certificate Management Protocol (CMP) [RFCCCCC] requires a
+well-defined transfer mechanism to enable End Entities (EEs), Registration
 Authorities (RAs), and Certification Authorities (CAs) to pass
 PKIMessage sequences between them.
 
@@ -459,6 +459,11 @@ We also thank all reviewers of this document for their valuable feedback.
 # History of Changes {#History}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 02 -> 03:
+
+
+* Fixing one formatting nit.
 
 From version 01 -> 02:
 
