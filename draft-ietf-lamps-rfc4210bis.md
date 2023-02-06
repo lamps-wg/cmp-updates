@@ -406,8 +406,8 @@ name assignment, key generation, archival of key pairs, et cetera.
 
 This document views the RA as an OPTIONAL component: when it is not
 present, the CA is assumed to be able to carry out the RA's functions
-so that the PKI management protocols are the same from the end-
-entity's point of view.
+so that the PKI management protocols are the same from the end-entity's
+point of view.
 
 Again, we distinguish, where necessary, between the RA and the tools
 used (the "RA equipment").
@@ -2160,9 +2160,9 @@ The fields within this certificate are restricted as follows:
   issuerAltNames extensions MUST be present and have exactly the
   same value;
 
-* The values of all other extensions must be suitable for a self-
-  signed certificate (e.g., key identifiers for subject and issuer
-  must be the same).
+* The values of all other extensions must be suitable for a self-signed
+  certificate (e.g., key identifiers for subject and issuer must be the
+  same).
 
 ~~~~ asn.1
   OOBCertHash ::= SEQUENCE {
@@ -2279,8 +2279,8 @@ used. >
 {: id="sect-5.2.8.2"}
 
 By having the CA return not the certificate, but an encrypted
-certificate (i.e., the certificate encrypted under a randomly-
-generated symmetric key, and the symmetric key encrypted under the
+certificate (i.e., the certificate encrypted under a randomly-generated
+symmetric key, and the symmetric key encrypted under the
 public key for which the certification request is being made) --- this
 is the "indirect" method mentioned previously in {{sect-4.3.2}}. The
 end entity proves knowledge of the private decryption key to the CA
@@ -2823,8 +2823,8 @@ corresponding to a certificate supplied in the previous response
 message indicates REJECTION of the certificate.  Thus, an empty
 CertConfirmContent (a zero-length SEQUENCE) MAY be used to indicate
 rejection of all supplied certificates.  See {{sect-5.2.8}}, item (2),
-for a discussion of the certHash field with respect to proof-of-
-possession.
+for a discussion of the certHash field with respect to 
+proof-of-possession.
 
 
 ### PKI General Message Content
@@ -3403,8 +3403,8 @@ CA keys (as all other keys) have a finite lifetime and will have to
 be updated on a periodic basis.  The certificates NewWithNew,
 NewWithOld, and OldWithNew (see {{sect-4.4.1}}) MAY be issued by the
 CA to aid existing end entities who hold the current self-signed CA
-certificate (OldWithOld) to transition securely to the new self-
-signed CA certificate (NewWithNew), and to aid new end entities who
+certificate (OldWithOld) to transition securely to the new self-signed
+CA certificate (NewWithNew), and to aid new end entities who
 will hold NewWithNew to acquire OldWithOld securely for verification
 of existing data.
 
@@ -3463,8 +3463,8 @@ cross-certification operation.
 
 The cross-certification scheme is essentially a one way operation;
 that is, when successful, this operation results in the creation of
-one new cross-certificate.  If the requirement is that cross-
-certificates be created in "both directions", then each CA, in turn,
+one new cross-certificate.  If the requirement is that cross-certificates
+be created in "both directions", then each CA, in turn,
 must initiate a cross-certification operation (or use another
 scheme).
 
@@ -3481,8 +3481,8 @@ cross certify and the responder CA equipment generates an
 authorization code.  The responder CA administrator passes this
 authorization code by out-of-band means to the requester CA
 administrator.  The requester CA administrator enters the
-authorization code at the requester CA in order to initiate the on-
-line exchange.
+authorization code at the requester CA in order to initiate the 
+online exchange.
 
 The authorization code is used for authentication and integrity
 purposes.  This is done by generating a symmetric key based on the
@@ -3492,11 +3492,11 @@ Authentication Codes (MACs) on all messages exchanged.
 MACs, if the CAs are able to retrieve and validate the required
 public keys by some means, such as an out-of-band hash comparison.)
 
-The requester CA initiates the exchange by generating a cross-
-certification request (ccr) with a fresh random number (requester
-random number).  The requester CA then sends the ccr message to the
-responder CA.  The fields in this message are protected from
-modification with a MAC based on the authorization code.
+The requester CA initiates the exchange by generating a cross-certification
+request (ccr) with a fresh random number (requester random number).
+The requester CA then sends the ccr message to the responder CA.
+The fields in this message are protected from modification with a
+MAC based on the authorization code.
 
 Upon receipt of the ccr message, the responder CA validates the
 message and the MAC, saves the requester random number, and generates
@@ -3706,8 +3706,8 @@ arbitrary challenge and returning the cleartext to an attacker.
 Although in this specification a number of other failures in security
 are required in order for this attack to succeed, it is conceivable
 that some future services (e.g., notary, trusted time) could
-potentially be vulnerable to such attacks.  For this reason, we re-
-iterate the general rule that implementations should be very careful
+potentially be vulnerable to such attacks.  For this reason, we
+reiterate the general rule that implementations should be very careful
 about decrypting arbitrary "ciphertext" and revealing recovered
 "plaintext" since such a practice can lead to serious security
 vulnerabilities.
@@ -3716,9 +3716,9 @@ vulnerabilities.
 ## Proof-Of-Possession by Exposing the Private Key
 {: id="sect-8.2"}
 
-Note also that exposing a private key to the CA/RA as a proof-of-
-possession technique can carry some security risks (depending upon
-whether or not the CA/RA can be trusted to handle such material
+Note also that exposing a private key to the CA/RA as a 
+proof-of-possession technique can carry some security risks (depending
+upon whether or not the CA/RA can be trusted to handle such material
 appropriately).  Implementers are advised to:
 
 <!-- Note that this has an NBSP here.  Maybe you want to change the -->
@@ -4167,8 +4167,8 @@ associated with the locally-generated public key.
 Preconditions:
 
 
-1. The end entity can authenticate the CA's signature based on out-
-  of-band means
+1. The end entity can authenticate the CA's signature based on
+   out-of-band means
 
 1. The end entity and the CA share a symmetric MACing key
 
@@ -4454,9 +4454,10 @@ with the following exceptions:
 * body is cr or cp;
 
 * body may contain one or two CertReqMsg structures, but either
-  CertReqMsg may be used to request certification of a locally-
-  generated public key or a centrally-generated public key (i.e.,
-  the position-dependence requirement of {{sect-c.4}} is removed);
+  CertReqMsg may be used to request certification of a 
+  locally-generated public key or a centrally-generated public key
+  (i.e., the position-dependence requirement of {{sect-c.4}} is 
+  removed);
 
 * protection bits are calculated according to the protectionAlg
   field.
@@ -4488,9 +4489,9 @@ with the following exceptions:
 1. body is kur or kup;
 
 1. body may contain one or two CertReqMsg structures, but either
-  CertReqMsg may be used to request certification of a locally-
-  generated public key or a centrally-generated public key (i.e.,
-  the position-dependence requirement of {{sect-c.4}} is removed);
+  CertReqMsg may be used to request certification of a locally-generated
+  public key or a centrally-generated public key (i.e.,the 
+  position-dependence requirement of {{sect-c.4}} is removed);
 
 1. protection bits are calculated according to the protectionAlg
   field;
@@ -5475,9 +5476,9 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --
 --
 -- This construct MAY also be used to define new PKIX Certificate
--- Management Protocol request and response messages, or general-
--- purpose (e.g., announcement) messages for future needs or for
--- specific environments.
+-- Management Protocol request and response messages, or 
+-- general-purpose (e.g., announcement) messages for future needs
+-- or for specific environments.
 
 GenMsgContent ::= SEQUENCE OF InfoTypeAndValue
 
