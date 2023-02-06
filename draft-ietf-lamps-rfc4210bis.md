@@ -1825,7 +1825,7 @@ Step# PKI entity                           PKI management entity
    ~~~~
    Note: L SHOULD be the maximum key length of the MAC function to be used for
    MAC-based message protection, but it MUST NOT be bigger that 255\*Nh, where
-   Nh is the output size of the extract function of the uses KDF.
+   Nh is the output size of the extract function of the used KDF.
 
    The genp message is of type id-it-HpkeCiphertext and the value is of type
    HpkeCiphertext containing OIDs of the used KEM and KDF functions and the
