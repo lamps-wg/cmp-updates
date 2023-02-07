@@ -2823,7 +2823,7 @@ corresponding to a certificate supplied in the previous response
 message indicates REJECTION of the certificate.  Thus, an empty
 CertConfirmContent (a zero-length SEQUENCE) MAY be used to indicate
 rejection of all supplied certificates.  See {{sect-5.2.8}}, item (2),
-for a discussion of the certHash field with respect to 
+for a discussion of the certHash field with respect to
 proof-of-possession.
 
 
@@ -3481,7 +3481,7 @@ cross certify and the responder CA equipment generates an
 authorization code.  The responder CA administrator passes this
 authorization code by out-of-band means to the requester CA
 administrator.  The requester CA administrator enters the
-authorization code at the requester CA in order to initiate the 
+authorization code at the requester CA in order to initiate the
 online exchange.
 
 The authorization code is used for authentication and integrity
@@ -3716,7 +3716,7 @@ vulnerabilities.
 ## Proof-Of-Possession by Exposing the Private Key
 {: id="sect-8.2"}
 
-Note also that exposing a private key to the CA/RA as a 
+Note also that exposing a private key to the CA/RA as a
 proof-of-possession technique can carry some security risks (depending
 upon whether or not the CA/RA can be trusted to handle such material
 appropriately).  Implementers are advised to:
@@ -4454,9 +4454,9 @@ with the following exceptions:
 * body is cr or cp;
 
 * body may contain one or two CertReqMsg structures, but either
-  CertReqMsg may be used to request certification of a 
+  CertReqMsg may be used to request certification of a
   locally-generated public key or a centrally-generated public key
-  (i.e., the position-dependence requirement of {{sect-c.4}} is 
+  (i.e., the position-dependence requirement of {{sect-c.4}} is
   removed);
 
 * protection bits are calculated according to the protectionAlg
@@ -4490,7 +4490,7 @@ with the following exceptions:
 
 1. body may contain one or two CertReqMsg structures, but either
   CertReqMsg may be used to request certification of a locally-generated
-  public key or a centrally-generated public key (i.e.,the 
+  public key or a centrally-generated public key (i.e.,the
   position-dependence requirement of {{sect-c.4}} is removed);
 
 1. protection bits are calculated according to the protectionAlg
@@ -5476,7 +5476,7 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --
 --
 -- This construct MAY also be used to define new PKIX Certificate
--- Management Protocol request and response messages, or 
+-- Management Protocol request and response messages, or
 -- general-purpose (e.g., announcement) messages for future needs
 -- or for specific environments.
 
