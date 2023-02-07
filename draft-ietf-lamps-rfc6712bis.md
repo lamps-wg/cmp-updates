@@ -460,6 +460,11 @@ We also thank all reviewers of this document for their valuable feedback.
 
 Note: This appendix will be deleted in the final version of the document.
 
+From version 02 -> 03:
+
+
+* Fixing one formatting nit.
+
 From version 01 -> 02:
 
 
