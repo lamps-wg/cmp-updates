@@ -69,7 +69,7 @@ informative:
   RFC4510:
   RFC5912:
   RFC8649:
-  NIST.SP.800-90Ar1:
+  NIST.SP.800_90Ar1:
   IEEE.802.1AR_2018:
   CVE-2008-0166:
     target: https://nvd.nist.gov/vuln/detail/CVE-2008-0166
@@ -91,7 +91,7 @@ informative:
     - name: J. Alex Halderman
       org: University of Michigan
     date: 2012-08
-  ISO.20543-2019:
+  ISO.20543_2019:
   AIS31:
     target: https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Zertifizierung/Interpretationen/AIS_31_Functionality_classes_for_random_number_generators_e.pdf
     title: 'A proposal for: Functionality classes for random number generators, version
@@ -185,21 +185,21 @@ as co-authors.
 Please perform the following substitution.
 
 
-* RFCXXXX ---> the assigned numerical RFC value for this draft
+* RFCXXXX --> the assigned numerical RFC value for this draft
 
-* RFCAAAA ---> the assigned numerical RFC value for {{I-D.ietf-lamps-cmp-updates}}
+* RFCAAAA --> the assigned numerical RFC value for {{I-D.ietf-lamps-cmp-updates}}
 
   Add this RFC number to the list of obsoleted RFCs.
 
 
 
-* RFCBBBB ---> the assigned numerical RFC value for {{I-D.ietf-lamps-lightweight-cmp-profile}}
+* RFCBBBB --> the assigned numerical RFC value for {{I-D.ietf-lamps-lightweight-cmp-profile}}
 
-* RFCCCCC ---> the assigned numerical RFC value for {{I-D.ietf-lamps-cmp-algorithms}}
+* RFCCCCC --> the assigned numerical RFC value for {{I-D.ietf-lamps-cmp-algorithms}}
 
-* RFCDDDD ---> the assigned numerical RFC value for {{I-D.ietf-lamps-rfc6712bis}}
+* RFCDDDD --> the assigned numerical RFC value for {{I-D.ietf-lamps-rfc6712bis}}
 
-* RFCEEEE ---> the assigned numerical RFC value for {{I-D.ietf-ace-cmpv2-coap-transport}}
+* RFCEEEE --> the assigned numerical RFC value for {{I-D.ietf-ace-cmpv2-coap-transport}}
 
 ]
 
@@ -348,14 +348,14 @@ certificate or cross-certificate.  Where appropriate, the term "end entity"
 will be used to refer to end entities who are not PKI
 management entities.
 
-All end entities require secure local access to some information ---
+All end entities require secure local access to some information --
 at a minimum, their own name and private key, the name of a CA that
 is directly trusted by this entity, and that CA's public key (or a
 fingerprint of the public key where a self-certified version is
 available elsewhere).  Implementations MAY use secure local storage
 for more than this minimum (e.g., the end entity's own certificates or
 application-specific information).  The form of storage will also
-vary --- from files to tamper-resistant cryptographic tokens.  The
+vary -- from files to tamper-resistant cryptographic tokens.  The
 information stored in such local, trusted storage is referred to here
 as the end entity's Personal Security Environment (PSE).
 
@@ -2281,7 +2281,7 @@ used. >
 By having the CA return not the certificate, but an encrypted
 certificate (i.e., the certificate encrypted under a randomly-generated
 symmetric key, and the symmetric key encrypted under the
-public key for which the certification request is being made) --- this
+public key for which the certification request is being made) -- this
 is the "indirect" method mentioned previously in {{sect-4.3.2}}. The
 end entity proves knowledge of the private decryption key to the CA
 by providing the correct CertHash for this certificate in the
@@ -2299,7 +2299,7 @@ POP).  See {{sect-5.3.18}} for further details.
 
 By having the end entity engage in a challenge-response protocol
 (using the messages POPODecKeyChall and POPODecKeyResp; see below)
-between CertReqMessages and CertRepMessage --- this is the "direct"
+between CertReqMessages and CertRepMessage -- this is the "direct"
 method mentioned previously in {{sect-4.3.2}}.  (This method would
 typically be used in an environment in which an RA verifies POP and
 then makes a certification request to the CA on behalf of the end
@@ -2774,7 +2774,7 @@ structure MAY be used to announce this event.
 {: id="sect-5.3.17"}
 
 This data structure is used in the protocol exchange as the final
-PKIMessage.  Its content is the same in all cases --- actually there
+PKIMessage.  Its content is the same in all cases -- actually there
 is no content since the PKIHeader carries all the required
 information.
 
@@ -3482,7 +3482,7 @@ authorization code.  The responder CA administrator passes this
 authorization code by out-of-band means to the requester CA
 administrator.  The requester CA administrator enters the
 authorization code at the requester CA in order to initiate the
-online exchange.
+on-line exchange.
 
 The authorization code is used for authentication and integrity
 purposes.  This is done by generating a symmetric key based on the
@@ -3721,13 +3721,10 @@ proof-of-possession technique can carry some security risks (depending
 upon whether or not the CA/RA can be trusted to handle such material
 appropriately).  Implementers are advised to:
 
-<!-- Note that this has an NBSP here.  Maybe you want to change the -->
-<!-- markup to an actual list (* instead of :) -->
-
-: Exercise caution in selecting and using this particular POP
+* Exercise caution in selecting and using this particular POP
   mechanism
 
-: When appropriate, have the user of the application explicitly
+* When appropriate, have the user of the application explicitly
   state that they are willing to trust the CA/RA to have a copy of
   their private key before proceeding to reveal the private key.
 
@@ -3770,7 +3767,7 @@ The use of inadequate pseudo-random number generators (PRNGs) to generate
 cryptographic keys can result in little or no security. An attacker may find
 it much easier to reproduce the PRNG environment that produced the keys and
 to search the resulting small set of possibilities than brute-force searching
-the whole key space. As an example of predictable random numbers see {{CVE-2008-0166}}; consequences of low-entropy random numbers are discussed in [Mining Your Ps and Qs](#MiningPsQs). The generation of quality random numbers is difficult. [ISO/IEC 20543:2019](#ISO.20543-2019), [NIST SP 800-90A Rev.1](#NIST.SP.800-90Ar1), [BSI AIS 31 V2.0](#AIS31), and others offer valuable guidance in this area.
+the whole key space. As an example of predictable random numbers see {{CVE-2008-0166}}; consequences of low-entropy random numbers are discussed in [Mining Your Ps and Qs](#MiningPsQs). The generation of quality random numbers is difficult. [ISO/IEC 20543:2019](#ISO.20543_2019), [NIST SP 800-90A Rev.1](#NIST.SP.800_90Ar1), [BSI AIS 31 V2.0](#AIS31), and others offer valuable guidance in this area.
 
 If shared secret information is generated by a cryptographically secure random-number
 generator (CSRNG) it is safe to assume that the entropy of the shared secret
@@ -3938,8 +3935,8 @@ Section 5 of this document. >
 A revocation request must incorporate suitable security mechanisms,
 including proper authentication, in order to reduce the probability
 of successful denial-of-service attacks.  A digital signature on the
-request --- REQUIRED to support within this specification if
-revocation requests are supported --- can provide the authentication
+request -- REQUIRED to support within this specification if
+revocation requests are supported -- can provide the authentication
 required, but there are circumstances under which an alternative
 mechanism may be desirable (e.g., when the private key is no longer
 accessible and the entity wishes to request a revocation prior to
@@ -4204,7 +4201,7 @@ OPTIONALLY the distinguished name used for both sender and subject
 name in the certificate template. See {{sect-8.5}} for security
 considerations on quality of shared secret information.
 
-Initialization Request --- ir
+Initialization Request -- ir
 
 ~~~~
 Field                Value
@@ -4288,7 +4285,7 @@ protection           present
   -- bits calculated using MSG_MAC_ALG
 ~~~~
 
-Initialization Response --- ip
+Initialization Response -- ip
 
 ~~~~
 Field                Value
@@ -4371,7 +4368,7 @@ extraCerts           optionally present
   -- entity
 ~~~~
 
-Certificate confirm --- certConf
+Certificate confirm -- certConf
 
 ~~~~
 Field                Value
@@ -4405,7 +4402,7 @@ protection           present
   -- bits calculated using MSG_MAC_ALG
 ~~~~
 
-Confirmation --- PKIConf
+Confirmation -- PKIConf
 
 ~~~~
 Field                Value
@@ -4497,7 +4494,7 @@ with the following exceptions:
   field;
 
 1. regCtrl OldCertId SHOULD be used (unless it is clear to both
-  sender and receiver --- by means not specified in this document ---
+  sender and receiver -- by means not specified in this document --
   that it is not needed).
 
 
@@ -5548,11 +5545,15 @@ Note: This appendix will be deleted in the final version of the document.
 From version 03 -> 04:
 
 
-* Addes Section 4.3.4 regarding POP for KEM keys
+* Added Section 4.3.4 regarding POP for KEM keys
 
 * Added Section 5.1.3.4 on message protection using KEM keys and HPKE
 
+* Aligned Section 5.2.2 on guidance which CMS key management technique to use with encrypted values (see thread "CMS: selection of key management technique to use for EnvelopedData")
+
 * Deleted former Appendix C as announced in the -03
+
+* Fixed some nits resulting from XML -> MD conversion
 
 From version 02 -> 03:
 
