@@ -2045,19 +2045,19 @@ The choice of the key management technique to be used by the sender depends
 on the credential available at the recipient:
 
 
-* Recipient's certificate that contains a key usage extension asserting keyAgreement:
-  The content-encryption key will be protected using the key agreement key
-  management technique, as specified in [CMS section 6.2.2](#RFC5652). This is the preferred technique.
-
-* Recipient's certificate that contains a key usage extension asserting keyEncipherment:
+* Recipient's certificate with a public key that supports key agreement and where any given key usage extension allows keyAgreement:
   The content-encryption key will be protected using the key transport key
-  management technique, as specified in [CMS section 6.2.1](#RFC5652).
+  management technique, as specified in [CMS Section 6.2.1](#RFC5652).
+
+* Recipient's certificate with a public key that supports key transport and where any given key usage extension allows keyEncipherment:
+  The content-encryption key will be protected using the key agreement key
+  management technique, as specified in [CMS Section 6.2.2](#RFC5652). This is the preferred technique.
 
 * A password or shared secret: The content-encryption key will be protected
   using the password-based key management technique, as specified in
-  [CMS section 6.2.4](#RFC5652).
+  [CMS Section 6.2.4](#RFC5652).
 
-* \< ToDo: Depending on the extension of [CMS section 6.1](#RFC5652)
+* \< ToDo: Depending on the extension of [CMS Section 6.1](#RFC5652)
      regarding KEM support, the support of KEMRecipientInfo must be added here.
   >
 
