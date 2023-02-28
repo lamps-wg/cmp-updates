@@ -133,6 +133,7 @@ normative:
   RFC9180:
   ITU.X509.2000:
   I-D.ietf-lamps-cmp-algorithms:
+  I-D.ietf-lamps-cms-kemri:
   MvOV97:
     title: Handbook of Applied Cryptography
     author:
@@ -1725,20 +1726,21 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 #### Key Encapsulation
 {: id="sect-5.1.3.4"}
 
-\< Q: In this case, both PKI entities require a certificate of the other
+\< ToDo: The WG recommended use of HPKE for establishing a shared secret key.  Today HPKE specifies only a D-H bases KEM in [RFC 9180 Section 4.1](#RFC9180).  To be independent to HPKE this document could also use the approach shown in [draft-ietf-lamps-cms-kemri](#I-D.ietf-lamps-cms-kemri) only relying on the availability of a KeyGen, Encapsulate, and Decapsulate function.  This would ease this specification and allow further reuse of profiling KEM algorithms for use in CMS.  What do others think? >
+
+In this case, an initial exchange using general messages is required to contribute to establishing a shared symmetric key as follows.  Both PKI entities require a certificate of the other
 side and send a symmetric key in form of a KEM encapsulated ciphertext according
 to [Hybrid Public Key Encryption](#RFC9180) to the respective recipient.
 Each sender uses the SendExportBase to get
 the fixed-length symmetric key (the KEM shared secret) and a fixed-length
-encapsulation of that key and provide it to the recipient using the id-it-KEMCiphertext
-as defined in Section 5.3.19.18.  The respective recipient uses ReveipExportBase
+encapsulation of that key and provide it to the recipient using the id-it-HpkeCiphertext as defined below.  The respective recipient uses ReveipExportBase
 to recover the ephemeral symmetric key (the KEM shared secret) from the encapsulated
 representation received from the sender.  Both functions are used as specified
 in [RFC 9180 Section 6.2](#RFC9180).
 The symmetric key resulting from the first HPKE key exchange is to be
 part of the input to the second HPKE key exchange.  Doing so, a symmetric
 key authenticated by both PKI entities is established and used for MAC-based
-message protection. >
+message protection.
 
 In this case, an initial exchange using general messages is required to establish
 a shared symmetric key using two [Hybrid Public Key Encryption](#RFC9180) exchanges.
@@ -1756,13 +1758,23 @@ HpkeCiphertext.  The syntax for HpkeCiphertext is as follows:
 ~~~~ asn.1
   HpkeCiphertext ::= SEQUENCE {
     kem              AlgorithmIdentifier,
-    -- AlgId for a Key Encapsulation Mechanism
+    -- AlgId of the Key Encapsulation Mechanism
     kdf              AlgorithmIdentifier,
-    -- AlgId for a Key Derivation Function
+    -- AlgId of the Key Derivation Function
+    mac              AlgorithmIdentifier,
+    -- AlgId for a Message Authentication Code to be used for
+    --   message protection
+    l                INTEGER,
+    -- Defines the length of the keying material output of the KDF
+    -- SHOULD be the maximum key length of the MAC function
+    -- MUST NOT be bigger that 255*Nh of the KDF where Nh is output
+    --   size of the KDF
     enc              OCTET STRING
     -- Encrypted symmetric key from HPKE SendExportBase
   }
 ~~~~
+
+\< ToDo: As discussed in the last meeting and according to [draft-ietf-lamps-cms-kemri] I added the explicit value of l.  I also propose adding the mac OID.  What do others think? >
 
 The messages protected using the key derived from the HPKE-exchanges will contain a MAC value in
 PKIProtection and the protectionAlg MAY be one of the options described
@@ -1777,7 +1789,8 @@ MAC-based protection and looks like this:
 Message Flow:
 
 Step# PKI entity                           PKI management entity
-  1   format genm without
+      (client role)                        (server role)
+	  1   format genm without
         protection
                          ->   genm    ->
   2                                        validate certificate of
@@ -1813,10 +1826,11 @@ Step# PKI entity                           PKI management entity
 ~~~~
 {: #HPKE title='Message flow establishing a shared symmetric key for MAC-based protection' artwork-align="left"}
 
+Note: The PKI entity has a kemCertC certificate and the PKI management entity has a kemCertS certificate.
 
 1. The PKI entity formats a genm message of type id-it-HPKECiphertext and the
   value is absent.  The message has no protection and the extraCerts field
-  contains the client KEM-certificate kemCertC.
+  contains the client (which is the PKI entity in {{HPKE}}) KEM-certificate kemCertC.
 
 1. The PKI management entity validates the client certificate kemCertC.
 
@@ -1835,16 +1849,16 @@ Step# PKI entity                           PKI management entity
 
 
    ~~~~ asn.1
-     SendExportBase(pkC, "round1", context1, L) = (enc1, ss1)
+     SendExportBase(pkC, "round1", context1, l) = (enc1, ss1)
    ~~~~
-   Note: L SHOULD be the maximum key length of the MAC function to be used for
+   Note: l SHOULD be the maximum key length of the MAC function to be used for
    MAC-based message protection, but it MUST NOT be bigger that 255\*Nh, where
    Nh is the output size of the extract function of the used KDF.
 
    The genp message is of type id-it-HpkeCiphertext and the value is of type
    HpkeCiphertext containing OIDs of the used KEM and KDF functions and the
    ciphertext enc1. The message has no protection and the extraCerts field contains
-   the server KEM-certificate kemCertS.
+   the server (which is the PKI management entity in {{HPKE}}) KEM-certificate kemCertS.
 
 
 
@@ -1858,11 +1872,12 @@ Step# PKI entity                           PKI management entity
 
 
    ~~~~ asn.1
-     ReceiveExportBase(enc1, skC, "round1", context1, L) = ss1
+     ReceiveExportBase(enc1, skC, "round1", context1, l) = ss1
    ~~~~
    Note: If the decapsulation operation outputs an error, output a PKIFailureInfo
-   badMessageCheck \< Q: Or addInfoNotAvailable or TBD badKemExchange ... >,
-   and terminate the PKI management operation.
+   badMessageCheck, and terminate the PKI management operation.
+
+   \< ToDo: An additional PKIFailureInfo badKemExchange could be defined and used alternatively. >
 
    It concatenates the shared secret ss1, with the transactionID, the senderNonce
    genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of
@@ -1878,7 +1893,7 @@ Step# PKI entity                           PKI management entity
 
 
    ~~~~ asn.1
-     SendExportBase(pkS, "round2", context2, L) = (enc2, ss2)
+     SendExportBase(pkS, "round2", context2, l) = (enc2, ss2)
    ~~~~
    Note: The shared secret ss2 is the shared symmetric key to be used for MAC-based
    protection of all subsequent messages of this PKI management operation. This
@@ -1908,11 +1923,12 @@ Step# PKI entity                           PKI management entity
 
 
    ~~~~ asn.1
-     ReceiveExportBase(enc2, skC, "round2", context2, L) = ss2
+     ReceiveExportBase(enc2, skC, "round2", context2, l) = ss2
    ~~~~
    Note: If the decapsulation operation outputs an error, output a PKIFailureInfo
-   badMessageCheck \< Q: Or addInfoNotAvailable or TBD badKemExchange ... >,
-   and terminate the PKI management operation.
+   badMessageCheck, and terminate the PKI management operation.
+
+   \< ToDo: An additional PKIFailureInfo badKemExchange could be defined and used alternatively. >
 
    It verifies the MAC-based protection and thus authenticates the PKI entity
    as sender of the request message.
@@ -3865,7 +3881,7 @@ Next, the dual KEM construction presented in {{sect-5.1.3.1}} uses the HPKE outp
 as part of the label context2 for the second HPKE.
 This in turn is passed through ReceiveExportBase(..), Context.Export(..),
 LabeledExpand(..), and Expand(..) as above where finally the label context2,
-which is the info parameter for the Export(prk, info, L) function, and which
+which is the info parameter for the Export(prk, info, l) function, and which
 contains the output of the first HPKE ss1, is concatenated with the output
 of the second KEM prk to produce the final shared secret ss2. That means
 the dual KEM construction defined in {{sect-5.1.3.1}} maps to the notation of
