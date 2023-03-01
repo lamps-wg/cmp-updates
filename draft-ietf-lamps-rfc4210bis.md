@@ -1027,10 +1027,7 @@ Decrypting a value can be achieved either directly or indirectly.
 The direct method is for the RA/CA to issue a random challenge to which an
 immediate response by the EE is required.
 
-The indirect method is to issue a certificate that is encrypted for the end
-entity (and have the end entity demonstrate its ability to decrypt this certificate
-in the confirmation message).  This allows a CA to issue a certificate in
-a form that can only be used by the intended end entity.
+The indirect method is to issue a certificate that is encrypted for the end entity using a shared secret key derived from a key encapsulated using the public key (and have the end entity demonstrate its ability to use its private key for decapsulation of the KEM ciphertext, derive the shared secret key, decrypt this certificate, and provide a hash of the certificate in the confirmation message).  This allows a CA to issue a certificate in a form that can only be used by the intended end entity.
 
 This specification encourages use of the indirect method because it requires
 no extra messages to be sent (i.e., the proof can be demonstrated using the
