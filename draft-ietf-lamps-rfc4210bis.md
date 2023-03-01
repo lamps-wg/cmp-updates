@@ -69,6 +69,7 @@ informative:
   RFC4510:
   RFC5912:
   RFC8649:
+  RFC9162:
   NIST.SP.800_90Ar1:
   IEEE.802.1AR-2018:
     target: https://ieeexplore.ieee.org/document/8423794
@@ -515,8 +516,8 @@ management
   example, a CA may shorten the validity period requested).  Note
   that policy may dictate that the CA must not publish or
   otherwise distribute the certificate until the requesting entity
-  has reviewed and accepted the newly-created certificate
-  (typically through use of the certConf message).
+  has reviewed and accepted the newly-created certificate or the indirect POP is completed
+  (typically through use of the certConf message). In case of publication of the certificate or a precertificate in a Certificate Transparency log {{RFC9162}}, the certificate must be revoked if it was not accepted or the indirect POP could not be completed.
 
 1. A graceful, scheduled change-over from one non-compromised CA
   key pair to the next (CA key update) must be supported (note
@@ -3883,6 +3884,10 @@ which is cryptographically stronger than
 the combiner KDF( ss1 \|\| ss2 ) so long as the underlying KEM used in the
 second HPKE uses internally a KDF for deriving its output.
 
+## Usage of Certificate Transparency Logs
+{: id="sect-8.9"}
+
+If a certificate or its precertificate was published in a Certificate Transparency log {{RFC9162}} it must be revoked, if a required certConf message could not be verified, especially when the implicit POP was used.
 
 
 # IANA Considerations {#sect-9}
@@ -5571,6 +5576,8 @@ From version 03 -> 04:
 * Added Section 5.1.3.4 on message protection using KEM keys and HPKE
 
 * Aligned Section 5.2.2 on guidance which CMS key management technique to use with encrypted values (see thread "CMS: selection of key management technique to use for EnvelopedData") also adding support for KEM keys
+
+* Added Section 8.9 and extended Section 3.1.2 regarding use of Certificate Transparency logs
 
 * Deleted former Appendix C as announced in the -03
 
