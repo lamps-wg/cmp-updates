@@ -1438,7 +1438,7 @@ supplied, then this field MUST be supplied.
 
 senderKID and recipKID are usable to indicate which keys have been
 used to protect the message (recipKID will normally only be required
-where protection of the message also uses where the recipient's KEM key).
+where protection of the message also uses the recipient's KEM key).
 These fields MUST be used if required to uniquely identify a key
 (e.g., if more than one key is associated with a given sender name).
 The senderKID SHOULD be used in any case.
@@ -1709,6 +1709,7 @@ bits of the key, and so on, until all K bits have been derived.
 Note: Hash algorithms that can be used as one-way functions are listed in
 CMP Algortihms [RFCCCCC] Section 2.
 
+Note: As alternative to this mechanism, the mechanism described in {{Section 5.1.3.4}} can be applies.
 
 #### Signature
 {: id="sect-5.1.3.3"}
@@ -2082,9 +2083,7 @@ The content-encryption key will be protected using the key agreement key managem
   using the password-based key management technique, as specified in
   [CMS Section 6.2.4](#RFC5652).
 
-* \< ToDo: Depending on the extension of [CMS Section 6.1](#RFC5652)
-     regarding KEM support, the support of KEMRecipientInfo must be added here.
-  >
+* Recipient's certificate with a public key that supports key encapsulation mechanism and where any given key usage extension allows keyEncipherment: The content-encryption key will be protected using the additional key management technique for KEM keys, as specified in {{I-D.ietf-lamps-cms-kemri}}.
 
 
 ### Status codes and Failure Information for PKI Messages
@@ -5574,7 +5573,7 @@ From version 03 -> 04:
 
 * Added Section 5.1.3.4 on message protection using KEM keys and HPKE
 
-* Aligned Section 5.2.2 on guidance which CMS key management technique to use with encrypted values (see thread "CMS: selection of key management technique to use for EnvelopedData")
+* Aligned Section 5.2.2 on guidance which CMS key management technique to use with encrypted values (see thread "CMS: selection of key management technique to use for EnvelopedData") also adding support for KEM keys
 
 * Deleted former Appendix C as announced in the -03
 
