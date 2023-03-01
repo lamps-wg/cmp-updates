@@ -1429,7 +1429,7 @@ information to use to verify the message.
 
 The recipient field contains the name of the recipient of the
 PKIMessage.  This name (in conjunction with recipKID, if supplied)
-should be usable to verify the protection on the message.
+should be usable to verify the protection on the message where the recipient's KEM key is used.
 
 The protectionAlg field specifies the algorithm used to protect the
 message.  If no protection bits are supplied (note that PKIProtection
@@ -1438,16 +1438,14 @@ supplied, then this field MUST be supplied.
 
 senderKID and recipKID are usable to indicate which keys have been
 used to protect the message (recipKID will normally only be required
-where protection of the message uses Diffie-Hellman (DH) keys).
+where protection of the message also uses where the recipient's KEM key).
 These fields MUST be used if required to uniquely identify a key
 (e.g., if more than one key is associated with a given sender name).
 The senderKID SHOULD be used in any case.
 
-Note: The recommendation of using senderKID was changed since [RFC4210],
+Note: The recommendation of using senderKID was changed since {{RFC4210}},
 where it was recommended to be omitted if not needed to identify the protection
 key.
-
-\< ToDo: Possibly add a protection mechanism using KEM keys. >
 
 The transactionID field within the message header is to be used to
 allow the recipient of a message to correlate this with an ongoing
