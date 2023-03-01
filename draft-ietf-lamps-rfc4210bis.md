@@ -159,9 +159,9 @@ X.509v3 certificate creation and management. CMP provides interactions between
 client systems and PKI components such as a Registration Authority (RA) and
 a Certification Authority (CA).
 
-This document obsolates RFC 4210 by including the updates specified by CMP
+This document obsoletes RFC 4210 by including the updates specified by CMP
 Updates [RFCAAAA] Section 2 and Appendix A.2 maintaining backward compatibility
-with CMP version 2 wherever possible and obsoleted both documents.  Updates
+with CMP version 2 wherever possible and obsoletes both documents.  Updates
 to CMP version 2 are: improving crypto agility, extending the polling mechanism,
 adding new general message types, and adding extended key usages to identify
 special CMP server authorizations.  Introducing version 3 to be used only
@@ -170,10 +170,9 @@ of EncryptedValue and hashAlg for indicating a hash AlgorithmIdentifier in
 certConf messages.
 
 In addition to the changes specified in CMP Updates [RFCAAAA] this document
-adds support for manangement of KEM certificates.
+adds support for management of KEM certificates.
 
-Appendix F of this document contains the updated 2002 ASN.1 module originating
-from RFC 5912.
+Appendix F of this document updates the 2002 ASN.1 module in RFC 5912 Section 9.
 
 --- middle
 
