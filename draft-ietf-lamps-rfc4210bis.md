@@ -1706,7 +1706,7 @@ bits of the key, and so on, until all K bits have been derived.
 Note: Hash algorithms that can be used as one-way functions are listed in
 CMP Algortihms [RFCCCCC] Section 2.
 
-Note: As alternative to this mechanism, the mechanism described in {{Section 5.1.3.4}} can be applies.
+Note: As alternative to this mechanism, the mechanism described in {{sect-5.1.3.4}} can be applies.
 
 #### Signature
 {: id="sect-5.1.3.3"}
