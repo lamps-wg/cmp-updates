@@ -1729,7 +1729,7 @@ side and send a symmetric key in form of a KEM encapsulated ciphertext according
 to [Hybrid Public Key Encryption](#RFC9180) to the respective recipient.
 Each sender uses the SendExportBase to get
 the fixed-length symmetric key (the KEM shared secret) and a fixed-length
-encapsulation of that key and provide it to the recipient using the id-it-HpkeCiphertext as defined below.  The respective recipient uses ReveipExportBase
+encapsulation of that key and provide it to the recipient using the id-it-KemCiphertext as defined below.  The respective recipient uses ReveipExportBase
 to recover the ephemeral symmetric key (the KEM shared secret) from the encapsulated
 representation received from the sender.  Both functions are used as specified
 in [RFC 9180 Section 6.2](#RFC9180).
@@ -1741,18 +1741,18 @@ message protection.
 In this case, an initial exchange using general messages is required to establish
 a shared symmetric key using two [Hybrid Public Key Encryption](#RFC9180) exchanges.
 
-The object identifier used for HPKE key exchanges is id-it-HpkeCiphertext,
+The object identifier used for HPKE key exchanges is id-it-KemCiphertext,
 which is defined in this document as:
 
 ~~~~ asn.1
-  id-it-HpkeCiphertext OBJECT IDENTIFIER ::= { id-it TBD1 }
+  id-it-KemCiphertext OBJECT IDENTIFIER ::= { id-it TBD1 }
 ~~~~
 
-When id-it-HpkeCiphertext is used, the value is either absent or of type
-HpkeCiphertext.  The syntax for HpkeCiphertext is as follows:
+When id-it-KemCiphertext is used, the value is either absent or of type
+KemCiphertext.  The syntax for KemCiphertext is as follows:
 
 ~~~~ asn.1
-  HpkeCiphertext ::= SEQUENCE {
+  KemCiphertext ::= SEQUENCE {
     kem              AlgorithmIdentifier,
     -- AlgId of the Key Encapsulation Mechanism
     kdf              AlgorithmIdentifier,
@@ -1760,7 +1760,7 @@ HpkeCiphertext.  The syntax for HpkeCiphertext is as follows:
     mac              AlgorithmIdentifier,
     -- AlgId for a Message Authentication Code to be used for
     --   message protection
-    l                INTEGER,
+    len              INTEGER,
     -- Defines the length of the keying material output of the KDF
     -- SHOULD be the maximum key length of the MAC function
     -- MUST NOT be bigger that 255*Nh of the KDF where Nh is output
@@ -1770,7 +1770,7 @@ HpkeCiphertext.  The syntax for HpkeCiphertext is as follows:
   }
 ~~~~
 
-\< ToDo: As discussed in the last meeting and according to [draft-ietf-lamps-cms-kemri] I added the explicit value of l.  I also propose adding the mac OID.  What do others think? >
+\< ToDo: As discussed in the last meeting and according to [draft-ietf-lamps-cms-kemri] I added the explicit value of len.  I also propose adding the mac OID.  What do others think? >
 
 The messages protected using the key derived from the HPKE-exchanges will contain a MAC value in
 PKIProtection and the protectionAlg MAY be one of the options described
@@ -1786,7 +1786,7 @@ Message Flow:
 
 Step# PKI entity                           PKI management entity
       (client role)                        (server role)
-	  1   format genm without
+  1   format genm without
         protection
                          ->   genm    ->
   2                                        validate certificate of
@@ -1820,13 +1820,13 @@ Step# PKI entity                           PKI management entity
         Further messages can be exchanged with MAC-based
       protection using the established shared symmetric key
 ~~~~
-{: #HPKE title='Message flow establishing a shared symmetric key for MAC-based protection' artwork-align="left"}
+{: #KEM title='Message flow establishing a shared symmetric key for MAC-based protection' artwork-align="left"}
 
 Note: The PKI entity has a kemCertC certificate and the PKI management entity has a kemCertS certificate.
 
-1. The PKI entity formats a genm message of type id-it-HPKECiphertext and the
+1. The PKI entity formats a genm message of type id-it-KemCiphertext and the
   value is absent.  The message has no protection and the extraCerts field
-  contains the client (which is the PKI entity in {{HPKE}}) KEM-certificate kemCertC.
+  contains the client (which is the PKI entity in {{KEM}}) KEM-certificate kemCertC.
 
 1. The PKI management entity validates the client certificate kemCertC.
 
@@ -1845,16 +1845,16 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
 
 
    ~~~~ asn.1
-     SendExportBase(pkC, "round1", context1, l) = (enc1, ss1)
+     SendExportBase(pkC, "round1", context1, len) = (enc1, ss1)
    ~~~~
-   Note: l SHOULD be the maximum key length of the MAC function to be used for
+   Note: len SHOULD be the maximum key length of the MAC function to be used for
    MAC-based message protection, but it MUST NOT be bigger that 255\*Nh, where
    Nh is the output size of the extract function of the used KDF.
 
-   The genp message is of type id-it-HpkeCiphertext and the value is of type
-   HpkeCiphertext containing OIDs of the used KEM and KDF functions and the
+   The genp message is of type id-it-KemCiphertext and the value is of type
+   KemCiphertext containing OIDs of the used KEM and KDF algorithm and the
    ciphertext enc1. The message has no protection and the extraCerts field contains
-   the server (which is the PKI management entity in {{HPKE}}) KEM-certificate kemCertS.
+   the server (which is the PKI management entity in {{KEM}}) KEM-certificate kemCertS.
 
 
 
@@ -1868,7 +1868,7 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
 
 
    ~~~~ asn.1
-     ReceiveExportBase(enc1, skC, "round1", context1, l) = ss1
+     ReceiveExportBase(enc1, skC, "round1", context1, len) = ss1
    ~~~~
    Note: If the decapsulation operation outputs an error, output a PKIFailureInfo
    badMessageCheck, and terminate the PKI management operation.
@@ -1889,7 +1889,7 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
 
 
    ~~~~ asn.1
-     SendExportBase(pkS, "round2", context2, l) = (enc2, ss2)
+     SendExportBase(pkS, "round2", context2, len) = (enc2, ss2)
    ~~~~
    Note: The shared secret ss2 is the shared symmetric key to be used for MAC-based
    protection of all subsequent messages of this PKI management operation. This
@@ -1898,10 +1898,9 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
    {{I-D.ounsworth-cfrg-kem-combiners}}, also see {{sect-8.8}} for further discussion.
 
    The request message is of any type. The generalInfo field contains a InfoTypeAndValue
-   element of type id-it-HpkeCiphertext and the value is of type HpkeCiphertext
-   containing OIDs of the used KEM and KDF functions and the ciphertext enc2.
-   The message has a MAC-based protection using the protectionAlg id-hpke-mac
-   and the shared secret ss2.
+   element of type id-it-KemCiphertext and the value is of type KemCiphertext
+   containing OIDs of the used KEM and KDF algorithm and the ciphertext enc2.
+   The message has a MAC-based protection using the shared secret ss2.
 
 
 
@@ -1919,7 +1918,7 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
 
 
    ~~~~ asn.1
-     ReceiveExportBase(enc2, skC, "round2", context2, l) = ss2
+     ReceiveExportBase(enc2, skC, "round2", context2, len) = ss2
    ~~~~
    Note: If the decapsulation operation outputs an error, output a PKIFailureInfo
    badMessageCheck, and terminate the PKI management operation.
@@ -1929,8 +1928,7 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
    It verifies the MAC-based protection and thus authenticates the PKI entity
    as sender of the request message.
 
-   The response message has a MAC-based protection using the protectionAlg id-hpke-mac
-   and the shared secret ss2.
+   The response message has a MAC-based protection the shared secret ss2.
 
 
 
