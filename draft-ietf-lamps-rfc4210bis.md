@@ -1873,8 +1873,6 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
    Note: If the decapsulation operation outputs an error, output a PKIFailureInfo
    badMessageCheck, and terminate the PKI management operation.
 
-   \< ToDo: An additional PKIFailureInfo badKemExchange could be defined and used alternatively. >
-
    It concatenates the shared secret ss1, with the transactionID, the senderNonce
    genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of
    the received genp message to context2.
@@ -1922,8 +1920,6 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
    ~~~~
    Note: If the decapsulation operation outputs an error, output a PKIFailureInfo
    badMessageCheck, and terminate the PKI management operation.
-
-   \< ToDo: An additional PKIFailureInfo badKemExchange could be defined and used alternatively. >
 
    It verifies the MAC-based protection and thus authenticates the PKI entity
    as sender of the request message.
