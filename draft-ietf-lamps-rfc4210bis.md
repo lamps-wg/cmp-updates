@@ -3882,7 +3882,9 @@ second HPKE uses internally a KDF for deriving its output.
 ## Usage of Certificate Transparency Logs
 {: id="sect-8.9"}
 
-If a certificate or its precertificate was published in a Certificate Transparency log {{RFC9162}} it must be revoked, if a required certConf message could not be verified, especially when the implicit POP was used.
+CAs that support indirect POP MUST NOT also publish final certificates to Certificate Transparency logs {{RFC9162}}. The risk is that a malicious actor could fetch the final certificate from the CT log and use that to spoof a response to the implicit POP challenge via a certConf response. This risk does not apply to CT precertificates, so those are ok to publish.
+
+If a certificate or its precertificate was published in a CT log it must be revoked, if a required certConf message could not be verified, especially when the implicit POP was used.
 
 
 # IANA Considerations {#sect-9}
