@@ -1770,10 +1770,7 @@ KemCiphertext.  The syntax for KemCiphertext is as follows:
   }
 ~~~~
 
-\< ToDo: As discussed in the last meeting and according to [draft-ietf-lamps-cms-kemri] I added the explicit value of len.  I also propose adding the mac OID.  What do others think? >
-
-The messages protected using the key derived from the HPKE-exchanges will contain a MAC value in
-PKIProtection and the protectionAlg MAY be one of the options described
+The messages protected using the key derived from the HPKE-exchanges will contain a MAC value in PKIProtection and the protectionAlg MAY be one of the options described
 in CMP Algorithms Section 6.2 [RFCCCCC].
 
 The message flow establishing a shared symmetric key consists of an additional
