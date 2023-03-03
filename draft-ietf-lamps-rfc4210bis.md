@@ -1025,7 +1025,7 @@ For key encapsulation mechanism keys, the end entity can be required to decrypt
 a value in order to prove possession of the private key (see {{sect-5.2.8}}).
 Decrypting a value can be achieved either directly or indirectly.
 
-Note: A definition of Key Encapsulation Mechanisms can be found in {{I-D.ietf-cms-kemri, Section 1}}.
+Note: A definition of Key Encapsulation Mechanisms can be found in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
 The direct method is for the RA/CA to issue a random challenge to which an
 immediate response by the EE is required.
@@ -1740,7 +1740,7 @@ part of the input to the second HPKE key exchange.  Doing so, a symmetric
 key authenticated by both PKI entities is established and used for MAC-based
 message protection.
 
-Note: A definition of Key Encapsulation Mechanisms can be found in {{I-D.ietf-cms-kemri, Section 1}}.
+Note: A definition of Key Encapsulation Mechanisms can be found in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
 In this case, an initial exchange using general messages is required to establish
 a shared symmetric key using two [Hybrid Public Key Encryption](#RFC9180) exchanges.
