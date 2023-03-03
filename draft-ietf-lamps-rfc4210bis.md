@@ -1759,9 +1759,6 @@ KemCiphertext.  The syntax for KemCiphertext is as follows:
     -- AlgId of the Key Encapsulation Mechanism
     kdf              AlgorithmIdentifier,
     -- AlgId of the Key Derivation Function
-    mac              AlgorithmIdentifier,
-    -- AlgId for a Message Authentication Code to be used for
-    --   message protection
     len              INTEGER,
     -- Defines the length of the keying material output of the KDF
     -- SHOULD be the maximum key length of the MAC function
