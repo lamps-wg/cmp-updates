@@ -1036,8 +1036,6 @@ This specification encourages use of the indirect method because it requires
 no extra messages to be sent (i.e., the proof can be demonstrated using the
 {request, response, confirmation} triple of messages).
 
-\< ToDo: Review by co-authors needed. >
-
 
 
 ## Root CA Key Update
@@ -1884,7 +1882,7 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
                        genp_recipNonce)
    ~~~~
    It generates a shared secret ss2 and the associated ciphertext enc2 using
-   the HPKE export function SendExportBase and the server’s public key pkS:
+   the HPKE export function SendExportBase and the server's public key pkS:
 
 
    ~~~~ asn.1
@@ -1934,8 +1932,6 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
 
 All potential further message of this PKI management operation make use of
 ss2 for MAC-based protection.
-
-\< ToDo: Review by co-authors needed. >
 
 
 #### Multiple Protection
@@ -2217,10 +2213,7 @@ See {{RFC4211}} for PKIPublicationInfo syntax.
 
 \< ToDo: This section should be aligned with {{sect-4.3}} of this document and
 RFC 4211 Section 4. It should potentially be restructured
-and updated for better readability. It could be sorted like RFC 4211 Section
-4 based on the capabilities of the keys.  As discussed at interim-2022-lamps-02
-the authors wait for the definition of proof-of-possession for KEM keys.
->
+and updated for better readability. Also some inconsistencies in Section 5.2.8.3 resulting from the update of RFC2510 to RFC4210 should be fixed. >
 
 If the certification request is for a key pair that supports signing , then
 the proof-of-possession of the private signing key is demonstrated through
@@ -2280,12 +2273,6 @@ Note: When using CMP V2 with EcryptedValue, [RFC 4210 Appendix C](#RFC4210) mad
 MUST be encoded as an EncryptedValue and then wrapped in a BIT STRING.  This
 allows the necessary conveyance and protection of the private key while maintaining
 bits-on-the-wire compatibility with [RFC 4211](#RFC4211).
-
-\< Explanation: RFC4211 extended the POPOPrivKey CHOICE adding choice [3]
-and [4]. As there is now the EnvelopedData choice [4] available in the extended
-definition, this should be used for CMP V3 syntax.  In case of CMP V2 syntax
-the former specification of RFC4210 Appendix C should apply, see the Note
-above. >
 
 \< ToDo: Section 2.27 of CMP Updated should be updated during AUTH48 specifying
 the use of encryptedKey field instead of thisMessage when EnvelopedData is
