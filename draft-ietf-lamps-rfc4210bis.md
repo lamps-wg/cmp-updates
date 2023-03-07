@@ -1724,10 +1724,7 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 
 \< ToDo: The WG recommended use of HPKE for establishing a shared secret key.  Today HPKE specifies only a D-H bases KEM in [RFC 9180 Section 4.1](#RFC9180).  To be independent to HPKE this document could also use the approach shown in [draft-ietf-lamps-cms-kemri](#I-D.ietf-lamps-cms-kemri) only relying on the availability of a KeyGen, Encapsulate, and Decapsulate function.  This would ease this specification and allow further reuse of profiling KEM algorithms for use in CMS.  What do others think? >
 
-In this case, an initial exchange using general messages is required to contribute to establishing a shared symmetric key as follows.  Both PKI entities require a certificate of the other
-side and send a symmetric key in form of a KEM encapsulated ciphertext according
-to [Hybrid Public Key Encryption](#RFC9180) to the respective recipient.
-Each sender uses the SendExportBase to get
+In this case, an initial exchange using general messages is required to contribute to establishing a shared symmetric key as follows.  Both PKI entities require a certificate of the other side and send a symmetric key in form of a KEM encapsulated ciphertext using the secret export APIs as specified in Hybrid Public Key Encryption  {{RFC9180, Section 6.2}} to the respective recipient.  Each sender uses the SendExportBase to get
 the fixed-length symmetric key (the KEM shared secret) and a fixed-length
 encapsulation of that key and provide it to the recipient using the id-it-KemCiphertext as defined below.  The respective recipient uses ReveipExportBase
 to recover the ephemeral symmetric key (the KEM shared secret) from the encapsulated
@@ -1837,7 +1834,7 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
    in RFC 9180 Section 3 [RFC9180].
 
    It generates a shared secret ss1 and the associated ciphertext enc1 using
-   the HPKE export function SendExportBase and the clients public key pkC:
+   the HPKE export function SendExportBase with the clients public key pkC and context1:
 
 
    ~~~~ asn.1
@@ -1879,7 +1876,7 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
                        genp_recipNonce)
    ~~~~
    It generates a shared secret ss2 and the associated ciphertext enc2 using
-   the HPKE export function SendExportBase and the server's public key pkS:
+   the HPKE export function SendExportBase with the server's public key pkS and context2:
 
 
    ~~~~ asn.1
@@ -2059,18 +2056,22 @@ The choice of the key management technique to be used by the sender depends
 on the credential available at the recipient:
 
 
-* Recipient's certificate with a public key that supports key transport and where any given key usage extension allows keyEncipherment:
+* Recipient's certificate with an algorithm identifier and a public key that supports key transport and where any given key usage extension allows keyEncipherment:
 The content-encryption key will be protected using the key transport key management technique, as specified in [CMS Section 6.2.1](#RFC5652).
 
-* Recipient's certificate with a public key that supports key agreement and where any given key usage extension allows keyAgreement:
+* Recipient's certificate with an algorithm identifier and a public key that supports key agreement and where any given key usage extension allows keyAgreement:
 The content-encryption key will be protected using the key agreement key management technique, as specified in  [CMS Section 6.2.2](#RFC5652). This is the preferred technique.
 
 * A password or shared secret: The content-encryption key will be protected
   using the password-based key management technique, as specified in
   [CMS Section 6.2.4](#RFC5652).
 
-* Recipient's certificate with a public key that supports key encapsulation mechanism and where any given key usage extension allows keyEncipherment: The content-encryption key will be protected using the additional key management technique for KEM keys, as specified in {{I-D.ietf-lamps-cms-kemri}}.
+* Recipient's certificate with an algorithm identifier and a public key that supports key encapsulation mechanism and where any given key usage extension allows keyEncipherment: The content-encryption key will be protected using the additional key management technique for KEM keys, as specified in {{I-D.ietf-lamps-cms-kemri}}.
 
+Note: There are cases where the algorithm identifier, the type of the public key,
+and the key usage extension will not be sufficient to decide on the key management
+technique to use, e.g., when rsaEncryption is the algorithm identifier. In
+such cases it is a matter of local policy to decide.
 
 ### Status codes and Failure Information for PKI Messages
 {: id="sect-5.2.3"}
@@ -3866,7 +3867,7 @@ second HPKE uses internally a KDF for deriving its output.
 ## Usage of Certificate Transparency Logs
 {: id="sect-8.9"}
 
-CAs that support indirect POP MUST NOT also publish final certificates to Certificate Transparency logs {{RFC9162}}. The risk is that a malicious actor could fetch the final certificate from the CT log and use that to spoof a response to the implicit POP challenge via a certConf response. This risk does not apply to CT precertificates, so those are ok to publish.
+CAs that support indirect POP MUST NOT also publish final certificates to Certificate Transparency logs {{RFC9162}} before having received the certConf message containing the certHash of that certificate to complete the POP. The risk is that a malicious actor could fetch the final certificate from the CT log and use that to spoof a response to the implicit POP challenge via a certConf response. This risk does not apply to CT precertificates, so those are ok to publish.
 
 If a certificate or its precertificate was published in a CT log it must be revoked, if a required certConf message could not be verified, especially when the implicit POP was used.
 
@@ -5548,6 +5549,11 @@ END
 # History of Changes {#sect-f}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 04 -> 05:
+
+
+* Updated sections 5.1.3.4, 5.2.2, and 8.9 adressing comments from Russ (see thread "I-D Action: draft-ietf-lamps-rfc4210bis-04.txt")
 
 From version 03 -> 04:
 
