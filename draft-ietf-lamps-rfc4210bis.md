@@ -1722,33 +1722,21 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 #### Key Encapsulation
 {: id="sect-5.1.3.4"}
 
-\< ToDo: The WG recommended use of HPKE for establishing a shared secret key.  Today HPKE specifies only a D-H bases KEM in [RFC 9180 Section 4.1](#RFC9180).  To be independent to HPKE this document could also use the approach shown in [draft-ietf-lamps-cms-kemri](#I-D.ietf-lamps-cms-kemri) only relying on the availability of a KeyGen, Encapsulate, and Decapsulate function.  This would ease this specification and allow further reuse of profiling KEM algorithms for use in CMS.  What do others think? >
+\< ToDo: Version -05 proposed an approach using HPKE to establish an authenticated shared symmetric key. This version offers an alternative using plain KEM and KDF functions as shown in [draft-ietf-lamps-cms-kemri](#I-D.ietf-lamps-cms-kemri). >
 
-In this case, an initial exchange using general messages is required to contribute to establishing a shared symmetric key as follows.  Both PKI entities require a certificate of the other side and send a symmetric key in form of a KEM encapsulated ciphertext using the secret export APIs as specified in Hybrid Public Key Encryption  {{RFC9180, Section 6.2}} to the respective recipient.  Each sender uses the SendExportBase to get
-the fixed-length symmetric key (the KEM shared secret) and a fixed-length
-encapsulation of that key and provide it to the recipient using the id-it-KemCiphertext as defined below.  The respective recipient uses ReveipExportBase
-to recover the ephemeral symmetric key (the KEM shared secret) from the encapsulated
-representation received from the sender.  Both functions are used as specified
-in [RFC 9180 Section 6.2](#RFC9180).
-The symmetric key resulting from the first HPKE key exchange is to be
-part of the input to the second HPKE key exchange.  Doing so, a symmetric
-key authenticated by both PKI entities is established and used for MAC-based
-message protection.
+\< ToDo: Version -05 as well as this version utilizes keys from both CMP client and server in applying Encapsulate/Decapsulate twice. Deriving a joined key from the two shared secrets result in a mutually authenticated shared symmetric key used by both parties, like when using an out-of-band established shared secret information. In contrast to this approach, each side could directly use the shared secret resulting from the Encapsulate/Decapsulate for deriving an individual shared symmetric key. Doing so the MAC-based protection generated on both sides would used a different key.  This would facilitate that only one side used a KEM key pair and the other side uses a signature key pair. This would offer some additional flexibility, but on at the price of a more complex key establishment. >
 
-Note: A definition of Key Encapsulation Mechanisms can be found in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
+In this case, an initial CMP message exchange using general messages is required to contribute to establishing a shared symmetric key (ssk) as follows.  Both PKI entities require a KEM certificate of the other side.  Each sender uses the KEM Encapsulate(pk) -> (ss, ct) function with the recipient's public key (pk) to produce the KEM shared secret (ss) and an encapsulation of that shares secret, the KEM ciphertext (ct) and provide the ciphertext to the recipient using the id-it-KemCiphertext as defined below.  The respective recipient uses a Decapsulate(sk, ct)->(ss) function with the private key (sk) and the ciphertext (ct) to recover the the KEM shared secret (ss) from the encapsulated representation received from the sender.  Each party uses a KDF(ikm, len, ukm)->(ssk) function with input key material (ikm), the desired length of the output keying material (len), and user key material (ukm) to derive a shares symmetric key (ssk). Both shared secrets (ss1) and (ss2) contribute as input to the KDF.  In addition a static string and some random data from the PKI message header also contribute to the key derivation. Doing so, a shared symmetric key (ssk) authenticated by both PKI entities is established and can be used for MAC-based message protection.
 
-In this case, an initial exchange using general messages is required to establish
-a shared symmetric key using two [Hybrid Public Key Encryption](#RFC9180) exchanges.
+Note: This approach uses the definition of Key Encapsulation Mechanisms in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
-The object identifier used for HPKE key exchanges is id-it-KemCiphertext,
-which is defined in this document as:
+The object identifier used for transferring the KEM ciphertext is id-it-KemCiphertext, which is defined in this document as:
 
 ~~~~ asn.1
   id-it-KemCiphertext OBJECT IDENTIFIER ::= { id-it TBD1 }
 ~~~~
 
-When id-it-KemCiphertext is used, the value is either absent or of type
-KemCiphertext.  The syntax for KemCiphertext is as follows:
+When id-it-KemCiphertext is used, the value is either absent or of type KemCiphertext.  The syntax for KemCiphertext is as follows:
 
 ~~~~ asn.1
   KemCiphertext ::= SEQUENCE {
@@ -1761,13 +1749,12 @@ KemCiphertext.  The syntax for KemCiphertext is as follows:
     -- SHOULD be the maximum key length of the MAC function
     -- MUST NOT be bigger that 255*Nh of the KDF where Nh is output
     --   size of the KDF
-    enc              OCTET STRING
-    -- Encrypted symmetric key from HPKE SendExportBase
+    ct               OCTET STRING
+    -- Ciphertext output from the Encapsulate function
   }
 ~~~~
 
-The messages protected using the key derived from the HPKE-exchanges will contain a MAC value in PKIProtection and the protectionAlg MAY be one of the options described
-in CMP Algorithms Section 6.2 [RFCCCCC].
+The CMP messages protected using the shared symmetric key derived from the KEM shared secret will contain a MAC value in PKIProtection and the protectionAlg MAY be one of the options described in CMP Algorithms Section 6.2 [RFCCCCC].
 
 The message flow establishing a shared symmetric key consists of an additional
 genm/genp with no protection and the desired request/response messages with
@@ -1783,25 +1770,22 @@ Step# PKI entity                           PKI management entity
         protection
                          ->   genm    ->
   2                                        validate certificate of
-                                             PKI entitiy
-                                           perform HPKE
-                                             SendExportBase
+                                             PKI entity
+                                           perform KEM Encapsulate
                                            format genp without
                                              protection
                          <-   genp    <-
   3   validate
         certificate of PKI
         management entity
-      perform HPKE
-        ReceiveExportBase
-      perform HPKE
-        SendExportBase
-      format request
-        with MAC-based
-        protection
+      perform KEM Decapsulate
+      perform KEM Encapsulate
+      perform key derivation
+      format request with
+        MAC-based protection
                          ->  request  ->
-  4                                        perform HPKE
-                                             ReceiveExportBase
+  4                                        perform KEM Decapsulate
+                                           perform key derivation
                                            verify MAC-based
                                              protection
 ----------------  client authenticated by the server  ---------------
@@ -1823,109 +1807,90 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
 
 1. The PKI management entity validates the client certificate kemCertC.
 
-   The PKI management entity concatenates the transactionID and senderNonce
-   genm_senderNonce from the PKIHeader of the recieved genm message to context1.
+   It generates a shared secret ss1 and the associated ciphertext ct1 using
+   the KEM Encapsulate function with the client's public key pkC:
 
 
    ~~~~ asn.1
-     context1 = concat(transactionID, genm_senderNonce)
+     Encapsulate(pkC) -> (ct1, ss1)
    ~~~~
-   Note: The function concat(x0, ..., xN) concatenates the byte strings as specified
-   in RFC 9180 Section 3 [RFC9180].
-
-   It generates a shared secret ss1 and the associated ciphertext enc1 using
-   the HPKE export function SendExportBase with the clients public key pkC and context1:
-
-
-   ~~~~ asn.1
-     SendExportBase(pkC, "round1", context1, len) = (enc1, ss1)
-   ~~~~
-   Note: len SHOULD be the maximum key length of the MAC function to be used for
-   MAC-based message protection, but it MUST NOT be bigger that 255\*Nh, where
-   Nh is the output size of the extract function of the used KDF.
-
-   The genp message is of type id-it-KemCiphertext and the value is of type
-   KemCiphertext containing OIDs of the used KEM and KDF algorithm and the
-   ciphertext enc1. The message has no protection and the extraCerts field contains
-   the server (which is the PKI management entity in {{KEM}}) KEM-certificate kemCertS.
+   The genp message is of type id-it-KemCiphertext and the value is of type KemCiphertext containing OIDs of the used KEM and KDF algorithm, the desired output length len of the KDF, and the KEM ciphertext ct1. The message has no protection and the extraCerts field contains the server (which is the PKI management entity in {{KEM}}) KEM-certificate kemCertS.
 
 
 
 1. The PKI entity validates the server certificate kemCertS.
 
-   The PKI entity concatenates the transactionID and senderNonce genm_senderNonce
-   from the PKIHeader of the initial genm message to context1 as described above.
-
-   It decapsulates the shared secret ss1 from the ciphertext enc1 using the
-   HPKE export function ReceiveExportBase and its private key skC:
+   It decapsulates the shared secret ss1 from the ciphertext ct1 using the
+   KEM Decapsulate function and its private key skC:
 
 
    ~~~~ asn.1
-     ReceiveExportBase(enc1, skC, "round1", context1, len) = ss1
+     Decapsulate(ct1, skC) -> (ss1)
    ~~~~
-   Note: If the decapsulation operation outputs an error, output a PKIFailureInfo
-   badMessageCheck, and terminate the PKI management operation.
+   Note: If the decapsulation operation outputs an error, any PKIFailureInfo SHALL contain the value badMessageCheck and the PKI management operation SHALL be terminated.
 
-   It concatenates the shared secret ss1, with the transactionID, the senderNonce
-   genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of
-   the received genp message to context2.
+   It generates a shared secret ss2 and the associated ciphertext ct2 using
+   the KEM Encapsulate function with the server's public key pkS:
 
 
    ~~~~ asn.1
-     context2 = concat(ss1, transactionID, genp_senderNonce,
-                       genp_recipNonce)
+     Encapsulate(pkS) = (ct2, ss2)
    ~~~~
-   It generates a shared secret ss2 and the associated ciphertext enc2 using
-   the HPKE export function SendExportBase with the server's public key pkS and context2:
+   It concatenates the shared secret ss1, with the static text "CMP-KEM", the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the genp message to the user key material ukm.
 
 
    ~~~~ asn.1
-     SendExportBase(pkS, "round2", context2, len) = (enc2, ss2)
+     ukm = concat(ss1, "CMP-KEM", transactionID, genp_senderNonce,
+                  genp_recipNonce)
    ~~~~
-   Note: The shared secret ss2 is the shared symmetric key to be used for MAC-based
-   protection of all subsequent messages of this PKI management operation. This
-   construction for combining two KEM shared secrets by chaining two invocations
-   of HPKE is at least as strong as the KEM combiner presented in
-   {{I-D.ounsworth-cfrg-kem-combiners}}, also see {{sect-8.8}} for further discussion.
+   Note: The function concat(x0, ..., xN) concatenates the byte strings as specified in RFC 9180 Section 3 [RFC9180].
 
-   The request message is of any type. The generalInfo field contains a InfoTypeAndValue
-   element of type id-it-KemCiphertext and the value is of type KemCiphertext
-   containing OIDs of the used KEM and KDF algorithm and the ciphertext enc2.
-   The message has a MAC-based protection using the shared secret ss2.
+   It derives the shared symmetric key ssk from the shared secret ss2 using the desired output length len and the user key material also containing the shared secret ss1.
 
+   ~~~~ asn.1
+     KDF(ss2, len, ukm)->(ssk)
+   ~~~~
+   Note: len SHOULD be the maximum key length of the MAC function to be used for
+   MAC-based message protection, but it MUST NOT be bigger that 255\*Nh, where
+   Nh is the output size of the used KDF.
 
+   Note: The shared symmetric key ssk is used for MAC-based protection of all subsequent messages of this PKI management operation. This construction for combining two KEM shared secrets using a KDF is at least as strong as the KEM combiner presented in {{I-D.ounsworth-cfrg-kem-combiners}}, also see {{sect-8.8}} for further discussion.
 
-1. PKI management entity concatenates the shared secret ss1, with the transactionID,
-   the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from
-   the PKIHeader of the received genp message to context2 as described above.
+   \< ToDo: @Mike, please check the combining of the two shared secrets and if the above note is still correct and needed. >
+
+   The request message is of any type. The generalInfo field in the message header contains an element of type id-it-KemCiphertext and the value is of type KemCiphertext containing OIDs of the used KEM and KDF algorithm, the desired output length len of the KDF, and the KEM ciphertext ct2. The message has a MAC-based protection using the shared symmetric key ssk.
+
+1. PKI management entity decapsulates the shared secret ss2 from the ciphertext ct2 using the Decapsulate function and its private key skS:
 
 
    ~~~~ asn.1
-     context2 = concat(ss1, transactionID, genp_senderNonce,
-                       genp_recipNonce)
+     Decapsulate(ct2, skS) = ss2
    ~~~~
-   It decapsulates the shared secret ss2 from the ciphertext enc2 using the
-   HPKE export function ReceiveExportBase and its private key skS:
+   Note: If the decapsulation operation outputs an error, The PKI management entity SHALL return a PKIFailureInfo containing the value badMessageCheck and the PKI management operation SHALL be terminated.
+
+   It concatenates the shared secret ss1, with the static text "CMP-KEM", the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the genp message to the user key material ukm.
 
 
    ~~~~ asn.1
-     ReceiveExportBase(enc2, skC, "round2", context2, len) = ss2
+     ukm = concat(ss1, "CMP-KEM", transactionID, genp_senderNonce,
+                  genp_recipNonce)
    ~~~~
-   Note: If the decapsulation operation outputs an error, output a PKIFailureInfo
-   badMessageCheck, and terminate the PKI management operation.
+   It derives the shared symmetric key ssk from the shared secret ss2 using the desired output length len and the user key material also containing the shared secret ss1.
 
+   ~~~~ asn.1
+     KDF(ss2, len, ukm)->(ssk)
+   ~~~~
    It verifies the MAC-based protection and thus authenticates the PKI entity
    as sender of the request message.
 
-   The response message has a MAC-based protection the shared secret ss2.
+   The response message also has a MAC-based protection using the shared symmetric key ssk.
 
 
 
 1. The PKI entity verifies the MAC-based protection and thus authenticates the
    PKI management entity as sender of the response message.
 
-All potential further message of this PKI management operation make use of
-ss2 for MAC-based protection.
+All potential further message of this PKI management operation make use of the shared symmetric key ssk for MAC-based protection.
 
 
 #### Multiple Protection
@@ -5550,10 +5515,15 @@ END
 
 Note: This appendix will be deleted in the final version of the document.
 
+From version 05 -> 06:
+
+
+* Updated section 5.1.3.4 exchanging HPKE with plain KEM+KDF as also used in draft-ietf-lamps-cms-kemri
+
 From version 04 -> 05:
 
 
-* Updated sections 5.1.3.4, 5.2.2, and 8.9 adressing comments from Russ (see thread "I-D Action: draft-ietf-lamps-rfc4210bis-04.txt")
+* Updated sections 5.1.3.4, 5.2.2, and 8.9 addressing comments from Russ (see thread "I-D Action: draft-ietf-lamps-rfc4210bis-04.txt")
 
 From version 03 -> 04:
 
