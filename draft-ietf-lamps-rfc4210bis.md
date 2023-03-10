@@ -1836,23 +1836,25 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
    ~~~~ asn.1
      Encapsulate(pkS) = (ct2, ss2)
    ~~~~
-   It concatenates the shared secret ss1, with the static text "CMP-KEM", the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the genp message to the user key material ukm.
+   It concatenates the shared secret ss1, with the shared secret ss2 to the input key material ikm.
 
 
    ~~~~ asn.1
-     ukm = concat(ss1, "CMP-KEM", transactionID, genp_senderNonce,
-                  genp_recipNonce)
+     ikm = concat(ss1, ss2)
    ~~~~
+   It concatenates the static text "CMP-KEM", the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the genp message to the user key material ukm.
+
    Note: The function concat(x0, ..., xN) concatenates the byte strings as specified in RFC 9180 Section 3 [RFC9180].
 
-   It derives the shared symmetric key ssk from the shared secret ss2 using the desired output length len and the user key material also containing the shared secret ss1.
 
    ~~~~ asn.1
-     KDF(ss2, len, ukm)->(ssk)
+     ukm = concat("CMP-KEM", transactionID, genp_senderNonce, genp_recipNonce)
    ~~~~
-   Note: len SHOULD be the maximum key length of the MAC function to be used for
-   MAC-based message protection, but it MUST NOT be bigger that 255\*Nh, where
-   Nh is the output size of the used KDF.
+   It derives the shared symmetric key ssk from the input key material ikm using the desired output length len and the user key material ukm.
+
+   ~~~~ asn.1
+     KDF(ikm, len, ukm)->(ssk)
+   ~~~~
 
    Note: The shared symmetric key ssk is used for MAC-based protection of all subsequent messages of this PKI management operation. This construction for combining two KEM shared secrets using a KDF is at least as strong as the KEM combiner presented in {{I-D.ounsworth-cfrg-kem-combiners}}, also see {{sect-8.8}} for further discussion.
 
@@ -1868,17 +1870,22 @@ Note: The PKI entity has a kemCertC certificate and the PKI management entity ha
    ~~~~
    Note: If the decapsulation operation outputs an error, The PKI management entity SHALL return a PKIFailureInfo containing the value badMessageCheck and the PKI management operation SHALL be terminated.
 
-   It concatenates the shared secret ss1, with the static text "CMP-KEM", the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the genp message to the user key material ukm.
+   It concatenates the shared secret ss1, with the shared secret ss2 to the input key material ikm.
 
 
    ~~~~ asn.1
-     ukm = concat(ss1, "CMP-KEM", transactionID, genp_senderNonce,
-                  genp_recipNonce)
+     ikm = concat(ss1, ss2)
    ~~~~
-   It derives the shared symmetric key ssk from the shared secret ss2 using the desired output length len and the user key material also containing the shared secret ss1.
+   It concatenates the static text "CMP-KEM", the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the genp message to the user key material ukm.
+
 
    ~~~~ asn.1
-     KDF(ss2, len, ukm)->(ssk)
+     ukm = concat("CMP-KEM", transactionID, genp_senderNonce, genp_recipNonce)
+   ~~~~
+   It derives the shared symmetric key ssk from the input key material ikm using the desired output length len and the user key material ukm.
+
+   ~~~~ asn.1
+     KDF(ikm, len, ukm)->(ssk)
    ~~~~
    It verifies the MAC-based protection and thus authenticates the PKI entity
    as sender of the request message.
