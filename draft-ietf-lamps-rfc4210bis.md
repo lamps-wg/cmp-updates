@@ -62,12 +62,12 @@ informative:
   I-D.ietf-lamps-lightweight-cmp-profile:
   I-D.ietf-ace-cmpv2-coap-transport:
   I-D.ietf-lamps-rfc6712bis:
-  I-D.ounsworth-cfrg-kem-combiners:
   RFC1847:
   RFC2510:
   RFC4210:
   RFC4510:
   RFC5912:
+  RFC7299:
   RFC8649:
   RFC9162:
   NIST.SP.800_90Ar1:
@@ -131,7 +131,6 @@ normative:
   RFC5958:
   RFC6402:
   RFC8933:
-  RFC9180:
   ITU.X509.2000:
   I-D.ietf-lamps-cmp-algorithms:
   I-D.ietf-lamps-cms-kemri:
@@ -186,7 +185,7 @@ LAMPS provides a RFC4210bis document.  Version -00 of this document shall
 be identical to RFC 4210 and version -01 incorporates the changes specified
 in CMP Updates Section 2 and Appendix A.2.
 
-A history of changes is available in {{sect-f}} of this document.
+A history of changes is available in {{sect-g}} of this document.
 
 The authors of this document wish to thank Carlisle Adams, Stephen Farrell,
 Tomi Kause, and Tero Mononen, the original authors of RFC4210, for their
@@ -216,6 +215,7 @@ Please perform the following substitution.
 
 * RFCEEEE --> the assigned numerical RFC value for {{I-D.ietf-ace-cmpv2-coap-transport}}
 
+* RFCDDDD --> the assigned numerical RFC value for {{I-D.ietf-lamps-cms-kemri}}
 ]
 
 This document describes the Internet X.509 Public Key Infrastructure
@@ -1722,11 +1722,7 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 #### Key Encapsulation
 {: id="sect-5.1.3.4"}
 
-\< ToDo: Version -05 proposed an approach using HPKE to establish an authenticated shared symmetric key. This version offers an alternative using plain KEM and KDF functions as shown in [draft-ietf-lamps-cms-kemri](#I-D.ietf-lamps-cms-kemri). >
-
-\< ToDo: Version -05 as well as this version utilizes keys from both CMP client and server in applying Encapsulate/Decapsulate twice. Deriving a joint key from the two shared secrets result in a mutually authenticated shared symmetric key used by both parties, like when using an out-of-band established shared secret information. In contrast to this approach, each side could directly use the shared secret resulting from the Encapsulate/Decapsulate for deriving an individual shared symmetric key. Doing so the MAC-based protection generated on both sides would use a different key.  This would facilitate that only one side used a KEM key pair and the other side uses a signature key pair. This would offer some additional flexibility, but on at the price of a more complex key establishment. >
-
-In this case, an initial CMP message exchange using general messages is required to contribute to establishing a shared symmetric key (ssk) as follows.  Both PKI entities require a KEM certificate of the other side.  Each sender uses the KEM Encapsulate(pk) -> (ss, ct) function with the recipient's public key (pk) to produce the KEM shared secret (ss) and an encapsulation of that shared secret, the KEM ciphertext (ct) and provide the ciphertext to the recipient using the id-it-KemCiphertext as defined below.  The respective recipient uses a Decapsulate(sk, ct)->(ss) function with the private key (sk) and the ciphertext (ct) to recover the the KEM shared secret (ss) from the encapsulated representation received from the sender.  Each party uses a KDF(ikm, len, ukm)->(ssk) function with input key material (ikm), the desired length of the output keying material (len), and user key material (ukm) to derive a shares symmetric key (ssk). The concatenation of both shared secrets (ss1) and (ss2) are the first argument (ikm) for the KDF.  In addition a static string and some random data from the PKI message header also contribute to the third argument (ukm) for the KDF. Doing so, a shared symmetric key (ssk) authenticated by both PKI entities is established and can be used for MAC-based message protection.
+In case the sender of a message has a KEM key pair and certificate, it will get a shared secret with the recipient by KEM decapsulation of a ciphertext using its private KEM key. The ciphertext must have been requested beforehand by the sender from the recipient. The recipient must have generated it using KEM encapsulation with the sender’s public key and transferred it to the sender in an InfoTypeAndValue in a previous message. The sender will derive a shared secret key from the KEM shared secret and other data send in the clear using a KDF. PKIProtection will contain a MAC value calculated using the shared secret key, and the protectionAlg will be the AlgorithmIdentifier of that MAC algorithm. The MAC algorithm MAY be one of the options in CMP Algorithms Section 2 [RFCCCCC].
 
 Note: This approach uses the definition of Key Encapsulation Mechanisms in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
@@ -1742,163 +1738,79 @@ When id-it-KemCiphertext is used, the value is either absent or of type KemCiphe
 
 ~~~~ asn.1
   KemCiphertext ::= SEQUENCE {
-    kem              AlgorithmIdentifier,
-    -- AlgId of the Key Encapsulation Mechanism
-    kdf              AlgorithmIdentifier,
-    -- AlgId of the Key Derivation Function
-    len              INTEGER,
-    -- Defines the length of the keying material output of the KDF
-    -- SHOULD be the maximum key length of the MAC function
-    -- MUST NOT be larger that 255*Nh of the KDF where Nh is the
-    --   output size of the KDF
+    kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
+    kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
+    len              INTEGER (1..MAX),
     ct               OCTET STRING
-    -- Ciphertext output from the Encapsulate function
   }
 ~~~~
 
-\< ToDo: Update the ASN.1 module! >
+kem is the algorithm identifier of the KEM public key used to generate the ciphertext ct, and any associated parameters.
 
-When CMP messages protection using the shared symmetric key (ssk) derived from the two KEM shared secrets the MAC algorithm is placed in the protectionAlg header field and the MAC value is placed in the PKIProtection field. The MAC algorithm MAY be one of the options described in CMP Algorithms Section 6.2 [RFCCCCC].
+kdf is the algorithm identifier of the chosen KDF, and associated parameters.
 
-The message flow using KEM keys for message protection is as follows. A regular CMP transaction is preceded by a genm/genp message exchange with no protection that is needed to establish a shared symmetric key using KEM public keys from the sender's and recipient's KEM certificate. This shared symmetric key (ssk) is then used for MAC-based protection of the remaining request and response messages of the transaction.
+len is size of the key to be used for MAC-based protection. It defines the length of the keying material output of the KDF. It SHOULD be the maximum key length of the MAC function and MUST NOT be larger that 255*Nh of the KDF where Nh is the output size of the KDF.
 
+ct is the ciphertext output from the Encapsulate function.
+
+For ease of explanation we say that Alice wants to send a KEM-authenticated message to Bob.  Alice can be the initiator of a PKI management operation or the responder, see Appendix E.
+
+Generic Message Flow:
 
 ~~~~
-Message Flow:
-
-Step# PKI entity                           PKI management entity
-      (client role)                        (server role)
-  1   format genm without
-        protection
-                         ->   genm    ->
-  2                                        validate certificate of
-                                             PKI entity
+Step# Alice                                Bob
+  1                                        validate Alice’s
+                                             certificate, if provided
                                            perform KEM Encapsulate
-                                           format genp without
-                                             protection
-                         <-   genp    <-
-  3   validate
-        certificate of PKI
-        management entity
-      perform KEM Decapsulate
-      perform KEM Encapsulate
+                        <- KemCiphertext <-
+  2   perform KEM Decapsulate
       perform key derivation
-      format request with
+      format message with
         MAC-based protection
-                         ->  request  ->
-  4                                        perform KEM Decapsulate
-                                           perform key derivation
+                        ->    message    ->
+  3                                        perform key derivation
                                            verify MAC-based
                                              protection
-----------------  client authenticated by the server  ---------------
-                                           format response with
-                                             MAC-based protection
-                         <-  response <-
-  5   verify MAC-based protection
-----------------  server authenticated by the client  ---------------
-        Further messages can be exchanged with MAC-based
-      protection using the established shared symmetric key
+-------------------  Alice authenticated by Bob  --------------------
 ~~~~
-{: #KEM title='Message flow establishing a shared symmetric key for MAC-based protection' artwork-align="left"}
+{: #KEM title='Generic Message Flow when Alice has a KEM key pair' artwork-align="left"}
 
-1. The PKI entity in {{KEM}}, which is the client, formats a genm message of type id-it-KemCiphertext without a value in its body. The message has no protection, and the extraCerts field contains the KEM certificate of the client.
+Bob needs to possess the authentic public KEM key pk of Alice, e.g., contained in a KEM certificate received before. Bob performs the Encapsulate(pk)->(ss, ct) function to produce the KEM shared secret ss and an encapsulation of that shared secret, the KEM ciphertext ct.  Alice uses the Decapsulate(sk, ct)->(ss) function with the respective private KEM key sk and the received ciphertext ct to recover the KEM shared secret ss.  Both sides use the KDF(ss, len, context)->(ssk) function to derive a shared symmetric key ssk.  The shared secret ss is used as input key material for the KDF, the value len from the KemCiphertext is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure is used as context for the KDF.  This shared secret key ssk will be used for MAC-based protection by Alice and is used by Bob for authenticating Alice as originator of the message.  This shared secret key can be used by Alice for MAC-based protection of all further messages sent to Bob within the current PKI management operation.
 
+This approach uses the conventions of using a KDF as described in {{I-D.ietf-lamps-cms-kemri, Section 5}} with the following changes:
 
-1. The server validates the client KEM certificate.
+* L is dependent of the the MAC algorithm that is used with the shared symmetric key for CMP message protection and is called len in this document
 
-   It generates a shared secret ss1 and the associated ciphertext ct1 using
-   the KEM Encapsulate function with the client's public key pkC:
+* info contains the DER-encoded KemOtherInfo structure defined as and is called context in this document:
 
+>~~~~ asn.1
+  KemOtherInfo ::= SEQUENCE {
+    staticString     PKIFreeText,
+    transactionID    OCTET STRING,
+    senderNonce      OCTET STRING,
+    recipNonce       OCTET STRING,
+    len              INTEGER (1..MAX),
+    ct               OCTET STRING
+  }
+~~~~
 
-   ~~~~ asn.1
-     Encapsulate(pkC) -> (ct1, ss1)
-   ~~~~
-   The PKI management entity in {{KEM}}, which is the server, formats a genp message of type id-it-KemCiphertext with a value of type KemCiphertext containing OIDs of the used KEM and KDF algorithms, the desired output length len of the KDF, and the KEM ciphertext ct1. The message has no protection, and the extraCerts field contains the KEM certificate of the server.
+>< ToDo: Do we need all these data as context information for domain separation? >
 
+>staticString MUST be "CMP-KEM"
 
+>transactionID, senderNonce, and recipNonce MUST be the values from the message previously received containing the ciphertext ct in KemCiphertext
 
-1. The PKI entity validates the server KEM certificate.
+>len MUST be the value from that KemCiphertext
 
-   It decapsulates the shared secret ss1 from the ciphertext ct1 using the
-   KEM Decapsulate function and its private key skC:
+>ct MUST be the ciphertext from that KemCiphertext
 
+* OKM is the output keying material of the KDF and is called ssk in this document
 
-   ~~~~ asn.1
-     Decapsulate(ct1, skC) -> (ss1)
-   ~~~~
-   Note: If the decapsulation operation outputs an error, any PKIFailureInfo SHALL contain the value badMessageCheck and the PKI management operation SHALL be terminated.
+Note: If the Decapsulate function outputs an error, any provided PKIFailureInfo SHALL contain the value badMessageCheck and the PKI management operation SHALL be terminated.
 
-   It generates a shared secret ss2 and the associated ciphertext ct2 using
-   the KEM Encapsulate function with the server's public key pkS:
+There are different ways to request and provide the KEM ciphertext contained in a KemCiphertext to Alice. The KemCiphertext can be requested using a genm message of type id-it-KemCiphertext where the value is absent and can be provided in the following genp message. Alternatively, the generalInfo field of the header of a PKIMessage can be used to request and provide a KemCiphertext.
 
-
-   ~~~~ asn.1
-     Encapsulate(pkS) = (ct2, ss2)
-   ~~~~
-   It concatenates the shared secret ss1, with the shared secret ss2 to the input key material ikm.
-
-
-   ~~~~ asn.1
-     ikm = concat(ss1, ss2)
-   ~~~~
-   It concatenates the static text "CMP-KEM", the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the genp message to the user key material ukm.
-
-   Note: The function concat(x0, ..., xN) concatenates the byte strings as specified in RFC 9180 Section 3 [RFC9180].
-
-
-   ~~~~ asn.1
-     ukm = concat("CMP-KEM", transactionID, genp_senderNonce,
-                  genp_recipNonce)
-   ~~~~
-   It derives the shared symmetric key ssk from the input key material ikm using the desired output length len and the user key material ukm.
-
-   ~~~~ asn.1
-     KDF(ikm, len, ukm)->(ssk)
-   ~~~~
-
-   Note: The shared symmetric key ssk is used for MAC-based protection of all subsequent messages of this PKI management operation. This construction for combining two KEM shared secrets using a KDF is at least as strong as the KEM combiner presented in {{I-D.ounsworth-cfrg-kem-combiners}}, also see {{sect-8.8}} for further discussion.
-
-   \< ToDo: @Mike, please check the combining of the two shared secrets and if the above note is still correct and needed. >
-
-   The request message is of any type. The generalInfo field in the message header contains an element of type id-it-KemCiphertext and the value is of type KemCiphertext containing OIDs of the used KEM and KDF algorithm, the desired output length len of the KDF, and the KEM ciphertext ct2. The message has a MAC-based protection using the shared symmetric key ssk.
-
-1. The PKI management entity decapsulates the shared secret ss2 from the ciphertext ct2 using the Decapsulate function and its private key skS:
-
-
-   ~~~~ asn.1
-     Decapsulate(ct2, skS) = ss2
-   ~~~~
-   Note: If the decapsulation operation outputs an error, The PKI management entity SHALL return a PKIFailureInfo containing the value badMessageCheck and the PKI management operation SHALL be terminated.
-
-   It concatenates the shared secret ss1, with the shared secret ss2 to the input key material ikm.
-
-
-   ~~~~ asn.1
-     ikm = concat(ss1, ss2)
-   ~~~~
-   It concatenates the static text "CMP-KEM", the transactionID, the senderNonce genp_senderNonce, and the recipNonce genp_recipNonce from the PKIHeader of the genp message to the user key material ukm.
-
-
-   ~~~~ asn.1
-     ukm = concat("CMP-KEM", transactionID, genp_senderNonce,
-                  genp_recipNonce)
-   ~~~~
-   It derives the shared symmetric key ssk from the input key material ikm using the desired output length len and the user key material ukm.
-
-   ~~~~ asn.1
-     KDF(ikm, len, ukm)->(ssk)
-   ~~~~
-   It verifies the MAC-based protection and thus authenticates the PKI entity
-   as the sender of the request message.
-
-   The response message also has a MAC-based protection using the shared symmetric key ssk.
-
-
-
-1. The PKI entity verifies the MAC-based protection and thus authenticates the
-   PKI management entity as the sender of the response message.
-
-All potential further message of this PKI management operation make use of the shared symmetric key ssk for MAC-based protection.
+If both the initiator and responder in a PKI management operation have KEM key pairs and certificates, this procedure can be applied by both sides independently, establishing and using different shared secret keys on either side.
 
 
 #### Multiple Protection
@@ -3809,36 +3721,8 @@ special care must be taken when approving such certificate requests to
 ensure that only legitimate entities receive a certificate containing
 such an EKU.
 
-## Combiner Function for Hybrid Key Encapsulation Mechanisms
-{: id="sect-8.8"}
-
-{{I-D.ounsworth-cfrg-kem-combiners}} presents the KEM combiner
-KDF( concat( H(ss1), H(ss2) ) ) for suitable choices
-of a key derivation function KDF and a cryptographic hash function H. It
-argues that this construction can safely be reduced to KDF( concat(ss1, ss2)
-) when the KEMs being combined already include a KDF as part of computing
-their output. The dual KEM construction presented in {{sect-5.1.3.2}}
-conforms to this construction in the following way. The output of the first
-HPKE, ss1 is computed via ReceiveExportBase(..) ([RFC 9180 section 6.2](#RFC9180)),
-which chains to Context.Export(..) ([RFC 9180 section 5.3](#RFC9180)),
-which chains to LabeledExpand(..) and Expand(..) ([RFC 9180 section 4](#RFC9180)),
-which uses a KDF to expand the KEM output prk into ss1. That matches or
-exceeds the security strength of H(ss1) from {{I-D.ounsworth-cfrg-kem-combiners}}.
-Next, the dual KEM construction presented in {{sect-5.1.3.1}} uses the HPKE output ss1
-as part of the label context2 for the second HPKE.
-This in turn is passed through ReceiveExportBase(..), Context.Export(..),
-LabeledExpand(..), and Expand(..) as above where finally the label context2,
-which is the info parameter for the Export(prk, info, l) function, and which
-contains the output of the first HPKE ss1, is concatenated with the output
-of the second KEM prk to produce the final shared secret ss2. That means
-the dual KEM construction defined in {{sect-5.1.3.1}} maps to the notation of
-{{I-D.ounsworth-cfrg-kem-combiners}} as KDF( concat( ss2, KDF(ss1) ),
-which is cryptographically stronger than
-the combiner KDF( ss1 \|\| ss2 ) so long as the underlying KEM used in the
-second HPKE uses internally a KDF for deriving its output.
-
 ## Usage of Certificate Transparency Logs
-{: id="sect-8.9"}
+{: id="sect-8.8"}
 
 CAs that support indirect POP MUST NOT also publish final certificates to Certificate Transparency logs {{RFC9162}} before having received the certConf message containing the certHash of that certificate to complete the POP. The risk is that a malicious actor could fetch the final certificate from the CT log and use that to spoof a response to the implicit POP challenge via a certConf response. This risk does not apply to CT precertificates, so those are ok to publish.
 
@@ -3847,11 +3731,19 @@ If a certificate or its precertificate was published in a CT log it must be revo
 
 # IANA Considerations {#sect-9}
 
-The IANA has already registered what is specified in CMP Updates [RFCAAAA].
+This document updates the ASN.1 modules of CMP Updates Appendix A.2 [RFCAAAA]. The OID TBD2 (id-mod-cmp2023-02) was registered in the SMI Security for PKIX Module Identifier registry to identify the updated ASN.1 module.
 
-No further action by the IANA is necessary for this document or any anticipated
-updates.
+In the SMI-numbers registry "SMI Security for PKIX CMP Information Types (1.3.6.1.5.5.7.4)" (see https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.4) as defined in {{RFC7299}} one addition has been performed.
 
+One new entry has been added:
+
+Decimal: TBD1
+
+Description: id-it-KemCiphertext
+
+Reference: [RFCXXXX]
+
+< ToDo: The new OID TBD3 for the ASN.1 module KEMAlgorithmInformation-2023 will be defined in draft-ietf-lamps-cms-kemri. >
 
 # Acknowledgements {#Acknowledgements}
 
@@ -4560,9 +4452,9 @@ ckuann message:
 --------------------------------------------------------------
  sender       CA name CA name
  body         ckuann(CAKeyUpdAnnContent)
- oldWithNew   present                  see Appendix E.3 above
- newWithOld   present                  see Appendix E.3 above
- newWithNew   present                  see Appendix E.3 above
+ oldWithNew   present                  see Appendix D.3 above
+ newWithOld   present                  see Appendix D.3 above
+ newWithNew   present                  see Appendix D.3 above
  extraCerts   optionally present       can be used to "publish"
                                        certificates (e.g.,
                                        certificates signed using
@@ -4862,9 +4754,109 @@ with the following exceptions:
 * protection bits are calculated according to the protectionAlg
   field.
 
+# Variants of Using KEM Keys for PKI Message Protection {#sect-e}
 
 
-# Compilable ASN.1 Definitions {#sect-e}
+As described in {{sect-5.1.3.4}}, any party in a PKI management operation may need to use a KEM key pair for message protection. Below possible cases are described.
+
+In the following message flows Alice indicates the PKI entity that uses a KEM key pair for message authentication and Bob provides the KEM ciphertext using Alice's public KEM key, as described in {{sect-5.1.3.4}}.
+
+Message Flow when the PKI entity has a KEM key pair and certificate:
+
+~~~
+Step# PKI entity                           PKI management entity
+      (Alice)                              (Bob)
+  1   format unprotected genm
+        containing KEM
+        certificate in
+        extraCerts
+                         ->   genm    ->
+  2                                        validate KEM certificate
+                                           perform KEM Encapsulate
+                                           format unprotected genp
+                                             containing KEM
+                                             ciphertext in PKIBody
+                         <-   genp    <-
+  3   perform KEM Decapsulate
+      perform key derivation
+      format request with
+        MAC-based protection
+                         ->  request  ->
+  4                                        perform key derivation
+                                           verify MAC-based
+                                             protection
+
+--------  PKI entity authenticated by PKI management entity  --------
+
+                                           format response with
+                                             protection depending on
+                                             available key material
+                         <-  response <-
+  5   verify protection
+        provided by the
+        PKI management entity
+
+          Further messages of this PKI management operation
+          can be exchanged with MAC-based protection by the
+          PKI entity using the established shared secret key
+~~~
+{: #KEM-Flow1 title='Message Flow when PKI entity has a KEM key pair' artwork-align="left"}
+
+Message Flow when the PKI entity knows that the PKI management entity uses a KEM key pair and has the authentic public key:
+
+~~~
+Step# PKI entity                           PKI management entity
+      (Bob)                                (Alice)
+  1   perform KEM Encapsulate
+      format request containing
+        KEM ciphertext in
+        generalInfo and with
+        protection depending on
+        available key material
+                         ->  request  ->
+  2                                        perform KEM Decapsulate
+                                           perform key derivation
+                                           format response with
+                                             MAC-based protection
+                         <-  response <-
+  3   perform key derivation
+      verify MAC-based
+        protection
+
+--------  PKI management entity authenticated by PKI entity  --------
+
+          Further messages of this PKI management operation
+          can be exchanged with MAC-based protection by the
+             PKI management entity using the established
+                        shared symmetric key
+~~~
+{: #KEM-Flow2 title='Message Flow when the PKI entity knows that the PKI management entity uses a KEM key pair and has the authentic public key' artwork-align="left"}
+
+Message Flow when the PKI entity does not know that the PKI management entity uses a KEM key pair:
+
+~~~
+Step# PKI entity                           PKI management entity
+      (Bob)                                (Alice)
+  1   format request with
+        protection depending
+        on available key
+        material
+                         ->  request  ->
+  2                                        format unprotected error
+                                             with status "rejection"
+                                             and failInfo
+                                             "wrongIntegrity" and KEM
+                                             certificate in
+                                             extraCerts
+                         <-   error   <-
+  3   validate KEM certificate
+
+                 proceed as shown in Figure 4 above
+~~~
+{: #KEM-Flow3 title='Message Flow when the PKI entity does not know that the PKI management entity uses a KEM key pair' artwork-align="left"}
+
+
+# Compilable ASN.1 Definitions {#sect-f}
 
 This section contains the updated 2002 ASN.1 module for {{RFC5912}}
 as updated in [RFCAAAA].
@@ -4873,11 +4865,13 @@ The module contains those changes to the normative ASN.1 module from
 [RFC 4210 Appendix F](#RFC4210) that were specified in [RFCAAAA]
 as well as changes made in this document.
 
+< TBD: Should we also include the 1988 ASN.1 Module? >
+
 ~~~~ asn.1
-PKIXCMP-2021
+PKIXCMP-2023
     { iso(1) identified-organization(3) dod(6) internet(1)
     security(5) mechanisms(5) pkix(7) id-mod(0)
-    id-mod-cmp2021-02(100) }
+    id-mod-cmp2023-02(TBD2) }
 DEFINITIONS EXPLICIT TAGS ::=
 BEGIN
 IMPORTS
@@ -4888,7 +4882,7 @@ FROM PKIX-CommonTypes-2009
     mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57)}
 
 AlgorithmIdentifier{}, SIGNATURE-ALGORITHM, ALGORITHM,
-    DIGEST-ALGORITHM, MAC-ALGORITHM
+    DIGEST-ALGORITHM, MAC-ALGORITHM, KEY-DERIVATION
 FROM AlgorithmInformation-2009
     {iso(1) identified-organization(3) dod(6) internet(1) security(5)
     mechanisms(5) pkix(7) id-mod(0)
@@ -4935,6 +4929,14 @@ FROM CryptographicMessageSyntax-2009
     smime(16) modules(0) id-mod-cms-2004-02(41)}
     -- The import of EnvelopedData and SignedData is added due to
     -- the updates made in CMP Updates [RFCAAAA]
+
+KEM-ALGORITHM
+FROM KEMAlgorithmInformation-2023  -- [RFC]
+    { iso(1) identified-organization(3) dod(6) internet(1)
+    security(5) mechanisms(5) pkix(7) id-mod(0)
+    id-mod-kemAlgorithmInformation-2023(TBD3) }
+-- RFC-Editor: Please set the new OID defined in
+-- draft-ietf-lamps-cms-kemri as TBD3.
 ;
 
 -- the rest of the module contains locally defined OIDs and
@@ -5122,8 +5124,9 @@ PKIFailureInfo ::= BIT STRING {
     certConfirmed       (11),
     -- the certificate has already been confirmed
     wrongIntegrity      (12),
-    -- not valid integrity, password based instead of signature or
-    -- vice versa
+    -- KEM ciphertext missing for MAC-based protection of response,
+    -- or not valid integrity of message received (password based
+    -- instead of signature or vice versa)
     badRecipientNonce   (13),
     -- not valid recipient nonce, either missing or wrong value
     timeNotAvailable    (14),
@@ -5368,6 +5371,37 @@ CRLStatus ::= SEQUENCE {
    source       CRLSource,
    thisUpdate   Time OPTIONAL }
 
+-- KemCiphertext and KemOtherInfo added in [RFCXXXX]
+
+KemCiphertext ::= SEQUENCE {
+   kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
+   -- AlgId of the Key Encapsulation Mechanism
+   kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
+   -- AlgId of the Key Derivation Function
+   len              INTEGER (1..MAX),
+   -- Defines the length of the keying material output of the KDF
+   -- SHOULD be the maximum key length of the MAC function
+   -- MUST NOT be larger that 255*Nh of the KDF where Nh is the
+   --   output size of the KDF
+   ct               OCTET STRING
+   -- Ciphertext output from the Encapsulate function
+   }
+
+KemOtherInfo ::= SEQUENCE {
+   staticString     PKIFreeText,
+   -- MUST be "CMP-KEM"
+   transactionID    OCTET STRING,
+   senderNonce      OCTET STRING,
+   recipNonce       OCTET STRING,
+   -- The tree fields above MUST contain the values from the message
+   -- previously received containing the ciphertext (ct) in
+   -- KemCiphertext
+   len              INTEGER (1..MAX),
+   -- MUST be the value from that KemCiphertext
+   ct               OCTET STRING
+   -- MUST be the ciphertext from that KemCiphertext
+  }
+
 INFO-TYPE-AND-VALUE ::= TYPE-IDENTIFIER
 
 InfoTypeAndValue ::= SEQUENCE {
@@ -5443,6 +5477,9 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --   CRLsValue                  ::= SEQUENCE SIZE (1..MAX) OF
 --                                            CertificateList
 --      - id-it-crls added in CMP Updates [RFCAAAA]
+--   id-it-KemCiphertext    OBJECT IDENTIFIER ::= {id-it TBD1}
+--      KemCiphertextValue      ::= KemCiphertext
+--      - id-it- KemCiphertext added in [RFCXXXX]
 --
 -- where
 --
@@ -5519,9 +5556,22 @@ END
 ~~~~
 
 
-# History of Changes {#sect-f}
+# History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 06 -> 07:
+
+
+* Updated section 5.1.3.4 specifying establishing a shares secret key for one arbitrary side of the CMP communication only
+
+* Removed the note and the security consideration regarding combiner function for HPKE
+
+* Updates IANA Considerations in section 9 to add new OID for the updates ASN.1 module and for id-itKemCiphertext
+
+* Added new appendix E showing different variants of using KEM keys for PKI message protection
+
+* Updates ASN.1 module in appendix F
 
 From version 05 -> 06:
 
