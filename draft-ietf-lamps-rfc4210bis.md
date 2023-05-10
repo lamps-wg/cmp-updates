@@ -1436,7 +1436,7 @@ supplied, then this field MUST be supplied.
 
 senderKID and recipKID are usable to indicate which keys have been
 used to protect the message (recipKID will normally only be required
-where protection of the message also uses the recipient's KEM key).
+where protection of the message uses Diffie-Hellman (DH) keys).
 These fields MUST be used if required to uniquely identify a key
 (e.g., if more than one key is associated with a given sender name).
 The senderKID SHOULD be used in any case.
