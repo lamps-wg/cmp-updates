@@ -1707,8 +1707,6 @@ bits of the key, and so on, until all K bits have been derived.
 Note: Hash algorithms that can be used as one-way functions are listed in
 CMP Algortihms [RFCCCCC] Section 2.
 
-Note: As alternative to this mechanism, the mechanism described in {{sect-5.1.3.4}} can be applies.
-
 #### Signature
 {: id="sect-5.1.3.3"}
 
@@ -1722,7 +1720,11 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 #### Key Encapsulation
 {: id="sect-5.1.3.4"}
 
-In case the sender of a message has a KEM key pair and certificate, it can get a shared secret with the recipient by KEM decapsulation of a ciphertext using the sender's private KEM key. The ciphertext must have been requested beforehand by the sender from the recipient. The recipient must have generated it using KEM encapsulation with the sender’s public key and transferred it to the sender in an InfoTypeAndValue in a previous message. The sender will derive a shared secret key from the KEM shared secret and other data sent in the clear using a KDF. PKIProtection will contain a MAC value calculated using the shared secret key, and the protectionAlg will be the following:
+In case the sender of a message has a KEM key pair, it can use a shared secret obtained by KEM decapsulation of a ciphertext received using the sender's private KEM key.
+
+Note: In this section both entities in the communication need to send and receive messages. For ease of explanation we use the term "Alice" to mean the entity possessing the KEM key pair and who needs to be authenticated, and "Bob" to mean the entity who needs to authenticate the message being received.
+
+Bob must have generated the ciphertext using KEM encapsulation with Alice’s public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Alice will derive a shared secret key from the KEM shared secret and other data sent in the clear using a KDF. PKIProtection will contain a MAC value calculated using the shared secret key, and the protectionAlg will be the following:
 
 ~~~~ asn.1
   id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 TBD4}
@@ -1734,11 +1736,11 @@ In case the sender of a message has a KEM key pair and certificate, it can get a
   }
 ~~~~
 
-kdf is the algorithm identifier of the chosen KDF.
+kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to generate the shared secret mac key.
 
-len is size of the key to be used for mac.
+len is size of the mac key to be used for MAC-based message protection.
 
-mac is the algorithm identifier of the chosen MAC.
+mac is the algorithm identifier of the chosen MAC algorithm.
 
 < ToDo: It must be clarifies if Entrust can register this OID at this location, like id-PasswordBasedMac and id-DHBasedMac. >
 
@@ -1763,11 +1765,11 @@ When id-it-KemCiphertextInfo is used, the value is either absent or of type KemC
   }
 ~~~~
 
-kem is the algorithm identifier of the KEM algorithm and any associated parameters, used to generate the ciphertext ct.
+kem is the algorithm identifier of the KEM algorithm, and any associated parameters, used by Bob to generate the ciphertext ct.
 
 ct is the ciphertext output from the Encapsulate function.
 
-For ease of explanation we say that Alice wants to send a KEM-authenticated message to Bob.  This message flow assumes that Bob possesses the  public KEM key of Alice. Alice can be the initiator of a PKI management operation or the responder, see Appendix E.
+This generic message flow assumes that Bob possesses the public KEM key of Alice. Alice can be the initiator of a PKI management operation or the responder. for more detailed figures see {{sect-e}}.
 
 Generic Message Flow:
 
@@ -1787,7 +1789,39 @@ Step# Alice                                Bob
 ~~~~
 {: #KEM title='Generic Message Flow when Alice has a KEM key pair' artwork-align="left"}
 
-Bob needs to possess the authentic public KEM key pk of Alice, e.g., contained in a KEM certificate received before where Bob could perform successful path validation.  Bob performs the Encapsulate(pk) -> (ss, ct) function to produce the KEM shared secret ss and an encapsulation of that shared secret, the KEM ciphertext ct.  Alice uses the Decapsulate(sk, ct) -> (ss) function with the respective private KEM key sk and the received ciphertext ct to recover the KEM shared secret ss.  Both sides use the KDF(ss, len, context) -> (ssk) function to derive a shared symmetric key ssk.  The shared secret ss is used as input key material for the KDF, the value len from the KemCiphertextInfo is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure is used as context for the KDF.  This shared secret key ssk will be used for MAC-based protection by Alice and is used by Bob for authenticating Alice as originator of the message.  This shared secret key can be used by Alice for MAC-based protection of all further messages sent to Bob within the current PKI management operation.
+1. Bob needs to possess the authentic public KEM key pk of Alice, e.g., contained in a KEM certificate received before where Bob could perform successful path validation.
+
+   Bob generates a shared secret ss and the associated ciphertext ct using the KEM Encapsulate function with Alice's public KEM key pk.
+
+   ~~~~ asn.1
+     Encapsulate(pk) -> (ct, ss)
+   ~~~~
+
+1. Alice decapsulates the shared secret ss from the ciphertext ct using the KEM Decapsulate function and its private KEM key sk.
+
+   ~~~~ asn.1
+     Decapsulate(ct, sk) -> (ss)
+   ~~~~
+   Note: If the decapsulation operation outputs an error, any PKIFailureInfo SHALL contain the value badMessageCheck and the PKI management operation SHALL be terminated.
+
+   Alice derives the shared secret key ssk using the KDF.  The shared secret ss is used as input key material for the KDF, the value len is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure, definition see below, is used as context for the KDF.
+
+   ~~~~ asn.1
+     KDF(ss, len, context)->(ssk)
+   ~~~~
+
+   The shared secret key ssk is used for MAC-based protection by Alice.
+
+1. Bob derives the shared secret key ssk using the KDF.  The shared secret ss is used as input key material for the KDF, the value len from KemBMParameter is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure is used as context for the KDF.
+
+   ~~~~ asn.1
+     KDF(ss, len, context)->(ssk)
+   ~~~~
+   Note: Bob performs the key derivation in step 3and not in step1 to make DOS attackers more difficult.
+
+   Bob uses the shared secret key ssk for verification of the MAC-based protection.
+
+This shared secret key ssk can be used by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.
 
 This approach uses the conventions of using a KDF as described in {{I-D.ietf-lamps-cms-kemri, Section 5}} with the following changes:
 
@@ -1812,17 +1846,15 @@ This approach uses the conventions of using a KDF as described in {{I-D.ietf-lam
 
 >transactionID, senderNonce, and recipNonce MUST be the values from the message previously received containing the ciphertext ct in KemCiphertextInfo
 
->len MUST be the value from KemCiphertextInfo
+>len MUST be the value from KemBMParameter
 
 >ct MUST be the ciphertext from KemCiphertextInfo
 
-* OKM is the output keying material of the KDF of length len and is called ssk in this document
-
-Note: If the Decapsulate function outputs an error, any provided PKIFailureInfo SHALL contain the value badMessageCheck and the PKI management operation SHALL be terminated.
+* OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document
 
 There are different ways to request and provide the KEM ciphertext contained in a KemCiphertextInfo to Alice, see {{sect-e}}. The KemCiphertextInfo can be requested using a genm message of type id-it-KemCiphertextInfo where the value is absent and can be provided in the following genp message. Alternatively, the generalInfo field of the header of a PKIMessage can be used to request and provide a KemCiphertextInfo.
 
-If both the initiator and responder in a PKI management operation have KEM key pairs and certificates, this procedure can be applied by both sides independently, establishing and using different shared secret keys on either side.
+If both the initiator and responder in a PKI management operation have KEM key pairs, this procedure can be applied by both entities independently, establishing and using different shared secret keys on either side.
 
 
 #### Multiple Protection
