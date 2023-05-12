@@ -215,7 +215,7 @@ Please perform the following substitution.
 
 * RFCEEEE --> the assigned numerical RFC value for {{I-D.ietf-ace-cmpv2-coap-transport}}
 
-* RFCDDDD --> the assigned numerical RFC value for {{I-D.ietf-lamps-cms-kemri}}
+* RFCFFFF --> the assigned numerical RFC value for {{I-D.ietf-lamps-cms-kemri}}
 ]
 
 This document describes the Internet X.509 Public Key Infrastructure
@@ -1436,7 +1436,7 @@ supplied, then this field MUST be supplied.
 
 senderKID and recipKID are usable to indicate which keys have been
 used to protect the message (recipKID will normally only be required
-where protection of the message uses Diffie-Hellman (DH) keys).
+where protection of the message uses Diffie-Hellman (DH) or elliptic curve Diffie-Hellman (ECDH) keys).
 These fields MUST be used if required to uniquely identify a key
 (e.g., if more than one key is associated with a given sender name).
 The senderKID SHOULD be used in any case.
@@ -1791,7 +1791,7 @@ Bob needs to possess the authentic public KEM key pk of Alice, e.g., contained i
 
 This approach uses the conventions of using a KDF as described in {{I-D.ietf-lamps-cms-kemri, Section 5}} with the following changes:
 
-* L is dependent of the the MAC algorithm that is used with the shared symmetric key for CMP message protection and is called len in this document
+* L is dependent of the MAC algorithm that is used with the shared symmetric key for CMP message protection and is called len in this document
 
 * info is called context in this document and contains the DER-encoded KemOtherInfo structure defined as:
 
