@@ -1722,7 +1722,27 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 #### Key Encapsulation
 {: id="sect-5.1.3.4"}
 
-In case the sender of a message has a KEM key pair and certificate, it can get a shared secret with the recipient by KEM decapsulation of a ciphertext using the sender's private KEM key. The ciphertext must have been requested beforehand by the sender from the recipient. The recipient must have generated it using KEM encapsulation with the sender’s public key and transferred it to the sender in an InfoTypeAndValue in a previous message. The sender will derive a shared secret key from the KEM shared secret and other data sent in the clear using a KDF. PKIProtection will contain a MAC value calculated using the shared secret key, and the protectionAlg will be the AlgorithmIdentifier of that MAC algorithm. The MAC algorithm MAY be one of the options in CMP Algorithms Section 2 [RFCCCCC].
+In case the sender of a message has a KEM key pair and certificate, it can get a shared secret with the recipient by KEM decapsulation of a ciphertext using the sender's private KEM key. The ciphertext must have been requested beforehand by the sender from the recipient. The recipient must have generated it using KEM encapsulation with the sender’s public key and transferred it to the sender in an InfoTypeAndValue in a previous message. The sender will derive a shared secret key from the KEM shared secret and other data sent in the clear using a KDF. PKIProtection will contain a MAC value calculated using the shared secret key, and the protectionAlg will be the following:
+
+~~~~ asn.1
+  id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 TBD4}
+
+  KemBMParameter ::= SEQUENCE {
+    kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
+    len              INTEGER (1..MAX),
+    mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}
+  }
+~~~~
+
+kdf is the algorithm identifier of the chosen KDF.
+
+len is size of the key to be used for mac.
+
+mac is the algorithm identifier of the chosen MAC.
+
+< ToDo: It must be clarifies if Entrust can register this OID at this location, like id-PasswordBasedMac and id-DHBasedMac. >
+
+The KDF and MAC algorithms MAY be chosen from the options in CMP Algorithms [RFCCCCC].
 
 This approach uses the definition of Key Encapsulation Mechanism algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
@@ -1739,17 +1759,11 @@ When id-it-KemCiphertextInfo is used, the value is either absent or of type KemC
 ~~~~ asn.1
   KemCiphertextInfo ::= SEQUENCE {
     kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
-    kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
-    len              INTEGER (1..MAX),
     ct               OCTET STRING
   }
 ~~~~
 
 kem is the algorithm identifier of the KEM algorithm and any associated parameters, used to generate the ciphertext ct.
-
-kdf is the algorithm identifier of the chosen KDF, and associated parameters.
-
-len is size of the key to be used for MAC-based protection. It defines the length of the keying material output of the KDF. It SHOULD be the maximum key length of the MAC function and MUST NOT be larger that 255*Nh of the KDF where Nh is the output size of the KDF.
 
 ct is the ciphertext output from the Encapsulate function.
 
@@ -5071,6 +5085,20 @@ DHBMParameter ::= SEQUENCE {
     -- the MAC AlgId
 }
 
+-- id-KemBasedMac and KemBMParameter added in [RFCXXXX]
+
+id-KemBasedMac OBJECT IDENTIFIER ::= { iso(1) member-body(2)
+    usa(840) nt(113533) nsn(7) algorithms(66) TBD4 }
+KemBMParameter ::= SEQUENCE {
+    kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
+    -- AlgId of the Key Derivation Function algorithm
+    len              INTEGER (1..MAX),
+    -- Defines the length of the keying material output of the KDF
+    -- SHOULD be the maximum key length of the MAC function
+    mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}
+    -- AlgId of the Message Authentication Code algorithm
+}
+
 PKIStatus ::= INTEGER {
     accepted               (0),
     -- you got exactly what you asked for
@@ -5377,14 +5405,7 @@ CRLStatus ::= SEQUENCE {
 
 KemCiphertextInfo ::= SEQUENCE {
    kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
-   -- AlgId of the Key Encapsulation Mechanism
-   kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
-   -- AlgId of the Key Derivation Function
-   len              INTEGER (1..MAX),
-   -- Defines the length of the keying material output of the KDF
-   -- SHOULD be the maximum key length of the MAC function
-   -- MUST NOT be larger that 255*Nh of the KDF where Nh is the
-   --   output size of the KDF
+   -- AlgId of the Key Encapsulation Mechanism algorithm
    ct               OCTET STRING
    -- Ciphertext output from the Encapsulate function
    }
