@@ -120,6 +120,19 @@ informative:
       name: Werner Schindler
       org: Bundesamt fuer Sicherheit in der Informationstechnik (BSI)
     date: '2011-09-18'
+  Gueneysu:
+    target: https://eprint.iacr.org/2022/703
+    title: Proof-of-possession for KEM certificates using verifiable generation
+    author:
+      - name: Tim Gueneysu
+      - name: Philip Hodges
+      - name: Georg Land
+      - name: Mike Ounsworth
+      - name: Douglas Stebila
+      - name: Greg Zaverucha
+    seriesinfo: Cryptology ePrint Archive
+    date: 2022
+
 normative:
   RFC2985:
   RFC2986:
@@ -938,10 +951,15 @@ otherwise made available.)
 
 \< ToDo: To be aligned with {{sect-5.2.8}} if needed. >
 
-In order to prevent certain attacks and to allow a CA/RA to properly
-check the validity of the binding between an end entity and a key
-pair, the PKI management operations specified here make it possible
-for an end entity to prove that it has possession of (i.e., is able
+Proof-of-possession (POP) is where a PKI management entity (CA/RA) challenges
+an end entity to prove that it has access to the private key
+corresponding to a given public key. The question of whether, and in
+what circumstances, POPs add value to a PKI is a debate as old as PKI
+itself! See {{sect-8.POP}} for a further discussion on the necessecity
+of Proof-Of-Possession in PKI.
+
+The PKI management operations specified here make it possible
+for an end entity to prove to a CA/RA that it has possession of (i.e., is able
 to use) the private key corresponding to the public key for which a
 certificate is requested.  A given CA/RA is free to choose how to
 enforce POP (e.g., out-of-band procedural means versus PKIX-CMP
@@ -1719,6 +1737,7 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 
 #### Key Encapsulation
 {: id="sect-5.1.3.4"}
+
 
 In case the sender of a message has a KEM key pair, it can use a shared secret obtained by KEM decapsulation of a ciphertext received using the sender's private KEM key.
 
@@ -3623,6 +3642,21 @@ described above in {{sect-7}}.
 
 
 # Security Considerations {#sect-8}
+
+## On the Necessity of Proof-Of-Possession
+{: id="sect-8.POP"}
+
+It is well established that the role of a Certification Authority is to
+verify that the name and public key belong to the end entity prior to
+issuing a certificate. On a deeper inspection however, it is not
+entirely clear what security guarantees are lost if an end entity is
+able to obtain a certificate containing a public key that they do not
+possess the corresponding private key for. There are some scenarios,
+described as "forwarding attacks" in Appendix A of [Gueneysu], in
+which this can lead to protocol attacks against a naively-implemented
+sign-then-encrypt protocol, but in general in merely results in the
+end entity obtaining a certificate that they can not use.
+
 
 ## Proof-Of-Possession with a Decryption Key
 {: id="sect-8.1"}
