@@ -123,7 +123,7 @@ informative:
   Guneysu2022:
     target: https://eprint.iacr.org/2022/703
     title: Proof-of-possession for KEM certificates using verifiable generation
-    author: 
+    author:
       - name: Tim Güneysu
       - name: Philip Hodges
       - name: Georg Land
@@ -3647,14 +3647,14 @@ described above in {{sect-7}}.
 ## On the Necessity of Proof-Of-Possession
 {: id="sect-8.POP"}
 
-It is well established that the role of a Certification Authority is to 
-verify that the name and public key belong to the end entity prior to 
-issuing a certificate. On a deeper inspection however, it is not 
+It is well established that the role of a Certification Authority is to
+verify that the name and public key belong to the end entity prior to
+issuing a certificate. On a deeper inspection however, it is not
 entirely clear what security guarantees are lost if an end entity is
 able to obtain a certificate containing a public key that they do not
-possess the corresponding private key for. There are some scenarios, 
+possess the corresponding private key for. There are some scenarios,
 described as "forwarding attacks" in Appendix A of [Guneysu2022], in
-which this can lead to protocol attacks against a naively-implemented 
+which this can lead to protocol attacks against a naively-implemented
 sign-then-encrypt protocol, but in general in merely results in the
 end entity obtaining a certificate that they can not use.
 
