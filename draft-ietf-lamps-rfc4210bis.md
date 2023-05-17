@@ -132,7 +132,6 @@ informative:
       - name: Greg Zaverucha
     seriesinfo: Cryptology ePrint Archive
     date: 2022
-}
 
 normative:
   RFC2985:
