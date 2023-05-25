@@ -3709,6 +3709,16 @@ attack.  Option (1) is clearly simpler (requiring no extra protocol
 exchanges from either party) and is therefore RECOMMENDED.
 
 
+## Perfect Forward Secrecy
+{: id="sect-8.pfs"}
+
+Long-term security typically requires perfect forward secrecy (pfs).
+When transferring encrypted long-term confidential values such as centrally generated private keys or revocation passphrases, pfs likely is important.
+Yet it is not needed for CMP message protection providing integrity and authenticity because transfer of PKI messages is usually completed in very limited time.
+For the same reason it typically is not required for the indirect method of providing a POP {{sect-5.2.8.2}} delivering the newly issued certificate in encrypted form.
+
+Encrypted values {{sect-5.2.2}} are transferred using CMS EnvelopedData [RFC5652], which does not offer pfs. In cases where long-term security is needed, CMP messages SHOULD be transferred over a mechanism that provides pfs, such as TLS.
+
 ## Private Keys for Certificate Signing and CMP Message Protection
 {: id="sect-8.4"}
 
