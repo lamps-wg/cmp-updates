@@ -124,6 +124,8 @@ informative:
       - name: Greg Zaverucha
     seriesinfo: Cryptology ePrint Archive
     date: 2022
+  Fujisaki: DOI.10.1007/s00145-011-9114-1
+  Hofheinz: DOI.10.1007/978-3-319-70500-2_12
 
 normative:
   RFC2985:
@@ -3756,6 +3758,29 @@ single PKI management operation.
 Importantly for this section further information about algorithm use profiles
 and their security strength is available in CMP Algorithms [RFCCCC] Section
 7.
+
+
+## Recurring Usage of KEM Keys for Message Protection
+{: id="sect-8.kem"}
+
+A shared secret key (ssk) used for MAC-based message protection MUST
+only be used for the PKI management operation indicated by the
+transactionID in the KemOtherInfo.
+
+It is assumed that the overall data size of the CMP messages
+in a PKI management operation protected by a single ssk
+is small enough not to introduce extra security risks.
+
+To be appropriate for use with this specification, the KEM algorithm
+MUST explicitly be designed to be secure when the public key is used
+many times. For example, a KEM algorithm with a single-use public
+key is not appropriate because the public key is expected to be
+carried in a long-lived certificate [RFC5280] and used over and over.
+Thus, KEM algorithms that offer indistinguishability under adaptive
+chosen ciphertext attack (IND-CCA2) security are appropriate. A
+common design pattern for obtaining IND-CCA2 security with public key
+reuse is to apply the Fujisaki-Okamoto (FO) transform [Fujisaki] or a
+variant of the FO transform [Hofheinz].
 
 
 ## Trust Anchor Provisioning Using CMP Messages
