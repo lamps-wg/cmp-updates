@@ -1748,6 +1748,8 @@ Bob must have generated the ciphertext using KEM encapsulation with Alice’s pu
   }
 ~~~~
 
+< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. >
+
 kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to generate the shared secret mac key.
 
 len is size of the mac key to be used for MAC-based message protection.
@@ -3849,6 +3851,8 @@ Reference: [RFCXXXX]
 
 < ToDo: The new OID TBD3 for the ASN.1 module KEMAlgorithmInformation-2023 will be defined in draft-ietf-lamps-cms-kemri. >
 
+< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. >
+
 # Acknowledgements {#Acknowledgements}
 
 The authors of this document wish to thank Carlisle Adams, Stephen Farrell,
@@ -5681,6 +5685,8 @@ From version 06 -> 07:
 * Updated section 5.1.3.4 specifying establishing a shares secret key for one arbitrary side of the CMP communication only
 
 * Removed the note and the security consideration regarding combiner function for HPKE
+
+* Added security considerations 8.1 and 8.7
 
 * Updates IANA Considerations in section 9 to add new OID for the updates ASN.1 module and for id-it-KemCiphertextInfo
 
