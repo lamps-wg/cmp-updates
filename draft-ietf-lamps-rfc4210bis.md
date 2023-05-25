@@ -1577,13 +1577,12 @@ requesting a new certificate or a certificate request template, see {{sect-5.3.1
   CertProfileValue ::= SEQUENCE SIZE (1..MAX) OF UTF8String
 ~~~~
 
-When used in an ir/cr/kur/genm, the value MUST NOT contain more elements
-than the number of CertReqMsg or InfoTypeAndValue elements and the certificate
-profile names refer to the elements in the given order.
+When used in a p10cr message, the sequence MUST NOT contain multiple certificate profile names.
+When used in an ir/cr/kur/genm message, the sequence MUST NOT contain more certificate profile names
+than the number of CertReqMsg or InfoTypeAndValue elements contained in the message body.
 
-When used in a p10cr, the value MUST NOT contain multiple certificate profile
-names.
-
+The certificate profile names in the sequence relate to the CertReqMsg or InfoTypeAndValue elements in the given order. An empty string has the same meaning as if no element is present at the given sequence position;
+no certificate profile name being associated with the respective CertReqMsg or InfoTypeAndValue element.
 
 
 ### PKI Message Body
