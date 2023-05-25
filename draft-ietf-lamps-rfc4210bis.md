@@ -71,15 +71,7 @@ informative:
   RFC8649:
   RFC9162:
   NIST.SP.800_90Ar1:
-  IEEE.802.1AR-2018:
-    target: https://ieeexplore.ieee.org/document/8423794
-    title: IEEE Standard for Local and metropolitan area networks - Secure Device Identity
-    author:
-    - org: IEEE
-    date: 2018-08
-    seriesinfo:
-      IEEE: 802.1AR-2018
-      DOI: 10.1109/IEEESTD.2018.8423794
+  IEEE.802.1AR-2018: DOI.10.1109/IEEESTD.2018.8423794
   CVE-2008-0166:
     target: https://nvd.nist.gov/vuln/detail/CVE-2008-0166
     title: National Vulnerability Database - CVE-2008-0166
@@ -1445,7 +1437,7 @@ information to use to verify the message.
 
 The recipient field contains the name of the recipient of the
 PKIMessage.  This name (in conjunction with recipKID, if supplied)
-should be usable to verify the protection on the message where the recipient's KEM key is used.
+should be usable to verify the protection on the message.
 
 The protectionAlg field specifies the algorithm used to protect the
 message.  If no protection bits are supplied (note that PKIProtection
@@ -1836,7 +1828,7 @@ Step# Alice                                Bob
    ~~~~ asn.1
      KDF(ss, len, context)->(ssk)
    ~~~~
-   Note: Bob performs the key derivation in step 3and not in step1 to make DOS attackers more difficult.
+   Note: Bob performs the key derivation in step 3 and not in step1 to make DOS attackers more difficult.
 
    Bob uses the shared secret key ssk for verification of the MAC-based protection.
 
