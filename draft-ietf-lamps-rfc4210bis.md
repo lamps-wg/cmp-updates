@@ -5695,7 +5695,7 @@ From version 06 -> 07:
 
 * Removed the note and the security consideration regarding combiner function for HPKE
 
-* Added security considerations 8.1 and 8.7
+* Added security considerations 8.1 and 8.8
 
 * Updates IANA Considerations in section 9 to add new OID for the updates ASN.1 module and for id-it-KemCiphertextInfo
 
