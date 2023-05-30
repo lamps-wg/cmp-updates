@@ -1732,11 +1732,11 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 {: id="sect-5.1.3.4"}
 
 
-In case the sender of a message has a KEM key pair, it can use a shared secret obtained by KEM decapsulation of a ciphertext received using the sender's private KEM key.
+In case the sender of a message has a KEM key pair, it can use a shared secret key obtained by KEM decapsulation of a ciphertext received using the sender's private KEM key.
 
-Note: In this section both entities in the communication need to send and receive messages. For ease of explanation we use the term "Alice" to mean the entity possessing the KEM key pair and who needs to be authenticated, and "Bob" to mean the entity who needs to authenticate the message being received.
+Note: In this section both entities in the communication need to send and receive messages. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to authenticate messages sent, and "Bob" to denote the entity who needs to authenticate the messages received.
 
-Bob must have generated the ciphertext using KEM encapsulation with Alice’s public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Alice will derive a shared secret key from the KEM shared secret and other data sent in the clear using a KDF. PKIProtection will contain a MAC value calculated using the shared secret key, and the protectionAlg will be the following:
+Bob must have generated the ciphertext using KEM encapsulation with Alice’s public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
 
 ~~~~ asn.1
   id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 TBD4}
@@ -1748,27 +1748,27 @@ Bob must have generated the ciphertext using KEM encapsulation with Alice’s pu
   }
 ~~~~
 
-< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. >
+< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. It must be clarified if Entrust can register this OID at this location. >
 
 kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to generate the shared secret mac key.
 
-len is size of the mac key to be used for MAC-based message protection.
+len is the output length of the KDF and MUST be the desired size of the mac key to be used for MAC-based message protection.
 
-mac is the algorithm identifier of the chosen MAC algorithm.
+mac is the algorithm identifier of the chosen MAC algorithm, and any associated parameters.
 
-< ToDo: It must be clarifies if Entrust can register this OID at this location, like id-PasswordBasedMac and id-DHBasedMac. >
 
 The KDF and MAC algorithms MAY be chosen from the options in CMP Algorithms [RFCCCCC].
 
-This approach uses the definition of Key Encapsulation Mechanism algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
+This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
 The InfoTypeAndValue transferring the KEM ciphertext is of type id-it-KemCiphertextInfo, which is defined in this document as:
 
 ~~~~ asn.1
   id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
+  KemCiphertextInfoValue :== KemCiphertextInfo
 ~~~~
 
-Note: This InfoTypeAndValue can be carried in genm/genp message body or in the generalInfo field of PKIHeader.
+Note: This InfoTypeAndValue can be carried in a genm/genp message body or in the generalInfo field of PKIHeader.
 
 When id-it-KemCiphertextInfo is used, the value is either absent or of type KemCiphertextInfo.  The syntax for KemCiphertextInfo is as follows:
 
@@ -1783,19 +1783,19 @@ kem is the algorithm identifier of the KEM algorithm, and any associated paramet
 
 ct is the ciphertext output from the Encapsulate function.
 
-This generic message flow assumes that Bob possesses the public KEM key of Alice. Alice can be the initiator of a PKI management operation or the responder. for more detailed figures see {{sect-e}}.
+This generic message flow assumes that Bob possesses the public KEM key of Alice. Alice can be the initiator of a PKI management operation or the responder. For more detailed figures see {{sect-e}}.
 
 Generic Message Flow:
 
 ~~~~
 Step# Alice                                Bob
   1                                        perform KEM Encapsulate
-                      <- KemCiphertextInfo <-
+                       <- KEM Ciphertext <-
   2   perform KEM Decapsulate
       perform key derivation
       format message with
         MAC-based protection
-                      ->      message      ->
+                       ->    message     ->
   3                                        perform key derivation
                                            verify MAC-based
                                              protection
@@ -1803,9 +1803,9 @@ Step# Alice                                Bob
 ~~~~
 {: #KEM title='Generic Message Flow when Alice has a KEM key pair' artwork-align="left"}
 
-1. Bob needs to possess the authentic public KEM key pk of Alice, e.g., contained in a KEM certificate received before where Bob could perform successful path validation.
+1. Bob needs to possess the authentic public KEM key pk of Alice, for instance contained in a KEM certificate that was received and successfully validated by Bob beforehand.¶
 
-   Bob generates a shared secret ss and the associated ciphertext ct using the KEM Encapsulate function with Alice's public KEM key pk.
+   Bob generates a shared secret ss and the associated ciphertext ct using the KEM Encapsulate function with Alice's public KEM key pk. Bob MUST NOT reuse the ss and ct for other PKI management operations. From this data, Bob produces a KemCiphertextInfo structure including the KEM algorithm identifier and the ciphertext ct and sends it to Alice in an InfoTypeAndValue structure defined above.¶
 
    ~~~~ asn.1
      Encapsulate(pk) -> (ct, ss)
@@ -1816,9 +1816,10 @@ Step# Alice                                Bob
    ~~~~ asn.1
      Decapsulate(ct, sk) -> (ss)
    ~~~~
-   Note: If the decapsulation operation outputs an error, any PKIFailureInfo SHALL contain the value badMessageCheck and the PKI management operation SHALL be terminated.
 
-   Alice derives the shared secret key ssk using the KDF.  The shared secret ss is used as input key material for the KDF, the value len is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure, definition see below, is used as context for the KDF.
+   If the decapsulation operation outputs an error, any failInfo field in an error response message  SHALL contain the value badMessageCheck and the PKI management operation SHALL be terminated.¶
+
+   Alice derives the shared secret key ssk using a KDF. The shared secret ss is used as input key material for the KDF, the value len is the desired output length of the KDF as required by the MAC algorithm to be used for message protection. The DER-encoded KemOtherInfo structure, as defined below, is used as context for the KDF.¶
 
    ~~~~ asn.1
      KDF(ss, len, context)->(ssk)
@@ -1826,47 +1827,49 @@ Step# Alice                                Bob
 
    The shared secret key ssk is used for MAC-based protection by Alice.
 
-1. Bob derives the shared secret key ssk using the KDF.  The shared secret ss is used as input key material for the KDF, the value len from KemBMParameter is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure is used as context for the KDF.
+1. Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len from KemBMParameter is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice’s side is used as context for the KDF.¶
 
    ~~~~ asn.1
      KDF(ss, len, context)->(ssk)
    ~~~~
-   Note: Bob performs the key derivation in step 3 and not in step1 to make DOS attackers more difficult.
+   Note: Bob performs the key derivation in step 3 and not in step 1 to make DOS attackers more difficult.¶
 
-   Bob uses the shared secret key ssk for verification of the MAC-based protection.
+   Bob uses the shared secret key ssk for verifying the MAC-based protection of the message received and in this way authenticates Alice.¶
 
-This shared secret key ssk can be used by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.
+This shared secret key ssk can be reused by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.¶
 
-This approach uses the conventions of using a KDF as described in {{I-D.ietf-lamps-cms-kemri, Section 5}} with the following changes:
+This approach employs the conventions of using a KDF as described in {{I-D.ietf-lamps-cms-kemri, Section 5}} with the following changes:¶
 
-* L is dependent of the MAC algorithm that is used with the shared symmetric key for CMP message protection and is called len in this document
+* L is dependent of the MAC algorithm that is used with the shared secret key for CMP message protection and is called len in this document
 
-* info is called context in this document and contains the DER-encoded KemOtherInfo structure defined as:
+* info is an additional input to the KDF, is called context in this document, and contains the DER-encoded KemOtherInfo structure defined as:
 
 >~~~~ asn.1
   KemOtherInfo ::= SEQUENCE {
-    staticString     PKIFreeText,
-    transactionID    OCTET STRING,
-    senderNonce      OCTET STRING,
-    recipNonce       OCTET STRING,
-    len              INTEGER (1..MAX),
-    ct               OCTET STRING
+    staticString      PKIFreeText,
+    transactionID [0] OCTET STRING     OPTIONAL,
+    senderNonce   [1] OCTET STRING     OPTIONAL,
+    recipNonce    [2] OCTET STRING     OPTIONAL,
+    len               INTEGER (1..MAX),
+    mac               AlgorithmIdentifier{MAC-ALGORITHM, {...}}
+    ct                OCTET STRING
   }
 ~~~~
 
->< ToDo: Do we need all these data as context information for domain separation? >
+>staticString MUST be "CMP-KEM".
 
->staticString MUST be "CMP-KEM"
+>transactionID, senderNonce, and recipNonce MUST be the values from the message previously received containing the ciphertext ct in KemCiphertextInfo, if present.
 
->transactionID, senderNonce, and recipNonce MUST be the values from the message previously received containing the ciphertext ct in KemCiphertextInfo
+>len MUST be the value from KemBMParameter.
 
->len MUST be the value from KemBMParameter
+>mac MUST be the MAC algorithm identifier used for MAC-based protection of the message and MUST be value from KemBMParameter.
 
->ct MUST be the ciphertext from KemCiphertextInfo
+>ct MUST be the ciphertext from KemCiphertextInfo.
 
-* OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document
+* OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.
 
-There are different ways to request and provide the KEM ciphertext contained in a KemCiphertextInfo to Alice, see {{sect-e}}. The KemCiphertextInfo can be requested using a genm message of type id-it-KemCiphertextInfo where the value is absent and can be provided in the following genp message. Alternatively, the generalInfo field of the header of a PKIMessage can be used to request and provide a KemCiphertextInfo.
+There are various ways how Alice can request and Bob can provide the KEM ciphertext, see {{sect-e}} for details. The KemCiphertextInfo can be requested using a genm message with an InfoTypeAndValue structure of type id-it-KemCiphertextInfo where the value is absent and can be provided in the following genp message with an InfoTypeAndValue structure of the same type. Alternatively, the generalInfo field of the header of a PKIMessage can be used to request and provide a KemCiphertextInfo structure, also using an InfoTypeAndValue structure of type id-it-KemCiphertextInfo in each direction.
+The procedure works also without Alice explicitly requesting the KEM ciphertext, in case that Bob knows beforehand a KEM key of Alice and can expect that she is ready to use it.¶
 
 If both the initiator and responder in a PKI management operation have KEM key pairs, this procedure can be applied by both entities independently, establishing and using different shared secret keys on either side.
 
@@ -3080,6 +3083,10 @@ only those CRLs that are more recent than the ones indicated by the client.
      thisUpdate   Time OPTIONAL }
 ~~~~
 
+#### KEM Ciphertext
+{: id="sect-5.3.19.18"}
+
+See {{sect-5.1.3.4}} for the definition and use of {id-it TBD1}.
 
 
 ### PKI General Response Content
@@ -3775,8 +3782,7 @@ and their security strength is available in CMP Algorithms [RFCCCC] Section
 {: id="sect-8.kem"}
 
 A shared secret key (ssk) used for MAC-based message protection MUST
-only be used for the PKI management operation indicated by the
-transactionID in the KemOtherInfo.
+only be used for the PKI management operation identified by the KemOtherInfo.
 
 It is assumed that the overall data size of the CMP messages
 in a PKI management operation protected by a single ssk
@@ -5516,7 +5522,10 @@ KemOtherInfo ::= SEQUENCE {
    -- previously received containing the ciphertext (ct) in
    -- KemCiphertextInfo
    len              INTEGER (1..MAX),
-   -- MUST be the value from that KemCiphertextInfo
+   -- MUST be the value from  KemBMParameter
+   mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}
+   -- MUST be the MAC algorithm identifier used for MAC-based
+   -- protection of the message and MUST be value from KemBMParameter
    ct               OCTET STRING
    -- MUST be the ciphertext from that KemCiphertextInfo
   }
@@ -5589,11 +5598,11 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --                                                 UTF8String
 --      - id-it-certProfile added in CMP Updates [RFCAAAA]
 --   id-it-crlStatusList    OBJECT IDENTIFIER ::= {id-it 22}
---   CRLStatusListValue         ::= SEQUENCE SIZE (1..MAX) OF
+--      CRLStatusListValue      ::= SEQUENCE SIZE (1..MAX) OF
 --                                                  CRLStatus
 --      - id-it-crlStatusList added in CMP Updates [RFCAAAA]
 --   id-it-crls             OBJECT IDENTIFIER ::= {id-it 23}
---   CRLsValue                  ::= SEQUENCE SIZE (1..MAX) OF
+--      CRLsValue               ::= SEQUENCE SIZE (1..MAX) OF
 --                                            CertificateList
 --      - id-it-crls added in CMP Updates [RFCAAAA]
 --   id-it-KemCiphertextInfo    OBJECT IDENTIFIER ::= {id-it TBD1}
