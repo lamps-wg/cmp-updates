@@ -1803,9 +1803,9 @@ Step# Alice                                Bob
 ~~~~
 {: #KEM title='Generic Message Flow when Alice has a KEM key pair' artwork-align="left"}
 
-1. Bob needs to possess the authentic public KEM key pk of Alice, for instance contained in a KEM certificate that was received and successfully validated by Bob beforehand.¶
+1. Bob needs to possess the authentic public KEM key pk of Alice, for instance contained in a KEM certificate that was received and successfully validated by Bob beforehand.
 
-   Bob generates a shared secret ss and the associated ciphertext ct using the KEM Encapsulate function with Alice's public KEM key pk. Bob MUST NOT reuse the ss and ct for other PKI management operations. From this data, Bob produces a KemCiphertextInfo structure including the KEM algorithm identifier and the ciphertext ct and sends it to Alice in an InfoTypeAndValue structure defined above.¶
+   Bob generates a shared secret ss and the associated ciphertext ct using the KEM Encapsulate function with Alice's public KEM key pk. Bob MUST NOT reuse the ss and ct for other PKI management operations. From this data, Bob produces a KemCiphertextInfo structure including the KEM algorithm identifier and the ciphertext ct and sends it to Alice in an InfoTypeAndValue structure defined above.
 
    ~~~~ asn.1
      Encapsulate(pk) -> (ct, ss)
@@ -1817,9 +1817,9 @@ Step# Alice                                Bob
      Decapsulate(ct, sk) -> (ss)
    ~~~~
 
-   If the decapsulation operation outputs an error, any failInfo field in an error response message  SHALL contain the value badMessageCheck and the PKI management operation SHALL be terminated.¶
+   If the decapsulation operation outputs an error, any failInfo field in an error response message  SHALL contain the value badMessageCheck and the PKI management operation SHALL be terminated.
 
-   Alice derives the shared secret key ssk using a KDF. The shared secret ss is used as input key material for the KDF, the value len is the desired output length of the KDF as required by the MAC algorithm to be used for message protection. The DER-encoded KemOtherInfo structure, as defined below, is used as context for the KDF.¶
+   Alice derives the shared secret key ssk using a KDF. The shared secret ss is used as input key material for the KDF, the value len is the desired output length of the KDF as required by the MAC algorithm to be used for message protection. The DER-encoded KemOtherInfo structure, as defined below, is used as context for the KDF.
 
    ~~~~ asn.1
      KDF(ss, len, context)->(ssk)
@@ -1827,18 +1827,18 @@ Step# Alice                                Bob
 
    The shared secret key ssk is used for MAC-based protection by Alice.
 
-1. Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len from KemBMParameter is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice’s side is used as context for the KDF.¶
+1. Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len from KemBMParameter is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice’s side is used as context for the KDF.
 
    ~~~~ asn.1
      KDF(ss, len, context)->(ssk)
    ~~~~
-   Note: Bob performs the key derivation in step 3 and not in step 1 to make DOS attackers more difficult.¶
+   Note: Bob performs the key derivation in step 3 and not in step 1 to make DOS attackers more difficult.
 
-   Bob uses the shared secret key ssk for verifying the MAC-based protection of the message received and in this way authenticates Alice.¶
+   Bob uses the shared secret key ssk for verifying the MAC-based protection of the message received and in this way authenticates Alice.
 
-This shared secret key ssk can be reused by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.¶
+This shared secret key ssk can be reused by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.
 
-This approach employs the conventions of using a KDF as described in {{I-D.ietf-lamps-cms-kemri, Section 5}} with the following changes:¶
+This approach employs the conventions of using a KDF as described in {{I-D.ietf-lamps-cms-kemri, Section 5}} with the following changes:
 
 * L is dependent of the MAC algorithm that is used with the shared secret key for CMP message protection and is called len in this document
 
@@ -1868,8 +1868,9 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
 
 * OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.
 
-There are various ways how Alice can request and Bob can provide the KEM ciphertext, see {{sect-e}} for details. The KemCiphertextInfo can be requested using a genm message with an InfoTypeAndValue structure of type id-it-KemCiphertextInfo where the value is absent and can be provided in the following genp message with an InfoTypeAndValue structure of the same type. Alternatively, the generalInfo field of the header of a PKIMessage can be used to request and provide a KemCiphertextInfo structure, also using an InfoTypeAndValue structure of type id-it-KemCiphertextInfo in each direction.
-The procedure works also without Alice explicitly requesting the KEM ciphertext, in case that Bob knows beforehand a KEM key of Alice and can expect that she is ready to use it.¶
+There are various ways how Alice can request and Bob can provide the KEM ciphertext, see {{sect-e}} for details. The KemCiphertextInfo can be requested using a genm message with an InfoTypeAndValue structure of type id-it-KemCiphertextInfo where the value is absent and can be provided in the following genp message with an InfoTypeAndValue structure of the same type.
+Alternatively, the generalInfo field of the header of a PKIMessage can be used to request and provide a KemCiphertextInfo structure, also using an InfoTypeAndValue structure of type id-it-KemCiphertextInfo in each direction.
+The procedure works also without Alice explicitly requesting the KEM ciphertext, in case that Bob knows beforehand a KEM key of Alice and can expect that she is ready to use it.
 
 If both the initiator and responder in a PKI management operation have KEM key pairs, this procedure can be applied by both entities independently, establishing and using different shared secret keys on either side.
 
