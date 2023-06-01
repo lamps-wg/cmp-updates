@@ -1808,13 +1808,13 @@ Step# Alice                                Bob
    Bob generates a shared secret ss and the associated ciphertext ct using the KEM Encapsulate function with Alice's public KEM key pk. Bob MUST NOT reuse the ss and ct for other PKI management operations. From this data, Bob produces a KemCiphertextInfo structure including the KEM algorithm identifier and the ciphertext ct and sends it to Alice in an InfoTypeAndValue structure defined above.
 
    ~~~~ asn.1
-     Encapsulate(pk) -> (ct, ss)
+      Encapsulate(pk) -> (ct, ss)
    ~~~~
 
 1. Alice decapsulates the shared secret ss from the ciphertext ct using the KEM Decapsulate function and its private KEM key sk.
 
    ~~~~ asn.1
-     Decapsulate(ct, sk) -> (ss)
+      Decapsulate(ct, sk) -> (ss)
    ~~~~
 
    If the decapsulation operation outputs an error, any failInfo field in an error response message  SHALL contain the value badMessageCheck and the PKI management operation SHALL be terminated.
@@ -1822,7 +1822,7 @@ Step# Alice                                Bob
    Alice derives the shared secret key ssk using a KDF. The shared secret ss is used as input key material for the KDF, the value len is the desired output length of the KDF as required by the MAC algorithm to be used for message protection. The DER-encoded KemOtherInfo structure, as defined below, is used as context for the KDF.
 
    ~~~~ asn.1
-     KDF(ss, len, context)->(ssk)
+      KDF(ss, len, context)->(ssk)
    ~~~~
 
    The shared secret key ssk is used for MAC-based protection by Alice.
@@ -1830,8 +1830,9 @@ Step# Alice                                Bob
 1. Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len from KemBMParameter is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice’s side is used as context for the KDF.
 
    ~~~~ asn.1
-     KDF(ss, len, context)->(ssk)
+      KDF(ss, len, context)->(ssk)
    ~~~~
+
    Note: Bob performs the key derivation in step 3 and not in step 1 to make DOS attackers more difficult.
 
    Bob uses the shared secret key ssk for verifying the MAC-based protection of the message received and in this way authenticates Alice.
@@ -1844,27 +1845,27 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
 
 * info is an additional input to the KDF, is called context in this document, and contains the DER-encoded KemOtherInfo structure defined as:
 
->~~~~ asn.1
-  KemOtherInfo ::= SEQUENCE {
-    staticString      PKIFreeText,
-    transactionID [0] OCTET STRING     OPTIONAL,
-    senderNonce   [1] OCTET STRING     OPTIONAL,
-    recipNonce    [2] OCTET STRING     OPTIONAL,
-    len               INTEGER (1..MAX),
-    mac               AlgorithmIdentifier{MAC-ALGORITHM, {...}}
-    ct                OCTET STRING
-  }
-~~~~
+  ~~~~ asn.1
+    KemOtherInfo ::= SEQUENCE {
+      staticString      PKIFreeText,
+      transactionID [0] OCTET STRING     OPTIONAL,
+      senderNonce   [1] OCTET STRING     OPTIONAL,
+      recipNonce    [2] OCTET STRING     OPTIONAL,
+      len               INTEGER (1..MAX),
+      mac               AlgorithmIdentifier{MAC-ALGORITHM, {...}}
+      ct                OCTET STRING
+    }
+  ~~~~
 
->staticString MUST be "CMP-KEM".
+  staticString MUST be "CMP-KEM".
 
->transactionID, senderNonce, and recipNonce MUST be the values from the message previously received containing the ciphertext ct in KemCiphertextInfo, if present.
+  transactionID, senderNonce, and recipNonce MUST be the values from the message previously received containing the ciphertext ct in KemCiphertextInfo, if present.
 
->len MUST be the value from KemBMParameter.
+  len MUST be the value from KemBMParameter.
 
->mac MUST be the MAC algorithm identifier used for MAC-based protection of the message and MUST be value from KemBMParameter.
+  mac MUST be the MAC algorithm identifier used for MAC-based protection of the message and MUST be value from KemBMParameter.
 
->ct MUST be the ciphertext from KemCiphertextInfo.
+  ct MUST be the ciphertext from KemCiphertextInfo.
 
 * OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.
 
