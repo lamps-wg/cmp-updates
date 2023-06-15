@@ -3783,7 +3783,7 @@ and their security strength is available in CMP Algorithms [RFCCCC] Section
 ## Recurring Usage of KEM Keys for Message Protection
 {: id="sect-8.kem"}
 
-Each PKI entity using key encapsulation for message protection, see {{sect-5.1.3.4}}, MUST receive a fresh KEM ciphertext (ct) for each PKI management operation to derive a fresh shared secret key (ssk) for MAC-based message protection.
+Each PKI entity using key encapsulation for MAC-based message protection, see {{sect-5.1.3.4}}, MUST use a fresh shared secret key (ssk) for each PKI management operation. This can be enforced by using senderNonce and recipNonce header fields in all messages of the PKI management operation.
 
 It is assumed that the overall data size of the CMP messages
 in a PKI management operation protected by a single shared secret key
