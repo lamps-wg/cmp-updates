@@ -3783,11 +3783,10 @@ and their security strength is available in CMP Algorithms [RFCCCC] Section
 ## Recurring Usage of KEM Keys for Message Protection
 {: id="sect-8.kem"}
 
-A shared secret key (ssk) used for MAC-based message protection MUST
-only be used for the PKI management operation identified by the KemOtherInfo.
+Each PKI entity using key encapsulation for message protection, see {{sect-5.1.3.4}}, MUST receive a fresh KEM ciphertext (ct) for each PKI management operation to derive a fresh shared secret key (ssk) for MAC-based message protection.
 
 It is assumed that the overall data size of the CMP messages
-in a PKI management operation protected by a single ssk
+in a PKI management operation protected by a single shared secret key
 is small enough not to introduce extra security risks.
 
 To be appropriate for use with this specification, the KEM algorithm
@@ -3800,6 +3799,10 @@ chosen ciphertext attack (IND-CCA2) security are appropriate. A
 common design pattern for obtaining IND-CCA2 security with public key
 reuse is to apply the Fujisaki-Okamoto (FO) transform [Fujisaki] or a
 variant of the FO transform [Hofheinz].
+
+Therefore, given a long-term public key using an IND-CCA2 secure KEM
+algorithm, there is no limit to the number of CMP messages that can
+be encrypted under it.
 
 
 ## Trust Anchor Provisioning Using CMP Messages
