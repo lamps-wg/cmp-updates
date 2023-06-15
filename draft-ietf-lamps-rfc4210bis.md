@@ -1748,7 +1748,7 @@ Bob must have generated the ciphertext using KEM encapsulation with Alice’s pu
   }
 ~~~~
 
-< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. It must be clarified if Entrust can register this OID at this location. >
+< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered, possibly 1.2.840.113533.7.66.16. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. It must be clarified if Entrust can register this OID at this location. >
 
 kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to generate the shared secret mac key.
 
