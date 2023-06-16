@@ -1748,7 +1748,7 @@ Bob must have generated the ciphertext using KEM encapsulation with Alice’s pu
   }
 ~~~~
 
-< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered, possibly 1.2.840.113533.7.66.16. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. It must be clarified if Entrust can register this OID at this location. >
+< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. Entrust offered using 1.2.840.113533.7.66.16 for id-KemBasedMac. >
 
 kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to generate the shared secret mac key.
 
@@ -3862,7 +3862,7 @@ Reference: [RFCXXXX]
 
 < ToDo: The new OID TBD3 for the ASN.1 module KEMAlgorithmInformation-2023 will be defined in draft-ietf-lamps-cms-kemri. >
 
-< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. >
+< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. Entrust offered using 1.2.840.113533.7.66.16 for id-KemBasedMac. >
 
 # Acknowledgements {#Acknowledgements}
 
