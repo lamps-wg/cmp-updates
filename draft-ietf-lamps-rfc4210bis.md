@@ -1577,13 +1577,9 @@ requesting a new certificate or a certificate request template, see {{sect-5.3.1
   CertProfileValue ::= SEQUENCE SIZE (1..MAX) OF UTF8String
 ~~~~
 
-When used in a p10cr message, the sequence MUST NOT contain multiple certificate profile names.
-When used in an ir/cr/kur/genm message, the sequence MUST NOT contain more certificate profile names
-than the number of CertReqMsg or InfoTypeAndValue elements contained in the message body.
+When used in a p10cr message, the CertProfileValue sequence MUST NOT contain multiple certificate profile names. When used in an ir/cr/kur/genm message, the CertProfileValue sequence MUST NOT contain more certificate profile names than the number of CertReqMsg or GenMsgContent InfoTypeAndValue elements contained in the message body.
 
-The certificate profile names in the sequence relate to the CertReqMsg or InfoTypeAndValue elements in the given order. An empty string has the same meaning as if no element is present at the given sequence position;
-no certificate profile name being associated with the respective CertReqMsg or InfoTypeAndValue element.
-
+The certificate profile names in the CertProfileValue sequence relate to the CertReqMsg or GenMsgContent InfoTypeAndValue elements in the given order. An empty string means no certificate profile name is associated with the respective CertReqMsg or GenMsgContent InfoTypeAndValue element. If the CertProfileValue sequence contains less certificate profile entries than CertReqMsg or GenMsgContent InfoTypeAndValue elements, the remaining CertReqMsg or GenMsgContent InfoTypeAndValue elements have no profile name associated with them.
 
 ### PKI Message Body
 {: id="sect-5.1.2"}
@@ -5695,6 +5691,8 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 06 -> 07:
 
+
+* Updated section 5.1.1.4 addressing a question from Liao Lijun on how to interpret less profile names than certReqMsgs
 
 * Updated section 5.1.3.4 specifying establishing a shares secret key for one arbitrary side of the CMP communication only
 
