@@ -3654,7 +3654,7 @@ able to obtain a certificate containing a public key that they do not
 possess the corresponding private key for. There are some scenarios,
 described as "forwarding attacks" in Appendix A of [Gueneysu], in
 which this can lead to protocol attacks against a naively-implemented
-sign-then-encrypt protocol, but in general in merely results in the
+sign-then-encrypt protocol, but in general it merely results in the
 end entity obtaining a certificate that they can not use.
 
 
