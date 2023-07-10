@@ -1764,7 +1764,7 @@ The InfoTypeAndValue transferring the KEM ciphertext is of type id-it-KemCiphert
   KemCiphertextInfoValue :== KemCiphertextInfo
 ~~~~
 
-Note: This InfoTypeAndValue can be carried in a genm/genp message body or in the generalInfo field of PKIHeader.
+Note: This InfoTypeAndValue can be carried in a genm/genp message body or in the generalInfo field of PKIHeader in messages of other types.
 
 When id-it-KemCiphertextInfo is used, the value is either absent or of type KemCiphertextInfo.  The syntax for KemCiphertextInfo is as follows:
 
@@ -4874,6 +4874,8 @@ with the following exceptions:
 
 As described in {{sect-5.1.3.4}}, any party in a PKI management operation may wish to use a KEM key pair for message protection. Below possible cases are described.
 
+For any PKI management operation started by a PKI entity with any type of request message, the following message flows describe the use of a KEM key. There are two cases to distinguish, namely whether the PKI entity or the PKI management entity owns a KEM key pair. If both sides own KEM key pairs, the flows need to be combined such that for each direction a shared secret key is established.
+
 In the following message flows Alice indicates the PKI entity that uses a KEM key pair for message authentication and Bob provides the KEM ciphertext using Alice's public KEM key, as described in {{sect-5.1.3.4}}.
 
 Message Flow when the PKI entity has a KEM key pair and certificate:
@@ -4882,15 +4884,18 @@ Message Flow when the PKI entity has a KEM key pair and certificate:
 Step# PKI entity                           PKI management entity
       (Alice)                              (Bob)
   1   format unprotected genm
-        containing KEM
-        certificate in
+        of type
+        id-it-KemCiphertextInfo
+        without value, and
+        KEM certificate in
         extraCerts
                          ->   genm    ->
   2                                        validate KEM certificate
                                            perform KEM Encapsulate
                                            format unprotected genp
-                                             containing KEM
-                                             ciphertext in PKIBody
+                                             of type
+                                             id-it-KemCiphertextInfo
+                                             providing KEM ciphertext
                          <-   genp    <-
   3   perform KEM Decapsulate
       perform key derivation
@@ -4925,11 +4930,13 @@ Message Flow when the PKI entity knows that the PKI management entity uses a KEM
 Step# PKI entity                           PKI management entity
       (Bob)                                (Alice)
   1   perform KEM Encapsulate
-      format request containing
+      format request providing
         KEM ciphertext in
-        generalInfo and with
-        protection depending on
-        available key material
+        generalInfo of type
+        id-it-KemCiphertextInfo,
+        and with protection
+        depending on available
+        key material
                          ->  request  ->
   2                                        perform KEM Decapsulate
                                            perform key derivation
@@ -4970,7 +4977,7 @@ Step# PKI entity                           PKI management entity
                          <-   error   <-
   3   validate KEM certificate
 
-                 proceed as shown in Figure 4 above
+                 proceed as shown in the Figure before
 ~~~
 {: #KEM-Flow3 title='Message Flow when the PKI entity does not know that the PKI management entity uses a KEM key pair' artwork-align="left"}
 
@@ -5688,6 +5695,11 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 07 -> 08:
+
+
+* Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30
 
 From version 06 -> 07:
 
