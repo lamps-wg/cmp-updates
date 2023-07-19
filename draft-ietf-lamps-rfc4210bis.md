@@ -1728,7 +1728,7 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 {: id="sect-5.1.3.4"}
 
 
-In case the sender of a message has a KEM key pair, it can use a shared secret key obtained by KEM decapsulation of a ciphertext received using the sender's private KEM key.
+In case the sender of a message has a KEM key pair, it can use a shared secret key obtained by KEM decapsulation of a ciphertext received using its private KEM key.
 
 Note: In this section both entities in the communication need to send and receive messages. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to authenticate messages sent, and "Bob" to denote the entity who needs to authenticate the messages received.
 
@@ -1815,7 +1815,7 @@ Step# Alice                                Bob
 
    If the decapsulation operation outputs an error, any failInfo field in an error response message  SHALL contain the value badMessageCheck and the PKI management operation SHALL be terminated.
 
-   Alice derives the shared secret key ssk using a KDF. The shared secret ss is used as input key material for the KDF, the value len is the desired output length of the KDF as required by the MAC algorithm to be used for message protection. The DER-encoded KemOtherInfo structure, as defined below, is used as context for the KDF.
+   Alice derives the shared secret key ssk using a KDF. The shared secret ss is used as input key material for the KDF, the value len is the desired output length of the KDF as required by the MAC algorithm to be used for message protection. KDF, len, and MAC will be transferred to Bob in the protectionAlg KemBMParameter. The DER-encoded KemOtherInfo structure, as defined below, is used as context for the KDF.
 
    ~~~~ asn.1
       KDF(ss, len, context)->(ssk)
@@ -1823,13 +1823,13 @@ Step# Alice                                Bob
 
    The shared secret key ssk is used for MAC-based protection by Alice.
 
-1. Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len from KemBMParameter is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice’s side is used as context for the KDF.
+1. Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice’s side is used as context for the KDF.
 
    ~~~~ asn.1
       KDF(ss, len, context)->(ssk)
    ~~~~
 
-   Note: Bob performs the key derivation in step 3 and not in step 1 to make DOS attackers more difficult.
+   Note: Bob performs the key derivation in step 3 and not in step 1 to make DOS attacks more difficult.
 
    Bob uses the shared secret key ssk for verifying the MAC-based protection of the message received and in this way authenticates Alice.
 
@@ -1855,11 +1855,11 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
 
   staticString MUST be "CMP-KEM".
 
-  transactionID, senderNonce, and recipNonce MUST be the values from the message previously received containing the ciphertext ct in KemCiphertextInfo, if present.
+  transactionID, senderNonce, and recipNonce MUST be the values from the message containing the ciphertext ct in KemCiphertextInfo, if present.
 
   len MUST be the value from KemBMParameter.
 
-  mac MUST be the MAC algorithm identifier used for MAC-based protection of the message and MUST be value from KemBMParameter.
+  mac MUST be the MAC algorithm identifier used for MAC-based protection of the message and MUST be the value from KemBMParameter.
 
   ct MUST be the ciphertext from KemCiphertextInfo.
 
@@ -5530,10 +5530,11 @@ KemOtherInfo ::= SEQUENCE {
    -- previously received containing the ciphertext (ct) in
    -- KemCiphertextInfo
    len              INTEGER (1..MAX),
-   -- MUST be the value from  KemBMParameter
+   -- MUST be the value from KemBMParameter
    mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}
    -- MUST be the MAC algorithm identifier used for MAC-based
-   -- protection of the message and MUST be value from KemBMParameter
+   -- protection of the message and MUST be the value from
+   -- KemBMParameter
    ct               OCTET STRING
    -- MUST be the ciphertext from that KemCiphertextInfo
   }
@@ -5695,6 +5696,11 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 08 -> 09:
+
+
+* Some editorial changes to Section 5.1.3.4 and Appendix E after discussion at IETF117
 
 From version 07 -> 08:
 
