@@ -1764,7 +1764,7 @@ The InfoTypeAndValue transferring the KEM ciphertext is of type id-it-KemCiphert
   KemCiphertextInfoValue :== KemCiphertextInfo
 ~~~~
 
-Note: This InfoTypeAndValue can be carried in a genm/genp message body or in the generalInfo field of PKIHeader in messages of other types.
+Note: This InfoTypeAndValue can be carried in a genm/genp message body as specified in {{sect-5.3.19}} or in the generalInfo field of PKIHeader in messages of other types.
 
 When id-it-KemCiphertextInfo is used, the value is either absent or of type KemCiphertextInfo.  The syntax for KemCiphertextInfo is as follows:
 
