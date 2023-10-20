@@ -1728,6 +1728,8 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 {: id="sect-5.1.3.4"}
 
 
+This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
+
 In case the sender of a message has a KEM key pair, it can use a shared secret key obtained by KEM decapsulation of a ciphertext received using its private KEM key.
 
 Note: In this section both entities in the communication need to send and receive messages. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to authenticate messages sent, and "Bob" to denote the entity who needs to authenticate the messages received.
@@ -1754,8 +1756,6 @@ mac is the algorithm identifier of the chosen MAC algorithm, and any associated 
 
 
 The KDF and MAC algorithms MAY be chosen from the options in CMP Algorithms [RFCCCCC].
-
-This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
 The InfoTypeAndValue transferring the KEM ciphertext is of type id-it-KemCiphertextInfo, which is defined in this document as:
 
