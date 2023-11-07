@@ -1677,6 +1677,37 @@ entropy (established via out-of-band means). PKIProtection will contain a
 MAC value and the protectionAlg MAY be one of the options described in CMP
 Algorithms Section 6.1 [RFCCCCC].
 
+The PasswordBasedMac is specified as follows (see also [RFC4211] and
+[RFC9045]):
+
+  id-PasswordBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 13}
+  PBMParameter ::= SEQUENCE {
+     salt                OCTET STRING,
+     owf                 AlgorithmIdentifier,
+     iterationCount      INTEGER,
+     mac                 AlgorithmIdentifier
+  }
+
+In the above protectionAlg, the salt value is appended to the shared
+secret input. The OWF is then applied iterationCount times, where the
+salted secret is the input to the first iteration and, for each
+successive iteration, the input is set to be the output of the
+previous iteration. The output of the final iteration (called
+"BASEKEY" for ease of reference, with a size of "H") is what is used
+to form the symmetric key. If the MAC algorithm requires a K-bit key
+and K <= H, then the most significant K bits of BASEKEY are used. If
+K > H, then all of BASEKEY is used for the most significant H bits of
+the key, OWF("1" || BASEKEY) is used for the next most significant H
+bits of the key, OWF("2" || BASEKEY) is used for the next most
+significant H bits of the key, and so on, until all K bits have been
+derived. [Here "N" is the ASCII byte encoding the number N and "||"
+represents concatenation.]
+
+Note: It is RECOMMENDED that the fields of PBMParameter remain
+constant throughout the messages of a single transaction (e.g.,
+ir/ip/certConf/pkiConf) to reduce the overhead associated with
+PasswordBasedMac computation.
+
 
 #### Key Agreement
 {: id="sect-5.1.3.2"}
@@ -5699,6 +5730,8 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 08 -> 09:
 
+
+* Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text
 
 * Some editorial changes to Section 5.1.3.4 and Appendix E after discussion at IETF117
 
