@@ -1792,7 +1792,7 @@ The InfoTypeAndValue transferring the KEM ciphertext is of type id-it-KemCiphert
 
 ~~~~ asn.1
   id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
-  KemCiphertextInfoValue :== KemCiphertextInfo
+  KemCiphertextInfoValue ::= KemCiphertextInfo
 ~~~~
 
 Note: This InfoTypeAndValue can be carried in a genm/genp message body or in the generalInfo field of PKIHeader in messages of other types.
