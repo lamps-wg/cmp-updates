@@ -1922,7 +1922,9 @@ message.  The structure used is as follows:
   NestedMessageContent ::= PKIMessages
 ~~~~
 
-
+In case an RA needs to modify a request message, it MAY include the original
+PKIMessage in the generalInfo field of the modified message as described in
+{{sect-5.1.1.3}}.
 
 
 ## Common Data Structures
@@ -5736,6 +5738,7 @@ From version 07 -> 08:
 
 * Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117
 
+* Added a cross-reference to Section 5.1.1.3 regarding use of OrigPKIMessage to Section 5.1.3.5
 
 * Fixed some references in Section 5.2.8.3 which broke from RFC2510 to RFC4210
 
