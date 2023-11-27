@@ -1,8 +1,9 @@
 ---
 v: 3
+ipr: trust200902
 docname: draft-ietf-lamps-rfc4210bis-latest
 cat: std
-obsoletes: '4210'
+obsoletes: '4210 9480'
 updates: '5912'
 consensus: 'true'
 submissiontype: IETF
@@ -58,9 +59,9 @@ author:
   uri: https://www.entrust.com
 
 informative:
-  I-D.ietf-lamps-cmp-updates:
-  I-D.ietf-lamps-lightweight-cmp-profile:
-  I-D.ietf-ace-cmpv2-coap-transport:
+  RFC9480:
+  RFC9482:
+  RFC9483:
   I-D.ietf-lamps-rfc6712bis:
   RFC1847:
   RFC2510:
@@ -138,9 +139,10 @@ normative:
   RFC5958:
   RFC6402:
   RFC8933:
-  ITU.X509.2000:
-  I-D.ietf-lamps-cmp-algorithms:
+  RFC9045:
+  RFC9481:
   I-D.ietf-lamps-cms-kemri:
+  ITU.X509.2000:
   MvOV97:
     title: Handbook of Applied Cryptography
     author:
@@ -167,7 +169,7 @@ client systems and PKI components such as a Registration Authority (RA) and
 a Certification Authority (CA).
 
 This document obsoletes RFC 4210 by including the updates specified by CMP
-Updates [RFCAAAA] Section 2 and Appendix A.2 maintaining backward compatibility
+Updates RFC 9480 Section 2 and Appendix A.2 maintaining backward compatibility
 with CMP version 2 wherever possible and obsoletes both documents.  Updates
 to CMP version 2 are: improving crypto agility, extending the polling mechanism,
 adding new general message types, and adding extended key usages to identify
@@ -176,7 +178,7 @@ for changes to the ASN.1 syntax, which are: support of EnvelopedData instead
 of EncryptedValue and hashAlg for indicating a hash AlgorithmIdentifier in
 certConf messages.
 
-In addition to the changes specified in CMP Updates [RFCAAAA] this document
+In addition to the changes specified in CMP Updates RFC 9480 this document
 adds support for management of KEM certificates.
 
 Appendix F of this document updates the 2002 ASN.1 module in RFC 5912 Section 9.
@@ -208,19 +210,7 @@ Please perform the following substitution.
 
 * RFCXXXX --> the assigned numerical RFC value for this draft
 
-* RFCAAAA --> the assigned numerical RFC value for {{I-D.ietf-lamps-cmp-updates}}
-
-  Add this RFC number to the list of obsoleted RFCs.
-
-
-
-* RFCBBBB --> the assigned numerical RFC value for {{I-D.ietf-lamps-lightweight-cmp-profile}}
-
-* RFCCCCC --> the assigned numerical RFC value for {{I-D.ietf-lamps-cmp-algorithms}}
-
 * RFCDDDD --> the assigned numerical RFC value for {{I-D.ietf-lamps-rfc6712bis}}
-
-* RFCEEEE --> the assigned numerical RFC value for {{I-D.ietf-ace-cmpv2-coap-transport}}
 
 * RFCFFFF --> the assigned numerical RFC value for {{I-D.ietf-lamps-cms-kemri}}
 ]
@@ -234,7 +224,7 @@ defined in {{ITU.X509.2000}}.
 ## Changes Since RFC 2510
 {: id="sect-1.1"}
 
-[RFC 4210](#RFC4210) differs from [RFC 2510](#RFC2510) in the following areas:
+{{RFC4210}} differs from {{RFC2510}} in the following areas:
 
 
 * The PKI management message profile section is split to two
@@ -260,52 +250,53 @@ defined in {{ITU.X509.2000}}.
 ## Changes Since RFC 4210
 {: id="sect-1.2"}
 
-CMP Updates [RFCAAAA] and CMP Algorithms [RFCCCCC] updated [RFC 4210](#RFC4210), supporting the PKI management operations specified in the Lightweight CMP
-Profile [RFCBBBB], in the following areas:
+CMP Updates {{RFC9480}} and CMP Algorithms {{RFC9481}} updated {{RFC4210}}, supporting the PKI management operations specified in the Lightweight CMP
+Profile {{RFC9483}}, in the following areas:
 
 
-* Add new extended key usages for various CMP server types, e.g., registration
+* Adding new extended key usages for various CMP server types, e.g., registration
   authority and certification authority, to express the authorization of the
-  certificate holder to act as the indicated type of PKI management entity.
+  certificate holder that acts as the indicated type of PKI management entity.
 
-* Extend the description of multiple protection to cover additional use cases,
+* Extending the description of multiple protection to cover additional use cases,
   e.g., batch processing of messages.
 
-* Use the type EnvelopedData as the preferred choice next to EncryptedValue
+* Use the type EnvelopedData as the preferred choice instead of EncryptedValue
   to better support crypto agility in CMP.
 
-  For reasons of completeness and consistency the type EncryptedValue has been
+  For reasons of completeness and consistency, the type EncryptedValue has been
   exchanged in all occurrences.  This includes the protection of centrally
   generated private keys, encryption of certificates, and protection of revocation
   passphrases. To properly differentiate the support of EnvelopedData instead
-  of EncryptedValue, the CMP version 3 is introduced in case a transaction
+  of EncryptedValue, CMP version 3 is introduced in case a transaction
   is supposed to use EnvelopedData.
 
-  Note: According to [RFC 4211](#RFC4211) Section 2.1. point 9 the use of the EncryptedValue structure has been deprecated
-  in favor of the EnvelopedData structure. [RFC 4211](#RFC4211) offers the EncryptedKey structure, a choice of EncryptedValue and EnvelopedData
+  Note: According to {{RFC4211}}, Section 2.1, point 9, the use of the EncryptedValue structure has been deprecated
+  in favor of the EnvelopedData structure. {{RFC4211}} offers the EncryptedKey structure a choice of EncryptedValue and EnvelopedData
   for migration to EnvelopedData.
 
 
 
-* Offer an optional hashAlg field in CertStatus supporting case that a certificate
+* Offer an optional hashAlg field in CertStatus supporting cases that a certificate
   needs to be confirmed that has a signature algorithm that does not indicate
-  a specific hash algorithm to use for computing the certHash.
+  a specific hash algorithm to use for computing the certHash.  This is also in
+  preparation for upcoming post quantum algorithms.
 
 * Add new general message types to request CA certificates, a root CA update,
-  a certificate request template, or CRL updates.
+  a certificate request template, or Certificate Revocation List (CRL) updates.
 
-* Extend the use of polling to p10cr, certConf, rr, genm, and error messages.
+* Extending the use of polling to p10cr, certConf, rr, genm, and error messages.
 
-* Incorporated the request message behavioral clarifications from former Appendix
+* Incorporating the request message behavioral clarifications from former Appendix
   C to {{sect-5}}. The definition of altCertTemplate was incorporated into {{sect-5.2.1}}, the clarification on POPOSigningKey was incorporated into {{sect-5.2.8}}, and the clarification on POPOPrivKey was incorporated into {{sect-5.2.8.1}}.
 
-* Delete the mandatory algorithm profile in {{sect-c.2}} and refer instead to CMP Algorithms Section 7 [RFCCCCC].
+* Deleting the mandatory algorithm profile in {{sect-c.2}} and refer instead to Section 7 of {{RFC9481}}.
 
 
 ## Changes Made by This Document
 {: id="sect-1.3"}
 
-This document obsoletes [RFC 4210](#RFC4210). It includes the changes specified by CMP Updates [RFCAAAA] Section 2 and {{sect-c.2}} as described in {{sect-1.2}}.
+This document obsoletes {{RFC4210}}. It includes the changes specified by Section 2 and Appendix C.2 of {{RFC9480}} as described in {{sect-1.2}}.
 
 
 
@@ -486,7 +477,7 @@ management
   where strong confidentiality might cause regulatory problems.
 
 1. PKI management protocols must allow the use of different
-  industry-standard cryptographic algorithms, see CMP Algorithms [RFCCCCC].
+  industry-standard cryptographic algorithms, see CMP Algorithms {{RFC9481}}.
   This means that any given
   CA, RA, or end entity may, in principle, use whichever
   algorithms suit it for its own key pair(s).
@@ -734,7 +725,7 @@ token delivery.
 Later sections define a set of standard messages supporting the above
 operations.  Transport protocols for conveying these exchanges in
 different environments (e.g., off-line: file-based, on-line: mail,
-HTTP [RFCDDDD], and CoAP [RFCEEEE]) are
+HTTP [RFCDDDD], and CoAP {{RFC9482}}) are
 beyond the scope of this document and are specified separately.
 
 
@@ -1298,8 +1289,8 @@ verification.
 ## Extended Key Usage
 {: id="sect-4.5"}
 
-The Extended Key Usage (EKU) extension indicates the purposes for which the
-certified key pair may be used. It therefore restricts the use of a certificate
+The extended key usage (EKU) extension indicates the purposes for which the
+certified key pair may be used. Therefore, it restricts the use of a certificate
 to specific applications.
 
 A CA may want to delegate parts of its duties to other PKI management entities.
@@ -1310,8 +1301,8 @@ may also be expressed by other means, e.g., explicit configuration.
 To offer automatic validation for the delegation of a role by a CA to another
 entity, the certificates used for CMP message protection or signed data for
 central key generation MUST be issued by the delegating CA and MUST contain
-the respective EKUs. This proves the authorization of this entity by the
-delegating CA to act in the given role as described below.
+the respective EKUs. This proves the authorization of this entity by
+delegating CA to act in the given role, as described below.
 
 The OIDs to be used for these EKUs are:
 
@@ -1329,16 +1320,17 @@ The OIDs to be used for these EKUs are:
      security(5) mechanisms(5) pkix(7) kp(3) 32 }
 ~~~~
 
-Note: [RFC 6402 section 2.10](#RFC6402) specifies OIDs for a CMC CA and a CMC RA.
+Note: Section 2.10 of {{RFC6402}} specifies OIDs for a
+Certificate Management over CMS (CMC) CA and a CMC RA.
 As the functionality of a CA and
-RA is not specific to using CMC or CMP as the certificate management protocol,
-these EKUs are re-used by CMP.
+RA is not specific to any certificate management protocol (such as CMC or CMP),
+these EKUs are reused by CMP.
 
 The meaning of the id-kp-cmKGA EKU is as follows:
 
 {: indent="10"}
 CMP KGA:
-: CMP Key Generation Authorities are CAs or are identified by the id-kp-cmKGA
+: CMP key generation authorities are CAs or are identified by the id-kp-cmKGA
   extended key usage.  The CMP KGA knows the private key it generated on behalf
   of the end entity.  This is a very sensitive service and needs specific authorization,
   which by default is with the CA certificate itself.  The CA may delegate
@@ -1423,7 +1415,7 @@ The following data structure is used to contain this information:
   PKIFreeText ::= SEQUENCE SIZE (1..MAX) OF UTF8String
 ~~~~
 
-The usage of pvno values is described in {{sect-7}}.
+The usage of the protocol version number (pvno) is described in {{sect-7}}.
 
 The sender field contains the name of the sender of the PKIMessage.
 This name (in conjunction with senderKID, if supplied) should be
@@ -1570,7 +1562,7 @@ Although the infoValue is PKIMessages, it MUST contain exactly one PKIMessage.
 {: id="sect-5.1.1.4"}
 
 This is used by the EE to indicate specific certificate profiles, e.g., when
-requesting a new certificate or a certificate request template, see {{sect-5.3.19.16}}.
+requesting a new certificate or a certificate request template; see {{sect-5.3.19.16}}.
 
 ~~~~ asn.1
   id-it-certProfile OBJECT IDENTIFIER ::= {id-it 21}
@@ -1669,16 +1661,16 @@ Depending on the circumstances, the PKIProtection bits may contain a
 Message Authentication Code (MAC) or signature.  Only the following
 cases can occur:
 
-#### Pre-Shared Secret Information
+#### Shared Secret Information
 {: id="sect-5.1.3.1"}
 
 In this case, the sender and recipient share secret information with sufficient
 entropy (established via out-of-band means). PKIProtection will contain a
 MAC value and the protectionAlg MAY be one of the options described in CMP
-Algorithms Section 6.1 [RFCCCCC].
+Algorithms Section 6.1 {{RFC9481}}.
 
-The PasswordBasedMac is specified as follows (see also [RFC4211] and
-[RFC9045]):
+The PasswordBasedMac is specified as follows (see also {{RFC4211}} and
+{{RFC9045}}):
 
   id-PasswordBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 13}
   PBMParameter ::= SEQUENCE {
@@ -1743,7 +1735,7 @@ bits of the key, and so on, until all K bits have been derived.
 [Here "N" is the ASCII byte encoding the number N and "\|\|" represents concatenation.]
 
 Note: Hash algorithms that can be used as one-way functions are listed in
-CMP Algortihms [RFCCCCC] Section 2.
+CMP Algorithms {{RFC9481}} Section 2.
 
 #### Signature
 {: id="sect-5.1.3.3"}
@@ -1752,7 +1744,7 @@ In this case, the sender possesses a signature key pair and simply
 signs the PKI message.  PKIProtection will contain the signature
 value and the protectionAlg will be an AlgorithmIdentifier for a
 digital signature MAY be one of the options described in CMP Algorithms Section
-3 [RFCCCCC].
+3 {{RFC9481}}.
 
 
 #### Key Encapsulation
@@ -1784,7 +1776,7 @@ len is the output length of the KDF and MUST be the desired size of the mac key 
 mac is the algorithm identifier of the chosen MAC algorithm, and any associated parameters.
 
 
-The KDF and MAC algorithms MAY be chosen from the options in CMP Algorithms [RFCCCCC].
+The KDF and MAC algorithms MAY be chosen from the options in CMP Algorithms {{RFC9481}}.
 
 This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
@@ -1906,8 +1898,8 @@ If both the initiator and responder in a PKI management operation have KEM key p
 #### Multiple Protection
 {: id="sect-5.1.3.5"}
 
-When receiving a protected PKI message, a PKI management entity such as an
-RA MAY forward that message adding its own protection (which is a MAC or
+When receiving a protected PKI message, a PKI management entity, such as an
+RA, MAY forward that message adding its own protection (which is a MAC or
 a signature, depending on the information and certificates shared between
 the RA and the CA).  Additionally, multiple PKI messages MAY be aggregated.
 There are several use cases for such messages.
@@ -1919,8 +1911,8 @@ There are several use cases for such messages.
 * A PKI management entity collects several messages that are to be forwarded
   in the same direction and forwards them in a batch. Request messages can
   be transferred as batch upstream (towards the CA); response or announce messages
-  can be transferred as batch downstream (towards an RA, but not to the EE).
-  This can for instance be used when bridging an off-line connection between
+  can be transferred as batch downstream (towards an RA but not to the EE).
+  For instance, this can be used when bridging an off-line connection between
   two PKI management entities.
 
 These use cases are accomplished by nesting the messages within a new PKI
@@ -1984,7 +1976,7 @@ The new control is defined as follows:
 {: id="sect-5.2.2"}
 
 Where encrypted data (in this specification, private keys, certificates,
-or revocation passphrase) are sent in PKI messages, the EncryptedKey data
+or revocation passphrase) is sent in PKI messages, the EncryptedKey data
 structure is used.
 
 ~~~~ asn.1
@@ -1993,7 +1985,8 @@ structure is used.
      envelopedData    [0] EnvelopedData }
 ~~~~
 
-See [CRMF](#RFC4211) for EncryptedKey and EncryptedValue syntax and [CMS](#RFC5652) for EnvelopedData syntax. Using the EncryptedKey data structure offers the
+See Certificate Request Message Format (CRMF) {{RFC4211}} for EncryptedKey and EncryptedValue syntax and Cryptographic Message
+   Syntax (CMS) {{RFC5652}} for EnvelopedData syntax. Using the EncryptedKey data structure offers the
 choice to either use EncryptedValue (for backward compatibility only) or
 EnvelopedData.  The use of the EncryptedValue structure has been deprecated
 in favor of the EnvelopedData structure.  Therefore, it is RECOMMENDED to
@@ -2003,8 +1996,8 @@ Note: The EncryptedKey structure defined in [CRMF](#RFC4211) is used here, which
 with the untagged default choice EncryptedValue is bits-on-the-wire compatible
 with the old syntax.
 
-To indicate support for EnvelopedData the pvno cmp2021 has been introduced.
-Details on the usage of pvno values is described in {{sect-7}}.
+To indicate support for EnvelopedData, the pvno cmp2021 has been introduced.
+Details on the usage of the protocol version number (pvno) are described in {{sect-7}}.
 
 The EncryptedKey data structure is used in CMP to transport a private key,
 certificate, or revocation passphrase in encrypted form.
@@ -2015,14 +2008,14 @@ EnvelopedData is used as follows:
 * It contains only one RecipientInfo structure because the content is encrypted
   only for one recipient.
 
-* It may contain a private key in the AsymmetricKeyPackage structure as defined
-  in [RFC 5958](#RFC5958) wrapped in a SignedData structure as specified in
-  [CMS section 5](#RFC5652) and {{RFC8933}} signed by the Key Generation Authority.
+* It may contain a private key in the AsymmetricKeyPackage structure, as defined
+  in {{RFC5958}}, that is wrapped in a SignedData structure, as specified in
+  Section 5 of {{RFC5652}} and {{RFC8933}}, signed by the Key Generation Authority.
 
 * It may contain a certificate or revocation passphrase directly in the encryptedContent
   field.
 
-The content of the EnvelopedData structure, as specified in [CMS section 6](#RFC5652),
+The content of the EnvelopedData structure, as specified in Section 6 of {{RFC5652}},
 MUST be encrypted using a newly generated symmetric content-encryption
 key. This content-encryption key MUST be securely provided to the recipient
 using one of three key management techniques.
@@ -2031,17 +2024,17 @@ The choice of the key management technique to be used by the sender depends
 on the credential available at the recipient:
 
 
-* Recipient's certificate with an algorithm identifier and a public key that supports key transport and where any given key usage extension allows keyEncipherment:
-The content-encryption key will be protected using the key transport key management technique, as specified in [CMS Section 6.2.1](#RFC5652).
+* recipient's certificate with an algorithm identifier and a public key that supports key transport and where any given key usage extension allows keyEncipherment:
+The content-encryption key will be protected using the key transport key management technique, as specified in Section 6.2.1 of {{RFC5652}}.
 
-* Recipient's certificate with an algorithm identifier and a public key that supports key agreement and where any given key usage extension allows keyAgreement:
-The content-encryption key will be protected using the key agreement key management technique, as specified in  [CMS Section 6.2.2](#RFC5652). This is the preferred technique.
+* recipient's certificate with an algorithm identifier and a public key that supports key agreement and where any given key usage extension allows keyAgreement:
+The content-encryption key will be protected using the key agreement key management technique, as specified in Section 6.2.2 of {{RFC5652}}.
 
-* A password or shared secret: The content-encryption key will be protected
+* a password or shared secret: The content-encryption key will be protected
   using the password-based key management technique, as specified in
-  [CMS Section 6.2.4](#RFC5652).
+  Section 6.2.4 of {{RFC5652}}.
 
-* Recipient's certificate with an algorithm identifier and a public key that supports key encapsulation mechanism and where any given key usage extension allows keyEncipherment: The content-encryption key will be protected using the additional key management technique for KEM keys, as specified in {{I-D.ietf-lamps-cms-kemri}}.
+* recipient's certificate with an algorithm identifier and a public key that supports key encapsulation mechanism and where any given key usage extension allows keyEncipherment: The content-encryption key will be protected using the key management technique for KEM keys, as specified in {{I-D.ietf-lamps-cms-kemri}}.
 
 Note: There are cases where the algorithm identifier, the type of the public key,
 and the key usage extension will not be sufficient to decide on the key management
@@ -2190,7 +2183,7 @@ and updated for better readability. Also some inconsistencies in Section 5.2.8.3
 
 If the certification request is for a key pair that supports signing , then
 the proof-of-possession of the private signing key is demonstrated through
-use of the POPOSigningKey structure as defined in [RFC 4211](#RFC4211).
+use of the POPOSigningKey structure as defined in {{RFC4211}}.
 
 ~~~~ asn.1
   POPOSigningKey ::= SEQUENCE {
@@ -2242,14 +2235,11 @@ archival of the private key is also desired).
   }
 ~~~~
 
-Note: When using CMP V2 with EcryptedValue, [RFC 4210 Appendix C](#RFC4210) made the behavioral clarification of specifying that the contents of "thisMessage"
+Note: When using CMP V2 with EcryptedValue, Appendix C of {{RFC4210}} made
+the behavioral clarification of specifying that the contents of "thisMessage"
 MUST be encoded as an EncryptedValue and then wrapped in a BIT STRING.  This
 allows the necessary conveyance and protection of the private key while maintaining
-bits-on-the-wire compatibility with [RFC 4211](#RFC4211).
-
-\< ToDo: Section 2.27 of CMP Updated should be updated during AUTH48 specifying
-the use of encryptedKey field instead of thisMessage when EnvelopedData is
-used. >
+bits-on-the-wire compatibility with {{RFC4211}}.
 
 
 #### Indirect Method
@@ -2437,7 +2427,7 @@ which of these POP methods to choose in the request message.
 ### GeneralizedTime
 {: id="sect-5.2.9"}
 
-GeneralizedTime is a standard ASN.1 type and SHALL be used as specified in [RFC 5280 Section 4.1.2.5.2](#RFC5280).
+GeneralizedTime is a standard ASN.1 type and SHALL be used as specified in Section 4.1.2.5.2 of {{RFC5280}}.
 
 
 
@@ -2451,7 +2441,7 @@ An Initialization request message contains as the PKIBody a
 CertReqMessages data structure, which specifies the requested
 certificate(s).  Typically, SubjectPublicKeyInfo, KeyId, and Validity
 are the template fields which may be supplied for each certificate
-requested (see the profiles defined in [RFCBBBB] Section 4.1.1, {{sect-c.4}}
+requested (see the profiles defined in {{RFC9483}} Section 4.1.1, {{sect-c.4}}
 and {{sect-d.7}} for further information).  This
 message is intended to be used for entities when first initializing
 into the PKI.
@@ -2465,7 +2455,7 @@ See {{sect-5.2.1}} and {{RFC4211}} for CertReqMessages syntax.
 An Initialization response message contains as the PKIBody an
 CertRepMessage data structure, which has for each certificate
 requested a PKIStatusInfo field, a subject certificate, and possibly
-a private key (normally encrypted using EnvelopedData, see [RFCBBBB] Section
+a private key (normally encrypted using EnvelopedData, see {{RFC9483}} Section
 4.1.6 for further information).
 
 See {{sect-5.3.4}} for CertRepMessage syntax.  Note that if the PKI
@@ -2479,7 +2469,7 @@ directly trusted as a root CA certificate by the initiator.
 
 A Certification request message contains as the PKIBody a
 CertReqMessages data structure, which specifies the requested
-certificates (see the profiles defined in [RFCBBBB] Section 4.1.2 and {{sect-c.2}}
+certificates (see the profiles defined in {{RFC9483}} Section 4.1.2 and {{sect-c.2}}
 for further information).  This message is intended to be used for existing PKI
 entities who wish to obtain additional certificates.
 
@@ -2488,7 +2478,7 @@ See {{sect-5.2.1}} and {{RFC4211}} for CertReqMessages syntax.
 Alternatively, the PKIBody MAY be a CertificationRequest (this
 structure is fully specified by the ASN.1 structure
 CertificationRequest given in {{RFC2986}}, see the profiles defined in
-[RFCBBBB] Section 4.1.4 for further information).
+{{RFC9483}} Section 4.1.4 for further information).
 This structure may be
 required for certificate requests for signing key pairs when
 interoperation with legacy systems is desired, but its use is
@@ -2522,7 +2512,7 @@ information, a subject certificate, and an encrypted private key.
   CertifiedKeyPair ::= SEQUENCE {
      certOrEncCert       CertOrEncCert,
      privateKey      [0] EncryptedKey         OPTIONAL,
-     -- see [RFC4211] for comment on encoding
+     -- See [RFC4211] for comments on encoding.
      publicationInfo [1] PKIPublicationInfo   OPTIONAL
   }
 
@@ -2532,10 +2522,10 @@ information, a subject certificate, and an encrypted private key.
   }
 ~~~~
 
-A p10cr message contains exactly one CertificationRequestInfo data structure
-as specified in [PKCS#10](#RFC2986) but no certReqId.
-Therefore, the certReqId in the corresponding certification
-response (cp) message MUST be set to -1.
+A p10cr message contains exactly one CertificationRequestInfo data structure,
+as specified in PKCSNBS#10 {{RFC2986}}, but no certReqId.
+Therefore, the certReqId in the corresponding Certification
+Response (cp) message MUST be set to -1.
 
 Only one of the failInfo (in PKIStatusInfo) and certificate (in
 CertifiedKeyPair) fields can be present in each CertResponse
@@ -2556,9 +2546,9 @@ anyway, depending upon policy).
 
 The use of EncryptedKey is described in {{sect-5.2.2}}.
 
-Note: To indicate support for EnvelopedData the pvno cmp2021 is introduced
-by this document. Details on the usage of different pvno values are described
-in {{sect-7}}.
+Note: To indicate support for EnvelopedData, the pvno cmp2021 has been
+introduced. Details on the usage of different protocol version
+numbers (pvno) are described in {{sect-7}}.
 
 
 ### Key Update Request Content
@@ -2567,7 +2557,7 @@ in {{sect-7}}.
 For key update requests the CertReqMessages syntax is used.
 Typically, SubjectPublicKeyInfo, KeyId, and Validity are the template
 fields that may be supplied for each key to be updated (see the profiles
-defined in [RFCBBBB] Section 4.1.3 and {{sect-c.6}} for further information).
+defined in {{RFC9483}} Section 4.1.3 and {{sect-c.6}} for further information).
 This message
 is intended to be used to request updates to existing (non-revoked
 and non-expired) certificates (therefore, it is sometimes referred to
@@ -2626,7 +2616,7 @@ present.
 
 When requesting revocation of a certificate (or several
 certificates), the following data structure is used (see the profiles defined
-in [RFCBBBB] Section 4.2 for further information).  The name of the
+in {{RFC9483}} Section 4.2 for further information).  The name of the
 requester is present in the PKIHeader structure.
 
 ~~~~ asn.1
@@ -2784,7 +2774,7 @@ the CA/RA to accept or reject certificates.
 The hashAlg field SHOULD be used only in exceptional cases where the signatureAlgorithm
 of the certificate to be confirmed does not specify a hash algorithm in the
 OID or in the parameters or does not define a hash algorithm to use with
-CMP, e.g., for EdDSA in [RFCCCCC] Section 3.3). Otherwise, the certHash value
+CMP, e.g., for EdDSA in {{RFC9481}} Section 3.3). Otherwise, the certHash value
 SHALL be computed using the same hash algorithm as used to create and verify
 the certificate signature. If hashAlg is used, the CMP version indicated
 by the certConf message header must be cmp2021(3).
@@ -2849,8 +2839,8 @@ Note: For the purposes of this exchange, rsaEncryption and rsaWithSHA1, for
 example, are considered to be equivalent; the question being asked is, "Is
 the CA willing to certify an RSA public key?"
 
-Note: In case several EC curves are supported, several id-ecPublicKey elements
-as defined in [RFC 5480](#RFC5480) need to be given, one per named curve.
+Note: In case several elliptic curves are supported, several id-ecPublicKey elements
+as defined in {{RFC5480}} need to be given, one per named curve.
 
 
 #### Encryption/Key Agreement Key Pair Types
@@ -2866,8 +2856,8 @@ willing to certify.
                           AlgorithmIdentifier
 ~~~~
 
-Note: In case several EC curves are supported, several id-ecPublicKey elements
-as defined in [RFC 5480](#RFC5480) need to be given, one per named curve.
+Note: In case several elliptic curves are supported, several id-ecPublicKey elements
+as defined in {{RFC5480}} need to be given, one per named curve.
 
 
 #### Preferred Symmetric Algorithm
@@ -3005,7 +2995,12 @@ This MAY be used by the client to get CA certificates.
 
 This MAY be used by the client to get an update of a root CA certificate,
 which is provided in the body of the request message.  In contrast to the
-ckuann message this approach follows the request/response model.
+ckuann message, this approach follows the request/response model.
+
+The EE SHOULD reference its current trust anchor in a TrustAnchor
+structure in the request body, giving the root CA certificate if
+available; otherwise, the public key value of the trust anchor is
+given.
 
 ~~~~
   GenMsg:    {id-it 20}, RootCaCertValue | < absent >
@@ -3036,11 +3031,12 @@ for certificate request attributes and extensions. The controls id-regCtrl-algId
 and id-regCtrl-rsaKeyLen MAY contain details on the types of subject public
 keys the CA is willing to certify.
 
-The id-regCtrl-algId control MAY be used to identify a cryptographic algorithm,
-see [RFC 5280 Section 4.1.2.7](#RFC5280), other than rsaEncryption. The algorithm field SHALL identify a cryptographic
+The id-regCtrl-algId control MAY be used to identify a cryptographic algorithm
+(see Section 4.1.2.7 of {{RFC5280}}) other than rsaEncryption. The algorithm
+field SHALL identify a cryptographic
 algorithm. The contents of the optional parameters field will vary according
 to the algorithm identified. For example, when the algorithm is set to id-ecPublicKey,
-the parameters identify the elliptic curve to be used, see {{RFC5480}}.
+the parameters identify the elliptic curve to be used; see {{RFC5480}}.
 
 Note: The client may specify a profile name in the certProfile field, see {{sect-5.1.1.4}}.
 
@@ -3082,7 +3078,7 @@ NOT be used.  In case the PKI management entity wishes to specify supported
 public-key algorithms, the keySpec field MUST be used.  One AttributeTypeAndValue
 per supported algorithm or RSA key length MUST be used.
 
-Note: The Controls ASN.1 type is defined in [CRMF Section 6](#RFC4211)
+Note: The controls ASN.1 type is defined in Section 6 of CRMF {{RFC4211}}
 
 
 #### CRL Update Retrieval
@@ -3093,7 +3089,7 @@ the CRLs and the thisUpdate value of the latest CRL it already has, if available
 A CRL source is given either by a DistributionPointName or the GeneralNames
 of the issuing CA.  The DistributionPointName should be treated as an internal
 pointer to identify a CRL that the server already has and not as a way to
-ask the server to fetch CRLs from external locations. The server SHALL provide
+ask the server to fetch CRLs from external locations. The server SHALL only provide
 only those CRLs that are more recent than the ones indicated by the client.
 
 ~~~~
@@ -3132,7 +3128,7 @@ subsections of {{sect-5.3.19}}.
 ### Error Message Content
 {: id="sect-5.3.21"}
 
-This data structure MAY be used by EE, CA, or RA to convey error info and
+This data structure MAY be used by EE, CA, or RA to convey error information and
 by a PKI management entity to initiate delayed delivery of responses.
 
 ~~~~ asn.1
@@ -3246,7 +3242,7 @@ in one request.
  2                    -> ir      ->
  3                                    Handle ir
  4                                    Manual intervention is
-                                      required for both certs.
+                                      required for both certs
  5                    <- ip      <-
  6   Process ip
  7   Format pollReq
@@ -3356,12 +3352,11 @@ the PKI management functionality that MUST be supported.  Note,
 however, that the management functions described in this section do
 not need to be accomplished using the PKI messages defined in {{sect-5}}
 if alternate means are suitable for a given environment (see
-[RFCBBBB] Section 7 and {{sect-c}} for profiles of the PKIMessages that MUST be supported).
+{{RFC9483}} Section 7 and {{sect-c}} for profiles of the PKIMessages that MUST be supported).
 
 ## Root CA Initialization
 {: id="sect-6.1"}
-
-[See {{sect-3.1.1.2}} for this document's definition of "root CA".]
+See {{sect-3.1.1.2}} for this document's definition of "root CA".]
 
 A newly created root CA must produce a "self-certificate", which is a
 Certificate structure with the profile defined for the "newWithNew"
@@ -3424,7 +3419,7 @@ If PKIMessages are used to request and supply this PKI information,
 then the request MUST be the GenMsg message, the response MUST be the
 GenRep message, and the error MUST be the Error message.  These
 messages are protected using a MAC based on shared secret information
-(i.e., password-based MAC, see CMP Algorithms [RFCCCCC] Section 6.1) or a
+(i.e., password-based MAC, see CMP Algorithms {{RFC9481}} Section 6.1) or a
 signature(if
 the end entity has an existing certificate).
 
@@ -3615,7 +3610,7 @@ If a client knows the protocol version(s) supported by the server (e.g.,
 from a previous PKIMessage exchange or via some out-of-band means), then
 it MUST send a PKIMessage with the highest version supported by both it and
 the server.  If a client does not know what version(s) the server supports,
-then it MUST send a PKIMessage using the highest version it supports, with
+then it MUST send a PKIMessage using the highest version it supports with
 the following exception. Version cmp2021 SHOULD only be used if cmp2021 syntax
 is needed for the request being sent or for the expected response.
 
@@ -3642,7 +3637,7 @@ that version.
 ## Supporting RFC 2510 Implementations
 {: id="sect-7.1"}
 
-RFC 2510 did not specify the behaviour of implementations receiving
+RFC 2510 did not specify the behavior of implementations receiving
 versions they did not understand since there was only one version in
 existence.  With the introduction of the revision in {{RFC4210}}, the following versioning behaviour is recommended.
 
@@ -3759,46 +3754,46 @@ Encrypted values {{sect-5.2.2}} are transferred using CMS EnvelopedData [RFC5652
 ## Private Keys for Certificate Signing and CMP Message Protection
 {: id="sect-8.4"}
 
-A CA should not reuse its certificate signing key for other purposes such
+A CA should not reuse its certificate signing key for other purposes, such
 as protecting CMP responses and TLS connections. This way, exposure to other
 parts of the system and the number of uses of this particularly critical
-key is reduced to a minimum.
+key are reduced to a minimum.
 
 
 ## Entropy of Random Numbers, Key Pairs, and Shared Secret Information
 {: id="sect-8.5"}
 
 Implementations must generate nonces and private keys from random input.
-The use of inadequate pseudo-random number generators (PRNGs) to generate
+The use of inadequate pseudorandom number generators (PRNGs) to generate
 cryptographic keys can result in little or no security. An attacker may find
 it much easier to reproduce the PRNG environment that produced the keys and
 to search the resulting small set of possibilities than brute-force searching
-the whole key space. As an example of predictable random numbers see {{CVE-2008-0166}}; consequences of low-entropy random numbers are discussed in [Mining Your Ps and Qs](#MiningPsQs). The generation of quality random numbers is difficult. [ISO/IEC 20543:2019](#ISO.20543-2019), [NIST SP 800-90A Rev.1](#NIST.SP.800_90Ar1), [BSI AIS 31 V2.0](#AIS31), and others offer valuable guidance in this area.
+the whole key space. As an example of predictable random numbers, see {{CVE-2008-0166}}; consequences of low-entropy random numbers are discussed in [Mining Your Ps and Qs](#MiningPsQs). The generation of quality random numbers is difficult. [ISO/IEC 20543:2019](#ISO.20543-2019), [NIST SP 800-90A Rev.1](#NIST.SP.800_90Ar1), [BSI AIS 31 V2.0](#AIS31), and other specifications offer valuable guidance in this area.
 
-If shared secret information is generated by a cryptographically secure random-number
-generator (CSRNG) it is safe to assume that the entropy of the shared secret
-information equals its bit length. If no CSRNG is used, the entropy of a
+If shared secret information is generated by a cryptographically secure randomnumber
+generator (CSRNG), it is safe to assume that the entropy of the shared secret
+information equals its bit length. If no CSRNG is used, the entropy of
 shared secret information depends on the details of the generation process
 and cannot be measured securely after it has been generated. If user-generated
 passwords are used as shared secret information, their entropy cannot be
 measured and are typically insufficient for protected delivery of centrally
 generated keys or trust anchors.
 
-If the entropy of a shared secret information protecting the delivery of
+If the entropy of shared secret information protecting the delivery of
 a centrally generated key pair is known, it should not be less than the security
-strength of that key pair; if the shared secret information is re-used for
+strength of that key pair; if the shared secret information is reused for
 different key pairs, the security of the shared secret information should
 exceed the security strength of each individual key pair.
 
 For the case of a PKI management operation that delivers a new trust anchor
-(e.g., a root CA certificate) using caPubs or genm (a) that is not concluded
-in a timely manner or (b) where the shared secret information is re-used
+(e.g., a root CA certificate) using caPubs or genm that is (a) not concluded
+in a timely manner or (b) where the shared secret information is reused
 for several key management operations, the entropy of the shared secret information,
 if known, should not be less than the security strength of the trust anchor
 being managed by the operation. The shared secret information should have
 an entropy that at least matches the security strength of the key material
 being managed by the operation. Certain use cases may require shared secret
-information that may be of a low security strength, e.g., a human generated
+information that may be of a low security strength, e.g., a human-generated
 password. It is RECOMMENDED that such secret information be limited to a
 single PKI management operation.
 
@@ -3841,10 +3836,10 @@ in a CMP message unless the specific deployment scenario can ensure that
 it is adequate that the receiving EE trusts these certificates, e.g., by
 loading them into its trust store.
 
-Whenever an EE receives in a CMP message, e.g., in the caPubs field of a
-certificate response or in a general response (genp), a CA certificate for
-use as a trust anchor, it MUST properly authenticate the message sender with
-existing trust anchors without requiring new trust anchors included in the
+Whenever an EE receives in a CMP message a CA certificate to be used
+as a trust anchor (for example in the caPubs field of a certificate response
+or in a general response), it MUST properly authenticate the message sender with
+existing trust anchors without requiring new trust anchor information included in the
 message.
 
 Additionally, the EE MUST verify that the sender is an authorized source
@@ -3875,7 +3870,7 @@ If a certificate or its precertificate was published in a CT log it must be revo
 
 # IANA Considerations {#sect-9}
 
-This document updates the ASN.1 modules of CMP Updates Appendix A.2 [RFCAAAA]. The OID TBD2 (id-mod-cmp2023-02) was registered in the SMI Security for PKIX Module Identifier registry to identify the updated ASN.1 module.
+This document updates the ASN.1 modules of CMP Updates Appendix A.2 {{RFC9480}}. The OID TBD2 (id-mod-cmp2023-02) was registered in the SMI Security for PKIX Module Identifier registry to identify the updated ASN.1 module.
 
 In the SMI-numbers registry "SMI Security for PKIX CMP Information Types (1.3.6.1.5.5.7.4)" (see https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.4) as defined in {{RFC7299}} one addition has been performed.
 
@@ -3941,7 +3936,7 @@ RA are the following.
   easy to find (which may not be true of the CA).
 
 Further reasons relevant for automated machine-to-machine certificate lifecycle
-management are available in the Lightweight CMP Profile [RFCBBBB].
+management are available in the Lightweight CMP Profile {{RFC9483}}.
 
 
 # The Use of Revocation Passphrase {#sect-b}
@@ -3960,7 +3955,7 @@ required, but there are circumstances under which an alternative
 mechanism may be desirable (e.g., when the private key is no longer
 accessible and the entity wishes to request a revocation prior to
 re-certification of another key pair).  In order to accommodate such
-circumstances, a password-based MAC, see CMP Algorithms [RFCCCCC] Section
+circumstances, a password-based MAC, see CMP Algorithms {{RFC9481}} Section
 6.1, on the request is also REQUIRED to
 support within this specification (subject to local security policy
 for a given environment) if revocation requests are supported and if
@@ -3980,7 +3975,7 @@ support.  Its precise use in CMP messages is as follows.
 
 
 * The OID and value specified in {{sect-5.3.19.9}} MAY be sent in a GenMsg message
-  at any time, or MAY be sent in the generalInfo
+  at any time or MAY be sent in the generalInfo
   field of the PKIHeader of any PKIMessage at any time.  (In particular, the
   EncryptedKey structure as described in {{sect-5.2.2}} may be sent in the header
   of the certConf message that confirms acceptance
@@ -4004,14 +3999,14 @@ support.  Its precise use in CMP messages is as follows.
   set.
 
 * Either the localKeyId attribute of EnvelopedData as specified in
-  [RFC 2985](#RFC2985) or the valueHint field of EncryptedValue MAY
+  {{RFC2985}} or the valueHint field of EncryptedValue MAY
   contain a key identifier (chosen
   by the entity, along with the passphrase itself) to assist in later retrieval
   of the correct passphrase (e.g., when the revocation request is constructed
   by the entity and received by the CA/RA).
 
 * The revocation request message is protected by a password-based MAC, see
-  CMP Algorithms [RFCCCCC] Section 6.1,
+  CMP Algorithms {{RFC9481}} Section 6.1,
   with the revocation passphrase as the key.  If appropriate, the
   senderKID field in the PKIHeader MAY contain the value previously
   transmitted in localKeyId or valueHint.
@@ -4051,7 +4046,7 @@ MUST be supported by conforming implementations (see {{sect-6}}).
 
 Note: {{sect-c}} and {{<sect-d}} focus on PKI management operations
 managing certificates for human end entities.
-In contrast, the Lightweight CMP Profile [RFCBBBB] focuses on typical use
+In contrast, the Lightweight CMP Profile {{RFC9483}} focuses on typical use
 cases of industrial and IoT scenarios supporting highly automated certificate
 lifecycle management scenarios.
 
@@ -4122,7 +4117,7 @@ operations are provided:
 {: id="sect-c.2"}
 
 For specifications of algorithm identifiers and respective conventions for
-conforming implementations, please refer to CMP Algorithms Appendix 7.1 [RFCCCCC].
+conforming implementations, please refer to Section 7.1 of CMP Algorithms {{RFC9481}}.
 
 
 ## Proof-of-Possession Profile
@@ -4142,7 +4137,7 @@ algorithmIdentifier MSG_SIG_ALG   only signature protection is
 signature           present       bits calculated using MSG_SIG_ALG
 ~~~~
 
-Note: For examples of MSG_SIG_ALG OIDs see CMP Algorithms Section 3 [RFCCCCC].
+Note: For examples of MSG_SIG_ALG OIDs see CMP Algorithms Section 3 {{RFC9481}}.
 
 Proof-of-possession of a private decryption key that corresponds to a
 public encryption key for which a certificate has been requested does
@@ -5016,10 +5011,10 @@ Step# PKI entity                           PKI management entity
 # Compilable ASN.1 Definitions {#sect-f}
 
 This section contains the updated 2002 ASN.1 module for {{RFC5912}}
-as updated in [RFCAAAA].
+as updated in {{RFC9480}}.
 This module replaces the module in Section 9 of {{RFC5912}}.
 The module contains those changes to the normative ASN.1 module from
-[RFC 4210 Appendix F](#RFC4210) that were specified in [RFCAAAA]
+Appendix F of {{RFC4210}} that were specified in {{RFC9480}},
 as well as changes made in this document.
 
 < TBD: Should we also include the 1988 ASN.1 Module? >
@@ -5062,30 +5057,30 @@ FROM PKIXCRMF-2009
     security(5) mechanisms(5) pkix(7) id-mod(0)
     id-mod-crmf2005-02(55) }
     -- The import of EncryptedKey is added due to the updates made
-    -- in CMP Updates [RFCAAAA]. EncryptedValue does not need to
+    -- in CMP Updates [RFC9480]. EncryptedValue does not need to
     -- be imported anymore and is therefore removed here.
 
 CertificationRequest
 FROM PKCS-10
     {iso(1) identified-organization(3) dod(6) internet(1) security(5)
     mechanisms(5) pkix(7) id-mod(0) id-mod-pkcs10-2009(69)}
--- (specified in RFC 2986 with 1993 ASN.1 syntax and IMPLICIT
+-- (specified in [RFC2986] with 1993 ASN.1 syntax and IMPLICIT
 -- tags).  Alternatively, implementers may directly include
--- the [RFC2986] syntax in this module
+-- the syntax of [RFC2986] in this module.
 
 localKeyId
 FROM PKCS-9
     {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
     modules(0) pkcs-9(1)}
     -- The import of localKeyId is added due to the updates made in
-    -- CMP Updates [RFCAAAA]
+    -- CMP Updates [RFC9480]
 
 EnvelopedData, SignedData
 FROM CryptographicMessageSyntax-2009
     {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
     smime(16) modules(0) id-mod-cms-2004-02(41)}
     -- The import of EnvelopedData and SignedData is added due to
-    -- the updates made in CMP Updates [RFCAAAA]
+    -- the updates made in CMP Updates [RFC9480]
 
 KEM-ALGORITHM
 FROM KEMAlgorithmInformation-2023  -- [RFC]
@@ -5096,17 +5091,17 @@ FROM KEMAlgorithmInformation-2023  -- [RFC]
 -- draft-ietf-lamps-cms-kemri as TBD3.
 ;
 
--- the rest of the module contains locally defined OIDs and
--- constructs
+-- The rest of the module contains locally defined OIDs and
+-- constructs:
 
 CMPCertificate ::= CHOICE { x509v3PKCert Certificate, ... }
 -- This syntax, while bits-on-the-wire compatible with the
 -- standard X.509 definition of "Certificate", allows the
 -- possibility of future certificate types (such as X.509
--- attribute certificates, WAP WTLS certificates, or other kinds
--- of certificates) within this certificate management protocol,
--- should a need ever arise to support such generality.  Those
--- implementations that do not foresee a need to ever support
+-- attribute certificates, card-verifiable certificates, or other
+-- kinds of certificates) within this Certificate Management
+-- Protocol, should a need ever arise to support such generality.
+-- Those implementations that do not foresee a need to ever support
 -- other certificate types MAY, if they wish, comment out the
 -- above structure and "uncomment" the following one prior to
 -- compiling this ASN.1 module.  (Note that interoperability
@@ -5133,7 +5128,7 @@ PKIHeader ::= SEQUENCE {
     -- identifies the intended recipient
     messageTime     [0] GeneralizedTime         OPTIONAL,
     -- time of production of this message (used when sender
-    -- believes that the transport will be "suitable"; i.e.,
+    -- believes that the transport will be "suitable", i.e.,
     -- that the time will still be meaningful upon receipt)
     protectionAlg   [1] AlgorithmIdentifier{ALGORITHM, {...}}
                             OPTIONAL,
@@ -5142,7 +5137,7 @@ PKIHeader ::= SEQUENCE {
     recipKID        [3] KeyIdentifier           OPTIONAL,
     -- to identify specific keys used for protection
     transactionID   [4] OCTET STRING            OPTIONAL,
-    -- identifies the transaction; i.e., this will be the same in
+    -- identifies the transaction, i.e., this will be the same in
     -- corresponding request, response, certConf, and PKIConf
     -- messages
     senderNonce     [5] OCTET STRING            OPTIONAL,
@@ -5150,7 +5145,7 @@ PKIHeader ::= SEQUENCE {
     -- nonces used to provide replay protection, senderNonce
     -- is inserted by the creator of this message; recipNonce
     -- is a nonce previously inserted in a related message by
-    -- the intended recipient of this message
+    -- the intended recipient of this message.
     freeText        [7] PKIFreeText             OPTIONAL,
     -- this may be used to indicate context-specific instructions
     -- (this field is intended for human consumption)
@@ -5161,7 +5156,7 @@ PKIHeader ::= SEQUENCE {
 }
 
 PKIFreeText ::= SEQUENCE SIZE (1..MAX) OF UTF8String
-    -- text encoded as UTF-8 String [RFC3629]
+    -- text encoded as UTF-8 string [RFC3629]
 
 PKIBody ::= CHOICE {       -- message-specific body elements
     ir       [0]  CertReqMessages,        --Initialization Request
@@ -5188,9 +5183,9 @@ PKIBody ::= CHOICE {       -- message-specific body elements
     genm     [21] GenMsgContent,          --General Message
     genp     [22] GenRepContent,          --General Response
     error    [23] ErrorMsgContent,        --Error Message
-    certConf [24] CertConfirmContent,     --Certificate confirm
-    pollReq  [25] PollReqContent,         --Polling request
-    pollRep  [26] PollRepContent          --Polling response
+    certConf [24] CertConfirmContent,     --Certificate Confirm
+    pollReq  [25] PollReqContent,         --Polling Request
+    pollRep  [26] PollRepContent          --Polling Response
 }
 
 PKIProtection ::= BIT STRING
@@ -5203,16 +5198,16 @@ id-PasswordBasedMac OBJECT IDENTIFIER ::= { iso(1) member-body(2)
     usa(840) nt(113533) nsn(7) algorithms(66) 13 }
 PBMParameter ::= SEQUENCE {
     salt                OCTET STRING,
-    -- note:  implementations MAY wish to limit acceptable sizes
+    -- Note:  Implementations MAY wish to limit acceptable sizes
     -- of this string to values appropriate for their environment
-    -- in order to reduce the risk of denial-of-service attacks
+    -- in order to reduce the risk of denial-of-service attacks.
     owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}},
     -- AlgId for a One-Way Function
     iterationCount      INTEGER,
     -- number of times the OWF is applied
-    -- note:  implementations MAY wish to limit acceptable sizes
+    -- Note:  Implementations MAY wish to limit acceptable sizes
     -- of this integer to values appropriate for their environment
-    -- in order to reduce the risk of denial-of-service attacks
+    -- in order to reduce the risk of denial-of-service attacks.
     mac                 AlgorithmIdentifier{MAC-ALGORITHM, {...}}
     -- the MAC AlgId
 }
@@ -5223,7 +5218,9 @@ DHBMParameter ::= SEQUENCE {
     owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}},
     -- AlgId for a One-Way Function
     mac                 AlgorithmIdentifier{MAC-ALGORITHM, {...}}
-    -- the MAC AlgId
+    -- AlgId of the Message Authentication Code algorithm
+    -- (e.g., HMAC-SHA256, AES-GMAC [RFC9481],
+    -- or HMAC [RFC2104, RFC2202])
 }
 
 -- id-KemBasedMac and KemBMParameter added in [RFCXXXX]
@@ -5238,6 +5235,8 @@ KemBMParameter ::= SEQUENCE {
     -- SHOULD be the maximum key length of the MAC function
     mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}
     -- AlgId of the Message Authentication Code algorithm
+    -- (e.g., HMAC-SHA256, AES-GMAC [RFC9481],
+    -- or HMAC [RFC2104, RFC2202])
 }
 
 PKIStatus ::= INTEGER {
@@ -5268,7 +5267,7 @@ PKIFailureInfo ::= BIT STRING {
 -- since we can fail in more than one way!
 -- More codes may be added in the future if/when required.
     badAlg              (0),
-    -- unrecognized or unsupported Algorithm Identifier
+    -- unrecognized or unsupported algorithm identifier
     badMessageCheck     (1),
     -- integrity check failed (e.g., signature did not verify)
     badRequest          (2),
@@ -5349,7 +5348,7 @@ OOBCertHash ::= SEQUENCE {
 
 POPODecKeyChallContent ::= SEQUENCE OF Challenge
 -- One Challenge per encryption key certification request (in the
--- same order as these requests appear in CertReqMessages).
+-- same order as these requests appear in CertReqMessages)
 
 Challenge ::= SEQUENCE {
     owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}}
@@ -5357,23 +5356,23 @@ Challenge ::= SEQUENCE {
     -- MUST be present in the first Challenge; MAY be omitted in
     -- any subsequent Challenge in POPODecKeyChallContent (if
     -- omitted, then the owf used in the immediately preceding
-    -- Challenge is to be used).
+    -- Challenge is to be used)
     witness             OCTET STRING,
-    -- the result of applying the one-way function (owf) to a
-    -- randomly-generated INTEGER, A.  [Note that a different
-    -- INTEGER MUST be used for each Challenge.]
+    -- the result of applying the One-Way Function (owf) to a
+    -- randomly generated INTEGER, A  (Note that a different
+    -- INTEGER MUST be used for each Challenge.)
     challenge           OCTET STRING
     -- the encryption (under the public key for which the cert.
-    -- request is being made) of Rand.
+    -- request is being made) of Rand
 }
 
--- Added in CMP Updates [RFCAAAA]
+-- Rand was added in CMP Updates [RFC9480]
 
 Rand ::= SEQUENCE {
 -- Rand is encrypted under the public key to form the challenge
 -- in POPODecKeyChallContent
    int                  INTEGER,
-   -- the randomly-generated INTEGER A (above)
+   -- the randomly generated INTEGER A (above)
    sender               GeneralName
    -- the sender's name (as included in PKIHeader)
 }
@@ -5404,12 +5403,12 @@ CertResponse ::= SEQUENCE {
 CertifiedKeyPair ::= SEQUENCE {
     certOrEncCert       CertOrEncCert,
     privateKey      [0] EncryptedKey      OPTIONAL,
-    -- see [RFC4211] for comment on encoding
+    -- See [RFC4211] for comments on encoding.
     -- Changed from Encrypted Value to EncryptedKey as a CHOICE of
     -- EncryptedValue and EnvelopedData due to the changes made in
-    -- CMP Updates [RFCAAAA]
+    -- CMP Updates [RFC9480].
     -- Using the choice EncryptedValue is bit-compatible to the
-    -- syntax without this change
+    -- syntax without this change.
     publicationInfo [1] PKIPublicationInfo  OPTIONAL }
 
 CertOrEncCert ::= CHOICE {
@@ -5417,9 +5416,9 @@ CertOrEncCert ::= CHOICE {
     encryptedCert   [1] EncryptedKey
     -- Changed from Encrypted Value to EncryptedKey as a CHOICE of
     -- EncryptedValue and EnvelopedData due to the changes made in
-    -- CMP Updates [RFCAAAA]
+    -- CMP Updates [RFC9480].
     -- Using the choice EncryptedValue is bit-compatible to the
-    -- syntax without this change
+    -- syntax without this change.
 }
 
 KeyRecRepContent ::= SEQUENCE {
@@ -5477,7 +5476,7 @@ NestedMessageContent ::= PKIMessages
 -- ExpandedRegControlSet, id-regCtrl-altCertTemplate,
 -- AltCertTemplate, regCtrl-algId, id-regCtrl-algId, AlgIdCtrl,
 -- regCtrl-rsaKeyLen, id-regCtrl-rsaKeyLen, and RsaKeyLenCtrl
--- were added in CMP Updates [RFCAAAA]
+-- were added in CMP Updates [RFC9480]
 
 CertReqTemplateContent ::= SEQUENCE {
    certTemplate           CertTemplate,
@@ -5485,9 +5484,9 @@ CertReqTemplateContent ::= SEQUENCE {
    -- The SubjectPublicKeyInfo field in the certTemplate MUST NOT
    -- be used.
    keySpec                Controls OPTIONAL
-   -- MAY be used to specify supported algorithms.
+   -- MAY be used to specify supported algorithms
    -- Controls  ::= SEQUENCE SIZE (1..MAX) OF AttributeTypeAndValue
-   -- as specified in CRMF (RFC4211)
+   -- as specified in CRMF [RFC4211]
    }
 
 AttributeTypeAndValue ::= SingleAttribute{{ ... }}
@@ -5502,7 +5501,7 @@ id-regCtrl-altCertTemplate OBJECT IDENTIFIER ::= { id-regCtrl 7 }
 
 AltCertTemplate ::= AttributeTypeAndValue
    -- specifies a template for a certificate other than an X.509v3
-   -- public-key certificate
+   -- public key certificate
 
 regCtrl-algId ATTRIBUTE ::=
    { TYPE AlgIdCtrl IDENTIFIED BY id-regCtrl-algId }
@@ -5521,7 +5520,7 @@ RsaKeyLenCtrl ::= INTEGER (1..MAX)
    -- SHALL be used to specify supported RSA key lengths
 
 -- RootCaKeyUpdateContent, CRLSource, and CRLStatus were added in
--- CMP Updates [RFCAAAA]
+-- CMP Updates [RFC9480]
 
 RootCaKeyUpdateContent ::= SEQUENCE {
    newWithNew       CMPCertificate,
@@ -5609,7 +5608,7 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --      RevPassphraseValue      ::= EncryptedKey
 --      - Changed from Encrypted Value to EncryptedKey as a CHOICE
 --      - of EncryptedValue and EnvelopedData due to the changes
---      - made in CMP Updates [RFCAAAA]
+--      - made in CMP Updates [RFC9480]
 --      - Using the choice EncryptedValue is bit-compatible to
 --      - the syntax without this change
 --   id-it-implicitConfirm  OBJECT IDENTIFIER ::= {id-it 13}
@@ -5623,28 +5622,28 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --   id-it-caCerts          OBJECT IDENTIFIER ::= {id-it 17}
 --      CaCertsValue            ::= SEQUENCE SIZE (1..MAX) OF
 --                                             CMPCertificate
---      - id-it-caCerts added in CMP Updates [RFCAAAA]
+--      - id-it-caCerts added in CMP Updates [RFC9480]
 --   id-it-rootCaKeyUpdate  OBJECT IDENTIFIER ::= {id-it 18}
 --      RootCaKeyUpdateValue    ::= RootCaKeyUpdateContent
---      - id-it-rootCaKeyUpdate added in CMP Updates [RFCAAAA]
+--      - id-it-rootCaKeyUpdate added in CMP Updates [RFC9480]
 --   id-it-certReqTemplate  OBJECT IDENTIFIER ::= {id-it 19}
 --      CertReqTemplateValue    ::= CertReqTemplateContent
---      - id-it-certReqTemplate added in CMP Updates [RFCAAAA]
+--      - id-it-certReqTemplate added in CMP Updates [RFC9480]
 --   id-it-rootCaCert       OBJECT IDENTIFIER ::= {id-it 20}
 --      RootCaCertValue         ::= CMPCertificate
---      - id-it-rootCaCert added in CMP Updates [RFCAAAA]
+--      - id-it-rootCaCert added in CMP Updates [RFC9480]
 --   id-it-certProfile      OBJECT IDENTIFIER ::= {id-it 21}
 --      CertProfileValue        ::= SEQUENCE SIZE (1..MAX) OF
 --                                                 UTF8String
---      - id-it-certProfile added in CMP Updates [RFCAAAA]
+--      - id-it-certProfile added in CMP Updates [RFC9480]
 --   id-it-crlStatusList    OBJECT IDENTIFIER ::= {id-it 22}
 --      CRLStatusListValue      ::= SEQUENCE SIZE (1..MAX) OF
 --                                                  CRLStatus
---      - id-it-crlStatusList added in CMP Updates [RFCAAAA]
+--      - id-it-crlStatusList added in CMP Updates [RFC9480]
 --   id-it-crls             OBJECT IDENTIFIER ::= {id-it 23}
 --      CRLsValue               ::= SEQUENCE SIZE (1..MAX) OF
 --                                            CertificateList
---      - id-it-crls added in CMP Updates [RFCAAAA]
+--      - id-it-crls added in CMP Updates [RFC9480]
 --   id-it-KemCiphertextInfo    OBJECT IDENTIFIER ::= {id-it TBD1}
 --      KemCiphertextInfoValue  ::= KemCiphertextInfo
 --      - id-it-KemCiphertextInfo added in [RFCXXXX]
@@ -5659,7 +5658,7 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --
 --
 -- This construct MAY also be used to define new PKIX Certificate
--- Management Protocol request and response messages, or
+-- Management Protocol request and response messages or
 -- general-purpose (e.g., announcement) messages for future needs
 -- or for specific environments.
 
@@ -5668,13 +5667,13 @@ GenMsgContent ::= SEQUENCE OF InfoTypeAndValue
 -- May be sent by EE, RA, or CA (depending on message content).
 -- The OPTIONAL infoValue parameter of InfoTypeAndValue will
 -- typically be omitted for some of the examples given above.
--- The receiver is free to ignore any contained OBJECT IDs that it
+-- The receiver is free to ignore any contained OIDs that it
 -- does not recognize.  If sent from EE to CA, the empty set
 -- indicates that the CA may send
 -- any/all information that it wishes.
 
 GenRepContent ::= SEQUENCE OF InfoTypeAndValue
--- Receiver MAY ignore any contained OIDs that it does not
+-- The receiver MAY ignore any contained OIDs that it does not
 -- recognize.
 
 ErrorMsgContent ::= SEQUENCE {
@@ -5709,10 +5708,10 @@ PollRepContent ::= SEQUENCE OF SEQUENCE {
     reason                 PKIFreeText OPTIONAL }
 
 --
--- Extended Key Usage extension for PKI entities used in CMP
+-- Extended key usage extension for PKI entities used in CMP
 -- operations, added due to the changes made in
--- CMP Updates [RFCAAAA]
--- The EKUs for the CA and RA are reused from CMC as defined in
+-- CMP Updates [RFC9480]
+-- The EKUs for the CA and RA are reused from CMC, as defined in
 -- [RFC6402]
 --
 
@@ -5728,17 +5727,18 @@ END
 
 Note: This appendix will be deleted in the final version of the document.
 
-From version 08 -> 09:
-
-
-* Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text
-
-* Some editorial changes to Section 5.1.3.4 and Appendix E after discussion at IETF117
 
 From version 07 -> 08:
 
 
-* Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30
+* Aligned with released RFC 9480 - RFC 9483
+
+* Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text
+
+* Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117
+
+
+* Fixed some references in Section 5.2.8.3 which broke from RFC2510 to RFC4210
 
 From version 06 -> 07:
 
