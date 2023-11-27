@@ -1753,6 +1753,8 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 
 In case the sender of a message has a KEM key pair, it can use a shared secret key obtained by KEM decapsulation of a ciphertext received using its private KEM key.
 
+This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
+
 Note: In this section both entities in the communication need to send and receive messages. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to authenticate messages sent, and "Bob" to denote the entity who needs to authenticate the messages received.
 
 Bob must have generated the ciphertext using KEM encapsulation with Alice’s public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
@@ -1778,8 +1780,6 @@ mac is the algorithm identifier of the chosen MAC algorithm, and any associated 
 
 The KDF and MAC algorithms MAY be chosen from the options in CMP Algorithms {{RFC9481}}.
 
-This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
-
 The InfoTypeAndValue transferring the KEM ciphertext is of type id-it-KemCiphertextInfo, which is defined in this document as:
 
 ~~~~ asn.1
@@ -1787,7 +1787,7 @@ The InfoTypeAndValue transferring the KEM ciphertext is of type id-it-KemCiphert
   KemCiphertextInfoValue ::= KemCiphertextInfo
 ~~~~
 
-Note: This InfoTypeAndValue can be carried in a genm/genp message body or in the generalInfo field of PKIHeader in messages of other types.
+Note: This InfoTypeAndValue can be carried in a genm/genp message body as specified in {{sect-5.3.19}} or in the generalInfo field of PKIHeader in messages of other types.
 
 When id-it-KemCiphertextInfo is used, the value is either absent or of type KemCiphertextInfo.  The syntax for KemCiphertextInfo is as follows:
 
