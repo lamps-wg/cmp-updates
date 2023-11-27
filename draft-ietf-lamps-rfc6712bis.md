@@ -1,8 +1,9 @@
 ---
 v: 3
+ipr: trust200902
 docname: draft-ietf-lamps-rfc6712bis-latest
 cat: std
-obsoletes: '6712'
+obsoletes: '6712 9480'
 consensus: 'true'
 submissiontype: IETF
 lang: en
@@ -57,8 +58,8 @@ author:
   email: john.gray@entrust.com
   uri: https://www.entrust.com
 informative:
-  I-D.ietf-lamps-cmp-updates:
-  I-D.ietf-lamps-lightweight-cmp-profile:
+  RFC9480:
+  RFC9483:
   RFC2510:
   RFC4210:
   RFC4301:
@@ -79,7 +80,7 @@ normative:
 This document describes how to layer the Certificate Management Protocol
 (CMP) over HTTP.
 
-It includes the updates on RFC 6712 specified in CMP Updates [RFCAAAA] Section
+It includes the updates on RFC 6712 specified in CMP Updates RFC 9480 Section
 3 and obsoleted both documents.  These updates introduce CMP URIs using a
 Well-known prefix.
 
@@ -109,14 +110,6 @@ Please perform the following substitution.
 
 * RFCXXXX ---> the assigned numerical RFC value for this draft
 
-* RFCAAAA ---> the assigned numerical RFC value for {{I-D.ietf-lamps-cmp-updates}}
-
-  Add this RFC number to the list of obsoleted RFCs.
-
-
-
-* RFCBBBB ---> the assigned numerical RFC value for {{I-D.ietf-lamps-lightweight-cmp-profile}}
-
 * RFCCCCC ---> the assigned numerical RFC value for {{I-D.ietf-lamps-rfc4210bis}}
 
 ]
@@ -141,8 +134,8 @@ handling.
 
 In addition to reliable transport, CMP requires connection and error handling
 from the transfer protocol, which is all covered by HTTP.  Additionally,
-delayed delivery of CMP response messages may be handled at transfer level
-regardless of the message contents.  Since [RFCAAAA] extends the polling
+delayed delivery of CMP response messages may be handled at transfer level,
+regardless of the message contents.  Since {{RFC9480}} extends the polling
 mechanism specified in the second version of [CMP](#RFC4210) to cover
 all types of PKI management transactions, delays detected at application
 level may also be handled within CMP, using pollReq and pollRep messages.
@@ -171,9 +164,9 @@ messages.
 ## Changes Since RFC 6712
 {: id="sect-1.1"}
 
-CMP Updates [RFCAAAA] updated [RFC 6712](#RFC6712), supporting the PKI
+CMP Updates {{RFC9480}} updated {{RFC6712}}, supporting the PKI
 management operations specified in the Lightweight CMP
-Profile [RFCBBBB], in the following areas:
+Profile {{RFC9483}}, in the following areas:
 
 
 * Introduce the HTTP URI path prefix '/.well-known/cmp'.
@@ -186,7 +179,7 @@ Profile [RFCBBBB], in the following areas:
 {: id="sect-1.2"}
 
 This document obsoletes [RFC 6712](#RFC6712).
-It includes the changes specified by CMP Updates [RFCAAAA] Section 3 as
+It includes the changes specified by CMP Updates {{RFC9480}} Section 3 as
 described in {{sect-1.1}}.
 
 
@@ -281,7 +274,7 @@ was not successfully delivered to its destination.
 
 Each CMP server on a PKI management entity supporting HTTP or HTTPS transfer
 MUST support the use of the path prefix '/.well-known/' as defined in
-[RFC 8615](#RFC8615) and the registered name 'cmp' to ease interworking
+{{RFC8615}} and the registered name 'cmp' to ease interworking
 in a multi-vendor environment.
 
 The CMP client needs to be configured with sufficient information to form
@@ -289,11 +282,11 @@ the CMP server URI.  This is at least the authority portion of the URI, e.g.,
 'www.example.com:80', or the full operation path segment of the PKI management
 entity. Additionally, OPTIONAL path segments MAY be added after the registered
 application name as part of the full operation path to provide further distinction.
-The path segment 'p' followed by an arbitraryLabel \<name> could for example
+The path segment 'p' followed by an arbitraryLabel \<name> could, for example,
 support the differentiation of specific CAs or certificate profiles. Further
-path segments, e.g., as specified in the Lightweight CMP Profile [RFCBBBB],
+path segments, e.g., as specified in the Lightweight CMP Profile {{RFC9483}},
 could indicate PKI management operations using an operationLabel \<operation>.
-A valid full CMP URI can look like this:
+A valid, full CMP URI can look like this:
 
 
 
@@ -440,8 +433,6 @@ users:
 
 # IANA Considerations {#sect-6}
 
-The IANA has already registered what is specified in CMP Updates [RFCAAAA].
-
 No further action by the IANA is necessary for this document or any anticipated
 updates.
 
@@ -459,6 +450,11 @@ We also thank all reviewers of this document for their valuable feedback.
 # History of Changes {#History}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 03 -> 04:
+
+
+* Aligned with released RFC 9480 - RFC 9483.
 
 From version 02 -> 03:
 
