@@ -2178,8 +2178,7 @@ See {{RFC4211}} for PKIPublicationInfo syntax.
 {: id="sect-5.2.8"}
 
 \< ToDo: This section should be aligned with {{sect-4.3}} of this document and
-RFC 4211 Section 4. It should potentially be restructured
-and updated for better readability. Also some inconsistencies in Section 5.2.8.3 resulting from the update of RFC2510 to RFC4210 should be fixed. >
+RFC 4211 Section 4.  May be an addition regarding challenge-response pop for KEM-Keys is required.>
 
 If the certification request is for a key pair that supports signing , then
 the proof-of-possession of the private signing key is demonstrated through
@@ -2316,13 +2315,13 @@ with the following changes: (1) the parenthetical text of {{sect-5.2.8.2}}
 is replaced with "(i.e., the certificate encrypted under the symmetric key
 derived from the CA's private KAK and the public key for which the certification
 request is being made)"; (2) the first
-parenthetical text of the challenge field of "Challenge" below is
+parenthetical text of the challenge field of "Challenge" in the ASN.1 Module of {{sect-f}} is
 replaced with "(using PreferredSymmAlg (see {{sect-5.3.19.4}} and {{sect-d.5}})
 and a symmetric key derived from the CA's private KAK and the public key
 for which the certification request is being made)".  Alternatively, the
 POP can use the POPOSigningKey structure
 given in {{RFC4211}} (where the alg field is DHBasedMAC and the signature
-field is the MAC) as a fourth alternative for demonstrating POP if
+field is the MAC). As a fourth alternative for demonstrating POP if
 the CA already has a D-H certificate that is known to the EE.
 
 The challenge-response messages for proof-of-possession of a private
