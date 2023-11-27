@@ -1758,7 +1758,7 @@ Note: In this section both entities in the communication need to send and receiv
 Bob must have generated the ciphertext using KEM encapsulation with Alice’s public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
 
 ~~~~ asn.1
-  id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 TBD4}
+  id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 16}
 
   KemBMParameter ::= SEQUENCE {
     kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
@@ -1767,7 +1767,7 @@ Bob must have generated the ciphertext using KEM encapsulation with Alice’s pu
   }
 ~~~~
 
-< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. Entrust offered using 1.2.840.113533.7.66.16 for id-KemBasedMac. >
+Note: The OID for id-KemBasedMac was registered in the Entrust branch like the OIDs for id-PasswordBasedMac and id-DHBasedMac.
 
 kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to generate the shared secret mac key.
 
