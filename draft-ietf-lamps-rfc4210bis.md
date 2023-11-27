@@ -1868,6 +1868,23 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
     KemOtherInfo ::= SEQUENCE {
       staticString      PKIFreeText,
       transactionID [0] OCTET STRING     OPTIONAL,
+    }
+  ~~~~
+
+  staticString MUST be "CMP-KEM".
+
+  transactionID MUST be the values from the message containing the ciphertext ct in KemCiphertextInfo, if present.
+
+  For all PKI management operations with more than one exchange the transactionID MUST be set, see {{sect-5.1.1}}.  This is the typical situation when KEM-based message protection is used. {{KEM-Flow2}} of {{sect-e}} describes the exceptional case where only one message exchange may be sufficient. In this case, the transactionID SHOULD be used by Bob to ensure domain-separation between different PKI management operations.
+
+[ToDo: The fields senderNonce, ReciepNonce, len, mac, and ct were removed from the KemOtherInfo sequence.  The authors are waiting for experts reviews providing guidance if theses fields are necessary for the security of the KEM-bases message protection.
+
+Text from -V07
+
+  ~~~~ asn.1
+    KemOtherInfo ::= SEQUENCE {
+      staticString      PKIFreeText,
+      transactionID [0] OCTET STRING     OPTIONAL,
       senderNonce   [1] OCTET STRING     OPTIONAL,
       recipNonce    [2] OCTET STRING     OPTIONAL,
       len               INTEGER (1..MAX),
@@ -1885,6 +1902,8 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
   mac MUST be the MAC algorithm identifier used for MAC-based protection of the message and MUST be the value from KemBMParameter.
 
   ct MUST be the ciphertext from KemCiphertextInfo.
+
+End of ToDo]
 
 * OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.
 
@@ -4985,6 +5004,9 @@ Step# PKI entity                           PKI management entity
 ~~~
 {: #KEM-Flow2 title='Message Flow when the PKI entity knows that the PKI management entity uses a KEM key pair and has the authentic public key' artwork-align="left"}
 
+Note: {{KEM-Flow2}} describes the situation where KEM-based messages protection may not require more that one message exchange.  In this case, the transactionID SHOULD be used by the PKI entity to ensure domain-separation between different PKI management operations.
+
+
 Message Flow when the PKI entity does not know that the PKI management entity uses a KEM key pair:
 
 ~~~
@@ -5554,19 +5576,25 @@ KemCiphertextInfo ::= SEQUENCE {
 KemOtherInfo ::= SEQUENCE {
    staticString     PKIFreeText,
    -- MUST be "CMP-KEM"
-   transactionID    OCTET STRING,
-   senderNonce      OCTET STRING,
-   recipNonce       OCTET STRING,
-   -- The tree fields above MUST contain the values from the message
+   transactionID    OCTET STRING OPTIONAL,
+   -- MUST contain the values from the message previously received
+   -- containing the ciphertext (ct) in KemCiphertextInfo
+   -- MUST be used when the client side uses KEM-based message
+   -- protection
+   -- SHOULD be used when the server side only uses KEM-based Message
+   -- protection
+--   senderNonce      OCTET STRING OPTIONAL,
+--   recipNonce       OCTET STRING OPTIONAL,
+   -- The two fields above MUST contain the values from the message
    -- previously received containing the ciphertext (ct) in
    -- KemCiphertextInfo
-   len              INTEGER (1..MAX),
+--   len              INTEGER (1..MAX),
    -- MUST be the value from KemBMParameter
-   mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}
+--   mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}
    -- MUST be the MAC algorithm identifier used for MAC-based
    -- protection of the message and MUST be the value from
    -- KemBMParameter
-   ct               OCTET STRING
+--   ct               OCTET STRING
    -- MUST be the ciphertext from that KemCiphertextInfo
   }
 
@@ -5738,6 +5766,8 @@ From version 07 -> 08:
 
 * Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117
 
+* Added ToDo for reviewing the reduced content of KemOtherInfo to Section 5.1.3.4
+
 * Added a cross-reference to Section 5.1.1.3 regarding use of OrigPKIMessage to Section 5.1.3.5
 
 * Fixed some references in Section 5.2.8.3 which broke from RFC2510 to RFC4210
@@ -5830,7 +5860,7 @@ From version 00 -> 01:
 
 * Performed all updates specified in CMP Updates Section 2 and Appendix A.2.
 
-* Did some editorial allignment to the XML
+* Did some editorial alignment to the XML
 
 Version 00:
 
