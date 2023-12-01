@@ -1454,12 +1454,18 @@ allow the recipient of a message to correlate this with an ongoing
 transaction.  This is needed for all transactions that consist of
 more than just a single request/response pair.  For transactions that
 consist of a single request/response pair, the rules are as follows.
-A client MAY populate the transactionID field of the request.  If a
+A client MUST populate the transactionID field if the message
+contains an infoValue of type KemCiphertextInfo. In all other cases
+the client MAY populate the transactionID field of the request.  If a
 server receives such a request that has the transactionID field set,
 then it MUST set the transactionID field of the response to the same
 value.  If a server receives such request with a missing
-transactionID field, then it MAY set transactionID field of the
-response.
+transactionID field, then it MUST populate the transactionID field if
+the message contains a KemCiphertextInfo field. In all other cases
+the server MAY set transactionID field of the response.
+
+Note: With KEM-based message protection the transactionID is used to
+ensure domain-separation of the derived shared secret key, see {{sect-5.1.3.4}}.
 
 For transactions that consist of more than just a single
 request/response pair, the rules are as follows.  Clients SHOULD
@@ -1867,43 +1873,33 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
   ~~~~ asn.1
     KemOtherInfo ::= SEQUENCE {
       staticString      PKIFreeText,
-      transactionID [0] OCTET STRING     OPTIONAL,
-    }
-  ~~~~
-
-  staticString MUST be "CMP-KEM".
-
-  transactionID MUST be the values from the message containing the ciphertext ct in KemCiphertextInfo, if present.
-
-  For all PKI management operations with more than one exchange the transactionID MUST be set, see {{sect-5.1.1}}.  This is the typical situation when KEM-based message protection is used. {{KEM-Flow2}} of {{sect-e}} describes the exceptional case where only one message exchange may be sufficient. In this case, the transactionID SHOULD be used by Bob to ensure domain-separation between different PKI management operations.
-
-[ToDo: The fields senderNonce, ReciepNonce, len, mac, and ct were removed from the KemOtherInfo sequence.  The authors are waiting for experts reviews providing guidance if theses fields are necessary for the security of the KEM-bases message protection.
-
-Text from -V07
-
-  ~~~~ asn.1
-    KemOtherInfo ::= SEQUENCE {
-      staticString      PKIFreeText,
-      transactionID [0] OCTET STRING     OPTIONAL,
-      senderNonce   [1] OCTET STRING     OPTIONAL,
-      recipNonce    [2] OCTET STRING     OPTIONAL,
-      len               INTEGER (1..MAX),
-      mac               AlgorithmIdentifier{MAC-ALGORITHM, {...}}
+      transactionID     OCTET STRING,
+      pk				BIT STRING
       ct                OCTET STRING
     }
   ~~~~
 
   staticString MUST be "CMP-KEM".
 
-  transactionID, senderNonce, and recipNonce MUST be the values from the message containing the ciphertext ct in KemCiphertextInfo, if present.
+  transactionID MUST be the values from the message containing the ciphertext ct in KemCiphertextInfo.
 
-  len MUST be the value from KemBMParameter.
+  Note: For all PKI management operations with more than one exchange the transactionID MUST be set anyway.  In case of Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see {{KEM-Flow2}} of {{sect-e}}, the transactionID MUST be used by Bob to ensure domain-separation between different PKI management operations.
 
-  mac MUST be the MAC algorithm identifier used for MAC-based protection of the message and MUST be the value from KemBMParameter.
+  pk MUST be the authentic public KEM key of Alice.
 
-  ct MUST be the ciphertext from KemCiphertextInfo.
+  ct is the ciphertext from KemCiphertextInfo.
 
-End of ToDo]
+\< ToDo: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.
+
+  senderNonce and recipNonce are the values from the message containing the ciphertext ct in KemCiphertextInfo. They are optional and their presence depends on the used CMP profile.
+
+  len and mac are the values from KemBMParameter.  mac is also the MAC algorithm identifier used for MAC-based protection of the message.
+
+Instead Alice’s public KEM key was added based on the discussion on the LAMPS list, see the tread "Does cms-kemri need to include H(ct) as a KDF input?".
+
+The authors are waiting for expert reviews providing guidance which fields are strictly needed and which would bring additional value for the KEM-bases message protection.
+
+End of ToDo >
 
 * OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.
 
@@ -2199,7 +2195,7 @@ See {{RFC4211}} for PKIPublicationInfo syntax.
 {: id="sect-5.2.8"}
 
 \< ToDo: This section should be aligned with {{sect-4.3}} of this document and
-RFC 4211 Section 4.  May be an addition regarding challenge-response pop for KEM-Keys is required.>
+RFC 4211 Section 4.  May be an addition regarding challenge-response pop for KEM-Keys is required. >
 
 If the certification request is for a key pair that supports signing , then
 the proof-of-possession of the private signing key is demonstrated through
@@ -2439,8 +2435,7 @@ typically be used when an RA is involved and doing POP verification.
 Thus, the EE should be able to make an intelligent decision regarding
 which of these POP methods to choose in the request message.
 
-\< ToDo: Possibly add a section describing a POP mechanism for KEM keys.
->
+\< ToDo: Possibly add a paragraph describing a POP mechanism for KEM keys. >
 
 
 
@@ -3896,15 +3891,15 @@ In the SMI-numbers registry "SMI Security for PKIX CMP Information Types (1.3.6.
 
 One new entry has been added:
 
-Decimal: TBD1
+   Decimal: TBD1
 
-Description: id-it-KemCiphertextInfo
+   Description: id-it-KemCiphertextInfo
 
-Reference: [RFCXXXX]
+   Reference: [RFCXXXX]
+
+The new OID 1.2.840.113533.7.66.16 was registered by Entrust for id-KemBasedMac in the arch 1.2.840.113533.7.66. Entrust registered also the OIDs for id-PasswordBasedMac and id-DHBasedMac there.
 
 < ToDo: The new OID TBD3 for the ASN.1 module KEMAlgorithmInformation-2023 will be defined in draft-ietf-lamps-cms-kemri. >
-
-< ToDo: The new OID TBD4 for id-KemBasedMac needs to be registered. The OIDs id-PasswordBasedMac and id-DHBasedMac were registered in the tree 1.2.840.113533.7.66 by Entrust. Entrust offered using 1.2.840.113533.7.66.16 for id-KemBasedMac. >
 
 # Acknowledgements {#Acknowledgements}
 
@@ -5004,7 +4999,7 @@ Step# PKI entity                           PKI management entity
 ~~~
 {: #KEM-Flow2 title='Message Flow when the PKI entity knows that the PKI management entity uses a KEM key pair and has the authentic public key' artwork-align="left"}
 
-Note: {{KEM-Flow2}} describes the situation where KEM-based messages protection may not require more that one message exchange.  In this case, the transactionID SHOULD be used by the PKI entity to ensure domain-separation between different PKI management operations.
+Note: {{KEM-Flow2}} describes the situation where KEM-based messages protection may not require more that one message exchange.  In this case, the transactionID MUST also be used by the PKI entity (Bob) to ensure domain-separation between different PKI management operations.
 
 
 Message Flow when the PKI entity does not know that the PKI management entity uses a KEM key pair:
@@ -5761,6 +5756,8 @@ From version 07 -> 08:
 
 
 * Aligned with released RFC 9480 - RFC 9483
+
+* Added text on usage of transactionID with KEM-bases message protection to Section 5.1.1
 
 * Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text
 
