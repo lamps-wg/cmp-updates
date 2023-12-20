@@ -1453,7 +1453,7 @@ transaction.  This is needed for all transactions that consist of
 more than just a single request/response pair.  For transactions that
 consist of a single request/response pair, the rules are as follows.
 A client MUST populate the transactionID field if the message
-contains an infoValue of type KemCiphertextInfo. In all other cases
+contains an infoValue of type KemCiphertextInfo, see {{sect-5.1.3.4}}. In all other cases
 the client MAY populate the transactionID field of the request.  If a
 server receives such a request that has the transactionID field set,
 then it MUST set the transactionID field of the response to the same
@@ -1461,9 +1461,6 @@ value.  If a server receives such request with a missing
 transactionID field, then it MUST populate the transactionID field if
 the message contains a KemCiphertextInfo field. In all other cases
 the server MAY set transactionID field of the response.
-
-Note: With KEM-based message protection the transactionID is used to
-ensure domain-separation of the derived shared secret key, see {{sect-5.1.3.4}}.
 
 For transactions that consist of more than just a single
 request/response pair, the rules are as follows.  Clients SHOULD
@@ -1872,7 +1869,6 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
     KemOtherInfo ::= SEQUENCE {
       staticString      PKIFreeText,
       transactionID     OCTET STRING,
-      pk                BIT STRING,
       ct                OCTET STRING
     }
   ~~~~
@@ -1881,21 +1877,15 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
 
   transactionID MUST be the values from the message containing the ciphertext ct in KemCiphertextInfo.
 
-  Note: For all PKI management operations with more than one exchange the transactionID MUST be set anyway.  In case of Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see {{KEM-Flow2}} of {{sect-e}}, the transactionID MUST be used by Bob to ensure domain-separation between different PKI management operations.
-
-  pk MUST be the authentic public KEM key of Alice.
+  Note: The transactionID is used to ensure domain-separation of the derived shared secret key between different PKI management operations. For all PKI management operations with more than one exchange the transactionID MUST be set anyway, see {{sect-5.1.1}}.  In case of Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see {{KEM-Flow2}} of {{sect-e}}, the transactionID MUST be set by Bob.
 
   ct is the ciphertext from KemCiphertextInfo.
 
 \< ToDo: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.
 
-  senderNonce and recipNonce are the values from the message containing the ciphertext ct in KemCiphertextInfo. They are optional and their presence depends on the used CMP profile.
+  Alice's public KEM key could be added based on the discussion on the LAMPS list, see the tread "Does cms-kemri need to include H(ct) as a KDF input?".
 
-  len and mac are the values from KemBMParameter.  mac is also the MAC algorithm identifier used for MAC-based protection of the message.
-
-Instead Alice’s public KEM key was added based on the discussion on the LAMPS list, see the tread "Does cms-kemri need to include H(ct) as a KDF input?".
-
-The authors are waiting for expert reviews providing guidance which fields are strictly needed and which would bring additional value for the KEM-bases message protection.
+  The authors are waiting for expert reviews providing guidance which fields are needed and bring additional value for the KEM-bases message protection.
 
 End of ToDo >
 
@@ -2365,8 +2355,8 @@ PKIHeader and by the protection (MACing or signing) applied to the
 PKIMessage.
 
 \< ToDo: As Challenge contains the encrypted Rand, it should be considered
-to also use EncryptedData instead of Octet String. But, I cannot say,
-of the direct POP is used in current implementations and if this change
+to also use EncryptedData instead of OCTET STRING. But, I cannot say,
+if the direct POP is used in current implementations and if this change
 makes sense. >
 
 ~~~~ asn.1
