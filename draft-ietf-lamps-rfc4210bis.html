@@ -28,23 +28,23 @@ certConf messages.
 adds support for management of KEM certificates. 
        Appendix F of this document updates the 2002 ASN.1 module in RFC 5912 Section 9. 
     " name="description">
-<meta content="xml2rfc 3.18.2" name="generator">
+<meta content="xml2rfc 3.19.0" name="generator">
 <meta content="draft-ietf-lamps-rfc4210bis-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.18.2
+  xml2rfc 3.19.0
     Python 3.11.6
-    ConfigArgParse 1.5.3
+    ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 4.0.0
+    platformdirs 4.1.0
     pycountry 22.3.5
-    PyYAML 6.0
+    PyYAML 6.0.1
     requests 2.31.0
-    setuptools 67.7.2
+    setuptools 68.2.2
     six 1.16.0
-    wcwidth 0.2.10
+    wcwidth 0.2.12
 -->
 <link href="draft-ietf-lamps-rfc4210bis.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1047,7 +1047,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 3 June 2024</td>
+<td class="center">Expires 22 June 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-12-01" class="published">1 December 2023</time>
+<time datetime="2023-12-20" class="published">20 December 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-06-03">3 June 2024</time></dd>
+<dd class="expires"><time datetime="2024-06-22">22 June 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1144,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 22 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3089,7 +3089,7 @@ transaction.  This is needed for all transactions that consist of
 more than just a single request/response pair.  For transactions that
 consist of a single request/response pair, the rules are as follows.
 A client <span class="bcp14">MUST</span> populate the transactionID field if the message
-contains an infoValue of type KemCiphertextInfo. In all other cases
+contains an infoValue of type KemCiphertextInfo, see <a href="#sect-5.1.3.4" class="auto internal xref">Section 5.1.3.4</a>. In all other cases
 the client <span class="bcp14">MAY</span> populate the transactionID field of the request.  If a
 server receives such a request that has the transactionID field set,
 then it <span class="bcp14">MUST</span> set the transactionID field of the response to the same
@@ -3097,9 +3097,7 @@ value.  If a server receives such request with a missing
 transactionID field, then it <span class="bcp14">MUST</span> populate the transactionID field if
 the message contains a KemCiphertextInfo field. In all other cases
 the server <span class="bcp14">MAY</span> set transactionID field of the response.<a href="#section-5.1.1-10" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-11">Note: With KEM-based message protection the transactionID is used to
-ensure domain-separation of the derived shared secret key, see <a href="#sect-5.1.3.4" class="auto internal xref">Section 5.1.3.4</a>.<a href="#section-5.1.1-11" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-12">For transactions that consist of more than just a single
+<p id="section-5.1.1-11">For transactions that consist of more than just a single
 request/response pair, the rules are as follows.  Clients <span class="bcp14">SHOULD</span>
 generate a transactionID for the first request.  If a server receives
 such a request that has the transactionID field set, then it <span class="bcp14">MUST</span> set
@@ -3124,22 +3122,22 @@ back an ErrorMsgContent with a PKIFailureInfo of transactionIdInUse.
 It is <span class="bcp14">RECOMMENDED</span> that the clients fill the transactionID field with
 128 bits of (pseudo-) random data for the start of a transaction to
 reduce the probability of having the transactionID in use at the
-server.<a href="#section-5.1.1-12" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-13">The senderNonce and recipNonce fields protect the PKIMessage against
+server.<a href="#section-5.1.1-11" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-12">The senderNonce and recipNonce fields protect the PKIMessage against
 replay attacks.  The senderNonce will typically be 128 bits of
 (pseudo-) random data generated by the sender, whereas the recipNonce
 is copied from the senderNonce of the previous message in the
-transaction.<a href="#section-5.1.1-13" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-14">The messageTime field contains the time at which the sender created
+transaction.<a href="#section-5.1.1-12" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-13">The messageTime field contains the time at which the sender created
 the message.  This may be useful to allow end entities to
 correct/check their local time for consistency with the time on a
-central system.<a href="#section-5.1.1-14" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-15">The freeText field may be used to send a human-readable message to
+central system.<a href="#section-5.1.1-13" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-14">The freeText field may be used to send a human-readable message to
 the recipient (in any number of languages).  The first language used
-in this sequence indicates the desired language for replies.<a href="#section-5.1.1-15" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-16">The generalInfo field may be used to send machine-processable
+in this sequence indicates the desired language for replies.<a href="#section-5.1.1-14" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-15">The generalInfo field may be used to send machine-processable
 additional data to the recipient.  The following generalInfo
-extensions are defined and <span class="bcp14">MAY</span> be supported.<a href="#section-5.1.1-16" class="pilcrow">¶</a></p>
+extensions are defined and <span class="bcp14">MAY</span> be supported.<a href="#section-5.1.1-15" class="pilcrow">¶</a></p>
 <div id="sect-5.1.1.1">
 <section id="section-5.1.1.1">
             <h5 id="name-implicitconfirm">
@@ -3518,7 +3516,6 @@ Bob uses the shared secret key ssk for verifying the MAC-based protection of the
   KemOtherInfo ::= SEQUENCE {
     staticString      PKIFreeText,
     transactionID     OCTET STRING,
-    pk                BIT STRING,
     ct                OCTET STRING
   }
 </pre><a href="#section-5.1.3.4-24.2.2" class="pilcrow">¶</a>
@@ -3528,11 +3525,9 @@ staticString <span class="bcp14">MUST</span> be "CMP-KEM".<a href="#section-5.1.
 <p id="section-5.1.3.4-24.2.4">
 transactionID <span class="bcp14">MUST</span> be the values from the message containing the ciphertext ct in KemCiphertextInfo.<a href="#section-5.1.3.4-24.2.4" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-24.2.5">
-Note: For all PKI management operations with more than one exchange the transactionID <span class="bcp14">MUST</span> be set anyway.  In case of Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see <a href="#KEM-Flow2" class="auto internal xref">Figure 4</a> of <a href="#sect-e" class="auto internal xref">Appendix E</a>, the transactionID <span class="bcp14">MUST</span> be used by Bob to ensure domain-separation between different PKI management operations.<a href="#section-5.1.3.4-24.2.5" class="pilcrow">¶</a></p>
+Note: The transactionID is used to ensure domain-separation of the derived shared secret key between different PKI management operations. For all PKI management operations with more than one exchange the transactionID <span class="bcp14">MUST</span> be set anyway, see <a href="#sect-5.1.1" class="auto internal xref">Section 5.1.1</a>.  In case of Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see <a href="#KEM-Flow2" class="auto internal xref">Figure 4</a> of <a href="#sect-e" class="auto internal xref">Appendix E</a>, the transactionID <span class="bcp14">MUST</span> be set by Bob.<a href="#section-5.1.3.4-24.2.5" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-24.2.6">
-pk <span class="bcp14">MUST</span> be the authentic public KEM key of Alice.<a href="#section-5.1.3.4-24.2.6" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-24.2.7">
-ct is the ciphertext from KemCiphertextInfo.<a href="#section-5.1.3.4-24.2.7" class="pilcrow">¶</a></p>
+ct is the ciphertext from KemCiphertextInfo.<a href="#section-5.1.3.4-24.2.6" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-5.1.3.4-25">&lt; ToDo: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.<a href="#section-5.1.3.4-25" class="pilcrow">¶</a></p>

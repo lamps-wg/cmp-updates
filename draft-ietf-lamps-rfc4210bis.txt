@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 3 June 2024                                             Entrust
-                                                         1 December 2023
+Expires: 22 June 2024                                            Entrust
+                                                        20 December 2023
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 June 2024.
+   This Internet-Draft will expire on 22 June 2024.
 
 Copyright Notice
 
@@ -1453,18 +1453,15 @@ Table of Contents
    more than just a single request/response pair.  For transactions that
    consist of a single request/response pair, the rules are as follows.
    A client MUST populate the transactionID field if the message
-   contains an infoValue of type KemCiphertextInfo.  In all other cases
-   the client MAY populate the transactionID field of the request.  If a
-   server receives such a request that has the transactionID field set,
-   then it MUST set the transactionID field of the response to the same
-   value.  If a server receives such request with a missing
-   transactionID field, then it MUST populate the transactionID field if
-   the message contains a KemCiphertextInfo field.  In all other cases
-   the server MAY set transactionID field of the response.
-
-   Note: With KEM-based message protection the transactionID is used to
-   ensure domain-separation of the derived shared secret key, see
-   Section 5.1.3.4.
+   contains an infoValue of type KemCiphertextInfo, see Section 5.1.3.4.
+   In all other cases the client MAY populate the transactionID field of
+   the request.  If a server receives such a request that has the
+   transactionID field set, then it MUST set the transactionID field of
+   the response to the same value.  If a server receives such request
+   with a missing transactionID field, then it MUST populate the
+   transactionID field if the message contains a KemCiphertextInfo
+   field.  In all other cases the server MAY set transactionID field of
+   the response.
 
    For transactions that consist of more than just a single request/
    response pair, the rules are as follows.  Clients SHOULD generate a
@@ -1896,7 +1893,6 @@ Table of Contents
         KemOtherInfo ::= SEQUENCE {
           staticString      PKIFreeText,
           transactionID     OCTET STRING,
-          pk                BIT STRING,
           ct                OCTET STRING
         }
 
@@ -1905,14 +1901,13 @@ Table of Contents
       transactionID MUST be the values from the message containing the
       ciphertext ct in KemCiphertextInfo.
 
-      Note: For all PKI management operations with more than one
-      exchange the transactionID MUST be set anyway.  In case of Bob
-      provided a infoValue of type KemCiphertextInfo to Alice in the
-      initial request message, see Figure 4 of Appendix E, the
-      transactionID MUST be used by Bob to ensure domain-separation
-      between different PKI management operations.
-
-      pk MUST be the authentic public KEM key of Alice.
+      Note: The transactionID is used to ensure domain-separation of the
+      derived shared secret key between different PKI management
+      operations.  For all PKI management operations with more than one
+      exchange the transactionID MUST be set anyway, see Section 5.1.1.
+      In case of Bob provided a infoValue of type KemCiphertextInfo to
+      Alice in the initial request message, see Figure 4 of Appendix E,
+      the transactionID MUST be set by Bob.
 
       ct is the ciphertext from KemCiphertextInfo.
 
