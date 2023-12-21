@@ -1921,9 +1921,9 @@ Table of Contents
    len and mac are the values from KemBMParameter.  mac is also the MAC
    algorithm identifier used for MAC-based protection of the message.
 
-   Instead Alice’s public KEM key was added based on the discussion on
-   the LAMPS list, see the tread "Does cms-kemri need to include H(ct)
-   as a KDF input?".
+   Alice's public KEM key could be added based on the discussion on the
+   LAMPS list, see the tread "Does cms-kemri need to include H(ct) as a
+   KDF input?".
 
    The authors are waiting for expert reviews providing guidance which
    fields are strictly needed and which would bring additional value for
