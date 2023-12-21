@@ -1914,20 +1914,13 @@ Table of Contents
    < ToDo: With the update to -V08, the fields senderNonce, recipNonce,
    len, and mac were removed from the KemOtherInfo sequence.
 
-   senderNonce and recipNonce are the values from the message containing
-   the ciphertext ct in KemCiphertextInfo.  They are optional and their
-   presence depends on the used CMP profile.
-
-   len and mac are the values from KemBMParameter.  mac is also the MAC
-   algorithm identifier used for MAC-based protection of the message.
-
    Alice's public KEM key could be added based on the discussion on the
    LAMPS list, see the tread "Does cms-kemri need to include H(ct) as a
    KDF input?".
 
    The authors are waiting for expert reviews providing guidance which
-   fields are strictly needed and which would bring additional value for
-   the KEM-bases message protection.
+   fields are needed and bring additional value for the KEM-bases
+   message protection.
 
    End of ToDo >
 
@@ -2383,8 +2376,8 @@ Table of Contents
    protection (MACing or signing) applied to the PKIMessage.
 
    < ToDo: As Challenge contains the encrypted Rand, it should be
-   considered to also use EncryptedData instead of Octet String.  But, I
-   cannot say, of the direct POP is used in current implementations and
+   considered to also use EncryptedData instead of OCTET STRING.  But, I
+   cannot say, if the direct POP is used in current implementations and
    if this change makes sense. >
 
      POPODecKeyChallContent ::= SEQUENCE OF Challenge
