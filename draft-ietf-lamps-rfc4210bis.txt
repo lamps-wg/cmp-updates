@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 23 June 2024                                            Entrust
-                                                        21 December 2023
+Expires: 4 July 2024                                             Entrust
+                                                          1 January 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,11 +67,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 June 2024.
+   This Internet-Draft will expire on 4 July 2024.
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1038,10 +1038,10 @@ Table of Contents
 
 4.3.4.  Key Encapsulation Mechanism Keys
 
-   For key encapsulation mechanism keys, the end entity can be required
-   to decrypt a value in order to prove possession of the private key
-   (see Section 5.2.8.2).  Decrypting a value can be achieved either
-   directly or indirectly.
+   For key encapsulation mechanism keys, the end entity can provide the
+   private key to the CA/RA, or can be required to decrypt a value in
+   order to prove possession of the private key (see Section 5.2.8.2).
+   Decrypting a value can be achieved either directly or indirectly.
 
    Note: A definition of Key Encapsulation Mechanisms can be found in
    [I-D.ietf-lamps-cms-kemri], Section 1.
@@ -1062,6 +1062,10 @@ Table of Contents
    requires no extra messages to be sent (i.e., the proof can be
    demonstrated using the {request, response, confirmation} triple of
    messages).
+
+   Certification request for KEM certificates SHALL use POPOPrivKey by
+   using the keyAgreement choice of ProofOfPossession in the popo field
+   of CertReqMsg as long as no KEM-specific choice is available.
 
 4.4.  Root CA Key Update
 
@@ -2293,7 +2297,7 @@ Table of Contents
    of the private key while maintaining bits-on-the-wire compatibility
    with [RFC4211].
 
-5.2.8.2.2.  Indirect Method
+5.2.8.2.2.  Indirect Method - Encrypted Certificate
 
    By having the CA return not the certificate, but an encrypted
    certificate -- this is the "indirect" method mentioned previously in
@@ -2315,7 +2319,7 @@ Table of Contents
    until the certConf message arrives (when certHash is to be used to
    demonstrate POP).  See Section 5.3.18 for further details.
 
-5.2.8.2.3.  Challenge-Response Protocol
+5.2.8.2.3.  Direct Method - Challenge-Response Protocol
 
    By having the end entity engage in a challenge-response protocol
    (using the messages POPODecKeyChall and POPODecKeyResp; see below)
@@ -5465,7 +5469,7 @@ Appendix F.  Compilable ASN.1 Definitions
        certOrEncCert       CertOrEncCert,
        privateKey      [0] EncryptedKey      OPTIONAL,
        -- See [RFC4211] for comments on encoding.
-       -- Changed from Encrypted Value to EncryptedKey as a CHOICE of
+       -- Changed from EncryptedValue to EncryptedKey as a CHOICE of
        -- EncryptedValue and EnvelopedData due to the changes made in
        -- CMP Updates [RFC9480].
        -- Using the choice EncryptedValue is bit-compatible to the
