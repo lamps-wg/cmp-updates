@@ -17,7 +17,7 @@ title: >
   HTTP Transfer for the Certificate Management Protocol (CMP)
 abbrev: RFC6712bis
 wg: LAMPS Working Group
-date: 2023
+date: 2024
 author:
 - name: Hendrik Brockhaus
   org: Siemens

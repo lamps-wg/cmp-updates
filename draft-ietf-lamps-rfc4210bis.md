@@ -17,7 +17,7 @@ title: Internet X.509 Public Key Infrastructure --
   Certificate Management Protocol (CMP)
 abbrev: RFC4210bis
 wg: LAMPS Working Group
-date: 2023
+date: 2024
 author:
 - name: Hendrik Brockhaus
   org: Siemens
