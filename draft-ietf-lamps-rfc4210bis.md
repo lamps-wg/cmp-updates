@@ -1022,7 +1022,8 @@ appropriate parameters when necessary.
 ### Key Encapsulation Mechanism Keys
 {: id="sect-4.3.4"}
 
-For key encapsulation mechanism keys, the end entity can be required to decrypt
+For key encapsulation mechanism keys, the end entity can provide the private key to
+the CA/RA, or can be required to decrypt
 a value in order to prove possession of the private key (see {{sect-5.2.8.2}}).
 Decrypting a value can be achieved either directly or indirectly.
 
@@ -1037,7 +1038,7 @@ This specification encourages use of the indirect method because it requires
 no extra messages to be sent (i.e., the proof can be demonstrated using the
 {request, response, confirmation} triple of messages).
 
-
+Certification request for KEM certificates SHALL use POPOPrivKey by using the keyAgreement choice of ProofOfPossession in the popo field of CertReqMsg as long as no KEM-specific choice is available.
 
 ## Root CA Key Update
 {: id="sect-4.4"}
@@ -2263,7 +2264,7 @@ allows the necessary conveyance and protection of the private key while maintain
 bits-on-the-wire compatibility with {{RFC4211}}.
 
 
-##### Indirect Method
+##### Indirect Method - Encrypted Certificate
 {: id="sect-5.2.8.2.2"}
 
 By having the CA return not the certificate, but an encrypted
@@ -2289,7 +2290,7 @@ certConf message arrives (when certHash is to be used to demonstrate
 POP).  See {{sect-5.3.18}} for further details.
 
 
-##### Challenge-Response Protocol
+##### Direct Method - Challenge-Response Protocol
 {: id="sect-5.2.8.2.3"}
 
 By having the end entity engage in a challenge-response protocol
@@ -5435,7 +5436,7 @@ CertifiedKeyPair ::= SEQUENCE {
     certOrEncCert       CertOrEncCert,
     privateKey      [0] EncryptedKey      OPTIONAL,
     -- See [RFC4211] for comments on encoding.
-    -- Changed from Encrypted Value to EncryptedKey as a CHOICE of
+    -- Changed from EncryptedValue to EncryptedKey as a CHOICE of
     -- EncryptedValue and EnvelopedData due to the changes made in
     -- CMP Updates [RFC9480].
     -- Using the choice EncryptedValue is bit-compatible to the
