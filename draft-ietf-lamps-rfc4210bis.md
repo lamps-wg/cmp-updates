@@ -1774,7 +1774,7 @@ This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm
 
 Note: In this section both entities in the communication need to send and receive messages. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to authenticate messages sent, and "Bob" to denote the entity who needs to authenticate the messages received.
 
-Bob must have generated the ciphertext using KEM encapsulation with Alice’s public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
+Bob must have generated the ciphertext using KEM encapsulation with Alice's public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
 
 ~~~~ asn.1
   id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 16}
@@ -1863,7 +1863,7 @@ Step# Alice                                Bob
 
    The shared secret key ssk is used for MAC-based protection by Alice.
 
-1. Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice’s side is used as context for the KDF.
+1. Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice's side is used as context for the KDF.
 
    ~~~~ asn.1
       KDF(ss, len, context)->(ssk)
@@ -1897,13 +1897,13 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
 
   ct is the ciphertext from KemCiphertextInfo.
 
-\< ToDo: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.
+\< Editorial Note: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.
 
   Alice's public KEM key could be added based on the discussion on the LAMPS list, see the tread "Does cms-kemri need to include H(ct) as a KDF input?".
 
   The authors are waiting for expert reviews providing guidance which fields are needed and bring additional value for the KEM-bases message protection.
 
-End of ToDo >
+End of Editorial Note >
 
 * OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.
 
@@ -3622,7 +3622,7 @@ described above in {{sect-7}}.
 # Security Considerations {#sect-8}
 
 ## On the Necessity of Proof-Of-Possession
-{: id="sect-8.POP"}
+{: id="sect-8.1"}
 
 It is well established that the role of a Certification Authority is to
 verify that the name and public key belong to the end entity prior to
@@ -3637,7 +3637,7 @@ end entity obtaining a certificate that they can not use.
 
 
 ## Proof-Of-Possession with a Decryption Key
-{: id="sect-8.1"}
+{: id="sect-8.2"}
 
 Some cryptographic considerations are worth explicitly spelling out.
 In the protocols specified above, when an end entity is required to
@@ -3657,7 +3657,7 @@ vulnerabilities.
 
 
 ## Proof-Of-Possession by Exposing the Private Key
-{: id="sect-8.2"}
+{: id="sect-8.3"}
 
 Note also that exposing a private key to the CA/RA as a
 proof-of-possession technique can carry some security risks (depending
@@ -3673,7 +3673,7 @@ appropriately).  Implementers are advised to:
 
 
 ## Attack Against Diffie-Hellman Key Exchange
-{: id="sect-8.3"}
+{: id="sect-8.4"}
 
 A small subgroup attack during a Diffie-Hellman key exchange may be
 carried out as follows.  A malicious end entity may deliberately
@@ -3694,7 +3694,7 @@ exchanges from either party) and is therefore RECOMMENDED.
 
 
 ## Perfect Forward Secrecy
-{: id="sect-8.pfs"}
+{: id="sect-8.5"}
 
 Long-term security typically requires perfect forward secrecy (pfs).
 When transferring encrypted long-term confidential values such as centrally generated private keys or revocation passphrases, pfs likely is important.
@@ -3704,7 +3704,7 @@ For the same reason it typically is not required for the indirect method of prov
 Encrypted values {{sect-5.2.2}} are transferred using CMS EnvelopedData [RFC5652], which does not offer pfs. In cases where long-term security is needed, CMP messages SHOULD be transferred over a mechanism that provides pfs, such as TLS.
 
 ## Private Keys for Certificate Signing and CMP Message Protection
-{: id="sect-8.4"}
+{: id="sect-8.6"}
 
 A CA should not reuse its certificate signing key for other purposes, such
 as protecting CMP responses and TLS connections. This way, exposure to other
@@ -3713,7 +3713,7 @@ key are reduced to a minimum.
 
 
 ## Entropy of Random Numbers, Key Pairs, and Shared Secret Information
-{: id="sect-8.5"}
+{: id="sect-8.7"}
 
 Implementations must generate nonces and private keys from random input.
 The use of inadequate pseudorandom number generators (PRNGs) to generate
@@ -3755,7 +3755,7 @@ and their security strength is available in CMP Algorithms [RFCCCC] Section
 
 
 ## Recurring Usage of KEM Keys for Message Protection
-{: id="sect-8.kem"}
+{: id="sect-8.8"}
 
 Each PKI entity using key encapsulation for MAC-based message protection, see {{sect-5.1.3.4}}, MUST use a fresh shared secret key (ssk) for each PKI management operation. This can be enforced by using senderNonce and recipNonce header fields in all messages of the PKI management operation.
 
@@ -3780,7 +3780,7 @@ be encrypted under it.
 
 
 ## Trust Anchor Provisioning Using CMP Messages
-{: id="sect-8.6"}
+{: id="sect-8.9"}
 
 A provider of trust anchors, which may be an RA involved in configuration
 management of its clients, MUST NOT include to-be-trusted CA certificates
@@ -3802,7 +3802,7 @@ for this purpose.
 
 
 ## Authorizing Requests for Certificates with Specific EKUs
-{: id="sect-8.7"}
+{: id="sect-8.10"}
 
 When a CA issues a certificate containing extended key usage extensions as
 defined in {{sect-4.5}}, this expresses delegation of an authorization that
@@ -3813,7 +3813,7 @@ ensure that only legitimate entities receive a certificate containing
 such an EKU.
 
 ## Usage of Certificate Transparency Logs
-{: id="sect-8.8"}
+{: id="sect-8.11"}
 
 CAs that support indirect POP MUST NOT also publish final certificates to Certificate Transparency logs {{RFC9162}} before having received the certConf message containing the certHash of that certificate to complete the POP. The risk is that a malicious actor could fetch the final certificate from the CT log and use that to spoof a response to the implicit POP challenge via a certConf response. This risk does not apply to CT precertificates, so those are ok to publish.
 
@@ -4161,7 +4161,7 @@ one (i.e., no use of "waiting" status value).
 The end entity has an out-of-band interaction with the CA/RA.  This
 transaction established the shared secret, the referenceNumber and
 OPTIONALLY the distinguished name used for both sender and subject
-name in the certificate template. See {{sect-8.5}} for security
+name in the certificate template. See {{sect-8.7}} for security
 considerations on quality of shared secret information.
 
 Initialization Request -- ir
@@ -5701,6 +5701,8 @@ From version 07 -> 08:
 
 
 * Aligned with released RFC 9480 - RFC 9483
+
+* Updated Section 1.3
 
 * Added text on usage of transactionID with KEM-bases message protection to Section 5.1.1
 
