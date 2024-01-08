@@ -5521,19 +5521,6 @@ KemOtherInfo ::= SEQUENCE {
    transactionID    OCTET STRING,
    -- MUST contain the values from the message previously received
    -- containing the ciphertext (ct) in KemCiphertextInfo
---   senderNonce      OCTET STRING OPTIONAL,
---   recipNonce       OCTET STRING OPTIONAL,
-   -- The two fields above MUST contain the values from the message
-   -- previously received containing the ciphertext (ct) in
-   -- KemCiphertextInfo
---   len              INTEGER (1..MAX),
-   -- MUST be the value from KemBMParameter
---   mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}
-   -- MUST be the MAC algorithm identifier used for MAC-based
-   -- protection of the message and MUST be the value from
-   -- KemBMParameter
-   pk               BIT STRING,
-   -- MUST be the authentic public KEM key used
    ct               OCTET STRING
    -- MUST be the ciphertext from that KemCiphertextInfo
   }
