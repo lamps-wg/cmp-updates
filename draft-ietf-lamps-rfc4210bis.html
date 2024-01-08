@@ -1047,7 +1047,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 4 July 2024</td>
+<td class="center">Expires 11 July 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-01-01" class="published">1 January 2024</time>
+<time datetime="2024-01-08" class="published">8 January 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-07-04">4 July 2024</time></dd>
+<dd class="expires"><time datetime="2024-07-11">11 July 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1144,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 July 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 July 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1391,13 +1391,16 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
                     <p id="section-toc.1-1.5.2.2.2.8.1"><a href="#section-5.2.8" class="auto internal xref">5.2.8</a>.  <a href="#name-proof-of-possession-structu" class="internal xref">Proof-of-Possession Structures</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.8.2.1">
-                        <p id="section-toc.1-1.5.2.2.2.8.2.1.1"><a href="#section-5.2.8.1" class="auto internal xref">5.2.8.1</a>.  <a href="#name-proof-of-possession-structur" class="internal xref">Proof-of-Possession Structure for Signature Keys</a></p>
+                        <p id="section-toc.1-1.5.2.2.2.8.2.1.1"><a href="#section-5.2.8.1" class="auto internal xref">5.2.8.1</a>.  <a href="#name-inclusion-of-the-private-ke" class="internal xref">Inclusion of the Private Key</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.8.2.2">
-                        <p id="section-toc.1-1.5.2.2.2.8.2.2.1"><a href="#section-5.2.8.2" class="auto internal xref">5.2.8.2</a>.  <a href="#name-proof-of-possession-structure" class="internal xref">Proof-of-Possession Structure for Encryption, Key Agreement, and KEM Keys</a></p>
+                        <p id="section-toc.1-1.5.2.2.2.8.2.2.1"><a href="#section-5.2.8.2" class="auto internal xref">5.2.8.2</a>.  <a href="#name-indirect-method-encrypted-c" class="internal xref">Indirect Method - Encrypted Certificate</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.8.2.3">
-                        <p id="section-toc.1-1.5.2.2.2.8.2.3.1"><a href="#section-5.2.8.3" class="auto internal xref">5.2.8.3</a>.  <a href="#name-summary-of-pop-options" class="internal xref">Summary of PoP Options</a></p>
+                        <p id="section-toc.1-1.5.2.2.2.8.2.3.1"><a href="#section-5.2.8.3" class="auto internal xref">5.2.8.3</a>.  <a href="#name-direct-method-challenge-res" class="internal xref">Direct Method - Challenge-Response Protocol</a></p>
+</li>
+                      <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.8.2.4">
+                        <p id="section-toc.1-1.5.2.2.2.8.2.4.1"><a href="#section-5.2.8.4" class="auto internal xref">5.2.8.4</a>.  <a href="#name-summary-of-pop-options" class="internal xref">Summary of PoP Options</a></p>
 </li>
                     </ul>
 </li>
@@ -1815,7 +1818,7 @@ to better support crypto agility in CMP.<a href="#section-1.2-2.3.1" class="pilc
 <p id="section-1.2-2.3.2">
 For reasons of completeness and consistency, the type EncryptedValue has been
 exchanged in all occurrences.  This includes the protection of centrally
-generated private keys, encryption of certificates, and protection of revocation
+generated private keys, encryption of certificates, proof-of-possession methods, and protection of revocation
 passphrases. To properly differentiate the support of EnvelopedData instead
 of EncryptedValue, CMP version 3 is introduced in case a transaction
 is supposed to use EnvelopedData.<a href="#section-1.2-2.3.2" class="pilcrow">¶</a></p>
@@ -1838,11 +1841,10 @@ a certificate request template, or Certificate Revocation List (CRL) updates.<a 
             <p id="section-1.2-2.6.1">Extending the use of polling to p10cr, certConf, rr, genm, and error messages.<a href="#section-1.2-2.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.2-2.7">
-            <p id="section-1.2-2.7.1">Incorporating the request message behavioral clarifications from former Appendix
-C to <a href="#sect-5" class="auto internal xref">Section 5</a>. The definition of altCertTemplate was incorporated into <a href="#sect-5.2.1" class="auto internal xref">Section 5.2.1</a>, the clarification on POPOSigningKey was incorporated into <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>, and the clarification on POPOPrivKey was incorporated into <a href="#sect-5.2.8.2.1" class="auto internal xref">Section 5.2.8.2.1</a>.<a href="#section-1.2-2.7.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.7.1">Deleting the mandatory algorithm profile in <a href="#sect-c.2" class="auto internal xref">Appendix C.2</a> and refer instead to Section 7 of <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span>.<a href="#section-1.2-2.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.2-2.8">
-            <p id="section-1.2-2.8.1">Deleting the mandatory algorithm profile in <a href="#sect-c.2" class="auto internal xref">Appendix C.2</a> and refer instead to Section 7 of <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span>.<a href="#section-1.2-2.8.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.8.1">Added <a href="#sect-8.6" class="auto internal xref">Section 8.6</a>, <a href="#sect-8.7" class="auto internal xref">Section 8.7</a>, <a href="#sect-8.9" class="auto internal xref">Section 8.9</a>, and <a href="#sect-8.10" class="auto internal xref">Section 8.10</a>.<a href="#section-1.2-2.8.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1852,7 +1854,34 @@ C to <a href="#sect-5" class="auto internal xref">Section 5</a>. The definition 
         <h3 id="name-changes-made-by-this-docume">
 <a href="#section-1.3" class="section-number selfRef">1.3. </a><a href="#name-changes-made-by-this-docume" class="section-name selfRef">Changes Made by This Document</a>
         </h3>
-<p id="section-1.3-1">This document obsoletes <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span>. It includes the changes specified by Section 2 and Appendix C.2 of <span>[<a href="#RFC9480" class="cite xref">RFC9480</a>]</span> as described in <a href="#sect-1.2" class="auto internal xref">Section 1.2</a>.<a href="#section-1.3-1" class="pilcrow">¶</a></p>
+<p id="section-1.3-1">This document obsoletes <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span>. It includes the changes specified by Section 2 and Appendix C.2 of <span>[<a href="#RFC9480" class="cite xref">RFC9480</a>]</span> as described in <a href="#sect-1.2" class="auto internal xref">Section 1.2</a>. Additionally this document updates <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span> in the following areas:<a href="#section-1.3-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1.3-2.1">
+            <p id="section-1.3-2.1.1">Added <a href="#sect-3.1.1.4" class="auto internal xref">Section 3.1.1.4</a> introducing the Key Generation Authority.<a href="#section-1.3-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.3-2.2">
+            <p id="section-1.3-2.2.1">Extended <a href="#sect-3.1.2" class="auto internal xref">Section 3.1.2</a> regarding use of Certificate Transparency logs.<a href="#section-1.3-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.3-2.3">
+            <p id="section-1.3-2.3.1">Updated <a href="#sect-4.4.1" class="auto internal xref">Section 4.4.1</a> clarifying the definition of "new with new" certificate validity period.<a href="#section-1.3-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.3-2.4">
+            <p id="section-1.3-2.4.1">Added <a href="#sect-5.1.1.3" class="auto internal xref">Section 5.1.1.3</a> containing description of origPKIMessage content moved here from <a href="#sect-5.1.3.4" class="auto internal xref">Section 5.1.3.4</a>.<a href="#section-1.3-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.3-2.5">
+            <p id="section-1.3-2.5.1">Added support for KEM keys for proof-of-possession to <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> and <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>, for message protection to <a href="#sect-5.1.1" class="auto internal xref">Section 5.1.1</a>, <a href="#sect-5.1.3.4" class="auto internal xref">Section 5.1.3.4</a>, and <a href="#sect-e" class="auto internal xref">Appendix E</a>, and for usage with CMS EnvelopedData to <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.<a href="#section-1.3-2.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.3-2.6">
+            <p id="section-1.3-2.6.1">Incorporated the request message behavioral clarifications from Appendix
+C of <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span> to <a href="#sect-5" class="auto internal xref">Section 5</a>. The definition of altCertTemplate was incorporated into <a href="#sect-5.2.1" class="auto internal xref">Section 5.2.1</a> and the clarification on POPOSigningKey and on POPOPrivKey was incorporated into <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>.<a href="#section-1.3-2.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.3-2.7">
+            <p id="section-1.3-2.7.1">Added support support for CMS EnvelopedData to different proof-of-possession methods for transferring encrypted private keys, certificates, and challenges to <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>.<a href="#section-1.3-2.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.3-2.8">
+            <p id="section-1.3-2.8.1">Added <a href="#sect-8.1" class="auto internal xref">Section 8.1</a>, <a href="#sect-8.5" class="auto internal xref">Section 8.5</a>, <a href="#sect-8.8" class="auto internal xref">Section 8.8</a>, and <a href="#sect-8.11" class="auto internal xref">Section 8.11</a>.<a href="#section-1.3-2.8.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
 </section>
@@ -2566,12 +2595,12 @@ otherwise made available.)<a href="#section-4.2.2.2-5" class="pilcrow">¶</a></p
 an end entity to prove that it has access to the private key
 corresponding to a given public key. The question of whether, and in
 what circumstances, POPs add value to a PKI is a debate as old as PKI
-itself! See <a href="#sect-8.POP" class="auto internal xref">Section 8.1</a> for a further discussion on the necessity
-of Proof-Of-Possession in PKI.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+itself! See <a href="#sect-8.1" class="auto internal xref">Section 8.1</a> for a further discussion on the necessity
+of proof-of-possession in PKI.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.3-2">The PKI management operations specified here make it possible
 for an end entity to prove to a CA/RA that it has possession of (i.e., is able
 to use) the private key corresponding to the public key for which a
-certificate is requested.  A given CA/RA is free to choose how to
+certificate is requested (see <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a> for different POP methods).  A given CA/RA is free to choose how to
 enforce POP (e.g., out-of-band procedural means versus PKIX-CMP
 in-band messages) in its certification exchanges (i.e., this may be a
 policy issue).  However, it is <span class="bcp14">REQUIRED</span> that CAs/RAs <span class="bcp14">MUST</span> enforce POP
@@ -2579,7 +2608,7 @@ by some means because there are currently many non-PKIX operational
 protocols in use (various electronic mail protocols are one example)
 that do not explicitly check the binding between the end entity and
 the private key.  Until operational protocols that do verify the
-binding (for signature, encryption, and key agreement key pairs)
+binding (for signature, encryption, key agreement, and KEM key pairs)
 exist, and are ubiquitous, this binding can only be assumed to have
 been verified by the CA/RA.  Therefore, if the binding is not
 verified by the CA/RA, certificates in the Internet Public-Key
@@ -2615,7 +2644,7 @@ possession of the private key.<a href="#section-4.3.1-1" class="pilcrow">¶</a><
           </h4>
 <p id="section-4.3.2-1">For encryption keys, the end entity can provide the private key to
 the CA/RA, or can be required to decrypt a value in order to prove
-possession of the private key (see <a href="#sect-5.2.8.2" class="auto internal xref">Section 5.2.8.2</a>).  Decrypting a
+possession of the private key.  Decrypting a
 value can be achieved either directly or indirectly.<a href="#section-4.3.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.3.2-2">The direct method is for the RA/CA to issue a random challenge to
 which an immediate response by the EE is required.<a href="#section-4.3.2-2" class="pilcrow">¶</a></p>
@@ -2652,7 +2681,7 @@ appropriate parameters when necessary.<a href="#section-4.3.3-2" class="pilcrow"
           </h4>
 <p id="section-4.3.4-1">For key encapsulation mechanism keys, the end entity can provide the private key to
 the CA/RA, or can be required to decrypt
-a value in order to prove possession of the private key (see <a href="#sect-5.2.8.2" class="auto internal xref">Section 5.2.8.2</a>).
+a value in order to prove possession of the private key.
 Decrypting a value can be achieved either directly or indirectly.<a href="#section-4.3.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.3.4-2">Note: A definition of Key Encapsulation Mechanisms can be found in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-06#section-1" class="relref">Section 1</a></span>.<a href="#section-4.3.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.3.4-3">The direct method is for the RA/CA to issue a random challenge to which an
@@ -2661,7 +2690,7 @@ immediate response by the EE is required.<a href="#section-4.3.4-3" class="pilcr
 <p id="section-4.3.4-5">This specification encourages use of the indirect method because it requires
 no extra messages to be sent (i.e., the proof can be demonstrated using the
 {request, response, confirmation} triple of messages).<a href="#section-4.3.4-5" class="pilcrow">¶</a></p>
-<p id="section-4.3.4-6">Certification request for KEM certificates <span class="bcp14">SHALL</span> use POPOPrivKey by using the keyAgreement choice of ProofOfPossession in the popo field of CertReqMsg as long as no KEM-specific choice is available.<a href="#section-4.3.4-6" class="pilcrow">¶</a></p>
+<p id="section-4.3.4-6">Note: A certification request message for a KEM certificate <span class="bcp14">SHALL</span> use POPOPrivKey by using the keyAgreement choice of ProofOfPossession in the popo field of CertReqMsg as long as no KEM-specific choice is available.<a href="#section-4.3.4-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3402,7 +3431,7 @@ digital signature <span class="bcp14">MAY</span> be one of the options described
 <p id="section-5.1.3.4-1">In case the sender of a message has a KEM key pair, it can use a shared secret key obtained by KEM decapsulation of a ciphertext received using its private KEM key.<a href="#section-5.1.3.4-1" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-2">This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-06#section-1" class="relref">Section 1</a></span>.<a href="#section-5.1.3.4-2" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-3">Note: In this section both entities in the communication need to send and receive messages. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to authenticate messages sent, and "Bob" to denote the entity who needs to authenticate the messages received.<a href="#section-5.1.3.4-3" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-4">Bob must have generated the ciphertext using KEM encapsulation with Alice’s public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:<a href="#section-5.1.3.4-4" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-4">Bob must have generated the ciphertext using KEM encapsulation with Alice's public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:<a href="#section-5.1.3.4-4" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.1.3.4-5">
 <pre>
   id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 16}
@@ -3493,7 +3522,7 @@ Alice derives the shared secret key ssk using a KDF. The shared secret ss is use
 The shared secret key ssk is used for MAC-based protection by Alice.<a href="#section-5.1.3.4-21.2.6" class="pilcrow">¶</a></p>
 </li>
               <li id="section-5.1.3.4-21.3">
-                <p id="section-5.1.3.4-21.3.1">Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice’s side is used as context for the KDF.<a href="#section-5.1.3.4-21.3.1" class="pilcrow">¶</a></p>
+                <p id="section-5.1.3.4-21.3.1">Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice's side is used as context for the KDF.<a href="#section-5.1.3.4-21.3.1" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.1.3.4-21.3.2">
 <pre>
    KDF(ss, len, context)-&gt;(ssk)
@@ -3532,10 +3561,10 @@ Note: The transactionID is used to ensure domain-separation of the derived share
 ct is the ciphertext from KemCiphertextInfo.<a href="#section-5.1.3.4-24.2.6" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-5.1.3.4-25">&lt; ToDo: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.<a href="#section-5.1.3.4-25" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-25">&lt; Editorial Note: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.<a href="#section-5.1.3.4-25" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-26">Alice's public KEM key could be added based on the discussion on the LAMPS list, see the tread "Does cms-kemri need to include H(ct) as a KDF input?".<a href="#section-5.1.3.4-26" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-27">The authors are waiting for expert reviews providing guidance which fields are needed and bring additional value for the KEM-bases message protection.<a href="#section-5.1.3.4-27" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-28">End of ToDo &gt;<a href="#section-5.1.3.4-28" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-28">End of Editorial Note &gt;<a href="#section-5.1.3.4-28" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.1.3.4-29.1">
                 <p id="section-5.1.3.4-29.1.1">OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.<a href="#section-5.1.3.4-29.1.1" class="pilcrow">¶</a></p>
@@ -3858,232 +3887,157 @@ certificate using the PKIPublicationInfo structure.<a href="#section-5.2.7-1" cl
           <h4 id="name-proof-of-possession-structu">
 <a href="#section-5.2.8" class="section-number selfRef">5.2.8. </a><a href="#name-proof-of-possession-structu" class="section-name selfRef">Proof-of-Possession Structures</a>
           </h4>
-<p id="section-5.2.8-1">The proof-of-possession method to use first of all depends on the type
-of the private key used. If there are several possible methods, it is
-a policy decision which method to use.<a href="#section-5.2.8-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.8-1">If the certification request is for a key pair that supports signing (i.e., a request for a verification certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOSigningKey structure, for details see Section 4.1 of <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>.<a href="#section-5.2.8-1" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.2.8-2">
+<pre>
+   POPOSigningKey ::= SEQUENCE {
+      poposkInput [0] POPOSigningKeyInput OPTIONAL,
+      algorithmIdentifier AlgorithmIdentifier,
+      signature BIT STRING
+   }
+
+   POPOSigningKeyInput ::= SEQUENCE {
+      authInfo CHOICE {
+         sender [0] GeneralName,
+         publicKeyMAC PKMACValue
+      },
+      publicKey SubjectPublicKeyInfo
+   }
+
+   PKMACValue ::= SEQUENCE {
+      algId AlgorithmIdentifier,
+      value BIT STRING
+   }
+</pre><a href="#section-5.2.8-2" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2.8-3">Note: For the purposes of this specification, the ASN.1 comment given in Appendix C of <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span> pertains not only to certTemplate, but also to the altCertTemplate control as defined in <a href="#sect-5.2.1" class="auto internal xref">Section 5.2.1</a>.<a href="#section-5.2.8-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.8-4">If certTemplate (or the altCertTemplate control) contains the subject and publicKey values, then poposkInput <span class="bcp14">MUST</span> be omitted and the signature <span class="bcp14">MUST</span> be computed on the DER-encoded value of certReq field of the CertReqMsg (or the DER-encoded value of AltCertTemplate). If certTemplate/altCertTemplate does not contain both the subject and public key values (i.e., if it contains only one of these, or neither), then poposkInput <span class="bcp14">MUST</span> be present and the signature <span class="bcp14">MUST</span> be computed on the DER-encoded value of poposkInput (i.e., the "value" OCTETs of the POPOSigningKeyInput DER).<a href="#section-5.2.8-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.8-5">If an "authenticated identity" has been established for the sender (e.g., a DN from a previously issued and currently valid certificate), the sender field of poposkInout contains the GeneralName from PKIHeader; if no authenticated GeneralName currently exists for the sender, the publicKeyMAC field of poposkInput contains a password-based MAC (using the protectionAlg AlgId from PKIHeader) on the DER-encoded value of publicKey.<a href="#section-5.2.8-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.8-6">If the certification request is for a key agreement key pair, the POP can alternatively use the POPOSigningKey structure (where the alg field is DHBasedMAC and the signature field is the MAC) for demonstrating POP if the CA already has a D-H certificate that is known to the EE.<a href="#section-5.2.8-6" class="pilcrow">¶</a></p>
+<p id="section-5.2.8-7">On the other hand, if the certification request is for a key pair that does not support signing (i.e., a request for an encryption or key agreement certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOPrivKey structure in one of following three ways, for details see Section 4.2 and 4.3 of <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>.<a href="#section-5.2.8-7" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.2.8-8">
+<pre>
+   POPOPrivKey ::= CHOICE {
+      thisMessage [0] BIT STRING, -- deprecated
+      subsequentMessage [1] SubsequentMessage,
+      dhMAC [2] BIT STRING, -- deprecated
+      agreeMAC [3] PKMACValue,
+      encryptedKey [4] EnvelopedData
+   }
+
+   SubsequentMessage ::= INTEGER {
+      encrCert (0),
+      challengeResp (1)
+   }
+</pre><a href="#section-5.2.8-8" class="pilcrow">¶</a>
+</div>
 <div id="sect-5.2.8.1">
 <section id="section-5.2.8.1">
-            <h5 id="name-proof-of-possession-structur">
-<a href="#section-5.2.8.1" class="section-number selfRef">5.2.8.1. </a><a href="#name-proof-of-possession-structur" class="section-name selfRef">Proof-of-Possession Structure for Signature Keys</a>
+            <h5 id="name-inclusion-of-the-private-ke">
+<a href="#section-5.2.8.1" class="section-number selfRef">5.2.8.1. </a><a href="#name-inclusion-of-the-private-ke" class="section-name selfRef">Inclusion of the Private Key</a>
             </h5>
-<p id="section-5.2.8.1-1">If the certification request is for a key pair that supports signing , then
-the proof-of-possession of the private signing key is demonstrated through
-use of the POPOSigningKey structure as defined in <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>.<a href="#section-5.2.8.1-1" class="pilcrow">¶</a></p>
-<div class="lang-asn.1 sourcecode" id="section-5.2.8.1-2">
-<pre>
-  POPOSigningKey ::= SEQUENCE {
-     poposkInput          [0] POPOSigningKeyInput OPTIONAL,
-     algorithmIdentifier  AlgorithmIdentifier,
-     signature            BIT STRING
-  }
-
-  POPOSigningKeyInput ::= SEQUENCE {
-     authInfo             CHOICE {
-        sender            [0] GeneralName,
-        publicKeyMAC      PKMACValue
-     },
-     publicKey            SubjectPublicKeyInfo
-  }
-</pre><a href="#section-5.2.8.1-2" class="pilcrow">¶</a>
-</div>
-<p id="section-5.2.8.1-3">The signature (using "algorithmIdentifier") is on the DER-encoded value of
-poposkInput (i.e., the "value" OCTETs of the POPOSigningKeyInput DER).<a href="#section-5.2.8.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.2.8.1-4">If certTemplate (or the altCertTemplate control as defined in <a href="#sect-5.2.1" class="auto internal xref">Section 5.2.1</a>)
-contains the subject and publicKey values, then poposkInput <span class="bcp14">MUST</span> be omitted
-and the signature <span class="bcp14">MUST</span> be computed on the DER-encoded value of certReq field
-if the CertReqMsg (or the DER-encoded value of AltCertTemplate).  If certTemplate/altCertTemplate
-does not contain both the subject and public key values (i.e., if it contains
-only one of these, or neither), then poposkInput <span class="bcp14">MUST</span> be present and <span class="bcp14">MUST</span>
-be signed.<a href="#section-5.2.8.1-4" class="pilcrow">¶</a></p>
-<p id="section-5.2.8.1-5">Note, if the CA has a D-H certificate that is known to the EE, there
-is the alternative for POP for a key agreement key. The POP can use
-the POPOSigningKey structure where the alg field is DHBasedMAC and
-the signature field is the MAC.<a href="#section-5.2.8.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.1-1">This method demonstrates proof-of-possession of the private key by inclusion of the private key (encrypted) in the CertRequest in the POPOPrivKey choice or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.<a href="#section-5.2.8.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.1-2">For a certification request message indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted private key <span class="bcp14">MUST</span> be transferred in the encryptedKey choice of POPOPrivKey in a CMS EnvelopedData structure as defined in <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.<a href="#section-5.2.8.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.1-3">Note: When using cmp2000(2) in the certification request message header for backward compatibility, the thisMessage choice of POPOPrivKey is used containing the encrypted private key in an EncryptedValue structure wrapped in a BIT STRING.  This allows the necessary conveyance and protection of the private key while maintaining bits-on-the-wire compatibility with <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>. The thisMessage choice has been deprecated in favor of encryptedKey.<a href="#section-5.2.8.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-5.2.8.2">
 <section id="section-5.2.8.2">
-            <h5 id="name-proof-of-possession-structure">
-<a href="#section-5.2.8.2" class="section-number selfRef">5.2.8.2. </a><a href="#name-proof-of-possession-structure" class="section-name selfRef">Proof-of-Possession Structure for Encryption, Key Agreement, and KEM Keys</a>
+            <h5 id="name-indirect-method-encrypted-c">
+<a href="#section-5.2.8.2" class="section-number selfRef">5.2.8.2. </a><a href="#name-indirect-method-encrypted-c" class="section-name selfRef">Indirect Method - Encrypted Certificate</a>
             </h5>
-<p id="section-5.2.8.2-1">If the certification request is for a key pair that does not support
-signing (i.e., a request for an encryption, key agreement, or KEM certificate),
-then the proof-of-possession of the private decryption key may be demonstrated
-in one of three ways, as detailed in the following subsections.<a href="#section-5.2.8.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2.8.2-2">The encrypted values are transferred as EnvelopedData as described in <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.<a href="#section-5.2.8.2-2" class="pilcrow">¶</a></p>
-<div id="sect-5.2.8.2.1">
-<section id="section-5.2.8.2.1">
-              <h6 id="name-inclusion-of-the-private-ke">
-<a href="#section-5.2.8.2.1" class="section-number selfRef">5.2.8.2.1. </a><a href="#name-inclusion-of-the-private-ke" class="section-name selfRef">Inclusion of the Private Key</a>
-              </h6>
-<p id="section-5.2.8.2.1-1">By the inclusion of the private key (encrypted) in the CertRequest
-(in the encryptedKey field of POPOPrivKey or in the
-PKIArchiveOptions control structure, depending upon whether or not
-archival of the private key is also desired).<a href="#section-5.2.8.2.1-1" class="pilcrow">¶</a></p>
-<div class="lang-asn.1 sourcecode" id="section-5.2.8.2.1-2">
-<pre>
-  POPOPrivKey ::= CHOICE {
-     thisMessage       [0] BIT STRING,   -- deprecated
-     subsequentMessage [1] SubsequentMessage,
-     dhMAC             [2] BIT STRING,   -- deprecated
-     agreeMAC          [3] PKMACValue,
-     encryptedKey      [4] EnvelopedData
-  }
-</pre><a href="#section-5.2.8.2.1-2" class="pilcrow">¶</a>
-</div>
-<p id="section-5.2.8.2.1-3">Note: When using CMP V2 with EcryptedValue, Appendix C of <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span> made
-the behavioral clarification of specifying that the contents of "thisMessage"
-<span class="bcp14">MUST</span> be encoded as an EncryptedValue and then wrapped in a BIT STRING.  This
-allows the necessary conveyance and protection of the private key while maintaining
-bits-on-the-wire compatibility with <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>.<a href="#section-5.2.8.2.1-3" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sect-5.2.8.2.2">
-<section id="section-5.2.8.2.2">
-              <h6 id="name-indirect-method-encrypted-c">
-<a href="#section-5.2.8.2.2" class="section-number selfRef">5.2.8.2.2. </a><a href="#name-indirect-method-encrypted-c" class="section-name selfRef">Indirect Method - Encrypted Certificate</a>
-              </h6>
-<p id="section-5.2.8.2.2-1">By having the CA return not the certificate, but an encrypted
-certificate -- this is the "indirect" method mentioned previously in
-<a href="#sect-4.3.2" class="auto internal xref">Section 4.3.2</a>.<a href="#section-5.2.8.2.2-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.2.8.2.2-2">
+<p id="section-5.2.8.2-1">The "indirect" method mentioned previously in <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> demonstrates proof-of-possession of the private key by having the CA return not the certificate, but an encrypted certificate using CMS EnvelopedData, see <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage field of POPOPrivKey.<a href="#section-5.2.8.2-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2.8.2-2">
 <pre>
                 EE                         RA/CA
                  ----       req        ----&gt;
                  &lt;---  rep (enc cert)  -----
                  ---- conf (cert hash) ----&gt;
                  &lt;---       ack        -----
-</pre><a href="#section-5.2.8.2.2-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.8.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2.8.2.2-3">The end entity proves knowledge of the private decryption key to the CA
-by providing the correct CertHash for this certificate in the
-certConf message.  This demonstrates POP because the EE can only
-compute the correct CertHash if it is able to recover the
-certificate, and it can only recover the certificate if it is able to
-decrypt/derive the symmetric key using the required private key.  Clearly,
-for this to work, the CA <span class="bcp14">MUST NOT</span> publish the certificate until the
-certConf message arrives (when certHash is to be used to demonstrate
-POP).  See <a href="#sect-5.3.18" class="auto internal xref">Section 5.3.18</a> for further details.<a href="#section-5.2.8.2.2-3" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sect-5.2.8.2.3">
-<section id="section-5.2.8.2.3">
-              <h6 id="name-direct-method-challenge-res">
-<a href="#section-5.2.8.2.3" class="section-number selfRef">5.2.8.2.3. </a><a href="#name-direct-method-challenge-res" class="section-name selfRef">Direct Method - Challenge-Response Protocol</a>
-              </h6>
-<p id="section-5.2.8.2.3-1">By having the end entity engage in a challenge-response protocol
-(using the messages POPODecKeyChall and POPODecKeyResp; see below)
-between CertReqMessages and CertRepMessage -- this is the "direct"
-method mentioned previously in <a href="#sect-4.3.2" class="auto internal xref">Section 4.3.2</a>.  (This method would
-typically be used in an environment in which an RA verifies POP and
-then makes a certification request to the CA on behalf of the end
-entity.  In such a scenario, the CA trusts the RA to have done POP
-correctly before the RA requests a certificate for the end entity.)
-The complete protocol then looks as follows (note that req' does not
-necessarily encapsulate req as a nested message):<a href="#section-5.2.8.2.3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.2.8.2.3-2">
-<pre>
-                EE            RA            CA
-                 ---- req ----&gt;
-                 &lt;--- chall ---
-                 ---- resp ---&gt;
-                               ---- req' ---&gt;
-                               &lt;--- rep -----
-                               ---- conf ---&gt;
-                               &lt;--- ack -----
-                 &lt;--- rep -----
-                 ---- conf ---&gt;
-                 &lt;--- ack -----
-</pre><a href="#section-5.2.8.2.3-2" class="pilcrow">¶</a>
-</div>
-<p id="section-5.2.8.2.3-3">This protocol is obviously much longer than the 3-way exchange given
-in <a href="#sect-5.2.8.2.2" class="auto internal xref">Section 5.2.8.2.2</a> above, but allows a local Registration Authority to be
-involved and has the property that the certificate itself is not
-actually created until the proof-of-possession is complete.  In some
-environments, a different order of the above messages may be
-required, such as the following (this may be determined by policy):<a href="#section-5.2.8.2.3-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.2.8.2.3-4">
-<pre>
-                EE            RA            CA
-                 ---- req ----&gt;
-                 &lt;--- chall ---
-                 ---- resp ---&gt;
-                               ---- req' ---&gt;
-                               &lt;--- rep -----
-                 &lt;--- rep -----
-                 ---- conf ---&gt;
-                               ---- conf ---&gt;
-                               &lt;--- ack -----
-                 &lt;--- ack -----
-</pre><a href="#section-5.2.8.2.3-4" class="pilcrow">¶</a>
-</div>
-<p id="section-5.2.8.2.3-5">The challenge-response messages for proof-of-possession of a private
-decryption key, key agreement key, and KEM key contains the encrypted
-challenge Rand. For decryption keys Rand is encrypted using the
-public key for which the cert. request is being made (see <span>[<a href="#MvOV97" class="cite xref">MvOV97</a>]</span>, p.404 for
-details). For private key agreement keys Rand is encrypted using PreferredSymmAlg
-(see Section 5.3.19.4 and Appendix E.5) and a symmetric key derived from
-the CA's private KAK and the public key for which the certification
-request is being made.  For private KEM keys Rand is encrypted using
-PreferredSymmAlg and a symmetric key derived from the KEM shared secret
-encapsulated using the public KEM key for which the certification request
-is being made. Note that this challenge-response exchange is associated
-with the preceding cert. request message (and subsequent cert.
-response and confirmation messages) by the transactionID used in the
-PKIHeader and by the protection (MACing or signing) applied to the
-PKIMessage.<a href="#section-5.2.8.2.3-5" class="pilcrow">¶</a></p>
-<p id="section-5.2.8.2.3-6">&lt; ToDo: As Challenge contains the encrypted Rand, it should be considered
-to also use EncryptedData instead of OCTET STRING. But, I cannot say,
-if the direct POP is used in current implementations and if this change
-makes sense. &gt;<a href="#section-5.2.8.2.3-6" class="pilcrow">¶</a></p>
-<div class="lang-asn.1 sourcecode" id="section-5.2.8.2.3-7">
-<pre>
-  POPODecKeyChallContent ::= SEQUENCE OF Challenge
-
-  Challenge ::= SEQUENCE {
-     owf                 AlgorithmIdentifier  OPTIONAL,
-     witness             OCTET STRING,
-     challenge           OCTET STRING
-  }
-
-  Rand ::= SEQUENCE {
-     int                 INTEGER,
-     sender              GeneralName
-  }
-</pre><a href="#section-5.2.8.2.3-7" class="pilcrow">¶</a>
-</div>
-<p id="section-5.2.8.2.3-8">Note that the size of Rand needs to be appropriate for encryption
-under the public key of the requester.  Given that "int" will
-typically not be longer than 64 bits, this leaves well over 100 bytes
-of room for the "sender" field when the modulus is 1024 bits.  If, in
-some environment, names are so long that they cannot fit (e.g., very
-long DNs), then whatever portion will fit should be used (as long as
-it includes at least the common name, and as long as the receiver is
-able to deal meaningfully with the abbreviation).<a href="#section-5.2.8.2.3-8" class="pilcrow">¶</a></p>
-<div class="lang-asn.1 sourcecode" id="section-5.2.8.2.3-9">
-<pre>
-  POPODecKeyRespContent ::= SEQUENCE OF INTEGER
-</pre><a href="#section-5.2.8.2.3-9" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
+<p id="section-5.2.8.2-3">The end entity proves knowledge of the private key to the CA by providing the correct CertHash for this certificate in the certConf message. This demonstrates POP because the EE can only compute the correct CertHash if it is able to recover the certificate from the EnvelopedData, and it can only recover the certificate if it is able to decrypt the symmetric key using the required private key. Clearly, for this to work, the CA <span class="bcp14">MUST NOT</span> publish the certificate until the certConf message arrives (when certHash is to be used to demonstrate POP). See <a href="#sect-5.3.18" class="auto internal xref">Section 5.3.18</a> for further details.<a href="#section-5.2.8.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-5.2.8.3">
 <section id="section-5.2.8.3">
-            <h5 id="name-summary-of-pop-options">
-<a href="#section-5.2.8.3" class="section-number selfRef">5.2.8.3. </a><a href="#name-summary-of-pop-options" class="section-name selfRef">Summary of PoP Options</a>
+            <h5 id="name-direct-method-challenge-res">
+<a href="#section-5.2.8.3" class="section-number selfRef">5.2.8.3. </a><a href="#name-direct-method-challenge-res" class="section-name selfRef">Direct Method - Challenge-Response Protocol</a>
             </h5>
-<p id="section-5.2.8.3-1">The text in this section provides several options with respect to POP
-techniques.  Using "SK" for "signing key", "EK" for "encryption key",
-"KAK" for "key agreement key", and "KEMK" for "key encapsulation
-mechanism key", the techniques may be summarized as follows:<a href="#section-5.2.8.3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.2.8.3-2">
+<p id="section-5.2.8.3-1">The "direct" method mentioned previously in <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages POPODecKeyChall and POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage field of POPOPrivKey.<a href="#section-5.2.8.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3-2">Note: This method would typically be used in an environment in which an RA verifies POP and then makes a certification request to the CA on behalf of the end entity. In such a scenario, the CA trusts the RA to have done POP correctly before the RA requests a certificate for the end entity.<a href="#section-5.2.8.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3-3">The complete protocol then looks as follows (note that req' does not necessarily encapsulate req as a nested message):<a href="#section-5.2.8.3-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2.8.3-4">
+<pre>
+                EE            RA            CA
+                 ---- req ----&gt;
+                 &lt;--- chall ---
+                 ---- resp ---&gt;
+                               ---- req' ---&gt;
+                               &lt;--- rep -----
+                               ---- conf ---&gt;
+                               &lt;--- ack -----
+                 &lt;--- rep -----
+                 ---- conf ---&gt;
+                 &lt;--- ack -----
+</pre><a href="#section-5.2.8.3-4" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2.8.3-5">This protocol is obviously much longer than the exchange given in <a href="#sect-5.2.8.2" class="auto internal xref">Section 5.2.8.2</a> above, but allows a local Registration Authority to be involved and has the property that the certificate itself is not actually created until the proof-of-possession is complete. In some environments, a different order of the above messages may be required, such as the following (this may be determined by policy):<a href="#section-5.2.8.3-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2.8.3-6">
+<pre>
+                EE            RA            CA
+                 ---- req ----&gt;
+                 &lt;--- chall ---
+                 ---- resp ---&gt;
+                               ---- req' ---&gt;
+                               &lt;--- rep -----
+                 &lt;--- rep -----
+                 ---- conf ---&gt;
+                               ---- conf ---&gt;
+                               &lt;--- ack -----
+                 &lt;--- ack -----
+</pre><a href="#section-5.2.8.3-6" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2.8.3-7">The challenge-response messages for proof-of-possession of a private key are specified as follows (for decryption keys see <span>[<a href="#MvOV97" class="cite xref">MvOV97</a>]</span>, p.404 for details).  This challenge-response exchange is associated with the preceding certification request message (and subsequent certification response and confirmation messages) by the transactionID used in the PKIHeader and by the protection (MACing or signing) applied to the PKIMessage.<a href="#section-5.2.8.3-7" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.2.8.3-8">
+<pre>
+   POPODecKeyChallContent ::= SEQUENCE OF Challenge
+
+   Challenge ::= SEQUENCE {
+      owf AlgorithmIdentifier OPTIONAL,
+      witness OCTET STRING,
+      challenge OCTET STRING, -- deprecated
+      encryptedRand [0] EnvelopedData OPTIONAL
+   }
+
+   Rand ::= SEQUENCE {
+     int INTEGER,
+     sender GeneralName
+   }
+</pre><a href="#section-5.2.8.3-8" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2.8.3-9">For a popdecc message indicating cmp2021(3) in the pvno field of the PKIHeader, the encryption of Rand <span class="bcp14">MUST</span> be transferred in the encryptedRand field in a CMS EnvelopedData structure as defined in <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.  The challenge field <span class="bcp14">MUST</span> contain an empty OCTET STRING.<a href="#section-5.2.8.3-9" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3-10">Note: When using cmp2000(2) in the popdecc message header for backward compatibility, the challenge field <span class="bcp14">MUST</span> contain the encryption (under the public key for which the certification request is being made) of Rand and encryptedRand <span class="bcp14">MUST</span> be omitted.  Using challenge (omitting the optional encryptedRand field) is bit-compatible with <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span>. The challenge field has been deprecated in favor of encryptedRand.<a href="#section-5.2.8.3-10" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3-11">Note: That the size of Rand needs to be appropriate for encryption under the public key of the requester. If, in some environment, names are so long that they cannot fit (e.g., very long DNs), then whatever portion will fit should be used (as long as it includes at least the common name, and as long as the receiver is able to deal meaningfully with the abbreviation).<a href="#section-5.2.8.3-11" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.2.8.3-12">
+<pre>
+   POPODecKeyRespContent ::= SEQUENCE OF INTEGER
+</pre><a href="#section-5.2.8.3-12" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="sect-5.2.8.4">
+<section id="section-5.2.8.4">
+            <h5 id="name-summary-of-pop-options">
+<a href="#section-5.2.8.4" class="section-number selfRef">5.2.8.4. </a><a href="#name-summary-of-pop-options" class="section-name selfRef">Summary of PoP Options</a>
+            </h5>
+<p id="section-5.2.8.4-1">The text in this section provides several options with respect to POP techniques. Using "SK" for "signing key", "EK" for "encryption key", "KAK" for "key agreement key", and "KEMK" for "key encapsulation mechanism key", the techniques may be summarized as follows:<a href="#section-5.2.8.4-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2.8.4-2">
 <pre>
    RAVerified;
    SKPOP;
-   EKPOPThisMessage;
-   KAKPOPThisMessage;
+   EKPOPThisMessage; -- deprecated
+   KAKPOPThisMessage; -- deprecated
    EKPOPEncryptedKey;
    KAKPOPEncryptedKey;
    KEMKPOPEncryptedKey;
@@ -4094,40 +4048,14 @@ mechanism key", the techniques may be summarized as follows:<a href="#section-5.
    EKPOPChallengeResp;
    KAKPOPChallengeResp; and
    KEMKPOPChallengeResp.
-</pre><a href="#section-5.2.8.3-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.8.4-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2.8.3-3">Given this array of options, it is natural to ask how an end entity
-can know what is supported by the CA/RA (i.e., which options it may
-use when requesting certificates).  The following guidelines should
-clarify this situation for EE implementers.<a href="#section-5.2.8.3-3" class="pilcrow">¶</a></p>
-<p id="section-5.2.8.3-4">RAVerified.  This is not an EE decision; the RA uses this if and only
-if it has verified POP before forwarding the request on to the CA, so
-it is not possible for the EE to choose this technique.<a href="#section-5.2.8.3-4" class="pilcrow">¶</a></p>
-<p id="section-5.2.8.3-5">SKPOP.  If the EE has a signing key pair, this is the only POP method
-specified for use in the request for a corresponding certificate.<a href="#section-5.2.8.3-5" class="pilcrow">¶</a></p>
-<p id="section-5.2.8.3-6">EKPOPThisMessage (deprecated), KAKPOPThisMessage (deprecated),
-EKPOPEncryptedKey, KAKPOPEncryptedKey, KEMKPOPEncryptedKey.  Whether
-or not to give up its private key to the CA/RA is an EE decision.  If
-the EE decides to reveal its key, then these are the only POP methods
-available in this specification to achieve this (and the key pair
-type will determine which of these three methods to use).<a href="#section-5.2.8.3-6" class="pilcrow">¶</a></p>
-<p id="section-5.2.8.3-7">KAKPOPThisMessageDHMAC.  The EE can only use this method if (1) the
-CA has a DH certificate available for this purpose, and (2) the EE
-already has a copy of this certificate.  If both these conditions
-hold, then this technique is clearly supported and may be used by the
-EE, if desired.<a href="#section-5.2.8.3-7" class="pilcrow">¶</a></p>
-<p id="section-5.2.8.3-8">EKPOPEncryptedCert, KAKPOPEncryptedCert, KEMKPOPEncryptedCert, EKPOPChallengeResp,
-KAKPOPChallengeResp, KEMKPOPChallengeResp.  The EE picks one of these (in the
-subsequentMessage field) in the request message, depending upon
-preference and key pair type.  The EE is not doing POP at this point;
-it is simply indicating which method it wants to use.  Therefore, if
-the CA/RA replies with a "badPOP" error, the EE can re-request using
-the other POP method chosen in subsequentMessage.  Note, however,
-that this specification encourages the use of the EncryptedCert
-choice and, furthermore, says that the challenge-response would
-typically be used when an RA is involved and doing POP verification.
-Thus, the EE should be able to make an intelligent decision regarding
-which of these POP methods to choose in the request message.<a href="#section-5.2.8.3-8" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.4-3">Given this array of options, it is natural to ask how an end entity can know what is supported by the CA/RA (i.e., which options it may use when requesting certificates). The following guidelines should clarify this situation for EE implementers.<a href="#section-5.2.8.4-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.4-4">RAVerified: This is not an EE decision; the RA uses this if and only if it has verified POP before forwarding the request on to the CA, so it is not possible for the EE to choose this technique.<a href="#section-5.2.8.4-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.4-5">SKPOP: If the EE has a signing key pair, this is the only POP method specified for use in the request for a corresponding certificate.<a href="#section-5.2.8.4-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.4-6">EKPOPThisMessage (deprecated), KAKPOPThisMessage (deprecated), EKPOPEncryptedKey, KAKPOPEncryptedKey, KEMKPOPEncryptedKey: Whether or not to give up its private key to the CA/RA is an EE decision. If the EE decides to reveal its key, then these are the only POP methods available in this specification to achieve this (and the key pair type and protocol version used will determine which of these methods to use).<a href="#section-5.2.8.4-6" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.4-7">KAKPOPThisMessageDHMAC: The EE can only use this method if (1) the CA has a DH certificate available for this purpose, and (2) the EE already has a copy of this certificate. If both these conditions hold, then this technique is clearly supported and may be used by the EE, if desired.<a href="#section-5.2.8.4-7" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.4-8">EKPOPEncryptedCert, KAKPOPEncryptedCert, KEMKPOPEncryptedCert, EKPOPChallengeResp, KAKPOPChallengeResp, and KEMKPOPChallengeResp: The EE picks one of these (in the subsequentMessage field) in the request message, depending upon preference and key pair type. The EE is not doing POP at this point; it is simply indicating which method it wants to use. Therefore, if the CA/RA replies with a "badPOP" error, the EE can re-request using the other POP method chosen in subsequentMessage. Note, however, that this specification encourages the use of the EncryptedCert choice and, furthermore, says that the challenge-response would typically be used when an RA is involved and doing POP verification. Thus, the EE should be able to make an intelligent decision regarding which of these POP methods to choose in the request message.<a href="#section-5.2.8.4-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -4527,7 +4455,7 @@ the CA/RA.<a href="#section-5.3.18-4" class="pilcrow">¶</a></p>
 corresponding to a certificate supplied in the previous response
 message indicates REJECTION of the certificate.  Thus, an empty
 CertConfirmContent (a zero-length SEQUENCE) <span class="bcp14">MAY</span> be used to indicate
-rejection of all supplied certificates.  See <a href="#sect-5.2.8.2.2" class="auto internal xref">Section 5.2.8.2.2</a>,
+rejection of all supplied certificates.  See <a href="#sect-5.2.8.2" class="auto internal xref">Section 5.2.8.2</a>,
 for a discussion of the certHash field with respect to
 proof-of-possession.<a href="#section-5.3.18-5" class="pilcrow">¶</a></p>
 </section>
@@ -5491,7 +5419,7 @@ described above in <a href="#sect-7" class="auto internal xref">Section 7</a>.<a
       <h2 id="name-security-considerations">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<div id="sect-8.POP">
+<div id="sect-8.1">
 <section id="section-8.1">
         <h3 id="name-on-the-necessity-of-proof-o">
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-on-the-necessity-of-proof-o" class="section-name selfRef">On the Necessity of Proof-Of-Possession</a>
@@ -5508,7 +5436,7 @@ sign-then-encrypt protocol, but in general it merely results in the
 end entity obtaining a certificate that they can not use.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sect-8.1">
+<div id="sect-8.2">
 <section id="section-8.2">
         <h3 id="name-proof-of-possession-with-a-">
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-proof-of-possession-with-a-" class="section-name selfRef">Proof-Of-Possession with a Decryption Key</a>
@@ -5530,7 +5458,7 @@ about decrypting arbitrary "ciphertext" and revealing recovered
 vulnerabilities.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sect-8.2">
+<div id="sect-8.3">
 <section id="section-8.3">
         <h3 id="name-proof-of-possession-by-expo">
 <a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-proof-of-possession-by-expo" class="section-name selfRef">Proof-Of-Possession by Exposing the Private Key</a>
@@ -5552,7 +5480,7 @@ their private key before proceeding to reveal the private key.<a href="#section-
         </ul>
 </section>
 </div>
-<div id="sect-8.3">
+<div id="sect-8.4">
 <section id="section-8.4">
         <h3 id="name-attack-against-diffie-hellm">
 <a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-attack-against-diffie-hellm" class="section-name selfRef">Attack Against Diffie-Hellman Key Exchange</a>
@@ -5575,7 +5503,7 @@ attack.  Option (1) is clearly simpler (requiring no extra protocol
 exchanges from either party) and is therefore <span class="bcp14">RECOMMENDED</span>.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sect-8.pfs">
+<div id="sect-8.5">
 <section id="section-8.5">
         <h3 id="name-perfect-forward-secrecy">
 <a href="#section-8.5" class="section-number selfRef">8.5. </a><a href="#name-perfect-forward-secrecy" class="section-name selfRef">Perfect Forward Secrecy</a>
@@ -5583,11 +5511,11 @@ exchanges from either party) and is therefore <span class="bcp14">RECOMMENDED</s
 <p id="section-8.5-1">Long-term security typically requires perfect forward secrecy (pfs).
 When transferring encrypted long-term confidential values such as centrally generated private keys or revocation passphrases, pfs likely is important.
 Yet it is not needed for CMP message protection providing integrity and authenticity because transfer of PKI messages is usually completed in very limited time.
-For the same reason it typically is not required for the indirect method of providing a POP <a href="#sect-5.2.8.2.2" class="auto internal xref">Section 5.2.8.2.2</a> delivering the newly issued certificate in encrypted form.<a href="#section-8.5-1" class="pilcrow">¶</a></p>
+For the same reason it typically is not required for the indirect method of providing a POP <a href="#sect-5.2.8.2" class="auto internal xref">Section 5.2.8.2</a> delivering the newly issued certificate in encrypted form.<a href="#section-8.5-1" class="pilcrow">¶</a></p>
 <p id="section-8.5-2">Encrypted values <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a> are transferred using CMS EnvelopedData <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span>, which does not offer pfs. In cases where long-term security is needed, CMP messages <span class="bcp14">SHOULD</span> be transferred over a mechanism that provides pfs, such as TLS.<a href="#section-8.5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sect-8.4">
+<div id="sect-8.6">
 <section id="section-8.6">
         <h3 id="name-private-keys-for-certificat">
 <a href="#section-8.6" class="section-number selfRef">8.6. </a><a href="#name-private-keys-for-certificat" class="section-name selfRef">Private Keys for Certificate Signing and CMP Message Protection</a>
@@ -5598,7 +5526,7 @@ parts of the system and the number of uses of this particularly critical
 key are reduced to a minimum.<a href="#section-8.6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sect-8.5">
+<div id="sect-8.7">
 <section id="section-8.7">
         <h3 id="name-entropy-of-random-numbers-k">
 <a href="#section-8.7" class="section-number selfRef">8.7. </a><a href="#name-entropy-of-random-numbers-k" class="section-name selfRef">Entropy of Random Numbers, Key Pairs, and Shared Secret Information</a>
@@ -5638,7 +5566,7 @@ and their security strength is available in CMP Algorithms [RFCCCC] Section
 7.<a href="#section-8.7-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sect-8.kem">
+<div id="sect-8.8">
 <section id="section-8.8">
         <h3 id="name-recurring-usage-of-kem-keys">
 <a href="#section-8.8" class="section-number selfRef">8.8. </a><a href="#name-recurring-usage-of-kem-keys" class="section-name selfRef">Recurring Usage of KEM Keys for Message Protection</a>
@@ -5662,7 +5590,7 @@ algorithm, there is no limit to the number of CMP messages that can
 be encrypted under it.<a href="#section-8.8-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sect-8.6">
+<div id="sect-8.9">
 <section id="section-8.9">
         <h3 id="name-trust-anchor-provisioning-u">
 <a href="#section-8.9" class="section-number selfRef">8.9. </a><a href="#name-trust-anchor-provisioning-u" class="section-name selfRef">Trust Anchor Provisioning Using CMP Messages</a>
@@ -5684,7 +5612,7 @@ protection using a certificate issued by a PKI that is explicitly authorized
 for this purpose.<a href="#section-8.9-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sect-8.7">
+<div id="sect-8.10">
 <section id="section-8.10">
         <h3 id="name-authorizing-requests-for-ce">
 <a href="#section-8.10" class="section-number selfRef">8.10. </a><a href="#name-authorizing-requests-for-ce" class="section-name selfRef">Authorizing Requests for Certificates with Specific EKUs</a>
@@ -5698,7 +5626,7 @@ ensure that only legitimate entities receive a certificate containing
 such an EKU.<a href="#section-8.10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sect-8.8">
+<div id="sect-8.11">
 <section id="section-8.11">
         <h3 id="name-usage-of-certificate-transp">
 <a href="#section-8.11" class="section-number selfRef">8.11. </a><a href="#name-usage-of-certificate-transp" class="section-name selfRef">Usage of Certificate Transparency Logs</a>
@@ -5967,13 +5895,10 @@ management are available in the Lightweight CMP Profile <span>[<a href="#RFC9483
       <h2 id="name-the-use-of-revocation-passp">
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-the-use-of-revocation-passp" class="section-name selfRef">The Use of Revocation Passphrase</a>
       </h2>
-<p id="appendix-B-1">&lt; ToDo: Review this Appendix and try to push the content to Section 4 or
-Section 5 of this document. &gt;<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<p id="appendix-B-2">&lt; ToDo: Possibly add support for certificates containing KEM keys. &gt;<a href="#appendix-B-2" class="pilcrow">¶</a></p>
-<p id="appendix-B-3">A revocation request must incorporate suitable security mechanisms,
+<p id="appendix-B-1">A revocation request must incorporate suitable security mechanisms,
 including proper authentication, in order to reduce the probability
-of successful denial-of-service attacks.  A digital signature on the
-request -- <span class="bcp14">REQUIRED</span> to support within this specification if
+of successful denial-of-service attacks.  A digital signature or D-H/KEM-based message protection on the
+request -- <span class="bcp14">REQUIRED</span> to support within this specification depending on the key-type used if
 revocation requests are supported -- can provide the authentication
 required, but there are circumstances under which an alternative
 mechanism may be desirable (e.g., when the private key is no longer
@@ -5984,19 +5909,19 @@ circumstances, a password-based MAC, see CMP Algorithms <span>[<a href="#RFC9481
 support within this specification (subject to local security policy
 for a given environment) if revocation requests are supported and if
 shared secret information can be established between the requester
-and the responder prior to the need for revocation.<a href="#appendix-B-3" class="pilcrow">¶</a></p>
-<p id="appendix-B-4">A mechanism that has seen use in some environments is "revocation passphrase",
+and the responder prior to the need for revocation.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">A mechanism that has seen use in some environments is "revocation passphrase",
 in which a value of sufficient entropy (i.e., a
 relatively long passphrase rather than a short password) is shared
 between (only) the entity and the CA/RA at some point prior to
 revocation; this value is later used to authenticate the revocation
-request.<a href="#appendix-B-4" class="pilcrow">¶</a></p>
-<p id="appendix-B-5">In this specification, the following technique to establish shared
+request.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+<p id="appendix-B-3">In this specification, the following technique to establish shared
 secret information (i.e., a revocation passphrase) is <span class="bcp14">OPTIONAL</span> to
-support.  Its precise use in CMP messages is as follows.<a href="#appendix-B-5" class="pilcrow">¶</a></p>
+support.  Its precise use in CMP messages is as follows.<a href="#appendix-B-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-B-6.1">
-          <p id="appendix-B-6.1.1">The OID and value specified in <a href="#sect-5.3.19.9" class="auto internal xref">Section 5.3.19.9</a> <span class="bcp14">MAY</span> be sent in a GenMsg message
+<li class="normal" id="appendix-B-4.1">
+          <p id="appendix-B-4.1.1">The OID and value specified in <a href="#sect-5.3.19.9" class="auto internal xref">Section 5.3.19.9</a> <span class="bcp14">MAY</span> be sent in a GenMsg message
 at any time or <span class="bcp14">MAY</span> be sent in the generalInfo
 field of the PKIHeader of any PKIMessage at any time.  (In particular, the
 EncryptedKey structure as described in <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a> may be sent in the header
@@ -6006,10 +5931,10 @@ message.)  This conveys a revocation passphrase chosen by the entity to the
 relevant CA/RA. When EnvelopedData is used, this is in the decrypted bytes
 of encryptedContent field. When EncryptedValue is used, this is in the decrypted
 bytes of the encValue field. Furthermore, the transfer is accomplished with
-appropriate confidentiality characteristics.<a href="#appendix-B-6.1.1" class="pilcrow">¶</a></p>
+appropriate confidentiality characteristics.<a href="#appendix-B-4.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-B-6.2">
-          <p id="appendix-B-6.2.1">If a CA/RA receives the revocation passphrase (OID and value
+        <li class="normal" id="appendix-B-4.2">
+          <p id="appendix-B-4.2.1">If a CA/RA receives the revocation passphrase (OID and value
 specified in <a href="#sect-5.3.19.9" class="auto internal xref">Section 5.3.19.9</a>) in a GenMsg, it <span class="bcp14">MUST</span> construct and
 send a GenRep message that includes the OID (with absent value)
 specified in <a href="#sect-5.3.19.9" class="auto internal xref">Section 5.3.19.9</a>. If the CA/RA receives the
@@ -6019,25 +5944,26 @@ generalInfo field of the PKIHeader of the corresponding response
 PKIMessage.  If the CA/RA is unable to return the appropriate
 response message for any reason, it <span class="bcp14">MUST</span> send an error message
 with a status of "rejection" and, optionally, a failInfo reason
-set.<a href="#appendix-B-6.2.1" class="pilcrow">¶</a></p>
+set.<a href="#appendix-B-4.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-B-6.3">
-          <p id="appendix-B-6.3.1">Either the localKeyId attribute of EnvelopedData as specified in
+        <li class="normal" id="appendix-B-4.3">
+          <p id="appendix-B-4.3.1">Either the localKeyId attribute of EnvelopedData as specified in
 <span>[<a href="#RFC2985" class="cite xref">RFC2985</a>]</span> or the valueHint field of EncryptedValue <span class="bcp14">MAY</span>
 contain a key identifier (chosen
 by the entity, along with the passphrase itself) to assist in later retrieval
 of the correct passphrase (e.g., when the revocation request is constructed
-by the entity and received by the CA/RA).<a href="#appendix-B-6.3.1" class="pilcrow">¶</a></p>
+by the end entity and received by the CA/RA).<a href="#appendix-B-4.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-B-6.4">
-          <p id="appendix-B-6.4.1">The revocation request message is protected by a password-based MAC, see
+        <li class="normal" id="appendix-B-4.4">
+          <p id="appendix-B-4.4.1">The revocation request message is protected by a password-based MAC, see
 CMP Algorithms <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span> Section 6.1,
 with the revocation passphrase as the key.  If appropriate, the
 senderKID field in the PKIHeader <span class="bcp14">MAY</span> contain the value previously
-transmitted in localKeyId or valueHint.<a href="#appendix-B-6.4.1" class="pilcrow">¶</a></p>
+transmitted in localKeyId or valueHint.<a href="#appendix-B-4.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-B-7">Using the technique specified above, the revocation passphrase may be
+<p id="appendix-B-5">Note: For a message transferring a revocation passphrase indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted passphrase <span class="bcp14">MUST</span> be transferred in the envelopedData choice of EncryptedKey as defined in Section 5.2.2.  When using cmp2000(2) in the message header for backward compatibility, the encryptedValue is used. This allows the necessary conveyance and protection of the passphrase while maintaining bits-on-the-wire compatibility with <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span>. The encryaptedValue choice has been deprecated in favor of encryptedData.<a href="#appendix-B-5" class="pilcrow">¶</a></p>
+<p id="appendix-B-6">Using the technique specified above, the revocation passphrase may be
 initially established and updated at any time without requiring extra
 messages or out-of-band exchanges.  For example, the revocation
 request message itself (protected and authenticated through a MAC
@@ -6053,15 +5979,15 @@ However, because the passphrase is not revealed in the request
 message, there is no requirement that the passphrase must always be
 updated when a revocation request is made (that is, the same
 passphrase <span class="bcp14">MAY</span> be used by an entity to authenticate revocation
-requests for different certificates at different times).<a href="#appendix-B-7" class="pilcrow">¶</a></p>
-<p id="appendix-B-8">Furthermore, the above technique can provide strong cryptographic
+requests for different certificates at different times).<a href="#appendix-B-6" class="pilcrow">¶</a></p>
+<p id="appendix-B-7">Furthermore, the above technique can provide strong cryptographic
 protection over the entire revocation request message even when a
 digital signature is not used.  Techniques that do authentication of
 the revocation request by simply revealing the revocation passphrase
 typically do not provide cryptographic protection over the fields of
 the request message (so that a request for revocation of one
 certificate may be modified by an unauthorized third party to a
-request for revocation of another certificate for that entity).<a href="#appendix-B-8" class="pilcrow">¶</a></p>
+request for revocation of another certificate for that entity).<a href="#appendix-B-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-c">
@@ -6256,7 +6182,7 @@ one (i.e., no use of "waiting" status value).<a href="#appendix-C.4-9" class="pi
 <p id="appendix-C.4-10">The end entity has an out-of-band interaction with the CA/RA.  This
 transaction established the shared secret, the referenceNumber and
 OPTIONALLY the distinguished name used for both sender and subject
-name in the certificate template. See <a href="#sect-8.5" class="auto internal xref">Section 8.7</a> for security
+name in the certificate template. See <a href="#sect-8.7" class="auto internal xref">Section 8.7</a> for security
 considerations on quality of shared secret information.<a href="#appendix-C.4-10" class="pilcrow">¶</a></p>
 <p id="appendix-C.4-11">Initialization Request -- ir<a href="#appendix-C.4-11" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-C.4-12">
@@ -7459,30 +7385,43 @@ OOBCertHash ::= SEQUENCE {
 }
 
 POPODecKeyChallContent ::= SEQUENCE OF Challenge
--- One Challenge per encryption key certification request (in the
--- same order as these requests appear in CertReqMessages)
+-- One Challenge per encryption or key agreement key certification
+-- request (in the same order as these requests appear in
+-- CertReqMessages).
 
 Challenge ::= SEQUENCE {
-    owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}}
+   owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}}
                             OPTIONAL,
-    -- MUST be present in the first Challenge; MAY be omitted in
-    -- any subsequent Challenge in POPODecKeyChallContent (if
-    -- omitted, then the owf used in the immediately preceding
-    -- Challenge is to be used)
-    witness             OCTET STRING,
-    -- the result of applying the One-Way Function (owf) to a
-    -- randomly generated INTEGER, A  (Note that a different
-    -- INTEGER MUST be used for each Challenge.)
-    challenge           OCTET STRING
-    -- the encryption of Rand (depending on private key type, either
-    -- public key encryption or encrypted using symmetric key derived
-    -- from key agreement or key encapsulation)
+   -- MUST be present in the first Challenge; MAY be omitted in
+   -- any subsequent Challenge in POPODecKeyChallContent (if
+   -- omitted, then the owf used in the immediately preceding
+   -- Challenge is to be used).
+   witness             OCTET STRING,
+   -- the result of applying the one-way function (owf) to a
+   -- randomly-generated INTEGER, A. (Note that a different
+   -- INTEGER MUST be used for each Challenge.)
+   challenge           OCTET STRING
+   -- MUST be used for cmp2000(2) popdecc messages and MUST be
+   -- the encryption of Rand (depending on private key type, either
+   -- public key encryption or encrypted using symmetric key derived
+   -- from key agreement key).
+   -- MUST be an empty OCTET STRING for cmp2021(3) popdecc messages.
+   -- Note: Using challenge omitting the optional encryptedRand is
+   -- bit-compatible to the syntax without adding this optional
+   -- field.
+   encryptedRand   [0] EnvelopedData OPTIONAL
+   -- MUST be omitted for cmp2000(2) popdecc messages.
+   -- MUST be used for cmp2021(3) popdecc messages and MUST contain
+   -- the encrypted value of Rand using CMS EnvelopedData using the
+   -- key management technique depending on the private key type as
+   -- defined in Section 5.2.2.
 }
 
 -- Rand was added in CMP Updates [RFC9480]
 
 Rand ::= SEQUENCE {
--- Rand is encrypted to form the challenge in POPODecKeyChallContent
+-- Rand is encrypted under the public key to form the content of
+-- challenge or encryptedRand in POPODecKeyChallContent
    int                  INTEGER,
    -- the randomly generated INTEGER A (above)
    sender               GeneralName
@@ -7490,10 +7429,10 @@ Rand ::= SEQUENCE {
 }
 
 POPODecKeyRespContent ::= SEQUENCE OF INTEGER
--- One INTEGER per encryption key certification request (in the
--- same order as these requests appear in CertReqMessages).  The
--- retrieved INTEGER A (above) is returned to the sender of the
--- corresponding Challenge.
+-- One INTEGER per encryption or key agreement key certification
+-- request (in the same order as these requests appear in
+-- CertReqMessages). The retrieved INTEGER A (above) is returned to
+-- the sender of the corresponding Challenge.
 
 CertRepMessage ::= SEQUENCE {
     caPubs       [1] SEQUENCE SIZE (1..MAX) OF CMPCertificate
@@ -7852,22 +7791,28 @@ END
           <p id="appendix-G-3.1.1">Aligned with released RFC 9480 - RFC 9483<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.2">
-          <p id="appendix-G-3.2.1">Added text on usage of transactionID with KEM-bases message protection to Section 5.1.1<a href="#appendix-G-3.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.2.1">Updated Section 1.3<a href="#appendix-G-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.3">
-          <p id="appendix-G-3.3.1">Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text<a href="#appendix-G-3.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.3.1">Added text on usage of transactionID with KEM-bases message protection to Section 5.1.1<a href="#appendix-G-3.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.4">
-          <p id="appendix-G-3.4.1">Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117<a href="#appendix-G-3.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.4.1">Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text<a href="#appendix-G-3.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.5">
-          <p id="appendix-G-3.5.1">Added ToDo for reviewing the reduced content of KemOtherInfo to Section 5.1.3.4<a href="#appendix-G-3.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.5.1">Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117<a href="#appendix-G-3.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.6">
-          <p id="appendix-G-3.6.1">Added a cross-reference to Section 5.1.1.3 regarding use of OrigPKIMessage to Section 5.1.3.5<a href="#appendix-G-3.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.6.1">Added ToDo for reviewing the reduced content of KemOtherInfo to Section 5.1.3.4<a href="#appendix-G-3.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.7">
-          <p id="appendix-G-3.7.1">Added POP for KEM keys to Section 5.2.8. Restructured the section and fixed some references which broke from RFC2510 to RFC4210<a href="#appendix-G-3.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.7.1">Added a cross-reference to Section 5.1.1.3 regarding use of OrigPKIMessage to Section 5.1.3.5<a href="#appendix-G-3.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-3.8">
+          <p id="appendix-G-3.8.1">Added POP for KEM keys to Section 5.2.8. Restructured the section and fixed some references which broke from RFC2510 to RFC4210<a href="#appendix-G-3.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-3.9">
+          <p id="appendix-G-3.9.1">Updated Appendix B regarding KEM-based message protection and usage of CMS EnvelopedData<a href="#appendix-G-3.9.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-G-4">From version 06 -&gt; 07:<a href="#appendix-G-4" class="pilcrow">¶</a></p>
