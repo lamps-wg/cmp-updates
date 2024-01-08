@@ -266,7 +266,7 @@ Profile {{RFC9483}}, in the following areas:
 
   For reasons of completeness and consistency, the type EncryptedValue has been
   exchanged in all occurrences.  This includes the protection of centrally
-  generated private keys, encryption of certificates, and protection of revocation
+  generated private keys, encryption of certificates, proof-of-possession methods, and protection of revocation
   passphrases. To properly differentiate the support of EnvelopedData instead
   of EncryptedValue, CMP version 3 is introduced in case a transaction
   is supposed to use EnvelopedData.
@@ -287,17 +287,32 @@ Profile {{RFC9483}}, in the following areas:
 
 * Extending the use of polling to p10cr, certConf, rr, genm, and error messages.
 
-* Incorporating the request message behavioral clarifications from former Appendix
-  C to {{sect-5}}. The definition of altCertTemplate was incorporated into {{sect-5.2.1}}, the clarification on POPOSigningKey was incorporated into {{sect-5.2.8}}, and the clarification on POPOPrivKey was incorporated into {{sect-5.2.8.2.1}}.
-
 * Deleting the mandatory algorithm profile in {{sect-c.2}} and refer instead to Section 7 of {{RFC9481}}.
+
+* Added {{sect-8.6}}, {{sect-8.7}}, {{sect-8.9}}, and {{sect-8.10}}.
 
 
 ## Changes Made by This Document
 {: id="sect-1.3"}
 
-This document obsoletes {{RFC4210}}. It includes the changes specified by Section 2 and Appendix C.2 of {{RFC9480}} as described in {{sect-1.2}}.
+This document obsoletes {{RFC4210}}. It includes the changes specified by Section 2 and Appendix C.2 of {{RFC9480}} as described in {{sect-1.2}}. Additionally this document updates {{RFC4210}} in the following areas:
 
+* Added {{sect-3.1.1.4}} introducing the Key Generation Authority.
+
+* Extended {{sect-3.1.2}} regarding use of Certificate Transparency logs.
+
+* Updated {{sect-4.4.1}} clarifying the definition of "new with new" certificate validity period.
+
+* Added {{sect-5.1.1.3}} containing description of origPKIMessage content moved here from {{sect-5.1.3.4}}.
+
+* Added support for KEM keys for proof-of-possession to {{sect-4.3}} and {{sect-5.2.8}}, for message protection to {{sect-5.1.1}}, {{sect-5.1.3.4}}, and {{sect-e}}, and for usage with CMS EnvelopedData to {{sect-5.2.2}}.
+
+* Incorporated the request message behavioral clarifications from Appendix
+  C of {{RFC4210}} to {{sect-5}}. The definition of altCertTemplate was incorporated into {{sect-5.2.1}} and the clarification on POPOSigningKey and on POPOPrivKey was incorporated into {{sect-5.2.8}}.
+
+* Added support support for CMS EnvelopedData to different proof-of-possession methods for transferring encrypted private keys, certificates, and challenges to {{sect-5.2.8}}.
+
+* Added {{sect-8.1}}, {{sect-8.5}}, {{sect-8.8}}, and {{sect-8.11}}.
 
 
 # Requirements {#sect-2}
@@ -938,13 +953,13 @@ Proof-of-possession (POP) is where a PKI management entity (CA/RA) challenges
 an end entity to prove that it has access to the private key
 corresponding to a given public key. The question of whether, and in
 what circumstances, POPs add value to a PKI is a debate as old as PKI
-itself! See {{sect-8.POP}} for a further discussion on the necessity
-of Proof-Of-Possession in PKI.
+itself! See {{sect-8.1}} for a further discussion on the necessity
+of proof-of-possession in PKI.
 
 The PKI management operations specified here make it possible
 for an end entity to prove to a CA/RA that it has possession of (i.e., is able
 to use) the private key corresponding to the public key for which a
-certificate is requested.  A given CA/RA is free to choose how to
+certificate is requested (see {{sect-5.2.8}} for different POP methods).  A given CA/RA is free to choose how to
 enforce POP (e.g., out-of-band procedural means versus PKIX-CMP
 in-band messages) in its certification exchanges (i.e., this may be a
 policy issue).  However, it is REQUIRED that CAs/RAs MUST enforce POP
@@ -952,7 +967,7 @@ by some means because there are currently many non-PKIX operational
 protocols in use (various electronic mail protocols are one example)
 that do not explicitly check the binding between the end entity and
 the private key.  Until operational protocols that do verify the
-binding (for signature, encryption, and key agreement key pairs)
+binding (for signature, encryption, key agreement, and KEM key pairs)
 exist, and are ubiquitous, this binding can only be assumed to have
 been verified by the CA/RA.  Therefore, if the binding is not
 verified by the CA/RA, certificates in the Internet Public-Key
@@ -987,7 +1002,7 @@ possession of the private key.
 
 For encryption keys, the end entity can provide the private key to
 the CA/RA, or can be required to decrypt a value in order to prove
-possession of the private key (see {{sect-5.2.8.2}}).  Decrypting a
+possession of the private key.  Decrypting a
 value can be achieved either directly or indirectly.
 
 The direct method is for the RA/CA to issue a random challenge to
@@ -1024,7 +1039,7 @@ appropriate parameters when necessary.
 
 For key encapsulation mechanism keys, the end entity can provide the private key to
 the CA/RA, or can be required to decrypt
-a value in order to prove possession of the private key (see {{sect-5.2.8.2}}).
+a value in order to prove possession of the private key.
 Decrypting a value can be achieved either directly or indirectly.
 
 Note: A definition of Key Encapsulation Mechanisms can be found in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
@@ -1038,7 +1053,7 @@ This specification encourages use of the indirect method because it requires
 no extra messages to be sent (i.e., the proof can be demonstrated using the
 {request, response, confirmation} triple of messages).
 
-Certification request for KEM certificates SHALL use POPOPrivKey by using the keyAgreement choice of ProofOfPossession in the popo field of CertReqMsg as long as no KEM-specific choice is available.
+Note: A certification request message for a KEM certificate SHALL use POPOPrivKey by using the keyAgreement choice of ProofOfPossession in the popo field of CertReqMsg as long as no KEM-specific choice is available.
 
 ## Root CA Key Update
 {: id="sect-4.4"}
@@ -2183,93 +2198,69 @@ See {{RFC4211}} for PKIPublicationInfo syntax.
 ### Proof-of-Possession Structures
 {: id="sect-5.2.8"}
 
-The proof-of-possession method to use first of all depends on the type
-of the private key used. If there are several possible methods, it is
-a policy decision which method to use.
+If the certification request is for a key pair that supports signing (i.e., a request for a verification certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOSigningKey structure, for details see Section 4.1 of {{RFC4211}}.
+
+~~~~ asn.1
+   POPOSigningKey ::= SEQUENCE {
+      poposkInput [0] POPOSigningKeyInput OPTIONAL,
+      algorithmIdentifier AlgorithmIdentifier,
+      signature BIT STRING
+   }
+
+   POPOSigningKeyInput ::= SEQUENCE {
+      authInfo CHOICE {
+         sender [0] GeneralName,
+         publicKeyMAC PKMACValue
+      },
+      publicKey SubjectPublicKeyInfo
+   }
+
+   PKMACValue ::= SEQUENCE {
+      algId AlgorithmIdentifier,
+      value BIT STRING
+   }
+~~~~
+
+Note: For the purposes of this specification, the ASN.1 comment given in Appendix C of {{RFC4211}} pertains not only to certTemplate, but also to the altCertTemplate control as defined in {{sect-5.2.1}}.
+
+If certTemplate (or the altCertTemplate control) contains the subject and publicKey values, then poposkInput MUST be omitted and the signature MUST be computed on the DER-encoded value of certReq field of the CertReqMsg (or the DER-encoded value of AltCertTemplate). If certTemplate/altCertTemplate does not contain both the subject and public key values (i.e., if it contains only one of these, or neither), then poposkInput MUST be present and the signature MUST be computed on the DER-encoded value of poposkInput (i.e., the "value" OCTETs of the POPOSigningKeyInput DER).
+
+If an "authenticated identity" has been established for the sender (e.g., a DN from a previously issued and currently valid certificate), the sender field of poposkInout contains the GeneralName from PKIHeader; if no authenticated GeneralName currently exists for the sender, the publicKeyMAC field of poposkInput contains a password-based MAC (using the protectionAlg AlgId from PKIHeader) on the DER-encoded value of publicKey.
+
+If the certification request is for a key agreement key pair, the POP can alternatively use the POPOSigningKey structure (where the alg field is DHBasedMAC and the signature field is the MAC) for demonstrating POP if the CA already has a D-H certificate that is known to the EE.
+
+On the other hand, if the certification request is for a key pair that does not support signing (i.e., a request for an encryption or key agreement certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOPrivKey structure in one of following three ways, for details see Section 4.2 and 4.3 of {{RFC4211}}.
+
+~~~~ asn.1
+   POPOPrivKey ::= CHOICE {
+      thisMessage [0] BIT STRING, -- deprecated
+      subsequentMessage [1] SubsequentMessage,
+      dhMAC [2] BIT STRING, -- deprecated
+      agreeMAC [3] PKMACValue,
+      encryptedKey [4] EnvelopedData
+   }
+
+   SubsequentMessage ::= INTEGER {
+      encrCert (0),
+      challengeResp (1)
+   }
+~~~~
 
 
-#### Proof-of-Possession Structure for Signature Keys
+#### Inclusion of the Private Key
 {: id="sect-5.2.8.1"}
 
-If the certification request is for a key pair that supports signing , then
-the proof-of-possession of the private signing key is demonstrated through
-use of the POPOSigningKey structure as defined in {{RFC4211}}.
+This method demonstrates proof-of-possession of the private key by inclusion of the private key (encrypted) in the CertRequest in the POPOPrivKey choice or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.
 
-~~~~ asn.1
-  POPOSigningKey ::= SEQUENCE {
-     poposkInput          [0] POPOSigningKeyInput OPTIONAL,
-     algorithmIdentifier  AlgorithmIdentifier,
-     signature            BIT STRING
-  }
+For a certification request message indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted private key MUST be transferred in the encryptedKey choice of POPOPrivKey in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.
 
-  POPOSigningKeyInput ::= SEQUENCE {
-     authInfo             CHOICE {
-        sender            [0] GeneralName,
-        publicKeyMAC      PKMACValue
-     },
-     publicKey            SubjectPublicKeyInfo
-  }
-~~~~
-
-The signature (using "algorithmIdentifier") is on the DER-encoded value of
-poposkInput (i.e., the "value" OCTETs of the POPOSigningKeyInput DER).
-
-If certTemplate (or the altCertTemplate control as defined in {{sect-5.2.1}})
-contains the subject and publicKey values, then poposkInput MUST be omitted
-and the signature MUST be computed on the DER-encoded value of certReq field
-if the CertReqMsg (or the DER-encoded value of AltCertTemplate).  If certTemplate/altCertTemplate
-does not contain both the subject and public key values (i.e., if it contains
-only one of these, or neither), then poposkInput MUST be present and MUST
-be signed.
-
-Note, if the CA has a D-H certificate that is known to the EE, there
-is the alternative for POP for a key agreement key. The POP can use
-the POPOSigningKey structure where the alg field is DHBasedMAC and
-the signature field is the MAC.
+Note: When using cmp2000(2) in the certification request message header for backward compatibility, the thisMessage choice of POPOPrivKey is used containing the encrypted private key in an EncryptedValue structure wrapped in a BIT STRING.  This allows the necessary conveyance and protection of the private key while maintaining bits-on-the-wire compatibility with {{RFC4211}}. The thisMessage choice has been deprecated in favor of encryptedKey.
 
 
-#### Proof-of-Possession Structure for Encryption, Key Agreement, and KEM Keys
+#### Indirect Method - Encrypted Certificate
 {: id="sect-5.2.8.2"}
 
-If the certification request is for a key pair that does not support
-signing (i.e., a request for an encryption, key agreement, or KEM certificate),
-then the proof-of-possession of the private decryption key may be demonstrated
-in one of three ways, as detailed in the following subsections.
-
-The encrypted values are transferred as EnvelopedData as described in {{sect-5.2.2}}.
-
-
-##### Inclusion of the Private Key
-{: id="sect-5.2.8.2.1"}
-
-By the inclusion of the private key (encrypted) in the CertRequest
-(in the encryptedKey field of POPOPrivKey or in the
-PKIArchiveOptions control structure, depending upon whether or not
-archival of the private key is also desired).
-
-~~~~ asn.1
-  POPOPrivKey ::= CHOICE {
-     thisMessage       [0] BIT STRING,   -- deprecated
-     subsequentMessage [1] SubsequentMessage,
-     dhMAC             [2] BIT STRING,   -- deprecated
-     agreeMAC          [3] PKMACValue,
-     encryptedKey      [4] EnvelopedData
-  }
-~~~~
-
-Note: When using CMP V2 with EcryptedValue, Appendix C of {{RFC4210}} made
-the behavioral clarification of specifying that the contents of "thisMessage"
-MUST be encoded as an EncryptedValue and then wrapped in a BIT STRING.  This
-allows the necessary conveyance and protection of the private key while maintaining
-bits-on-the-wire compatibility with {{RFC4211}}.
-
-
-##### Indirect Method - Encrypted Certificate
-{: id="sect-5.2.8.2.2"}
-
-By having the CA return not the certificate, but an encrypted
-certificate -- this is the "indirect" method mentioned previously in
-{{sect-4.3.2}}.
+The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the CA return not the certificate, but an encrypted certificate using CMS EnvelopedData, see {{sect-5.2.2}}.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage field of POPOPrivKey.
 
 ~~~~
                 EE                         RA/CA
@@ -2279,30 +2270,17 @@ certificate -- this is the "indirect" method mentioned previously in
                  <---       ack        -----
 ~~~~
 
-The end entity proves knowledge of the private decryption key to the CA
-by providing the correct CertHash for this certificate in the
-certConf message.  This demonstrates POP because the EE can only
-compute the correct CertHash if it is able to recover the
-certificate, and it can only recover the certificate if it is able to
-decrypt/derive the symmetric key using the required private key.  Clearly,
-for this to work, the CA MUST NOT publish the certificate until the
-certConf message arrives (when certHash is to be used to demonstrate
-POP).  See {{sect-5.3.18}} for further details.
+The end entity proves knowledge of the private key to the CA by providing the correct CertHash for this certificate in the certConf message. This demonstrates POP because the EE can only compute the correct CertHash if it is able to recover the certificate from the EnvelopedData, and it can only recover the certificate if it is able to decrypt the symmetric key using the required private key. Clearly, for this to work, the CA MUST NOT publish the certificate until the certConf message arrives (when certHash is to be used to demonstrate POP). See {{sect-5.3.18}} for further details.
 
 
-##### Direct Method - Challenge-Response Protocol
-{: id="sect-5.2.8.2.3"}
+#### Direct Method - Challenge-Response Protocol
+{: id="sect-5.2.8.3"}
 
-By having the end entity engage in a challenge-response protocol
-(using the messages POPODecKeyChall and POPODecKeyResp; see below)
-between CertReqMessages and CertRepMessage -- this is the "direct"
-method mentioned previously in {{sect-4.3.2}}.  (This method would
-typically be used in an environment in which an RA verifies POP and
-then makes a certification request to the CA on behalf of the end
-entity.  In such a scenario, the CA trusts the RA to have done POP
-correctly before the RA requests a certificate for the end entity.)
-The complete protocol then looks as follows (note that req' does not
-necessarily encapsulate req as a nested message):
+The "direct" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages POPODecKeyChall and POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage field of POPOPrivKey.
+
+Note: This method would typically be used in an environment in which an RA verifies POP and then makes a certification request to the CA on behalf of the end entity. In such a scenario, the CA trusts the RA to have done POP correctly before the RA requests a certificate for the end entity.
+
+The complete protocol then looks as follows (note that req' does not necessarily encapsulate req as a nested message):
 
 ~~~~
                 EE            RA            CA
@@ -2318,12 +2296,7 @@ necessarily encapsulate req as a nested message):
                  <--- ack -----
 ~~~~
 
-This protocol is obviously much longer than the 3-way exchange given
-in {{sect-5.2.8.2.2}} above, but allows a local Registration Authority to be
-involved and has the property that the certificate itself is not
-actually created until the proof-of-possession is complete.  In some
-environments, a different order of the above messages may be
-required, such as the following (this may be determined by policy):
+This protocol is obviously much longer than the exchange given in {{sect-5.2.8.2}} above, but allows a local Registration Authority to be involved and has the property that the certificate itself is not actually created until the proof-of-possession is complete. In some environments, a different order of the above messages may be required, such as the following (this may be determined by policy):
 
 ~~~~
                 EE            RA            CA
@@ -2339,69 +2312,45 @@ required, such as the following (this may be determined by policy):
                  <--- ack -----
 ~~~~
 
-The challenge-response messages for proof-of-possession of a private
-decryption key, key agreement key, and KEM key contains the encrypted
-challenge Rand. For decryption keys Rand is encrypted using the
-public key for which the cert. request is being made (see {{MvOV97}}, p.404 for
-details). For private key agreement keys Rand is encrypted using PreferredSymmAlg
-(see Section 5.3.19.4 and Appendix E.5) and a symmetric key derived from
-the CA's private KAK and the public key for which the certification
-request is being made.  For private KEM keys Rand is encrypted using
-PreferredSymmAlg and a symmetric key derived from the KEM shared secret
-encapsulated using the public KEM key for which the certification request
-is being made. Note that this challenge-response exchange is associated
-with the preceding cert. request message (and subsequent cert.
-response and confirmation messages) by the transactionID used in the
-PKIHeader and by the protection (MACing or signing) applied to the
-PKIMessage.
-
-\< ToDo: As Challenge contains the encrypted Rand, it should be considered
-to also use EncryptedData instead of OCTET STRING. But, I cannot say,
-if the direct POP is used in current implementations and if this change
-makes sense. >
+The challenge-response messages for proof-of-possession of a private key are specified as follows (for decryption keys see {{MvOV97}}, p.404 for details).  This challenge-response exchange is associated with the preceding certification request message (and subsequent certification response and confirmation messages) by the transactionID used in the PKIHeader and by the protection (MACing or signing) applied to the PKIMessage.
 
 ~~~~ asn.1
-  POPODecKeyChallContent ::= SEQUENCE OF Challenge
+   POPODecKeyChallContent ::= SEQUENCE OF Challenge
 
-  Challenge ::= SEQUENCE {
-     owf                 AlgorithmIdentifier  OPTIONAL,
-     witness             OCTET STRING,
-     challenge           OCTET STRING
-  }
+   Challenge ::= SEQUENCE {
+      owf AlgorithmIdentifier OPTIONAL,
+      witness OCTET STRING,
+      challenge OCTET STRING, -- deprecated
+      encryptedRand [0] EnvelopedData OPTIONAL
+   }
 
-  Rand ::= SEQUENCE {
-     int                 INTEGER,
-     sender              GeneralName
-  }
+   Rand ::= SEQUENCE {
+     int INTEGER,
+     sender GeneralName
+   }
 ~~~~
 
-Note that the size of Rand needs to be appropriate for encryption
-under the public key of the requester.  Given that "int" will
-typically not be longer than 64 bits, this leaves well over 100 bytes
-of room for the "sender" field when the modulus is 1024 bits.  If, in
-some environment, names are so long that they cannot fit (e.g., very
-long DNs), then whatever portion will fit should be used (as long as
-it includes at least the common name, and as long as the receiver is
-able to deal meaningfully with the abbreviation).
+For a popdecc message indicating cmp2021(3) in the pvno field of the PKIHeader, the encryption of Rand MUST be transferred in the encryptedRand field in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.  The challenge field MUST contain an empty OCTET STRING.
+
+Note: When using cmp2000(2) in the popdecc message header for backward compatibility, the challenge field MUST contain the encryption (under the public key for which the certification request is being made) of Rand and encryptedRand MUST be omitted.  Using challenge (omitting the optional encryptedRand field) is bit-compatible with [RFC4210]. The challenge field has been deprecated in favor of encryptedRand.
+
+Note: That the size of Rand needs to be appropriate for encryption under the public key of the requester. If, in some environment, names are so long that they cannot fit (e.g., very long DNs), then whatever portion will fit should be used (as long as it includes at least the common name, and as long as the receiver is able to deal meaningfully with the abbreviation).
 
 ~~~~ asn.1
-  POPODecKeyRespContent ::= SEQUENCE OF INTEGER
+   POPODecKeyRespContent ::= SEQUENCE OF INTEGER
 ~~~~
 
 
 #### Summary of PoP Options
-{: id="sect-5.2.8.3"}
+{: id="sect-5.2.8.4"}
 
-The text in this section provides several options with respect to POP
-techniques.  Using "SK" for "signing key", "EK" for "encryption key",
-"KAK" for "key agreement key", and "KEMK" for "key encapsulation
-mechanism key", the techniques may be summarized as follows:
+The text in this section provides several options with respect to POP techniques. Using "SK" for "signing key", "EK" for "encryption key", "KAK" for "key agreement key", and "KEMK" for "key encapsulation mechanism key", the techniques may be summarized as follows:
 
 ~~~~
    RAVerified;
    SKPOP;
-   EKPOPThisMessage;
-   KAKPOPThisMessage;
+   EKPOPThisMessage; -- deprecated
+   KAKPOPThisMessage; -- deprecated
    EKPOPEncryptedKey;
    KAKPOPEncryptedKey;
    KEMKPOPEncryptedKey;
@@ -2414,43 +2363,17 @@ mechanism key", the techniques may be summarized as follows:
    KEMKPOPChallengeResp.
 ~~~~
 
-Given this array of options, it is natural to ask how an end entity
-can know what is supported by the CA/RA (i.e., which options it may
-use when requesting certificates).  The following guidelines should
-clarify this situation for EE implementers.
+Given this array of options, it is natural to ask how an end entity can know what is supported by the CA/RA (i.e., which options it may use when requesting certificates). The following guidelines should clarify this situation for EE implementers.
 
-RAVerified.  This is not an EE decision; the RA uses this if and only
-if it has verified POP before forwarding the request on to the CA, so
-it is not possible for the EE to choose this technique.
+RAVerified: This is not an EE decision; the RA uses this if and only if it has verified POP before forwarding the request on to the CA, so it is not possible for the EE to choose this technique.
 
-SKPOP.  If the EE has a signing key pair, this is the only POP method
-specified for use in the request for a corresponding certificate.
+SKPOP: If the EE has a signing key pair, this is the only POP method specified for use in the request for a corresponding certificate.
 
-EKPOPThisMessage (deprecated), KAKPOPThisMessage (deprecated),
-EKPOPEncryptedKey, KAKPOPEncryptedKey, KEMKPOPEncryptedKey.  Whether
-or not to give up its private key to the CA/RA is an EE decision.  If
-the EE decides to reveal its key, then these are the only POP methods
-available in this specification to achieve this (and the key pair
-type will determine which of these three methods to use).
+EKPOPThisMessage (deprecated), KAKPOPThisMessage (deprecated), EKPOPEncryptedKey, KAKPOPEncryptedKey, KEMKPOPEncryptedKey: Whether or not to give up its private key to the CA/RA is an EE decision. If the EE decides to reveal its key, then these are the only POP methods available in this specification to achieve this (and the key pair type and protocol version used will determine which of these methods to use).
 
-KAKPOPThisMessageDHMAC.  The EE can only use this method if (1) the
-CA has a DH certificate available for this purpose, and (2) the EE
-already has a copy of this certificate.  If both these conditions
-hold, then this technique is clearly supported and may be used by the
-EE, if desired.
+KAKPOPThisMessageDHMAC: The EE can only use this method if (1) the CA has a DH certificate available for this purpose, and (2) the EE already has a copy of this certificate. If both these conditions hold, then this technique is clearly supported and may be used by the EE, if desired.
 
-EKPOPEncryptedCert, KAKPOPEncryptedCert, KEMKPOPEncryptedCert, EKPOPChallengeResp,
-KAKPOPChallengeResp, KEMKPOPChallengeResp.  The EE picks one of these (in the
-subsequentMessage field) in the request message, depending upon
-preference and key pair type.  The EE is not doing POP at this point;
-it is simply indicating which method it wants to use.  Therefore, if
-the CA/RA replies with a "badPOP" error, the EE can re-request using
-the other POP method chosen in subsequentMessage.  Note, however,
-that this specification encourages the use of the EncryptedCert
-choice and, furthermore, says that the challenge-response would
-typically be used when an RA is involved and doing POP verification.
-Thus, the EE should be able to make an intelligent decision regarding
-which of these POP methods to choose in the request message.
+EKPOPEncryptedCert, KAKPOPEncryptedCert, KEMKPOPEncryptedCert, EKPOPChallengeResp, KAKPOPChallengeResp, and KEMKPOPChallengeResp: The EE picks one of these (in the subsequentMessage field) in the request message, depending upon preference and key pair type. The EE is not doing POP at this point; it is simply indicating which method it wants to use. Therefore, if the CA/RA replies with a "badPOP" error, the EE can re-request using the other POP method chosen in subsequentMessage. Note, however, that this specification encourages the use of the EncryptedCert choice and, furthermore, says that the challenge-response would typically be used when an RA is involved and doing POP verification. Thus, the EE should be able to make an intelligent decision regarding which of these POP methods to choose in the request message.
 
 
 ### GeneralizedTime
@@ -2818,7 +2741,7 @@ Within CertConfirmContent, omission of a CertStatus structure
 corresponding to a certificate supplied in the previous response
 message indicates REJECTION of the certificate.  Thus, an empty
 CertConfirmContent (a zero-length SEQUENCE) MAY be used to indicate
-rejection of all supplied certificates.  See {{sect-5.2.8.2.2}},
+rejection of all supplied certificates.  See {{sect-5.2.8.2}},
 for a discussion of the certHash field with respect to
 proof-of-possession.
 
@@ -3776,7 +3699,7 @@ exchanges from either party) and is therefore RECOMMENDED.
 Long-term security typically requires perfect forward secrecy (pfs).
 When transferring encrypted long-term confidential values such as centrally generated private keys or revocation passphrases, pfs likely is important.
 Yet it is not needed for CMP message protection providing integrity and authenticity because transfer of PKI messages is usually completed in very limited time.
-For the same reason it typically is not required for the indirect method of providing a POP {{sect-5.2.8.2.2}} delivering the newly issued certificate in encrypted form.
+For the same reason it typically is not required for the indirect method of providing a POP {{sect-5.2.8.2}} delivering the newly issued certificate in encrypted form.
 
 Encrypted values {{sect-5.2.2}} are transferred using CMS EnvelopedData [RFC5652], which does not offer pfs. In cases where long-term security is needed, CMP messages SHOULD be transferred over a mechanism that provides pfs, such as TLS.
 
@@ -3970,15 +3893,10 @@ management are available in the Lightweight CMP Profile {{RFC9483}}.
 
 # The Use of Revocation Passphrase {#sect-b}
 
-\< ToDo: Review this Appendix and try to push the content to Section 4 or
-Section 5 of this document. >
-
-\< ToDo: Possibly add support for certificates containing KEM keys. >
-
 A revocation request must incorporate suitable security mechanisms,
 including proper authentication, in order to reduce the probability
-of successful denial-of-service attacks.  A digital signature on the
-request -- REQUIRED to support within this specification if
+of successful denial-of-service attacks.  A digital signature or D-H/KEM-based message protection on the
+request -- REQUIRED to support within this specification depending on the key-type used if
 revocation requests are supported -- can provide the authentication
 required, but there are circumstances under which an alternative
 mechanism may be desirable (e.g., when the private key is no longer
@@ -4032,13 +3950,15 @@ support.  Its precise use in CMP messages is as follows.
   contain a key identifier (chosen
   by the entity, along with the passphrase itself) to assist in later retrieval
   of the correct passphrase (e.g., when the revocation request is constructed
-  by the entity and received by the CA/RA).
+  by the end entity and received by the CA/RA).
 
 * The revocation request message is protected by a password-based MAC, see
   CMP Algorithms {{RFC9481}} Section 6.1,
   with the revocation passphrase as the key.  If appropriate, the
   senderKID field in the PKIHeader MAY contain the value previously
   transmitted in localKeyId or valueHint.
+
+Note: For a message transferring a revocation passphrase indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted passphrase MUST be transferred in the envelopedData choice of EncryptedKey as defined in Section 5.2.2.  When using cmp2000(2) in the message header for backward compatibility, the encryptedValue is used. This allows the necessary conveyance and protection of the passphrase while maintaining bits-on-the-wire compatibility with {{RFC4210}}. The encryaptedValue choice has been deprecated in favor of encryptedData.
 
 Using the technique specified above, the revocation passphrase may be
 initially established and updated at any time without requiring extra
@@ -5379,30 +5299,43 @@ OOBCertHash ::= SEQUENCE {
 }
 
 POPODecKeyChallContent ::= SEQUENCE OF Challenge
--- One Challenge per encryption key certification request (in the
--- same order as these requests appear in CertReqMessages)
+-- One Challenge per encryption or key agreement key certification
+-- request (in the same order as these requests appear in
+-- CertReqMessages).
 
 Challenge ::= SEQUENCE {
-    owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}}
+   owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}}
                             OPTIONAL,
-    -- MUST be present in the first Challenge; MAY be omitted in
-    -- any subsequent Challenge in POPODecKeyChallContent (if
-    -- omitted, then the owf used in the immediately preceding
-    -- Challenge is to be used)
-    witness             OCTET STRING,
-    -- the result of applying the One-Way Function (owf) to a
-    -- randomly generated INTEGER, A  (Note that a different
-    -- INTEGER MUST be used for each Challenge.)
-    challenge           OCTET STRING
-    -- the encryption of Rand (depending on private key type, either
-    -- public key encryption or encrypted using symmetric key derived
-    -- from key agreement or key encapsulation)
+   -- MUST be present in the first Challenge; MAY be omitted in
+   -- any subsequent Challenge in POPODecKeyChallContent (if
+   -- omitted, then the owf used in the immediately preceding
+   -- Challenge is to be used).
+   witness             OCTET STRING,
+   -- the result of applying the one-way function (owf) to a
+   -- randomly-generated INTEGER, A. (Note that a different
+   -- INTEGER MUST be used for each Challenge.)
+   challenge           OCTET STRING
+   -- MUST be used for cmp2000(2) popdecc messages and MUST be
+   -- the encryption of Rand (depending on private key type, either
+   -- public key encryption or encrypted using symmetric key derived
+   -- from key agreement key).
+   -- MUST be an empty OCTET STRING for cmp2021(3) popdecc messages.
+   -- Note: Using challenge omitting the optional encryptedRand is
+   -- bit-compatible to the syntax without adding this optional
+   -- field.
+   encryptedRand   [0] EnvelopedData OPTIONAL
+   -- MUST be omitted for cmp2000(2) popdecc messages.
+   -- MUST be used for cmp2021(3) popdecc messages and MUST contain
+   -- the encrypted value of Rand using CMS EnvelopedData using the
+   -- key management technique depending on the private key type as
+   -- defined in Section 5.2.2.
 }
 
 -- Rand was added in CMP Updates [RFC9480]
 
 Rand ::= SEQUENCE {
--- Rand is encrypted to form the challenge in POPODecKeyChallContent
+-- Rand is encrypted under the public key to form the content of
+-- challenge or encryptedRand in POPODecKeyChallContent
    int                  INTEGER,
    -- the randomly generated INTEGER A (above)
    sender               GeneralName
@@ -5410,10 +5343,10 @@ Rand ::= SEQUENCE {
 }
 
 POPODecKeyRespContent ::= SEQUENCE OF INTEGER
--- One INTEGER per encryption key certification request (in the
--- same order as these requests appear in CertReqMessages).  The
--- retrieved INTEGER A (above) is returned to the sender of the
--- corresponding Challenge.
+-- One INTEGER per encryption or key agreement key certification
+-- request (in the same order as these requests appear in
+-- CertReqMessages). The retrieved INTEGER A (above) is returned to
+-- the sender of the corresponding Challenge.
 
 CertRepMessage ::= SEQUENCE {
     caPubs       [1] SEQUENCE SIZE (1..MAX) OF CMPCertificate
@@ -5780,6 +5713,8 @@ From version 07 -> 08:
 * Added a cross-reference to Section 5.1.1.3 regarding use of OrigPKIMessage to Section 5.1.3.5
 
 * Added POP for KEM keys to Section 5.2.8. Restructured the section and fixed some references which broke from RFC2510 to RFC4210
+
+* Updated Appendix B regarding KEM-based message protection and usage of CMS EnvelopedData
 
 From version 06 -> 07:
 
