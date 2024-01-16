@@ -6300,17 +6300,15 @@ freeText             any valid value
 body                 ip (CertRepMessage)
                      contains exactly one response
                      for each request
-
-     -- The PKI (CA) responds to either one or two requests as
-     -- appropriate.  crc[0] denotes the first (always present);
-     -- crc[1] denotes the second (only present if the ir message
-     -- contained two requests and if the CA supports centralized
-     -- key generation).
-   crc[0].              fixed value of zero
-      certReqId
-     -- MUST contain the response to the first request in the
-     -- corresponding ir message
-
+  -- The PKI (CA) responds to either one or two requests as
+  -- appropriate.  crc[0] denotes the first (always present);
+  -- crc[1] denotes the second (only present if the ir message
+  -- contained two requests and if the CA supports centralized
+  -- key generation).
+crc[0].              fixed value of zero
+   certReqId
+  -- MUST contain the response to the first request in the
+  -- corresponding ir message
 crc[0].status.       present, positive values allowed:
    status               "accepted", "grantedWithMods"
                      negative values allowed:
@@ -6346,8 +6344,8 @@ crc[1].              present if and only if
                      or "grantedWithMods"
 certificate          present
 privateKey           present
-   -- Use EnvelopedData; if backward compatibility is required,
-   -- use EncryptedValue, see Section 5.2.2
+  -- Use EnvelopedData; if backward compatibility is required,
+  -- use EncryptedValue, see Section 5.2.2
 publicationInfo      optionally present
   -- indicates where certificate has been published (present
   -- at discretion of CA)
