@@ -113,7 +113,7 @@ Table of Contents
      4.3.  Proof-of-Possession (POP) of Private Key
        4.3.1.  Signature Keys
        4.3.2.  Encryption Keys
-       4.3.3.  Key Agreement Keys
+       4.3.3.  DH Key Pairs
        4.3.4.  Key Encapsulation Mechanism Keys
      4.4.  Root CA Key Update
        4.4.1.  CA Operator Actions
@@ -956,7 +956,7 @@ Table of Contents
    In terms of message flow, the basic authenticated scheme is as
    follows:
 
-      End entity                                          RA/CA
+     End entity                                          RA/CA
      ==========                                      =============
           out-of-band distribution of Initial Authentication
           Key (IAK) and reference value (RA/CA -> EE)
@@ -1050,7 +1050,7 @@ Table of Contents
    demonstrated using the {request, response, confirmation} triple of
    messages).
 
-4.3.3.  Key Agreement Keys
+4.3.3.  DH Key Pairs
 
    For key agreement keys, the end entity and the PKI management entity
    (i.e., CA or RA) must establish a shared secret key in order to prove
@@ -1646,7 +1646,7 @@ Table of Contents
 
    Some PKI messages will be protected for integrity.
 
-   Note If an asymmetric algorithm is used to protect a message and the
+   Note: If an asymmetric algorithm is used to protect a message and the
    relevant public component has been certified already, then the origin
    of the message can also be authenticated.  On the other hand, if the
    public component is uncertified, then the message origin cannot be
@@ -2804,6 +2804,8 @@ Table of Contents
 
    This data structure is used by the client to send a confirmation to
    the CA/RA to accept or reject certificates.
+
+     CertConfirmContent ::= SEQUENCE OF CertStatus
 
      CertStatus ::= SEQUENCE {
         certHash    OCTET STRING,

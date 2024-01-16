@@ -1272,7 +1272,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
                     <p id="section-toc.1-1.4.2.3.2.2.1"><a href="#section-4.3.2" class="auto internal xref">4.3.2</a>.  <a href="#name-encryption-keys" class="internal xref">Encryption Keys</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.3">
-                    <p id="section-toc.1-1.4.2.3.2.3.1"><a href="#section-4.3.3" class="auto internal xref">4.3.3</a>.  <a href="#name-key-agreement-keys" class="internal xref">Key Agreement Keys</a></p>
+                    <p id="section-toc.1-1.4.2.3.2.3.1"><a href="#section-4.3.3" class="auto internal xref">4.3.3</a>.  <a href="#name-dh-key-pairs" class="internal xref">DH Key Pairs</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.4">
                     <p id="section-toc.1-1.4.2.3.2.4.1"><a href="#section-4.3.4" class="auto internal xref">4.3.4</a>.  <a href="#name-key-encapsulation-mechanism" class="internal xref">Key Encapsulation Mechanism Keys</a></p>
@@ -2556,7 +2556,7 @@ document.<a href="#section-4.2.2.2-3" class="pilcrow">¶</a></p>
 In terms of message flow, the basic authenticated scheme is as
 follows:
 
-   End entity                                          RA/CA
+  End entity                                          RA/CA
   ==========                                      =============
        out-of-band distribution of Initial Authentication
        Key (IAK) and reference value (RA/CA -&gt; EE)
@@ -2661,8 +2661,8 @@ messages).<a href="#section-4.3.2-4" class="pilcrow">¶</a></p>
 </div>
 <div id="sect-4.3.3">
 <section id="section-4.3.3">
-          <h4 id="name-key-agreement-keys">
-<a href="#section-4.3.3" class="section-number selfRef">4.3.3. </a><a href="#name-key-agreement-keys" class="section-name selfRef">Key Agreement Keys</a>
+          <h4 id="name-dh-key-pairs">
+<a href="#section-4.3.3" class="section-number selfRef">4.3.3. </a><a href="#name-dh-key-pairs" class="section-name selfRef">DH Key Pairs</a>
           </h4>
 <p id="section-4.3.3-1">For key agreement keys, the end entity and the PKI management entity
 (i.e., CA or RA) must establish a shared secret key in order to prove
@@ -3294,7 +3294,7 @@ requesting a new certificate or a certificate request template; see <a href="#se
 <a href="#section-5.1.3" class="section-number selfRef">5.1.3. </a><a href="#name-pki-message-protection" class="section-name selfRef">PKI Message Protection</a>
           </h4>
 <p id="section-5.1.3-1">Some PKI messages will be protected for integrity.<a href="#section-5.1.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.1.3-2">Note If an asymmetric algorithm is used to protect a message and the relevant
+<p id="section-5.1.3-2">Note: If an asymmetric algorithm is used to protect a message and the relevant
 public component has been certified already, then the origin of the
 message can also be authenticated.  On the other hand, if the public
 component is uncertified, then the message origin cannot be
@@ -4436,6 +4436,8 @@ all certificates being accepted.<a href="#section-5.3.17-3" class="pilcrow">¶</
 the CA/RA to accept or reject certificates.<a href="#section-5.3.18-1" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.3.18-2">
 <pre>
+  CertConfirmContent ::= SEQUENCE OF CertStatus
+
   CertStatus ::= SEQUENCE {
      certHash    OCTET STRING,
      certReqId   INTEGER,
