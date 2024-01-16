@@ -173,7 +173,7 @@ Updates RFC 9480 Section 2 and Appendix A.2 maintaining backward compatibility
 with CMP version 2 wherever possible and obsoletes both documents.  Updates
 to CMP version 2 are: improving crypto agility, extending the polling mechanism,
 adding new general message types, and adding extended key usages to identify
-special CMP server authorizations.  Introducing version 3 to be used only
+special CMP server authorizations.  Introducing CMP version 3 to be used only
 for changes to the ASN.1 syntax, which are: support of EnvelopedData instead
 of EncryptedValue and hashAlg for indicating a hash AlgorithmIdentifier in
 certConf messages.
@@ -295,7 +295,7 @@ Profile {{RFC9483}}, in the following areas:
 ## Changes Made by This Document
 {: id="sect-1.3"}
 
-This document obsoletes {{RFC4210}}. It includes the changes specified by Section 2 and Appendix C.2 of {{RFC9480}} as described in {{sect-1.2}}. Additionally this document updates {{RFC4210}} in the following areas:
+This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes specified by Section 2 and Appendix C.2 of {{RFC9480}} as described in {{sect-1.2}}. Additionally this document updates the content of {{RFC4210}} in the following areas:
 
 * Added {{sect-3.1.1.4}} introducing the Key Generation Authority.
 
@@ -918,7 +918,7 @@ document.
 In terms of message flow, the basic authenticated scheme is as
 follows:
 
-   End entity                                          RA/CA
+  End entity                                          RA/CA
   ==========                                      =============
        out-of-band distribution of Initial Authentication
        Key (IAK) and reference value (RA/CA -> EE)
@@ -1020,7 +1020,7 @@ demonstrated using the {request, response, confirmation} triple of
 messages).
 
 
-### Key Agreement Keys
+### DH Key Pairs
 {: id="sect-4.3.3"}
 
 For key agreement keys, the end entity and the PKI management entity
@@ -1037,7 +1037,7 @@ appropriate parameters when necessary.
 ### Key Encapsulation Mechanism Keys
 {: id="sect-4.3.4"}
 
-For key encapsulation mechanism keys, the end entity can provide the private key to
+For key encapsulation mechanism (KEM) keys, the end entity can provide the private key to
 the CA/RA, or can be required to decrypt
 a value in order to prove possession of the private key.
 Decrypting a value can be achieved either directly or indirectly.
@@ -1053,7 +1053,7 @@ This specification encourages use of the indirect method because it requires
 no extra messages to be sent (i.e., the proof can be demonstrated using the
 {request, response, confirmation} triple of messages).
 
-Note: A certification request message for a KEM certificate SHALL use POPOPrivKey by using the keyAgreement choice of ProofOfPossession in the popo field of CertReqMsg as long as no KEM-specific choice is available.
+A certification request message for a KEM certificate SHALL use POPOPrivKey by using the keyEncipherment choice of ProofOfPossession in the popo field of CertReqMsg as long as no KEM-specific choice is available.
 
 ## Root CA Key Update
 {: id="sect-4.4"}
@@ -1561,11 +1561,13 @@ An RA MAY include the original PKIMessage from the EE in this generalInfo
 field of the PKIHeader of a PKIMessage.  This is used by the RA to inform
 the CA of the original PKIMessage that it received from the EE and modified
 in some way (e.g., added or modified particular field values or added new
-extensions) before forwarding the new PKIMessage.  If the changes made by
-the RA to the original PKIMessage break the POP of a certificate request,
-the RA MUST set the popo field to RAVerified, see Section 5.2.8.4.  This
+extensions) before forwarding the new PKIMessage.  This
 accommodates, for example, cases in which the CA wishes to check POP or other
 information on the original EE message.
+
+Note: If the changes made by
+the RA to the original PKIMessage break the POP of a certificate request,
+the RA can set the popo field to RAVerified, see {{sect-5.2.8.4}}.
 
 Although the infoValue is PKIMessages, it MUST contain exactly one PKIMessage.
 
@@ -1633,7 +1635,7 @@ The specific types are described in {{sect-5.3}} below.
 
 Some PKI messages will be protected for integrity.
 
-Note If an asymmetric algorithm is used to protect a message and the relevant
+Note: If an asymmetric algorithm is used to protect a message and the relevant
 public component has been certified already, then the origin of the
 message can also be authenticated.  On the other hand, if the public
 component is uncertified, then the message origin cannot be
@@ -1689,6 +1691,7 @@ Algorithms Section 6.1 {{RFC9481}}.
 The PasswordBasedMac is specified as follows (see also {{RFC4211}} and
 {{RFC9045}}):
 
+~~~~ asn.1
   id-PasswordBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 13}
   PBMParameter ::= SEQUENCE {
      salt                OCTET STRING,
@@ -1696,6 +1699,7 @@ The PasswordBasedMac is specified as follows (see also {{RFC4211}} and
      iterationCount      INTEGER,
      mac                 AlgorithmIdentifier
   }
+~~~~
 
 In the above protectionAlg, the salt value is appended to the shared
 secret input. The OWF is then applied iterationCount times, where the
@@ -1891,9 +1895,9 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
 
   staticString MUST be "CMP-KEM".
 
-  transactionID MUST be the values from the message containing the ciphertext ct in KemCiphertextInfo.
+  transactionID MUST be the value from the message containing the ciphertext ct in KemCiphertextInfo.
 
-  Note: The transactionID is used to ensure domain-separation of the derived shared secret key between different PKI management operations. For all PKI management operations with more than one exchange the transactionID MUST be set anyway, see {{sect-5.1.1}}.  In case of Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see {{KEM-Flow2}} of {{sect-e}}, the transactionID MUST be set by Bob.
+  Note: The transactionID is used to ensure domain separation of the derived shared secret key between different PKI management operations. For all PKI management operations with more than one exchange the transactionID MUST be set anyway, see {{sect-5.1.1}}.  In case Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see {{KEM-Flow2}} of {{sect-e}}, the transactionID MUST be set by Bob.
 
   ct is the ciphertext from KemCiphertextInfo.
 
@@ -2225,9 +2229,7 @@ Note: For the purposes of this specification, the ASN.1 comment given in Appendi
 
 If certTemplate (or the altCertTemplate control) contains the subject and publicKey values, then poposkInput MUST be omitted and the signature MUST be computed on the DER-encoded value of certReq field of the CertReqMsg (or the DER-encoded value of AltCertTemplate). If certTemplate/altCertTemplate does not contain both the subject and public key values (i.e., if it contains only one of these, or neither), then poposkInput MUST be present and the signature MUST be computed on the DER-encoded value of poposkInput (i.e., the "value" OCTETs of the POPOSigningKeyInput DER).
 
-If an "authenticated identity" has been established for the sender (e.g., a DN from a previously issued and currently valid certificate), the sender field of poposkInout contains the GeneralName from PKIHeader; if no authenticated GeneralName currently exists for the sender, the publicKeyMAC field of poposkInput contains a password-based MAC (using the protectionAlg AlgId from PKIHeader) on the DER-encoded value of publicKey.
-
-If the certification request is for a key agreement key pair, the POP can alternatively use the POPOSigningKey structure (where the alg field is DHBasedMAC and the signature field is the MAC) for demonstrating POP if the CA already has a D-H certificate that is known to the EE.
+In the special case that the CA/RA has a D-H certificate that is known to the EE and the certification request is for a key agreement key pair, the POP can also use the POPOSigningKey structure (where the algorithmIdentifier field is DHBasedMAC and the signature field is the MAC) for demonstrating POP.
 
 On the other hand, if the certification request is for a key pair that does not support signing (i.e., a request for an encryption or key agreement certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOPrivKey structure in one of following three ways, for details see Section 4.2 and 4.3 of {{RFC4211}}.
 
@@ -2252,15 +2254,15 @@ On the other hand, if the certification request is for a key pair that does not 
 
 This method demonstrates proof-of-possession of the private key by inclusion of the private key (encrypted) in the CertRequest in the POPOPrivKey choice or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.
 
-For a certification request message indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted private key MUST be transferred in the encryptedKey choice of POPOPrivKey in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.
+For a certification request message indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted private key MUST be transferred in the encryptedKey choice of POPOPrivKey (or within the PKIArchiveOptions control) in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.
 
-Note: When using cmp2000(2) in the certification request message header for backward compatibility, the thisMessage choice of POPOPrivKey is used containing the encrypted private key in an EncryptedValue structure wrapped in a BIT STRING.  This allows the necessary conveyance and protection of the private key while maintaining bits-on-the-wire compatibility with {{RFC4211}}. The thisMessage choice has been deprecated in favor of encryptedKey.
+Note: The thisMessage choice has been deprecated in favor of encryptedKey.  When using cmp2000(2) in the certification request message header for backward compatibility, the thisMessage choice of POPOPrivKey is used containing the encrypted private key in an EncryptedValue structure wrapped in a BIT STRING.  This allows the necessary conveyance and protection of the private key while maintaining bits-on-the-wire compatibility with {{RFC4211}}.
 
 
 #### Indirect Method - Encrypted Certificate
 {: id="sect-5.2.8.2"}
 
-The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the CA return not the certificate, but an encrypted certificate using CMS EnvelopedData, see {{sect-5.2.2}}.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage field of POPOPrivKey.
+The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form using CMS EnvelopedData, see {{sect-5.2.2}}.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage field of POPOPrivKey.
 
 ~~~~
                 EE                         RA/CA
@@ -2332,13 +2334,16 @@ The challenge-response messages for proof-of-possession of a private key are spe
 
 For a popdecc message indicating cmp2021(3) in the pvno field of the PKIHeader, the encryption of Rand MUST be transferred in the encryptedRand field in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.  The challenge field MUST contain an empty OCTET STRING.
 
-Note: When using cmp2000(2) in the popdecc message header for backward compatibility, the challenge field MUST contain the encryption (under the public key for which the certification request is being made) of Rand and encryptedRand MUST be omitted.  Using challenge (omitting the optional encryptedRand field) is bit-compatible with [RFC4210]. The challenge field has been deprecated in favor of encryptedRand.
+Note: The challenge field has been deprecated in favor of encryptedRand.  When using cmp2000(2) in the popdecc message header for backward compatibility, the challenge field MUST contain the encryption (under the public key for which the certification request is being made) of Rand and encryptedRand MUST be omitted.  Using challenge (omitting the optional encryptedRand field) is bit-compatible with [RFC4210].
 
 Note: That the size of Rand needs to be appropriate for encryption under the public key of the requester. If, in some environment, names are so long that they cannot fit (e.g., very long DNs), then whatever portion will fit should be used (as long as it includes at least the common name, and as long as the receiver is able to deal meaningfully with the abbreviation).
 
 ~~~~ asn.1
    POPODecKeyRespContent ::= SEQUENCE OF INTEGER
 ~~~~
+
+On receiving the popdecc message, the end entity decrypts all included challenges
+and responds with a popdecr message containing the decrypted integer values in the same order.
 
 
 #### Summary of PoP Options
@@ -2369,9 +2374,9 @@ RAVerified: This is not an EE decision; the RA uses this if and only if it has v
 
 SKPOP: If the EE has a signing key pair, this is the only POP method specified for use in the request for a corresponding certificate.
 
-EKPOPThisMessage (deprecated), KAKPOPThisMessage (deprecated), EKPOPEncryptedKey, KAKPOPEncryptedKey, KEMKPOPEncryptedKey: Whether or not to give up its private key to the CA/RA is an EE decision. If the EE decides to reveal its key, then these are the only POP methods available in this specification to achieve this (and the key pair type and protocol version used will determine which of these methods to use).
+EKPOPThisMessage (deprecated), KAKPOPThisMessage (deprecated), EKPOPEncryptedKey, KAKPOPEncryptedKey, KEMKPOPEncryptedKey: Whether or not to give up its private key to the CA/RA is an EE decision. If the EE decides to reveal its key, then these are the only POP methods available in this specification to achieve this (and the key pair type and protocol version used will determine which of these methods to use).  The reason for deprecating EKPOPThisMessage and KAKPOPThisMessage options has been given in {{sect-5.2.8.1}}.
 
-KAKPOPThisMessageDHMAC: The EE can only use this method if (1) the CA has a DH certificate available for this purpose, and (2) the EE already has a copy of this certificate. If both these conditions hold, then this technique is clearly supported and may be used by the EE, if desired.
+KAKPOPThisMessageDHMAC: The EE can only use this method if (1) the CA/RA has a DH certificate available for this purpose, and (2) the EE already has a copy of this certificate. If both these conditions hold, then this technique is clearly supported and may be used by the EE, if desired.
 
 EKPOPEncryptedCert, KAKPOPEncryptedCert, KEMKPOPEncryptedCert, EKPOPChallengeResp, KAKPOPChallengeResp, and KEMKPOPChallengeResp: The EE picks one of these (in the subsequentMessage field) in the request message, depending upon preference and key pair type. The EE is not doing POP at this point; it is simply indicating which method it wants to use. Therefore, if the CA/RA replies with a "badPOP" error, the EE can re-request using the other POP method chosen in subsequentMessage. Note, however, that this specification encourages the use of the EncryptedCert choice and, furthermore, says that the challenge-response would typically be used when an RA is involved and doing POP verification. Thus, the EE should be able to make an intelligent decision regarding which of these POP methods to choose in the request message.
 
@@ -2714,6 +2719,8 @@ This data structure is used by the client to send a confirmation to
 the CA/RA to accept or reject certificates.
 
 ~~~~ asn.1
+  CertConfirmContent ::= SEQUENCE OF CertStatus
+
   CertStatus ::= SEQUENCE {
      certHash    OCTET STRING,
      certReqId   INTEGER,
@@ -3750,7 +3757,7 @@ password. It is RECOMMENDED that such secret information be limited to a
 single PKI management operation.
 
 Importantly for this section further information about algorithm use profiles
-and their security strength is available in CMP Algorithms [RFCCCC] Section
+and their security strength is available in CMP Algorithms {{RFC9481}} Section
 7.
 
 
@@ -4272,17 +4279,15 @@ freeText             any valid value
 body                 ip (CertRepMessage)
                      contains exactly one response
                      for each request
-
-     -- The PKI (CA) responds to either one or two requests as
-     -- appropriate.  crc[0] denotes the first (always present);
-     -- crc[1] denotes the second (only present if the ir message
-     -- contained two requests and if the CA supports centralized
-     -- key generation).
-   crc[0].              fixed value of zero
-      certReqId
-     -- MUST contain the response to the first request in the
-     -- corresponding ir message
-
+  -- The PKI (CA) responds to either one or two requests as
+  -- appropriate.  crc[0] denotes the first (always present);
+  -- crc[1] denotes the second (only present if the ir message
+  -- contained two requests and if the CA supports centralized
+  -- key generation).
+crc[0].              fixed value of zero
+   certReqId
+  -- MUST contain the response to the first request in the
+  -- corresponding ir message
 crc[0].status.       present, positive values allowed:
    status               "accepted", "grantedWithMods"
                      negative values allowed:
@@ -4318,8 +4323,8 @@ crc[1].              present if and only if
                      or "grantedWithMods"
 certificate          present
 privateKey           present
-   -- Use EnvelopedData; if backward compatibility is required,
-   -- use EncryptedValue, see Section 5.2.2
+  -- Use EnvelopedData; if backward compatibility is required,
+  -- use EncryptedValue, see Section 5.2.2
 publicationInfo      optionally present
   -- indicates where certificate has been published (present
   -- at discretion of CA)
@@ -5035,7 +5040,7 @@ FROM CryptographicMessageSyntax-2009
     -- the updates made in CMP Updates [RFC9480]
 
 KEM-ALGORITHM
-FROM KEMAlgorithmInformation-2023  -- [RFC]
+FROM KEMAlgorithmInformation-2023  -- [RFCFFFF]
     { iso(1) identified-organization(3) dod(6) internet(1)
     security(5) mechanisms(5) pkix(7) id-mod(0)
     id-mod-kemAlgorithmInformation-2023(TBD3) }
