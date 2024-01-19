@@ -66,6 +66,7 @@ informative:
   RFC1847:
   RFC2510:
   RFC4210:
+  RFC4212:
   RFC4510:
   RFC5912:
   RFC7299:
@@ -254,11 +255,11 @@ CMP Updates {{RFC9480}} and CMP Algorithms {{RFC9481}} updated {{RFC4210}}, supp
 Profile {{RFC9483}}, in the following areas:
 
 
-* Adding new extended key usages for various CMP server types, e.g., registration
+* Added new extended key usages for various CMP server types, e.g., registration
   authority and certification authority, to express the authorization of the
   certificate holder that acts as the indicated type of PKI management entity.
 
-* Extending the description of multiple protection to cover additional use cases,
+* Extended the description of multiple protection to cover additional use cases,
   e.g., batch processing of messages.
 
 * Use the type EnvelopedData as the preferred choice instead of EncryptedValue
@@ -280,14 +281,14 @@ Profile {{RFC9483}}, in the following areas:
 * Offer an optional hashAlg field in CertStatus supporting cases that a certificate
   needs to be confirmed that has a signature algorithm that does not indicate
   a specific hash algorithm to use for computing the certHash.  This is also in
-  preparation for upcoming post quantum algorithms.
+  preparation for upcoming post-quantum algorithms.
 
-* Add new general message types to request CA certificates, a root CA update,
+* Added new general message types to request CA certificates, a root CA update,
   a certificate request template, or Certificate Revocation List (CRL) updates.
 
-* Extending the use of polling to p10cr, certConf, rr, genm, and error messages.
+* Extended the use of polling to p10cr, certConf, rr, genm, and error messages.
 
-* Deleting the mandatory algorithm profile in {{sect-c.2}} and refer instead to Section 7 of {{RFC9481}}.
+* Deleted the mandatory algorithm profile in {{sect-c.2}} and refer instead to Section 7 of {{RFC9481}}.
 
 * Added {{sect-8.6}}, {{sect-8.7}}, {{sect-8.9}}, and {{sect-8.10}}.
 
@@ -1020,7 +1021,7 @@ demonstrated using the {request, response, confirmation} triple of
 messages).
 
 
-### DH Key Pairs
+### Key Agreement Keys
 {: id="sect-4.3.3"}
 
 For key agreement keys, the end entity and the PKI management entity
@@ -1315,8 +1316,7 @@ may also be expressed by other means, e.g., explicit configuration.
 To offer automatic validation for the delegation of a role by a CA to another
 entity, the certificates used for CMP message protection or signed data for
 central key generation MUST be issued by the delegating CA and MUST contain
-the respective EKUs. This proves the authorization of this entity by
-delegating CA to act in the given role, as described below.
+the respective EKUs.  This proves that the delegating CA authorized this entity to act in the given role, as described below.
 
 The OIDs to be used for these EKUs are:
 
@@ -1621,9 +1621,9 @@ The certificate profile names in the CertProfileValue sequence relate to the Cer
      genm     [21] GenMsgContent,         --General Message
      genp     [22] GenRepContent,         --General Response
      error    [23] ErrorMsgContent,       --Error Message
-     certConf [24] CertConfirmContent,    --Certificate confirm
-     pollReq  [25] PollReqContent,        --Polling request
-     pollRep  [26] PollRepContent         --Polling response
+     certConf [24] CertConfirmContent,    --Certificate Confirm
+     pollReq  [25] PollReqContent,        --Polling Request
+     pollRep  [26] PollRepContent         --Polling Response
   }
 ~~~~
 
@@ -1776,7 +1776,7 @@ In case the sender of a message has a KEM key pair, it can use a shared secret k
 
 This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
-Note: In this section both entities in the communication need to send and receive messages. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to authenticate messages sent, and "Bob" to denote the entity who needs to authenticate the messages received.
+Note: In this section both entities in the communication need to send and receive messages. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to get its messages authenticated, and "Bob" to denote the entity who needs to authenticate the messages received.
 
 Bob must have generated the ciphertext using KEM encapsulation with Alice's public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
 
@@ -1790,18 +1790,18 @@ Bob must have generated the ciphertext using KEM encapsulation with Alice's publ
   }
 ~~~~
 
-Note: The OID for id-KemBasedMac was registered in the Entrust branch like the OIDs for id-PasswordBasedMac and id-DHBasedMac.
+Note: The OID for id-KemBasedMac was registered in the same branch as the OIDs for id-PasswordBasedMac and id-DHBasedMac.
 
-kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to generate the shared secret mac key.
+kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to derive the shared secret key.
 
-len is the output length of the KDF and MUST be the desired size of the mac key to be used for MAC-based message protection.
+len is the output length of the KDF and MUST be the desired size of the key to be used for MAC-based message protection.
 
-mac is the algorithm identifier of the chosen MAC algorithm, and any associated parameters.
+mac is the algorithm identifier of the chosen MAC algorithm, and any associated parameters, used to calculate the MAC value.
 
 
 The KDF and MAC algorithms MAY be chosen from the options in CMP Algorithms {{RFC9481}}.
 
-The InfoTypeAndValue transferring the KEM ciphertext is of type id-it-KemCiphertextInfo, which is defined in this document as:
+The InfoTypeAndValue transferring the KEM ciphertext uses OID id-it-KemCiphertextInfo, which is defined in this document as:
 
 ~~~~ asn.1
   id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
@@ -1873,8 +1873,6 @@ Step# Alice                                Bob
       KDF(ss, len, context)->(ssk)
    ~~~~
 
-   Note: Bob performs the key derivation in step 3 and not in step 1 to make DOS attacks more difficult.
-
    Bob uses the shared secret key ssk for verifying the MAC-based protection of the message received and in this way authenticates Alice.
 
 This shared secret key ssk can be reused by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.
@@ -1911,11 +1909,11 @@ End of Editorial Note >
 
 * OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.
 
-There are various ways how Alice can request and Bob can provide the KEM ciphertext, see {{sect-e}} for details. The KemCiphertextInfo can be requested using a genm message with an InfoTypeAndValue structure of type id-it-KemCiphertextInfo where the value is absent and can be provided in the following genp message with an InfoTypeAndValue structure of the same type.
-Alternatively, the generalInfo field of the header of a PKIMessage can be used to request and provide a KemCiphertextInfo structure, also using an InfoTypeAndValue structure of type id-it-KemCiphertextInfo in each direction.
+There are various ways how Alice can request and Bob can provide the KEM ciphertext, see {{sect-e}} for details. The KemCiphertextInfo can be requested by the end entity using a genm message with an InfoTypeAndValue structure of type KemCiphertextInfo where the value is absent and can be provided in the following genp message with an InfoTypeAndValue structure of the same type.
+Alternatively, the generalInfo field of the header of a PKIMessage can be used to request and provide a KemCiphertextInfo structure, also using an InfoTypeAndValue structure of type KemCiphertextInfo in each direction.
 The procedure works also without Alice explicitly requesting the KEM ciphertext, in case that Bob knows beforehand a KEM key of Alice and can expect that she is ready to use it.
 
-If both the initiator and responder in a PKI management operation have KEM key pairs, this procedure can be applied by both entities independently, establishing and using different shared secret keys on either side.
+If both the initiator and responder in a PKI management operation have KEM key pairs, this procedure can be applied by both entities independently, establishing and using different shared secret keys for either direction.
 
 
 #### Multiple Protection
@@ -1995,6 +1993,8 @@ The new control is defined as follows:
 
   AltCertTemplate ::= AttributeTypeAndValue
 ~~~~
+
+See also {{RFC4212}} for more details on how to manage certificates in alternative formats using CRMF {{RFC4211}} syntax.
 
 
 ### Encrypted Values
@@ -2229,7 +2229,7 @@ Note: For the purposes of this specification, the ASN.1 comment given in Appendi
 
 If certTemplate (or the altCertTemplate control) contains the subject and publicKey values, then poposkInput MUST be omitted and the signature MUST be computed on the DER-encoded value of certReq field of the CertReqMsg (or the DER-encoded value of AltCertTemplate). If certTemplate/altCertTemplate does not contain both the subject and public key values (i.e., if it contains only one of these, or neither), then poposkInput MUST be present and the signature MUST be computed on the DER-encoded value of poposkInput (i.e., the "value" OCTETs of the POPOSigningKeyInput DER).
 
-In the special case that the CA/RA has a D-H certificate that is known to the EE and the certification request is for a key agreement key pair, the POP can also use the POPOSigningKey structure (where the algorithmIdentifier field is DHBasedMAC and the signature field is the MAC) for demonstrating POP.
+In the special case that the CA/RA has a D-H certificate that is known to the EE and the certification request is for a key agreement key pair, the EE can also use the POPOSigningKey structure (where the algorithmIdentifier field is DHBasedMAC and the signature field is the MAC) for demonstrating POP.
 
 On the other hand, if the certification request is for a key pair that does not support signing (i.e., a request for an encryption or key agreement certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOPrivKey structure in one of following three ways, for details see Section 4.2 and 4.3 of {{RFC4211}}.
 
@@ -2252,7 +2252,7 @@ On the other hand, if the certification request is for a key pair that does not 
 #### Inclusion of the Private Key
 {: id="sect-5.2.8.1"}
 
-This method demonstrates proof-of-possession of the private key by inclusion of the private key (encrypted) in the CertRequest in the POPOPrivKey choice or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.
+This method demonstrates proof-of-possession of the private key by inclusion of the private key (encrypted) in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.
 
 For a certification request message indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted private key MUST be transferred in the encryptedKey choice of POPOPrivKey (or within the PKIArchiveOptions control) in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.
 
@@ -2262,7 +2262,7 @@ Note: The thisMessage choice has been deprecated in favor of encryptedKey.  When
 #### Indirect Method - Encrypted Certificate
 {: id="sect-5.2.8.2"}
 
-The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form using CMS EnvelopedData, see {{sect-5.2.2}}.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage field of POPOPrivKey.
+The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form, see {{sect-5.2.2}}.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage choice of POPOPrivKey.
 
 ~~~~
                 EE                         RA/CA
@@ -2272,13 +2272,13 @@ The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of
                  <---       ack        -----
 ~~~~
 
-The end entity proves knowledge of the private key to the CA by providing the correct CertHash for this certificate in the certConf message. This demonstrates POP because the EE can only compute the correct CertHash if it is able to recover the certificate from the EnvelopedData, and it can only recover the certificate if it is able to decrypt the symmetric key using the required private key. Clearly, for this to work, the CA MUST NOT publish the certificate until the certConf message arrives (when certHash is to be used to demonstrate POP). See {{sect-5.3.18}} for further details.
+The end entity proves knowledge of the private key to the CA by providing the correct CertHash for this certificate in the certConf message. This demonstrates POP because the EE can only compute the correct CertHash if it is able to recover the encrypted certificate, and it can only recover the certificate if it is able to obtain the symmetric key using the required private key. Clearly, for this to work, the CA MUST NOT publish the certificate until the certConf message arrives (when certHash is to be used to demonstrate POP). See {{sect-5.3.18}} for further details.
 
 
 #### Direct Method - Challenge-Response Protocol
 {: id="sect-5.2.8.3"}
 
-The "direct" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages POPODecKeyChall and POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage field of POPOPrivKey.
+The "direct" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages popdecc of type POPODecKeyChall and popdecr of type POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage choice of POPOPrivKey.
 
 Note: This method would typically be used in an environment in which an RA verifies POP and then makes a certification request to the CA on behalf of the end entity. In such a scenario, the CA trusts the RA to have done POP correctly before the RA requests a certificate for the end entity.
 
@@ -2334,9 +2334,9 @@ The challenge-response messages for proof-of-possession of a private key are spe
 
 For a popdecc message indicating cmp2021(3) in the pvno field of the PKIHeader, the encryption of Rand MUST be transferred in the encryptedRand field in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.  The challenge field MUST contain an empty OCTET STRING.
 
-Note: The challenge field has been deprecated in favor of encryptedRand.  When using cmp2000(2) in the popdecc message header for backward compatibility, the challenge field MUST contain the encryption (under the public key for which the certification request is being made) of Rand and encryptedRand MUST be omitted.  Using challenge (omitting the optional encryptedRand field) is bit-compatible with [RFC4210].
+Note: The challenge field has been deprecated in favor of encryptedRand.  When using cmp2000(2) in the popdecc message header for backward compatibility, the challenge field MUST contain the encryption (involving the public key for which the certification request is being made) of Rand and encryptedRand MUST be omitted.  Using challenge (omitting the optional encryptedRand field) is bit-compatible with [RFC4210].
 
-Note: That the size of Rand needs to be appropriate for encryption under the public key of the requester. If, in some environment, names are so long that they cannot fit (e.g., very long DNs), then whatever portion will fit should be used (as long as it includes at least the common name, and as long as the receiver is able to deal meaningfully with the abbreviation).
+Note: That the size of Rand needs to be appropriate for encryption, involving the public key of the requester. If, in some environment, names are so long that they cannot fit (e.g., very long DNs), then whatever portion will fit should be used (as long as it includes at least the common name, and as long as the receiver is able to deal meaningfully with the abbreviation).
 
 ~~~~ asn.1
    POPODecKeyRespContent ::= SEQUENCE OF INTEGER
@@ -2956,10 +2956,8 @@ This MAY be used by the client to get an update of a root CA certificate,
 which is provided in the body of the request message.  In contrast to the
 ckuann message, this approach follows the request/response model.
 
-The EE SHOULD reference its current trust anchor in a TrustAnchor
-structure in the request body, giving the root CA certificate if
-available; otherwise, the public key value of the trust anchor is
-given.
+The EE SHOULD reference its current trust anchor in RootCaCertValue
+in the request body, giving the root CA certificate if available.
 
 ~~~~
   GenMsg:    {id-it 20}, RootCaCertValue | < absent >
@@ -3049,7 +3047,7 @@ A CRL source is given either by a DistributionPointName or the GeneralNames
 of the issuing CA.  The DistributionPointName should be treated as an internal
 pointer to identify a CRL that the server already has and not as a way to
 ask the server to fetch CRLs from external locations. The server SHALL only provide
-only those CRLs that are more recent than the ones indicated by the client.
+those CRLs that are more recent than the ones indicated by the client.
 
 ~~~~
   GenMsg:    {id-it 22}, SEQUENCE SIZE (1..MAX) OF CRLStatus
@@ -3315,7 +3313,7 @@ if alternate means are suitable for a given environment (see
 
 ## Root CA Initialization
 {: id="sect-6.1"}
-See {{sect-3.1.1.2}} for this document's definition of "root CA".]
+See {{sect-3.1.1.2}} for this document's definition of "root CA".
 
 A newly created root CA must produce a "self-certificate", which is a
 Certificate structure with the profile defined for the "newWithNew"
@@ -3729,7 +3727,7 @@ it much easier to reproduce the PRNG environment that produced the keys and
 to search the resulting small set of possibilities than brute-force searching
 the whole key space. As an example of predictable random numbers, see {{CVE-2008-0166}}; consequences of low-entropy random numbers are discussed in [Mining Your Ps and Qs](#MiningPsQs). The generation of quality random numbers is difficult. [ISO/IEC 20543:2019](#ISO.20543-2019), [NIST SP 800-90A Rev.1](#NIST.SP.800_90Ar1), [BSI AIS 31 V2.0](#AIS31), and other specifications offer valuable guidance in this area.
 
-If shared secret information is generated by a cryptographically secure randomnumber
+If shared secret information is generated by a cryptographically secure random number
 generator (CSRNG), it is safe to assume that the entropy of the shared secret
 information equals its bit length. If no CSRNG is used, the entropy of
 shared secret information depends on the details of the generation process
@@ -3745,7 +3743,7 @@ different key pairs, the security of the shared secret information should
 exceed the security strength of each individual key pair.
 
 For the case of a PKI management operation that delivers a new trust anchor
-(e.g., a root CA certificate) using caPubs or genm that is (a) not concluded
+(e.g., a root CA certificate) using caPubs or genp that is (a) not concluded
 in a timely manner or (b) where the shared secret information is reused
 for several key management operations, the entropy of the shared secret information,
 if known, should not be less than the security strength of the trust anchor
@@ -3903,7 +3901,7 @@ management are available in the Lightweight CMP Profile {{RFC9483}}.
 A revocation request must incorporate suitable security mechanisms,
 including proper authentication, in order to reduce the probability
 of successful denial-of-service attacks.  A digital signature or D-H/KEM-based message protection on the
-request -- REQUIRED to support within this specification depending on the key-type used if
+request -- REQUIRED to support within this specification depending on the key type used if
 revocation requests are supported -- can provide the authentication
 required, but there are circumstances under which an alternative
 mechanism may be desirable (e.g., when the private key is no longer
@@ -4865,7 +4863,7 @@ Step# PKI entity                           PKI management entity
       (Alice)                              (Bob)
   1   format unprotected genm
         of type
-        id-it-KemCiphertextInfo
+        KemCiphertextInfo
         without value, and
         KEM certificate in
         extraCerts
@@ -4874,7 +4872,7 @@ Step# PKI entity                           PKI management entity
                                            perform KEM Encapsulate
                                            format unprotected genp
                                              of type
-                                             id-it-KemCiphertextInfo
+                                             KemCiphertextInfo
                                              providing KEM ciphertext
                          <-   genp    <-
   3   perform KEM Decapsulate
@@ -4913,7 +4911,7 @@ Step# PKI entity                           PKI management entity
       format request providing
         KEM ciphertext in
         generalInfo of type
-        id-it-KemCiphertextInfo,
+        KemCiphertextInfo,
         and with protection
         depending on available
         key material
@@ -4938,7 +4936,7 @@ Step# PKI entity                           PKI management entity
 ~~~
 {: #KEM-Flow2 title='Message Flow when the PKI entity knows that the PKI management entity uses a KEM key pair and has the authentic public key' artwork-align="left"}
 
-Note: {{KEM-Flow2}} describes the situation where KEM-based messages protection may not require more that one message exchange.  In this case, the transactionID MUST also be used by the PKI entity (Bob) to ensure domain-separation between different PKI management operations.
+Note: {{KEM-Flow2}} describes the situation where KEM-based message protection may not require more that one message exchange.  In this case, the transactionID MUST also be used by the PKI entity (Bob) to ensure domain separation between different PKI management operations.
 
 
 Message Flow when the PKI entity does not know that the PKI management entity uses a KEM key pair:
@@ -5014,8 +5012,8 @@ FROM PKIXCRMF-2009
     security(5) mechanisms(5) pkix(7) id-mod(0)
     id-mod-crmf2005-02(55) }
     -- The import of EncryptedKey is added due to the updates made
-    -- in CMP Updates [RFC9480]. EncryptedValue does not need to
-    -- be imported anymore and is therefore removed here.
+    -- in [RFC9480]. EncryptedValue does not need to be imported
+    -- anymore and is therefore removed here.
 
 CertificationRequest
 FROM PKCS-10
@@ -5030,7 +5028,7 @@ FROM PKCS-9
     {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
     modules(0) pkcs-9(1)}
     -- The import of localKeyId is added due to the updates made in
-    -- CMP Updates [RFC9480]
+    -- [RFC9480]
 
 EnvelopedData, SignedData
 FROM CryptographicMessageSyntax-2009
@@ -5044,9 +5042,36 @@ FROM KEMAlgorithmInformation-2023  -- [RFCFFFF]
     { iso(1) identified-organization(3) dod(6) internet(1)
     security(5) mechanisms(5) pkix(7) id-mod(0)
     id-mod-kemAlgorithmInformation-2023(TBD3) }
+    -- The import of KEM-ALGORITHM was added due to the updates made
+    -- in [RFCXXXX]
 -- RFC-Editor: Please set the new OID defined in
 -- draft-ietf-lamps-cms-kemri as TBD3.
 ;
+
+-- History of the PKIXCMP ASN.1 modules
+-- [RFC2510]
+--    1988 Syntax, PKIXCMP, 1.3.6.1.5.5.7.0.9 (id-mod-cmp)
+--    Obsoleted by RFC 4210 PKIXCMP, 1.3.6.1.5.5.7.0.16
+--                                   (id-mod-cmp2000)
+-- [RFC4210]
+--    1988 Syntax, PKIXCMP, 1.3.6.1.5.5.7.0.16 (id-mod-cmp2000)
+--    Replaced by RFC 9480 PKIXCMP, 1.3.6.1.5.5.7.0.99
+--                                  (id-mod-cmp2021-88)
+-- [RFC5912]
+--    2002 Syntax, PKIXCMP-2009, 1.3.6.1.5.5.7.0.50
+--                               (id-mod-cmp2000-02)
+--    Replaced by RFC 9480 PKIXCMP-2021, 1.3.6.1.5.5.7.0.100
+--                                       (id-mod-cmp2021-02)
+-- [RFC9480]
+--    1988 Syntax, PKIXCMP, 1.3.6.1.5.5.7.0.99 (id-mod-cmp2021-88)
+--    2002 Syntax, PKIXCMP-2021, 1.3.6.1.5.5.7.0.100
+--                               (id-mod-cmp2021-02)
+--    Obsoleted by [RFCXXXX] PKIXCMP-2023, 1.3.6.1.5.5.7.0.TBD2
+--                                         (id-mod-cmp2023-02)
+-- [RFCXXXX]
+--    2002 Syntax, PKIXCMP-2023, 1.3.6.1.5.5.7.0.TBD2
+--                               (id-mod-cmp2023-02)
+
 
 -- The rest of the module contains locally defined OIDs and
 -- constructs:
@@ -5180,7 +5205,7 @@ DHBMParameter ::= SEQUENCE {
     -- or HMAC [RFC2104, RFC2202])
 }
 
--- id-KemBasedMac and KemBMParameter added in [RFCXXXX]
+-- id-KemBasedMac and KemBMParameter were added in [RFCXXXX]
 
 id-KemBasedMac OBJECT IDENTIFIER ::= { iso(1) member-body(2)
     usa(840) nt(113533) nsn(7) algorithms(66) TBD4 }
@@ -5308,6 +5333,8 @@ POPODecKeyChallContent ::= SEQUENCE OF Challenge
 -- request (in the same order as these requests appear in
 -- CertReqMessages).
 
+-- encryptedRand was added in [RFCXXXX]
+
 Challenge ::= SEQUENCE {
    owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}}
                             OPTIONAL,
@@ -5321,9 +5348,8 @@ Challenge ::= SEQUENCE {
    -- INTEGER MUST be used for each Challenge.)
    challenge           OCTET STRING
    -- MUST be used for cmp2000(2) popdecc messages and MUST be
-   -- the encryption of Rand (depending on private key type, either
-   -- public key encryption or encrypted using symmetric key derived
-   -- from key agreement key).
+   -- the encryption of Rand (using a mechanism depending on the
+   -- private key type).
    -- MUST be an empty OCTET STRING for cmp2021(3) popdecc messages.
    -- Note: Using challenge omitting the optional encryptedRand is
    -- bit-compatible to the syntax without adding this optional
@@ -5336,10 +5362,10 @@ Challenge ::= SEQUENCE {
    -- defined in Section 5.2.2.
 }
 
--- Rand was added in CMP Updates [RFC9480]
+-- Rand was added in [RFC9480]
 
 Rand ::= SEQUENCE {
--- Rand is encrypted under the public key to form the content of
+-- Rand is encrypted involving the public key to form the content of
 -- challenge or encryptedRand in POPODecKeyChallContent
    int                  INTEGER,
    -- the randomly generated INTEGER A (above)
@@ -5376,7 +5402,7 @@ CertifiedKeyPair ::= SEQUENCE {
     -- See [RFC4211] for comments on encoding.
     -- Changed from EncryptedValue to EncryptedKey as a CHOICE of
     -- EncryptedValue and EnvelopedData due to the changes made in
-    -- CMP Updates [RFC9480].
+    -- [RFC9480].
     -- Using the choice EncryptedValue is bit-compatible to the
     -- syntax without this change.
     publicationInfo [1] PKIPublicationInfo  OPTIONAL }
@@ -5386,7 +5412,7 @@ CertOrEncCert ::= CHOICE {
     encryptedCert   [1] EncryptedKey
     -- Changed from Encrypted Value to EncryptedKey as a CHOICE of
     -- EncryptedValue and EnvelopedData due to the changes made in
-    -- CMP Updates [RFC9480].
+    -- [RFC9480].
     -- Using the choice EncryptedValue is bit-compatible to the
     -- syntax without this change.
 }
@@ -5446,7 +5472,7 @@ NestedMessageContent ::= PKIMessages
 -- ExpandedRegControlSet, id-regCtrl-altCertTemplate,
 -- AltCertTemplate, regCtrl-algId, id-regCtrl-algId, AlgIdCtrl,
 -- regCtrl-rsaKeyLen, id-regCtrl-rsaKeyLen, and RsaKeyLenCtrl
--- were added in CMP Updates [RFC9480]
+-- were added in [RFC9480]
 
 CertReqTemplateContent ::= SEQUENCE {
    certTemplate           CertTemplate,
@@ -5490,7 +5516,7 @@ RsaKeyLenCtrl ::= INTEGER (1..MAX)
    -- SHALL be used to specify supported RSA key lengths
 
 -- RootCaKeyUpdateContent, CRLSource, and CRLStatus were added in
--- CMP Updates [RFC9480]
+-- [RFC9480]
 
 RootCaKeyUpdateContent ::= SEQUENCE {
    newWithNew       CMPCertificate,
@@ -5511,7 +5537,7 @@ CRLStatus ::= SEQUENCE {
    source       CRLSource,
    thisUpdate   Time OPTIONAL }
 
--- KemCiphertextInfo and KemOtherInfo added in [RFCXXXX]
+-- KemCiphertextInfo and KemOtherInfo were added in [RFCXXXX]
 
 KemCiphertextInfo ::= SEQUENCE {
    kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
@@ -5569,7 +5595,7 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --      RevPassphraseValue      ::= EncryptedKey
 --      - Changed from Encrypted Value to EncryptedKey as a CHOICE
 --      - of EncryptedValue and EnvelopedData due to the changes
---      - made in CMP Updates [RFC9480]
+--      - made in [RFC9480]
 --      - Using the choice EncryptedValue is bit-compatible to
 --      - the syntax without this change
 --   id-it-implicitConfirm  OBJECT IDENTIFIER ::= {id-it 13}
@@ -5583,31 +5609,31 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --   id-it-caCerts          OBJECT IDENTIFIER ::= {id-it 17}
 --      CaCertsValue            ::= SEQUENCE SIZE (1..MAX) OF
 --                                             CMPCertificate
---      - id-it-caCerts added in CMP Updates [RFC9480]
+--      - id-it-caCerts added in [RFC9480]
 --   id-it-rootCaKeyUpdate  OBJECT IDENTIFIER ::= {id-it 18}
 --      RootCaKeyUpdateValue    ::= RootCaKeyUpdateContent
---      - id-it-rootCaKeyUpdate added in CMP Updates [RFC9480]
+--      - id-it-rootCaKeyUpdate added in [RFC9480]
 --   id-it-certReqTemplate  OBJECT IDENTIFIER ::= {id-it 19}
 --      CertReqTemplateValue    ::= CertReqTemplateContent
---      - id-it-certReqTemplate added in CMP Updates [RFC9480]
+--      - id-it-certReqTemplate added in [RFC9480]
 --   id-it-rootCaCert       OBJECT IDENTIFIER ::= {id-it 20}
 --      RootCaCertValue         ::= CMPCertificate
---      - id-it-rootCaCert added in CMP Updates [RFC9480]
+--      - id-it-rootCaCert added in [RFC9480]
 --   id-it-certProfile      OBJECT IDENTIFIER ::= {id-it 21}
 --      CertProfileValue        ::= SEQUENCE SIZE (1..MAX) OF
 --                                                 UTF8String
---      - id-it-certProfile added in CMP Updates [RFC9480]
+--      - id-it-certProfile added in [RFC9480]
 --   id-it-crlStatusList    OBJECT IDENTIFIER ::= {id-it 22}
 --      CRLStatusListValue      ::= SEQUENCE SIZE (1..MAX) OF
 --                                                  CRLStatus
---      - id-it-crlStatusList added in CMP Updates [RFC9480]
+--      - id-it-crlStatusList added in [RFC9480]
 --   id-it-crls             OBJECT IDENTIFIER ::= {id-it 23}
 --      CRLsValue               ::= SEQUENCE SIZE (1..MAX) OF
 --                                            CertificateList
---      - id-it-crls added in CMP Updates [RFC9480]
+--      - id-it-crls added in [RFC9480]
 --   id-it-KemCiphertextInfo    OBJECT IDENTIFIER ::= {id-it TBD1}
 --      KemCiphertextInfoValue  ::= KemCiphertextInfo
---      - id-it-KemCiphertextInfo added in [RFCXXXX]
+--      - id-it-KemCiphertextInfo was added in [RFCXXXX]
 --
 -- where
 --
@@ -5670,8 +5696,7 @@ PollRepContent ::= SEQUENCE OF SEQUENCE {
 
 --
 -- Extended key usage extension for PKI entities used in CMP
--- operations, added due to the changes made in
--- CMP Updates [RFC9480]
+-- operations, added due to the changes made in [RFC9480]
 -- The EKUs for the CA and RA are reused from CMC, as defined in
 -- [RFC6402]
 --
@@ -5707,6 +5732,8 @@ From version 07 -> 08:
 * Added a cross-reference to Section 5.1.1.3 regarding use of OrigPKIMessage to Section 5.1.3.5
 
 * Added POP for KEM keys to Section 5.2.8. Restructured the section and fixed some references which broke from RFC2510 to RFC4210
+
+* Fixed the issue in Section 5.3.19.15, resulting from a change made in draft-ietf-lamps-cmp-updates-14, that no plain public-key can be used in the request message in CMPCertificate.
 
 * Updated Appendix B regarding KEM-based message protection and usage of CMS EnvelopedData
 
