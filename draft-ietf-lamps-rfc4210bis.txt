@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 22 July 2024                                            Entrust
-                                                         19 January 2024
+Expires: 25 July 2024                                            Entrust
+                                                         22 January 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 July 2024.
+   This Internet-Draft will expire on 25 July 2024.
 
 Copyright Notice
 
@@ -1926,7 +1926,7 @@ Table of Contents
         KemOtherInfo ::= SEQUENCE {
           staticString      PKIFreeText,
           transactionID     OCTET STRING,
-          ct                OCTET STRING
+          kemContext    [0] OCTET STRING OPTIONAL
         }
 
       staticString MUST be "CMP-KEM".
@@ -1942,7 +1942,8 @@ Table of Contents
       Alice in the initial request message, see Figure 4 of Appendix E,
       the transactionID MUST be set by Bob.
 
-      ct is the ciphertext from KemCiphertextInfo.
+      kemContext MAY contain additional algorithm specific context
+      information.
 
    < Editorial Note: With the update to -V08, the fields senderNonce,
    recipNonce, len, and mac were removed from the KemOtherInfo sequence.
