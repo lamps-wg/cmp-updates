@@ -1887,7 +1887,7 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
     KemOtherInfo ::= SEQUENCE {
       staticString      PKIFreeText,
       transactionID     OCTET STRING,
-      ct                OCTET STRING
+      kemContext    [0] OCTET STRING OPTIONAL
     }
   ~~~~
 
@@ -1897,7 +1897,7 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
 
   Note: The transactionID is used to ensure domain separation of the derived shared secret key between different PKI management operations. For all PKI management operations with more than one exchange the transactionID MUST be set anyway, see {{sect-5.1.1}}.  In case Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see {{KEM-Flow2}} of {{sect-e}}, the transactionID MUST be set by Bob.
 
-  ct is the ciphertext from KemCiphertextInfo.
+  kemContext MAY contain additional algorithm specific context information.
 
 \< Editorial Note: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.
 
@@ -5552,8 +5552,8 @@ KemOtherInfo ::= SEQUENCE {
    transactionID    OCTET STRING,
    -- MUST contain the values from the message previously received
    -- containing the ciphertext (ct) in KemCiphertextInfo
-   ct               OCTET STRING
-   -- MUST be the ciphertext from that KemCiphertextInfo
+   kemContext   [0] OCTET STRING OPTIONAL
+   -- MAY contain additional algorithm specific context information
   }
 
 INFO-TYPE-AND-VALUE ::= TYPE-IDENTIFIER
