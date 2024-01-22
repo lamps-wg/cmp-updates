@@ -5729,8 +5729,8 @@ Appendix F.  Compilable ASN.1 Definitions
       transactionID    OCTET STRING,
       -- MUST contain the values from the message previously received
       -- containing the ciphertext (ct) in KemCiphertextInfo
-      ct               OCTET STRING
-      -- MUST be the ciphertext from that KemCiphertextInfo
+      kemContext   [0] OCTET STRING OPTIONAL
+      -- MAY contain additional algorithm specific context information
      }
 
    INFO-TYPE-AND-VALUE ::= TYPE-IDENTIFIER
