@@ -1557,7 +1557,7 @@ deleting the transaction.
 #### OrigPKIMessage
 {: id="sect-5.1.1.3"}
 
-An RA MAY include the original PKIMessage from the EE in this generalInfo
+An RA MAY include the original PKIMessage from the EE in the generalInfo
 field of the PKIHeader of a PKIMessage.  This is used by the RA to inform
 the CA of the original PKIMessage that it received from the EE and modified
 in some way (e.g., added or modified particular field values or added new
@@ -1776,7 +1776,7 @@ In case the sender of a message has a KEM key pair, it can use a shared secret k
 
 This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
-Note: In this section both entities in the communication need to send and receive messages. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to get its messages authenticated, and "Bob" to denote the entity who needs to authenticate the messages received.
+Note: In this section both entities in the communication need to send and receive messages. Also, the client as well as the server side of the communication could wish to protect messages using KEM keys. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to get its messages authenticated, and "Bob" to denote the entity who needs to authenticate the messages received.
 
 Bob must have generated the ciphertext using KEM encapsulation with Alice's public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
 
