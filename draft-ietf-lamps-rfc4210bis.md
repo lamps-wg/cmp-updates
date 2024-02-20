@@ -1054,7 +1054,7 @@ This specification encourages use of the indirect method because it requires
 no extra messages to be sent (i.e., the proof can be demonstrated using the
 {request, response, confirmation} triple of messages).
 
-A certification request message for a KEM certificate SHALL use POPOPrivKey by using the keyEncipherment choice of ProofOfPossession in the popo field of CertReqMsg as long as no KEM-specific choice is available.
+A certification request message for a KEM certificate SHALL use POPOPrivKey by using the keyEncipherment choice of ProofOfPossession, see {{sect-5.2.8}}, in the popo field of CertReqMsg as long as no KEM-specific choice is available.
 
 ## Root CA Key Update
 {: id="sect-4.4"}
@@ -1567,7 +1567,7 @@ information on the original EE message.
 
 Note: If the changes made by
 the RA to the original PKIMessage break the POP of a certificate request,
-the RA can set the popo field to RAVerified, see {{sect-5.2.8.4}}.
+the RA can set the popo field to raVerified, see {{sect-5.2.8.4}}.
 
 Although the infoValue is PKIMessages, it MUST contain exactly one PKIMessage.
 
@@ -1776,7 +1776,7 @@ In case the sender of a message has a KEM key pair, it can use a shared secret k
 
 This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
-Note: In this section both entities in the communication need to send and receive messages. Also, the client as well as the server side of the communication could wish to protect messages using KEM keys. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to get its messages authenticated, and "Bob" to denote the entity who needs to authenticate the messages received.
+Note: In this section both entities in the communication need to send and receive messages. Also, only the client or the server side of the communication could wish to protect messages using KEM keys. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to get its messages authenticated, and "Bob" to denote the entity who needs to authenticate the messages received.
 
 Bob must have generated the ciphertext using KEM encapsulation with Alice's public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
 
@@ -1816,12 +1816,15 @@ When id-it-KemCiphertextInfo is used, the value is either absent or of type KemC
   KemCiphertextInfo ::= SEQUENCE {
     kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
     ct               OCTET STRING
+    kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
   }
 ~~~~
 
 kem is the algorithm identifier of the KEM algorithm, and any associated parameters, used by Bob to generate the ciphertext ct.
 
 ct is the ciphertext output from the Encapsulate function.
+
+kemContext MAY contain additional algorithm specific context information, see also the definition of ukm in {{I-D.ietf-lamps-cms-kemri, Section 3}}.
 
 This generic message flow assumes that Bob possesses the public KEM key of Alice. Alice can be the initiator of a PKI management operation or the responder. For more detailed figures see {{sect-e}}.
 
@@ -1887,7 +1890,7 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
     KemOtherInfo ::= SEQUENCE {
       staticString      PKIFreeText,
       transactionID     OCTET STRING,
-      kemContext    [0] OCTET STRING OPTIONAL
+      kemContext    [0] EXPLICIT OCTET STRING OPTIONAL
     }
   ~~~~
 
@@ -1901,9 +1904,9 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
 
 \< Editorial Note: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.
 
-  Alice's public KEM key could be added based on the discussion on the LAMPS list, see the tread "Does cms-kemri need to include H(ct) as a KDF input?".
+  The kemContext was added to KemCiphertextInfo and KemOtherInfo for offer similar flexibility as cms-kemri offers with ukm.
 
-  The authors are waiting for expert reviews providing guidance which fields are needed and bring additional value for the KEM-bases message protection.
+  The authors are waiting for further expert review from the WG on the specification of KEM-based message protection.
 
 End of Editorial Note >
 
@@ -2202,6 +2205,18 @@ See {{RFC4211}} for PKIPublicationInfo syntax.
 ### Proof-of-Possession Structures
 {: id="sect-5.2.8"}
 
+The proof-of-possession structure used is indicated in the popo field
+of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of {{RFC4211}}.
+
+~~~~ asn.1
+   ProofOfPossession ::= CHOICE {
+      raVerified      [0] NULL,
+      signature       [1] POPOSigningKey,
+      keyEncipherment [2] POPOPrivKey,
+      keyAgreement    [3] POPOPrivKey
+   }
+~~~~
+
 If the certification request is for a key pair that supports signing (i.e., a request for a verification certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOSigningKey structure, for details see Section 4.1 of {{RFC4211}}.
 
 ~~~~ asn.1
@@ -2252,7 +2267,7 @@ On the other hand, if the certification request is for a key pair that does not 
 #### Inclusion of the Private Key
 {: id="sect-5.2.8.1"}
 
-This method demonstrates proof-of-possession of the private key by inclusion of the private key (encrypted) in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.
+This method demonstrates proof-of-possession of the private key by including the encrypted private key in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.
 
 For a certification request message indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted private key MUST be transferred in the encryptedKey choice of POPOPrivKey (or within the PKIArchiveOptions control) in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.
 
@@ -2314,7 +2329,7 @@ This protocol is obviously much longer than the exchange given in {{sect-5.2.8.2
                  <--- ack -----
 ~~~~
 
-The challenge-response messages for proof-of-possession of a private key are specified as follows (for decryption keys see {{MvOV97}}, p.404 for details).  This challenge-response exchange is associated with the preceding certification request message (and subsequent certification response and confirmation messages) by the transactionID used in the PKIHeader and by the protection (MACing or signing) applied to the PKIMessage.
+The challenge-response messages for proof-of-possession of a private key are specified as follows (for decryption keys see {{MvOV97}}, p.404 for details).  This challenge-response exchange is associated with the preceding certification request message (and subsequent certification response and confirmation messages) by the transactionID used in the PKIHeader and by the protection applied to the PKIMessage.
 
 ~~~~ asn.1
    POPODecKeyChallContent ::= SEQUENCE OF Challenge
@@ -5544,6 +5559,8 @@ KemCiphertextInfo ::= SEQUENCE {
    -- AlgId of the Key Encapsulation Mechanism algorithm
    ct               OCTET STRING
    -- Ciphertext output from the Encapsulate function
+   kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
+   -- MAY contain additional algorithm specific context information
    }
 
 KemOtherInfo ::= SEQUENCE {
@@ -5552,7 +5569,7 @@ KemOtherInfo ::= SEQUENCE {
    transactionID    OCTET STRING,
    -- MUST contain the values from the message previously received
    -- containing the ciphertext (ct) in KemCiphertextInfo
-   kemContext   [0] OCTET STRING OPTIONAL
+   kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
    -- MAY contain additional algorithm specific context information
   }
 
