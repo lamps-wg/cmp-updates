@@ -741,7 +741,7 @@ token delivery.
 Later sections define a set of standard messages supporting the above
 operations.  Transport protocols for conveying these exchanges in
 different environments (e.g., off-line: file-based, on-line: mail,
-HTTP [RFCDDDD], and CoAP {{RFC9482}}) are
+HTTP {{I-D.ietf-lamps-rfc6712bis}}, and CoAP {{RFC9482}}) are
 beyond the scope of this document and are specified separately.
 
 
@@ -1713,8 +1713,8 @@ K > H, then all of BASEKEY is used for the most significant H bits of
 the key, OWF("1" || BASEKEY) is used for the next most significant H
 bits of the key, OWF("2" || BASEKEY) is used for the next most
 significant H bits of the key, and so on, until all K bits have been
-derived. [Here "N" is the ASCII byte encoding the number N and "||"
-represents concatenation.]
+derived. \[Here "N" is the ASCII byte encoding the number N and "||"
+represents concatenation.\]
 
 Note: It is RECOMMENDED that the fields of PBMParameter remain
 constant throughout the messages of a single transaction (e.g.,
@@ -1753,7 +1753,7 @@ all of BASEKEY is used for the most significant H bits of the key,
 OWF("1" \|\| BASEKEY) is used for the next most significant H bits of
 the key, OWF("2" \|\| BASEKEY) is used for the next most significant H
 bits of the key, and so on, until all K bits have been derived.
-[Here "N" is the ASCII byte encoding the number N and "\|\|" represents concatenation.]
+\[Here "N" is the ASCII byte encoding the number N and "\|\|" represents concatenation.\]
 
 Note: Hash algorithms that can be used as one-way functions are listed in
 CMP Algorithms {{RFC9481}} Section 2.
@@ -3328,7 +3328,7 @@ if alternate means are suitable for a given environment (see
 
 ## Root CA Initialization
 {: id="sect-6.1"}
-See {{sect-3.1.1.2}} for this document's definition of "root CA".
+\[See {{sect-3.1.1.2}} for this document's definition of "root CA".\]
 
 A newly created root CA must produce a "self-certificate", which is a
 Certificate structure with the profile defined for the "newWithNew"
@@ -3360,7 +3360,7 @@ of existing data.
 ## Subordinate CA Initialization
 {: id="sect-6.3"}
 
-[See {{sect-3.1.1.2}} for this document's definition of "subordinate CA".]
+\[See {{sect-3.1.1.2}} for this document's definition of "subordinate CA".\]
 
 From the perspective of PKI management protocols, the initialization of a
 subordinate CA is the same as the initialization of an end entity.  The only
