@@ -28,10 +28,10 @@ certConf messages.
 adds support for management of KEM certificates. 
        Appendix F of this document updates the 2002 ASN.1 module in RFC 5912 Section 9. 
     " name="description">
-<meta content="xml2rfc 3.19.2" name="generator">
+<meta content="xml2rfc 3.19.4" name="generator">
 <meta content="draft-ietf-lamps-rfc4210bis-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.19.2
+  xml2rfc 3.19.4
     Python 3.11.6
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
@@ -1047,7 +1047,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 8 August 2024</td>
+<td class="center">Expires 23 August 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-02-05" class="published">5 February 2024</time>
+<time datetime="2024-02-20" class="published">20 February 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-08-08">8 August 2024</time></dd>
+<dd class="expires"><time datetime="2024-08-23">23 August 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1144,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 8 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2683,14 +2683,14 @@ appropriate parameters when necessary.<a href="#section-4.3.3-2" class="pilcrow"
 the CA/RA, or can be required to decrypt
 a value in order to prove possession of the private key.
 Decrypting a value can be achieved either directly or indirectly.<a href="#section-4.3.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.3.4-2">Note: A definition of Key Encapsulation Mechanisms can be found in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-07#section-1" class="relref">Section 1</a></span>.<a href="#section-4.3.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.3.4-2">Note: A definition of Key Encapsulation Mechanisms can be found in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08#section-1" class="relref">Section 1</a></span>.<a href="#section-4.3.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.3.4-3">The direct method is for the RA/CA to issue a random challenge to which an
 immediate response by the EE is required.<a href="#section-4.3.4-3" class="pilcrow">¶</a></p>
 <p id="section-4.3.4-4">The indirect method is to issue a certificate that is encrypted for the end entity using a shared secret key derived from a key encapsulated using the public key (and have the end entity demonstrate its ability to use its private key for decapsulation of the KEM ciphertext, derive the shared secret key, decrypt this certificate, and provide a hash of the certificate in the confirmation message).  This allows a CA to issue a certificate in a form that can only be used by the intended end entity.<a href="#section-4.3.4-4" class="pilcrow">¶</a></p>
 <p id="section-4.3.4-5">This specification encourages use of the indirect method because it requires
 no extra messages to be sent (i.e., the proof can be demonstrated using the
 {request, response, confirmation} triple of messages).<a href="#section-4.3.4-5" class="pilcrow">¶</a></p>
-<p id="section-4.3.4-6">A certification request message for a KEM certificate <span class="bcp14">SHALL</span> use POPOPrivKey by using the keyEncipherment choice of ProofOfPossession in the popo field of CertReqMsg as long as no KEM-specific choice is available.<a href="#section-4.3.4-6" class="pilcrow">¶</a></p>
+<p id="section-4.3.4-6">A certification request message for a KEM certificate <span class="bcp14">SHALL</span> use POPOPrivKey by using the keyEncipherment choice of ProofOfPossession, see <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>, in the popo field of CertReqMsg as long as no KEM-specific choice is available.<a href="#section-4.3.4-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3217,7 +3217,7 @@ accommodates, for example, cases in which the CA wishes to check POP or other
 information on the original EE message.<a href="#section-5.1.1.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.1.1.3-2">Note: If the changes made by
 the RA to the original PKIMessage break the POP of a certificate request,
-the RA can set the popo field to RAVerified, see <a href="#sect-5.2.8.4" class="auto internal xref">Section 5.2.8.4</a>.<a href="#section-5.1.1.3-2" class="pilcrow">¶</a></p>
+the RA can set the popo field to raVerified, see <a href="#sect-5.2.8.4" class="auto internal xref">Section 5.2.8.4</a>.<a href="#section-5.1.1.3-2" class="pilcrow">¶</a></p>
 <p id="section-5.1.1.3-3">Although the infoValue is PKIMessages, it <span class="bcp14">MUST</span> contain exactly one PKIMessage.<a href="#section-5.1.1.3-3" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.1.1.3-4">
 <pre>
@@ -3433,8 +3433,8 @@ digital signature <span class="bcp14">MAY</span> be one of the options described
 <a href="#section-5.1.3.4" class="section-number selfRef">5.1.3.4. </a><a href="#name-key-encapsulation" class="section-name selfRef">Key Encapsulation</a>
             </h5>
 <p id="section-5.1.3.4-1">In case the sender of a message has a KEM key pair, it can use a shared secret key obtained by KEM decapsulation of a ciphertext received using its private KEM key.<a href="#section-5.1.3.4-1" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-2">This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-07#section-1" class="relref">Section 1</a></span>.<a href="#section-5.1.3.4-2" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-3">Note: In this section both entities in the communication need to send and receive messages. Also, the client as well as the server side of the communication could wish to protect messages using KEM keys. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to get its messages authenticated, and "Bob" to denote the entity who needs to authenticate the messages received.<a href="#section-5.1.3.4-3" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-2">This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08#section-1" class="relref">Section 1</a></span>.<a href="#section-5.1.3.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-3">Note: In this section both entities in the communication need to send and receive messages. Also, only the client or the server side of the communication could wish to protect messages using KEM keys. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to get its messages authenticated, and "Bob" to denote the entity who needs to authenticate the messages received.<a href="#section-5.1.3.4-3" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-4">Bob must have generated the ciphertext using KEM encapsulation with Alice's public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:<a href="#section-5.1.3.4-4" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.1.3.4-5">
 <pre>
@@ -3466,16 +3466,18 @@ digital signature <span class="bcp14">MAY</span> be one of the options described
   KemCiphertextInfo ::= SEQUENCE {
     kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
     ct               OCTET STRING
+    kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
   }
 </pre><a href="#section-5.1.3.4-15" class="pilcrow">¶</a>
 </div>
 <p id="section-5.1.3.4-16">kem is the algorithm identifier of the KEM algorithm, and any associated parameters, used by Bob to generate the ciphertext ct.<a href="#section-5.1.3.4-16" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-17">ct is the ciphertext output from the Encapsulate function.<a href="#section-5.1.3.4-17" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-18">This generic message flow assumes that Bob possesses the public KEM key of Alice. Alice can be the initiator of a PKI management operation or the responder. For more detailed figures see <a href="#sect-e" class="auto internal xref">Appendix E</a>.<a href="#section-5.1.3.4-18" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-19">Generic Message Flow:<a href="#section-5.1.3.4-19" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-18">kemContext <span class="bcp14">MAY</span> contain additional algorithm specific context information, see also the definition of ukm in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08#section-3" class="relref">Section 3</a></span>.<a href="#section-5.1.3.4-18" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-19">This generic message flow assumes that Bob possesses the public KEM key of Alice. Alice can be the initiator of a PKI management operation or the responder. For more detailed figures see <a href="#sect-e" class="auto internal xref">Appendix E</a>.<a href="#section-5.1.3.4-19" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-20">Generic Message Flow:<a href="#section-5.1.3.4-20" class="pilcrow">¶</a></p>
 <span id="name-generic-message-flow-when-a"></span><div id="KEM">
 <figure id="figure-2">
-              <div class="alignLeft art-text artwork" id="section-5.1.3.4-20.1">
+              <div class="alignLeft art-text artwork" id="section-5.1.3.4-21.1">
 <pre>
 Step# Alice                                Bob
   1                                        perform KEM Encapsulate
@@ -3495,87 +3497,87 @@ Step# Alice                                Bob
 <a href="#name-generic-message-flow-when-a" class="selfRef">Generic Message Flow when Alice has a KEM key pair</a>
               </figcaption></figure>
 </div>
-<ol start="1" type="1" class="normal type-1" id="section-5.1.3.4-21">
-<li id="section-5.1.3.4-21.1">
-                <p id="section-5.1.3.4-21.1.1">Bob needs to possess the authentic public KEM key pk of Alice, for instance contained in a KEM certificate that was received and successfully validated by Bob beforehand.<a href="#section-5.1.3.4-21.1.1" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-21.1.2">
-Bob generates a shared secret ss and the associated ciphertext ct using the KEM Encapsulate function with Alice's public KEM key pk. Bob <span class="bcp14">MUST NOT</span> reuse the ss and ct for other PKI management operations. From this data, Bob produces a KemCiphertextInfo structure including the KEM algorithm identifier and the ciphertext ct and sends it to Alice in an InfoTypeAndValue structure defined above.<a href="#section-5.1.3.4-21.1.2" class="pilcrow">¶</a></p>
-<div class="lang-asn.1 sourcecode" id="section-5.1.3.4-21.1.3">
+<ol start="1" type="1" class="normal type-1" id="section-5.1.3.4-22">
+<li id="section-5.1.3.4-22.1">
+                <p id="section-5.1.3.4-22.1.1">Bob needs to possess the authentic public KEM key pk of Alice, for instance contained in a KEM certificate that was received and successfully validated by Bob beforehand.<a href="#section-5.1.3.4-22.1.1" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-22.1.2">
+Bob generates a shared secret ss and the associated ciphertext ct using the KEM Encapsulate function with Alice's public KEM key pk. Bob <span class="bcp14">MUST NOT</span> reuse the ss and ct for other PKI management operations. From this data, Bob produces a KemCiphertextInfo structure including the KEM algorithm identifier and the ciphertext ct and sends it to Alice in an InfoTypeAndValue structure defined above.<a href="#section-5.1.3.4-22.1.2" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.1.3.4-22.1.3">
 <pre>
    Encapsulate(pk) -&gt; (ct, ss)
-</pre><a href="#section-5.1.3.4-21.1.3" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.3.4-22.1.3" class="pilcrow">¶</a>
 </div>
 </li>
-              <li id="section-5.1.3.4-21.2">
-                <p id="section-5.1.3.4-21.2.1">Alice decapsulates the shared secret ss from the ciphertext ct using the KEM Decapsulate function and its private KEM key sk.<a href="#section-5.1.3.4-21.2.1" class="pilcrow">¶</a></p>
-<div class="lang-asn.1 sourcecode" id="section-5.1.3.4-21.2.2">
+              <li id="section-5.1.3.4-22.2">
+                <p id="section-5.1.3.4-22.2.1">Alice decapsulates the shared secret ss from the ciphertext ct using the KEM Decapsulate function and its private KEM key sk.<a href="#section-5.1.3.4-22.2.1" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.1.3.4-22.2.2">
 <pre>
    Decapsulate(ct, sk) -&gt; (ss)
-</pre><a href="#section-5.1.3.4-21.2.2" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.3.4-22.2.2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1.3.4-21.2.3">
-If the decapsulation operation outputs an error, any failInfo field in an error response message  <span class="bcp14">SHALL</span> contain the value badMessageCheck and the PKI management operation <span class="bcp14">SHALL</span> be terminated.<a href="#section-5.1.3.4-21.2.3" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-21.2.4">
-Alice derives the shared secret key ssk using a KDF. The shared secret ss is used as input key material for the KDF, the value len is the desired output length of the KDF as required by the MAC algorithm to be used for message protection. KDF, len, and MAC will be transferred to Bob in the protectionAlg KemBMParameter. The DER-encoded KemOtherInfo structure, as defined below, is used as context for the KDF.<a href="#section-5.1.3.4-21.2.4" class="pilcrow">¶</a></p>
-<div class="lang-asn.1 sourcecode" id="section-5.1.3.4-21.2.5">
+<p id="section-5.1.3.4-22.2.3">
+If the decapsulation operation outputs an error, any failInfo field in an error response message  <span class="bcp14">SHALL</span> contain the value badMessageCheck and the PKI management operation <span class="bcp14">SHALL</span> be terminated.<a href="#section-5.1.3.4-22.2.3" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-22.2.4">
+Alice derives the shared secret key ssk using a KDF. The shared secret ss is used as input key material for the KDF, the value len is the desired output length of the KDF as required by the MAC algorithm to be used for message protection. KDF, len, and MAC will be transferred to Bob in the protectionAlg KemBMParameter. The DER-encoded KemOtherInfo structure, as defined below, is used as context for the KDF.<a href="#section-5.1.3.4-22.2.4" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.1.3.4-22.2.5">
 <pre>
    KDF(ss, len, context)-&gt;(ssk)
-</pre><a href="#section-5.1.3.4-21.2.5" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.3.4-22.2.5" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1.3.4-21.2.6">
-The shared secret key ssk is used for MAC-based protection by Alice.<a href="#section-5.1.3.4-21.2.6" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-22.2.6">
+The shared secret key ssk is used for MAC-based protection by Alice.<a href="#section-5.1.3.4-22.2.6" class="pilcrow">¶</a></p>
 </li>
-              <li id="section-5.1.3.4-21.3">
-                <p id="section-5.1.3.4-21.3.1">Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice's side is used as context for the KDF.<a href="#section-5.1.3.4-21.3.1" class="pilcrow">¶</a></p>
-<div class="lang-asn.1 sourcecode" id="section-5.1.3.4-21.3.2">
+              <li id="section-5.1.3.4-22.3">
+                <p id="section-5.1.3.4-22.3.1">Bob derives the same shared secret key ssk using the KDF. Also here the shared secret ss is used as input key material for the KDF, the value len is the desired output length for the KDF, and the DER-encoded KemOtherInfo structure constructed in the same way as on Alice's side is used as context for the KDF.<a href="#section-5.1.3.4-22.3.1" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.1.3.4-22.3.2">
 <pre>
    KDF(ss, len, context)-&gt;(ssk)
-</pre><a href="#section-5.1.3.4-21.3.2" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.3.4-22.3.2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1.3.4-21.3.3">
-Bob uses the shared secret key ssk for verifying the MAC-based protection of the message received and in this way authenticates Alice.<a href="#section-5.1.3.4-21.3.3" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-22.3.3">
+Bob uses the shared secret key ssk for verifying the MAC-based protection of the message received and in this way authenticates Alice.<a href="#section-5.1.3.4-22.3.3" class="pilcrow">¶</a></p>
 </li>
             </ol>
-<p id="section-5.1.3.4-22">This shared secret key ssk can be reused by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.<a href="#section-5.1.3.4-22" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-23">This approach employs the conventions of using a KDF as described in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-07#section-5" class="relref">Section 5</a></span> with the following changes:<a href="#section-5.1.3.4-23" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-23">This shared secret key ssk can be reused by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.<a href="#section-5.1.3.4-23" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-24">This approach employs the conventions of using a KDF as described in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08#section-5" class="relref">Section 5</a></span> with the following changes:<a href="#section-5.1.3.4-24" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.1.3.4-24.1">
-                <p id="section-5.1.3.4-24.1.1">L is dependent of the MAC algorithm that is used with the shared secret key for CMP message protection and is called len in this document<a href="#section-5.1.3.4-24.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5.1.3.4-25.1">
+                <p id="section-5.1.3.4-25.1.1">L is dependent of the MAC algorithm that is used with the shared secret key for CMP message protection and is called len in this document<a href="#section-5.1.3.4-25.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-5.1.3.4-24.2">
-                <p id="section-5.1.3.4-24.2.1">info is an additional input to the KDF, is called context in this document, and contains the DER-encoded KemOtherInfo structure defined as:<a href="#section-5.1.3.4-24.2.1" class="pilcrow">¶</a></p>
-<div class="lang-asn.1 sourcecode" id="section-5.1.3.4-24.2.2">
+              <li class="normal" id="section-5.1.3.4-25.2">
+                <p id="section-5.1.3.4-25.2.1">info is an additional input to the KDF, is called context in this document, and contains the DER-encoded KemOtherInfo structure defined as:<a href="#section-5.1.3.4-25.2.1" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.1.3.4-25.2.2">
 <pre>
   KemOtherInfo ::= SEQUENCE {
     staticString      PKIFreeText,
     transactionID     OCTET STRING,
-    kemContext    [0] OCTET STRING OPTIONAL
+    kemContext    [0] EXPLICIT OCTET STRING OPTIONAL
   }
-</pre><a href="#section-5.1.3.4-24.2.2" class="pilcrow">¶</a>
+</pre><a href="#section-5.1.3.4-25.2.2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1.3.4-24.2.3">
-staticString <span class="bcp14">MUST</span> be "CMP-KEM".<a href="#section-5.1.3.4-24.2.3" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-24.2.4">
-transactionID <span class="bcp14">MUST</span> be the value from the message containing the ciphertext ct in KemCiphertextInfo.<a href="#section-5.1.3.4-24.2.4" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-24.2.5">
-Note: The transactionID is used to ensure domain separation of the derived shared secret key between different PKI management operations. For all PKI management operations with more than one exchange the transactionID <span class="bcp14">MUST</span> be set anyway, see <a href="#sect-5.1.1" class="auto internal xref">Section 5.1.1</a>.  In case Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see <a href="#KEM-Flow2" class="auto internal xref">Figure 4</a> of <a href="#sect-e" class="auto internal xref">Appendix E</a>, the transactionID <span class="bcp14">MUST</span> be set by Bob.<a href="#section-5.1.3.4-24.2.5" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-24.2.6">
-kemContext <span class="bcp14">MAY</span> contain additional algorithm specific context information.<a href="#section-5.1.3.4-24.2.6" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-25.2.3">
+staticString <span class="bcp14">MUST</span> be "CMP-KEM".<a href="#section-5.1.3.4-25.2.3" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-25.2.4">
+transactionID <span class="bcp14">MUST</span> be the value from the message containing the ciphertext ct in KemCiphertextInfo.<a href="#section-5.1.3.4-25.2.4" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-25.2.5">
+Note: The transactionID is used to ensure domain separation of the derived shared secret key between different PKI management operations. For all PKI management operations with more than one exchange the transactionID <span class="bcp14">MUST</span> be set anyway, see <a href="#sect-5.1.1" class="auto internal xref">Section 5.1.1</a>.  In case Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see <a href="#KEM-Flow2" class="auto internal xref">Figure 4</a> of <a href="#sect-e" class="auto internal xref">Appendix E</a>, the transactionID <span class="bcp14">MUST</span> be set by Bob.<a href="#section-5.1.3.4-25.2.5" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-25.2.6">
+kemContext <span class="bcp14">MAY</span> contain additional algorithm specific context information.<a href="#section-5.1.3.4-25.2.6" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-5.1.3.4-25">&lt; Editorial Note: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.<a href="#section-5.1.3.4-25" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-26">Alice's public KEM key could be added based on the discussion on the LAMPS list, see the tread "Does cms-kemri need to include H(ct) as a KDF input?".<a href="#section-5.1.3.4-26" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-27">The authors are waiting for expert reviews providing guidance which fields are needed and bring additional value for the KEM-bases message protection.<a href="#section-5.1.3.4-27" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-28">End of Editorial Note &gt;<a href="#section-5.1.3.4-28" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-26">&lt; Editorial Note: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.<a href="#section-5.1.3.4-26" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-27">The kemContext was added to KemCiphertextInfo and KemOtherInfo for offer similar flexibility as cms-kemri offers with ukm.<a href="#section-5.1.3.4-27" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-28">The authors are waiting for further expert review from the WG on the specification of KEM-based message protection.<a href="#section-5.1.3.4-28" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-29">End of Editorial Note &gt;<a href="#section-5.1.3.4-29" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.1.3.4-29.1">
-                <p id="section-5.1.3.4-29.1.1">OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.<a href="#section-5.1.3.4-29.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5.1.3.4-30.1">
+                <p id="section-5.1.3.4-30.1.1">OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.<a href="#section-5.1.3.4-30.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-5.1.3.4-30">There are various ways how Alice can request and Bob can provide the KEM ciphertext, see <a href="#sect-e" class="auto internal xref">Appendix E</a> for details. The KemCiphertextInfo can be requested by the end entity using a genm message with an InfoTypeAndValue structure of type KemCiphertextInfo where the value is absent and can be provided in the following genp message with an InfoTypeAndValue structure of the same type.
+<p id="section-5.1.3.4-31">There are various ways how Alice can request and Bob can provide the KEM ciphertext, see <a href="#sect-e" class="auto internal xref">Appendix E</a> for details. The KemCiphertextInfo can be requested by the end entity using a genm message with an InfoTypeAndValue structure of type KemCiphertextInfo where the value is absent and can be provided in the following genp message with an InfoTypeAndValue structure of the same type.
 Alternatively, the generalInfo field of the header of a PKIMessage can be used to request and provide a KemCiphertextInfo structure, also using an InfoTypeAndValue structure of type KemCiphertextInfo in each direction.
-The procedure works also without Alice explicitly requesting the KEM ciphertext, in case that Bob knows beforehand a KEM key of Alice and can expect that she is ready to use it.<a href="#section-5.1.3.4-30" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-31">If both the initiator and responder in a PKI management operation have KEM key pairs, this procedure can be applied by both entities independently, establishing and using different shared secret keys for either direction.<a href="#section-5.1.3.4-31" class="pilcrow">¶</a></p>
+The procedure works also without Alice explicitly requesting the KEM ciphertext, in case that Bob knows beforehand a KEM key of Alice and can expect that she is ready to use it.<a href="#section-5.1.3.4-31" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-32">If both the initiator and responder in a PKI management operation have KEM key pairs, this procedure can be applied by both entities independently, establishing and using different shared secret keys for either direction.<a href="#section-5.1.3.4-32" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-5.1.3.5">
@@ -3890,8 +3892,20 @@ certificate using the PKIPublicationInfo structure.<a href="#section-5.2.7-1" cl
           <h4 id="name-proof-of-possession-structu">
 <a href="#section-5.2.8" class="section-number selfRef">5.2.8. </a><a href="#name-proof-of-possession-structu" class="section-name selfRef">Proof-of-Possession Structures</a>
           </h4>
-<p id="section-5.2.8-1">If the certification request is for a key pair that supports signing (i.e., a request for a verification certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOSigningKey structure, for details see Section 4.1 of <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>.<a href="#section-5.2.8-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.8-1">The proof-of-possession structure used is indicated in the popo field
+of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>.<a href="#section-5.2.8-1" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.2.8-2">
+<pre>
+   ProofOfPossession ::= CHOICE {
+      raVerified      [0] NULL,
+      signature       [1] POPOSigningKey,
+      keyEncipherment [2] POPOPrivKey,
+      keyAgreement    [3] POPOPrivKey
+   }
+</pre><a href="#section-5.2.8-2" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2.8-3">If the certification request is for a key pair that supports signing (i.e., a request for a verification certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOSigningKey structure, for details see Section 4.1 of <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>.<a href="#section-5.2.8-3" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.2.8-4">
 <pre>
    POPOSigningKey ::= SEQUENCE {
       poposkInput [0] POPOSigningKeyInput OPTIONAL,
@@ -3911,13 +3925,13 @@ certificate using the PKIPublicationInfo structure.<a href="#section-5.2.7-1" cl
       algId AlgorithmIdentifier,
       value BIT STRING
    }
-</pre><a href="#section-5.2.8-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.8-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2.8-3">Note: For the purposes of this specification, the ASN.1 comment given in Appendix C of <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span> pertains not only to certTemplate, but also to the altCertTemplate control as defined in <a href="#sect-5.2.1" class="auto internal xref">Section 5.2.1</a>.<a href="#section-5.2.8-3" class="pilcrow">¶</a></p>
-<p id="section-5.2.8-4">If certTemplate (or the altCertTemplate control) contains the subject and publicKey values, then poposkInput <span class="bcp14">MUST</span> be omitted and the signature <span class="bcp14">MUST</span> be computed on the DER-encoded value of certReq field of the CertReqMsg (or the DER-encoded value of AltCertTemplate). If certTemplate/altCertTemplate does not contain both the subject and public key values (i.e., if it contains only one of these, or neither), then poposkInput <span class="bcp14">MUST</span> be present and the signature <span class="bcp14">MUST</span> be computed on the DER-encoded value of poposkInput (i.e., the "value" OCTETs of the POPOSigningKeyInput DER).<a href="#section-5.2.8-4" class="pilcrow">¶</a></p>
-<p id="section-5.2.8-5">In the special case that the CA/RA has a D-H certificate that is known to the EE and the certification request is for a key agreement key pair, the EE can also use the POPOSigningKey structure (where the algorithmIdentifier field is DHBasedMAC and the signature field is the MAC) for demonstrating POP.<a href="#section-5.2.8-5" class="pilcrow">¶</a></p>
-<p id="section-5.2.8-6">On the other hand, if the certification request is for a key pair that does not support signing (i.e., a request for an encryption or key agreement certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOPrivKey structure in one of following three ways, for details see Section 4.2 and 4.3 of <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>.<a href="#section-5.2.8-6" class="pilcrow">¶</a></p>
-<div class="lang-asn.1 sourcecode" id="section-5.2.8-7">
+<p id="section-5.2.8-5">Note: For the purposes of this specification, the ASN.1 comment given in Appendix C of <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span> pertains not only to certTemplate, but also to the altCertTemplate control as defined in <a href="#sect-5.2.1" class="auto internal xref">Section 5.2.1</a>.<a href="#section-5.2.8-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.8-6">If certTemplate (or the altCertTemplate control) contains the subject and publicKey values, then poposkInput <span class="bcp14">MUST</span> be omitted and the signature <span class="bcp14">MUST</span> be computed on the DER-encoded value of certReq field of the CertReqMsg (or the DER-encoded value of AltCertTemplate). If certTemplate/altCertTemplate does not contain both the subject and public key values (i.e., if it contains only one of these, or neither), then poposkInput <span class="bcp14">MUST</span> be present and the signature <span class="bcp14">MUST</span> be computed on the DER-encoded value of poposkInput (i.e., the "value" OCTETs of the POPOSigningKeyInput DER).<a href="#section-5.2.8-6" class="pilcrow">¶</a></p>
+<p id="section-5.2.8-7">In the special case that the CA/RA has a D-H certificate that is known to the EE and the certification request is for a key agreement key pair, the EE can also use the POPOSigningKey structure (where the algorithmIdentifier field is DHBasedMAC and the signature field is the MAC) for demonstrating POP.<a href="#section-5.2.8-7" class="pilcrow">¶</a></p>
+<p id="section-5.2.8-8">On the other hand, if the certification request is for a key pair that does not support signing (i.e., a request for an encryption or key agreement certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOPrivKey structure in one of following three ways, for details see Section 4.2 and 4.3 of <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>.<a href="#section-5.2.8-8" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.2.8-9">
 <pre>
    POPOPrivKey ::= CHOICE {
       thisMessage [0] BIT STRING, -- deprecated
@@ -3931,14 +3945,14 @@ certificate using the PKIPublicationInfo structure.<a href="#section-5.2.7-1" cl
       encrCert (0),
       challengeResp (1)
    }
-</pre><a href="#section-5.2.8-7" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.8-9" class="pilcrow">¶</a>
 </div>
 <div id="sect-5.2.8.1">
 <section id="section-5.2.8.1">
             <h5 id="name-inclusion-of-the-private-ke">
 <a href="#section-5.2.8.1" class="section-number selfRef">5.2.8.1. </a><a href="#name-inclusion-of-the-private-ke" class="section-name selfRef">Inclusion of the Private Key</a>
             </h5>
-<p id="section-5.2.8.1-1">This method demonstrates proof-of-possession of the private key by inclusion of the private key (encrypted) in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.<a href="#section-5.2.8.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.1-1">This method demonstrates proof-of-possession of the private key by including the encrypted private key in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.<a href="#section-5.2.8.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.8.1-2">For a certification request message indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted private key <span class="bcp14">MUST</span> be transferred in the encryptedKey choice of POPOPrivKey (or within the PKIArchiveOptions control) in a CMS EnvelopedData structure as defined in <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.<a href="#section-5.2.8.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.2.8.1-3">Note: The thisMessage choice has been deprecated in favor of encryptedKey.  When using cmp2000(2) in the certification request message header for backward compatibility, the thisMessage choice of POPOPrivKey is used containing the encrypted private key in an EncryptedValue structure wrapped in a BIT STRING.  This allows the necessary conveyance and protection of the private key while maintaining bits-on-the-wire compatibility with <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>.<a href="#section-5.2.8.1-3" class="pilcrow">¶</a></p>
 </section>
@@ -4000,7 +4014,7 @@ certificate using the PKIPublicationInfo structure.<a href="#section-5.2.7-1" cl
                  &lt;--- ack -----
 </pre><a href="#section-5.2.8.3-6" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2.8.3-7">The challenge-response messages for proof-of-possession of a private key are specified as follows (for decryption keys see <span>[<a href="#MvOV97" class="cite xref">MvOV97</a>]</span>, p.404 for details).  This challenge-response exchange is associated with the preceding certification request message (and subsequent certification response and confirmation messages) by the transactionID used in the PKIHeader and by the protection (MACing or signing) applied to the PKIMessage.<a href="#section-5.2.8.3-7" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3-7">The challenge-response messages for proof-of-possession of a private key are specified as follows (for decryption keys see <span>[<a href="#MvOV97" class="cite xref">MvOV97</a>]</span>, p.404 for details).  This challenge-response exchange is associated with the preceding certification request message (and subsequent certification response and confirmation messages) by the transactionID used in the PKIHeader and by the protection applied to the PKIMessage.<a href="#section-5.2.8.3-7" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.2.8.3-8">
 <pre>
    POPODecKeyChallContent ::= SEQUENCE OF Challenge
@@ -5726,7 +5740,7 @@ Tomi Kause, and Tero Mononen, the original authors of <span>[<a href="#RFC4210" 
 <dd class="break"></dd>
 <dt id="I-D.ietf-lamps-cms-kemri">[I-D.ietf-lamps-cms-kemri]</dt>
         <dd>
-<span class="refAuthor">Housley, R.</span>, <span class="refAuthor">Gray, J.</span>, and <span class="refAuthor">T. Okubo</span>, <span class="refTitle">"Using Key Encapsulation Mechanism (KEM) Algorithms in the Cryptographic Message Syntax (CMS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-cms-kemri-07</span>, <time datetime="2024-01-27" class="refDate">27 January 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-07">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-07</a>&gt;</span>. </dd>
+<span class="refAuthor">Housley, R.</span>, <span class="refAuthor">Gray, J.</span>, and <span class="refAuthor">T. Okubo</span>, <span class="refTitle">"Using Key Encapsulation Mechanism (KEM) Algorithms in the Cryptographic Message Syntax (CMS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-cms-kemri-08</span>, <time datetime="2024-02-06" class="refDate">6 February 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ITU.X509.2000">[ITU.X509.2000]</dt>
         <dd>
@@ -7633,6 +7647,8 @@ KemCiphertextInfo ::= SEQUENCE {
    -- AlgId of the Key Encapsulation Mechanism algorithm
    ct               OCTET STRING
    -- Ciphertext output from the Encapsulate function
+   kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
+   -- MAY contain additional algorithm specific context information
    }
 
 KemOtherInfo ::= SEQUENCE {
@@ -7641,7 +7657,7 @@ KemOtherInfo ::= SEQUENCE {
    transactionID    OCTET STRING,
    -- MUST contain the values from the message previously received
    -- containing the ciphertext (ct) in KemCiphertextInfo
-   kemContext   [0] OCTET STRING OPTIONAL
+   kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
    -- MAY contain additional algorithm specific context information
   }
 

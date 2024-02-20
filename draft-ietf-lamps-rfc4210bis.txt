@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 8 August 2024                                           Entrust
-                                                         5 February 2024
+Expires: 23 August 2024                                          Entrust
+                                                        20 February 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 August 2024.
+   This Internet-Draft will expire on 23 August 2024.
 
 Copyright Notice
 
@@ -1090,9 +1090,9 @@ Table of Contents
    messages).
 
    A certification request message for a KEM certificate SHALL use
-   POPOPrivKey by using the keyEncipherment choice of ProofOfPossession
-   in the popo field of CertReqMsg as long as no KEM-specific choice is
-   available.
+   POPOPrivKey by using the keyEncipherment choice of ProofOfPossession,
+   see Section 5.2.8, in the popo field of CertReqMsg as long as no KEM-
+   specific choice is available.
 
 4.4.  Root CA Key Update
 
@@ -1575,7 +1575,7 @@ Table of Contents
 
    Note: If the changes made by the RA to the original PKIMessage break
    the POP of a certificate request, the RA can set the popo field to
-   RAVerified, see Section 5.2.8.4.
+   raVerified, see Section 5.2.8.4.
 
    Although the infoValue is PKIMessages, it MUST contain exactly one
    PKIMessage.
@@ -1778,7 +1778,7 @@ Table of Contents
    (KEM) algorithm functions in [I-D.ietf-lamps-cms-kemri], Section 1.
 
    Note: In this section both entities in the communication need to send
-   and receive messages.  Also, the client as well as the server side of
+   and receive messages.  Also, only the client or the server side of
    the communication could wish to protect messages using KEM keys.  For
    ease of explanation we use the term "Alice" to denote the entity
    possessing the KEM key pair and who wishes to get its messages
@@ -1832,12 +1832,17 @@ Table of Contents
      KemCiphertextInfo ::= SEQUENCE {
        kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
        ct               OCTET STRING
+       kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
      }
 
    kem is the algorithm identifier of the KEM algorithm, and any
    associated parameters, used by Bob to generate the ciphertext ct.
 
    ct is the ciphertext output from the Encapsulate function.
+
+   kemContext MAY contain additional algorithm specific context
+   information, see also the definition of ukm in
+   [I-D.ietf-lamps-cms-kemri], Section 3.
 
    This generic message flow assumes that Bob possesses the public KEM
    key of Alice.  Alice can be the initiator of a PKI management
@@ -1928,7 +1933,7 @@ Table of Contents
         KemOtherInfo ::= SEQUENCE {
           staticString      PKIFreeText,
           transactionID     OCTET STRING,
-          kemContext    [0] OCTET STRING OPTIONAL
+          kemContext    [0] EXPLICIT OCTET STRING OPTIONAL
         }
 
       staticString MUST be "CMP-KEM".
@@ -1950,13 +1955,11 @@ Table of Contents
    < Editorial Note: With the update to -V08, the fields senderNonce,
    recipNonce, len, and mac were removed from the KemOtherInfo sequence.
 
-   Alice's public KEM key could be added based on the discussion on the
-   LAMPS list, see the tread "Does cms-kemri need to include H(ct) as a
-   KDF input?".
+   The kemContext was added to KemCiphertextInfo and KemOtherInfo for
+   offer similar flexibility as cms-kemri offers with ukm.
 
-   The authors are waiting for expert reviews providing guidance which
-   fields are needed and bring additional value for the KEM-bases
-   message protection.
+   The authors are waiting for further expert review from the WG on the
+   specification of KEM-based message protection.
 
    End of Editorial Note >
 
@@ -2255,6 +2258,17 @@ Table of Contents
 
 5.2.8.  Proof-of-Possession Structures
 
+   The proof-of-possession structure used is indicated in the popo field
+   of type ProofOfPossession in the CertReqMsg sequence, see Section 4
+   of [RFC4211].
+
+      ProofOfPossession ::= CHOICE {
+         raVerified      [0] NULL,
+         signature       [1] POPOSigningKey,
+         keyEncipherment [2] POPOPrivKey,
+         keyAgreement    [3] POPOPrivKey
+      }
+
    If the certification request is for a key pair that supports signing
    (i.e., a request for a verification certificate), then the proof-of-
    possession of the private key is demonstrated through use of the
@@ -2322,7 +2336,7 @@ Table of Contents
 5.2.8.1.  Inclusion of the Private Key
 
    This method demonstrates proof-of-possession of the private key by
-   inclusion of the private key (encrypted) in the CertRequest in the
+   including the encrypted private key in the CertRequest in the
    POPOPrivKey structure or in the PKIArchiveOptions control structure,
    depending upon whether or not archival of the private key is also
    desired.
@@ -2421,8 +2435,8 @@ Table of Contents
    for details).  This challenge-response exchange is associated with
    the preceding certification request message (and subsequent
    certification response and confirmation messages) by the
-   transactionID used in the PKIHeader and by the protection (MACing or
-   signing) applied to the PKIMessage.
+   transactionID used in the PKIHeader and by the protection applied to
+   the PKIMessage.
 
       POPODecKeyChallContent ::= SEQUENCE OF Challenge
 
@@ -3921,9 +3935,9 @@ Table of Contents
               Housley, R., Gray, J., and T. Okubo, "Using Key
               Encapsulation Mechanism (KEM) Algorithms in the
               Cryptographic Message Syntax (CMS)", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-cms-kemri-07, 27 January
+              Internet-Draft, draft-ietf-lamps-cms-kemri-08, 6 February
               2024, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              lamps-cms-kemri-07>.
+              lamps-cms-kemri-08>.
 
    [ITU.X509.2000]
               International Telecommunications Union, "Information
@@ -5723,6 +5737,8 @@ Appendix F.  Compilable ASN.1 Definitions
       -- AlgId of the Key Encapsulation Mechanism algorithm
       ct               OCTET STRING
       -- Ciphertext output from the Encapsulate function
+      kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
+      -- MAY contain additional algorithm specific context information
       }
 
    KemOtherInfo ::= SEQUENCE {
@@ -5731,7 +5747,7 @@ Appendix F.  Compilable ASN.1 Definitions
       transactionID    OCTET STRING,
       -- MUST contain the values from the message previously received
       -- containing the ciphertext (ct) in KemCiphertextInfo
-      kemContext   [0] OCTET STRING OPTIONAL
+      kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
       -- MAY contain additional algorithm specific context information
      }
 
