@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 22 August 2024                                          Entrust
-                                                        19 February 2024
+Expires: 23 August 2024                                          Entrust
+                                                        20 February 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 August 2024.
+   This Internet-Draft will expire on 23 August 2024.
 
 Copyright Notice
 
@@ -799,8 +799,8 @@ Table of Contents
    Later sections define a set of standard messages supporting the above
    operations.  Transport protocols for conveying these exchanges in
    different environments (e.g., off-line: file-based, on-line: mail,
-   HTTP [RFC7231], and CoAP [RFC9482]) are beyond the scope of this
-   document and are specified separately.
+   HTTP [I-D.ietf-lamps-rfc6712bis], and CoAP [RFC9482]) are beyond the
+   scope of this document and are specified separately.
 
 4.  Assumptions and Restrictions
 
@@ -1032,7 +1032,7 @@ Table of Contents
 4.3.2.  Encryption Keys
 
    For encryption keys, the end entity can provide the private key to
-   the CA/RA or can be required to decrypt a value in order to prove
+   the CA/RA, or can be required to decrypt a value in order to prove
    possession of the private key.  Decrypting a value can be achieved
    either directly or indirectly.
 
@@ -1065,7 +1065,7 @@ Table of Contents
 4.3.4.  Key Encapsulation Mechanism Keys
 
    For key encapsulation mechanism (KEM) keys, the end entity can
-   provide the private key to the CA/RA or can be required to decrypt a
+   provide the private key to the CA/RA, or can be required to decrypt a
    value in order to prove possession of the private key.  Decrypting a
    value can be achieved either directly or indirectly.
 
@@ -1090,9 +1090,9 @@ Table of Contents
    messages).
 
    A certification request message for a KEM certificate SHALL use
-   POPOPrivKey by using the keyEncipherment choice of ProofOfPossession
-   in the popo field of CertReqMsg as long as no KEM-specific choice is
-   available.
+   POPOPrivKey by using the keyEncipherment choice of ProofOfPossession,
+   see Section 5.2.8, in the popo field of CertReqMsg as long as no KEM-
+   specific choice is available.
 
 4.4.  Root CA Key Update
 
@@ -1482,7 +1482,7 @@ Table of Contents
    allow the recipient of a message to correlate this with an ongoing
    transaction.  This is needed for all transactions that consist of
    more than just a single request/response pair.  For transactions that
-   consist of a single request/response pair, the rules are as follows:
+   consist of a single request/response pair, the rules are as follows.
    A client MUST populate the transactionID field if the message
    contains an infoValue of type KemCiphertextInfo, see Section 5.1.3.4.
    In all other cases the client MAY populate the transactionID field of
@@ -1495,7 +1495,7 @@ Table of Contents
    the response.
 
    For transactions that consist of more than just a single request/
-   response pair, the rules are as follows: Clients SHOULD generate a
+   response pair, the rules are as follows.  Clients SHOULD generate a
    transactionID for the first request.  If a server receives such a
    request that has the transactionID field set, then it MUST set the
    transactionID field of the response to the same value.  If a server
@@ -1575,7 +1575,7 @@ Table of Contents
 
    Note: If the changes made by the RA to the original PKIMessage break
    the POP of a certificate request, the RA can set the popo field to
-   RAVerified, see Section 5.2.8.4.
+   raVerified, see Section 5.2.8.4.
 
    Although the infoValue is PKIMessages, it MUST contain exactly one
    PKIMessage.
@@ -1615,7 +1615,7 @@ Table of Contents
         ip       [1]  CertRepMessage,        --Initialization Resp
         cr       [2]  CertReqMessages,       --Certification Req
         cp       [3]  CertRepMessage,        --Certification Resp
-        p10cr    [4]  CertificationRequest,  --PKCS #10 Cert. Req.
+        p10cr    [4]  CertificationRequest,  --PKCS #10 Cert.  Req.
         popdecc  [5]  POPODecKeyChallContent --pop Challenge
         popdecr  [6]  POPODecKeyRespContent, --pop Response
         kur      [7]  CertReqMessages,       --Key Update Request
@@ -1624,8 +1624,8 @@ Table of Contents
         krp      [10] KeyRecRepContent,      --Key Recovery Resp
         rr       [11] RevReqContent,         --Revocation Request
         rp       [12] RevRepContent,         --Revocation Response
-        ccr      [13] CertReqMessages,       --Cross-Cert. Request
-        ccp      [14] CertRepMessage,        --Cross-Cert. Resp
+        ccr      [13] CertReqMessages,       --Cross-Cert.  Request
+        ccp      [14] CertRepMessage,        --Cross-Cert.  Resp
         ckuann   [15] CAKeyUpdAnnContent,    --CA Key Update Ann.
         cann     [16] CertAnnContent,        --Certificate Ann.
         rann     [17] RevAnnContent,         --Revocation Ann.
@@ -1678,11 +1678,11 @@ Table of Contents
    certificate, and/or a unique Distinguished Name, and/or other such
    infrastructure-related information.  Thus, they may not be
    appropriate for initial registration, key-recovery, or any other
-   process with "bootstrapping" characteristics.  For those cases it may
-   be necessary that the PKIProtection parameter be used.  In the
-   future, if/when external mechanisms are modified to accommodate
-   bootstrapping scenarios, the use of PKIProtection may become rare or
-   non-existent.
+   process with "boot-strapping" characteristics.  For those cases it
+   may be necessary that the PKIProtection parameter be used.  In the
+   future, if/when external mechanisms are modified to accommodate boot-
+   strapping scenarios, the use of PKIProtection may become rare or non-
+   existent.
 
    Depending on the circumstances, the PKIProtection bits may contain a
    Message Authentication Code (MAC) or signature.  Only the following
@@ -1778,7 +1778,7 @@ Table of Contents
    (KEM) algorithm functions in [I-D.ietf-lamps-cms-kemri], Section 1.
 
    Note: In this section both entities in the communication need to send
-   and receive messages.  Also, the client as well as the server side of
+   and receive messages.  Also, only the client or the server side of
    the communication could wish to protect messages using KEM keys.  For
    ease of explanation we use the term "Alice" to denote the entity
    possessing the KEM key pair and who wishes to get its messages
@@ -1832,12 +1832,17 @@ Table of Contents
      KemCiphertextInfo ::= SEQUENCE {
        kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
        ct               OCTET STRING
+       kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
      }
 
    kem is the algorithm identifier of the KEM algorithm, and any
    associated parameters, used by Bob to generate the ciphertext ct.
 
    ct is the ciphertext output from the Encapsulate function.
+
+   kemContext MAY contain additional algorithm specific context
+   information, see also the definition of ukm in
+   [I-D.ietf-lamps-cms-kemri], Section 3.
 
    This generic message flow assumes that Bob possesses the public KEM
    key of Alice.  Alice can be the initiator of a PKI management
@@ -1928,7 +1933,7 @@ Table of Contents
         KemOtherInfo ::= SEQUENCE {
           staticString      PKIFreeText,
           transactionID     OCTET STRING,
-          kemContext    [0] OCTET STRING OPTIONAL
+          kemContext    [0] EXPLICIT OCTET STRING OPTIONAL
         }
 
       staticString MUST be "CMP-KEM".
@@ -1940,7 +1945,7 @@ Table of Contents
       derived shared secret key between different PKI management
       operations.  For all PKI management operations with more than one
       exchange the transactionID MUST be set anyway, see Section 5.1.1.
-      In case Bob provided an infoValue of type KemCiphertextInfo to
+      In case Bob provided a infoValue of type KemCiphertextInfo to
       Alice in the initial request message, see Figure 4 of Appendix E,
       the transactionID MUST be set by Bob.
 
@@ -1950,13 +1955,11 @@ Table of Contents
    < Editorial Note: With the update to -V08, the fields senderNonce,
    recipNonce, len, and mac were removed from the KemOtherInfo sequence.
 
-   Alice's public KEM key could be added based on the discussion on the
-   LAMPS list, see the thread "Does cms-kemri need to include H(ct) as a
-   KDF input?".
+   The kemContext was added to KemCiphertextInfo and KemOtherInfo for
+   offer similar flexibility as cms-kemri offers with ukm.
 
-   The authors are waiting for expert reviews providing guidance which
-   fields are needed and bring additional value for the KEM-based
-   message protection.
+   The authors are waiting for further expert review from the WG on the
+   specification of KEM-based message protection.
 
    End of Editorial Note >
 
@@ -1964,7 +1967,7 @@ Table of Contents
       message protection of length len and is called ssk in this
       document.
 
-   There are various ways how Alice can request, and Bob can provide the
+   There are various ways how Alice can request and Bob can provide the
    KEM ciphertext, see Appendix E for details.  The KemCiphertextInfo
    can be requested by the end entity using a genm message with an
    InfoTypeAndValue structure of type KemCiphertextInfo where the value
@@ -2255,6 +2258,17 @@ Table of Contents
 
 5.2.8.  Proof-of-Possession Structures
 
+   The proof-of-possession structure used is indicated in the popo field
+   of type ProofOfPossession in the CertReqMsg sequence, see Section 4
+   of [RFC4211].
+
+      ProofOfPossession ::= CHOICE {
+         raVerified      [0] NULL,
+         signature       [1] POPOSigningKey,
+         keyEncipherment [2] POPOPrivKey,
+         keyAgreement    [3] POPOPrivKey
+      }
+
    If the certification request is for a key pair that supports signing
    (i.e., a request for a verification certificate), then the proof-of-
    possession of the private key is demonstrated through use of the
@@ -2299,12 +2313,12 @@ Table of Contents
    algorithmIdentifier field is DHBasedMAC and the signature field is
    the MAC) for demonstrating POP.
 
-   If the certification request is for a key pair that does not support
-   signing (i.e., a request for an encryption or key agreement
-   certificate), then the proof-of-possession of the private key is
-   demonstrated through use of the POPOPrivKey structure in one of
-   following three ways, for details see Section 4.2 and 4.3 of
-   [RFC4211].
+   On the other hand, if the certification request is for a key pair
+   that does not support signing (i.e., a request for an encryption or
+   key agreement certificate), then the proof-of-possession of the
+   private key is demonstrated through use of the POPOPrivKey structure
+   in one of following three ways, for details see Section 4.2 and 4.3
+   of [RFC4211].
 
       POPOPrivKey ::= CHOICE {
          thisMessage [0] BIT STRING, -- deprecated
@@ -2322,7 +2336,7 @@ Table of Contents
 5.2.8.1.  Inclusion of the Private Key
 
    This method demonstrates proof-of-possession of the private key by
-   inclusion of the private key (encrypted) in the CertRequest in the
+   including the encrypted private key in the CertRequest in the
    POPOPrivKey structure or in the PKIArchiveOptions control structure,
    depending upon whether or not archival of the private key is also
    desired.
@@ -2372,7 +2386,7 @@ Table of Contents
    proof-of-possession of the private key by having the end entity
    engage in a challenge-response protocol (using the messages popdecc
    of type POPODecKeyChall and popdecr of type POPODecKeyResp; see
-   below) between CertReqMessages and CertRepMessages.  This method is
+   below) between CertReqMessages and CertRepMessage.  This method is
    indicated in the CertRequest by requesting the challengeResp option
    in the subsequentMessage choice of POPOPrivKey.
 
@@ -2398,11 +2412,11 @@ Table of Contents
                     <--- ack -----
 
    This protocol is obviously much longer than the exchange given in
-   Section 5.2.8.2 above, but allows a local RA to be involved and has
-   the property that the certificate itself is not actually created
-   until the proof-of-possession is complete.  In some environments, a
-   different order of the above messages may be required, such as the
-   following (this may be determined by policy):
+   Section 5.2.8.2 above, but allows a local Registration Authority to
+   be involved and has the property that the certificate itself is not
+   actually created until the proof-of-possession is complete.  In some
+   environments, a different order of the above messages may be
+   required, such as the following (this may be determined by policy):
 
                    EE            RA            CA
                     ---- req ---->
@@ -2421,8 +2435,8 @@ Table of Contents
    for details).  This challenge-response exchange is associated with
    the preceding certification request message (and subsequent
    certification response and confirmation messages) by the
-   transactionID used in the PKIHeader and by the protection (MACing or
-   signing) applied to the PKIMessage.
+   transactionID used in the PKIHeader and by the protection applied to
+   the PKIMessage.
 
       POPODecKeyChallContent ::= SEQUENCE OF Challenge
 
@@ -3325,7 +3339,7 @@ Table of Contents
 
 6.1.  Root CA Initialization
 
-   See Section 3.1.1.2 for this document's definition of "root CA".
+   [See Section 3.1.1.2 for this document's definition of "root CA".]
 
    A newly created root CA must produce a "self-certificate", which is a
    Certificate structure with the profile defined for the "newWithNew"
@@ -3354,8 +3368,8 @@ Table of Contents
 
 6.3.  Subordinate CA Initialization
 
-   See Section 3.1.1.2 for this document's definition of "subordinate
-   CA".
+   [See Section 3.1.1.2 for this document's definition of "subordinate
+   CA".]
 
    From the perspective of PKI management protocols, the initialization
    of a subordinate CA is the same as the initialization of an end
@@ -3951,11 +3965,6 @@ Table of Contents
               Management Protocol (CMP) Updates", RFC 9480,
               DOI 10.17487/RFC9480, November 2023,
               <https://www.rfc-editor.org/rfc/rfc9480>.
-
-   [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
-              Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
-              DOI 10.17487/RFC7231, June 2014,
-              <https://www.rfc-editor.org/rfc/rfc7231>.
 
    [RFC9482]  Sahni, M., Ed. and S. Tripathi, Ed., "Constrained
               Application Protocol (CoAP) Transfer for the Certificate
@@ -5322,7 +5331,7 @@ Appendix F.  Compilable ASN.1 Definitions
    }
 
    PKIFreeText ::= SEQUENCE SIZE (1..MAX) OF UTF8String
-       -- text encoded as UTF-8 string {{RFC3629}}
+       -- text encoded as UTF-8 string [RFC3629]
 
    PKIBody ::= CHOICE {       -- message-specific body elements
        ir       [0]  CertReqMessages,        --Initialization Request
@@ -5728,6 +5737,8 @@ Appendix F.  Compilable ASN.1 Definitions
       -- AlgId of the Key Encapsulation Mechanism algorithm
       ct               OCTET STRING
       -- Ciphertext output from the Encapsulate function
+      kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
+      -- MAY contain additional algorithm specific context information
       }
 
    KemOtherInfo ::= SEQUENCE {
@@ -5736,7 +5747,7 @@ Appendix F.  Compilable ASN.1 Definitions
       transactionID    OCTET STRING,
       -- MUST contain the values from the message previously received
       -- containing the ciphertext (ct) in KemCiphertextInfo
-      kemContext   [0] OCTET STRING OPTIONAL
+      kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
       -- MAY contain additional algorithm specific context information
      }
 
