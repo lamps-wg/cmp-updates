@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 23 August 2024                                          Entrust
-                                                        20 February 2024
+Expires: 24 August 2024                                          Entrust
+                                                        21 February 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 August 2024.
+   This Internet-Draft will expire on 24 August 2024.
 
 Copyright Notice
 
@@ -799,8 +799,8 @@ Table of Contents
    Later sections define a set of standard messages supporting the above
    operations.  Transport protocols for conveying these exchanges in
    different environments (e.g., off-line: file-based, on-line: mail,
-   HTTP [RFCDDDD], and CoAP [RFC9482]) are beyond the scope of this
-   document and are specified separately.
+   HTTP [I-D.ietf-lamps-rfc6712bis], and CoAP [RFC9482]) are beyond the
+   scope of this document and are specified separately.
 
 4.  Assumptions and Restrictions
 
@@ -1069,7 +1069,7 @@ Table of Contents
    value in order to prove possession of the private key.  Decrypting a
    value can be achieved either directly or indirectly.
 
-   Note: A definition of Key Encapsulation Mechanisms can be found in
+   Note: A definition of key encapsulation mechanisms can be found in
    [I-D.ietf-lamps-cms-kemri], Section 1.
 
    The direct method is for the RA/CA to issue a random challenge to
@@ -2307,9 +2307,9 @@ Table of Contents
    computed on the DER-encoded value of poposkInput (i.e., the "value"
    OCTETs of the POPOSigningKeyInput DER).
 
-   In the special case that the CA/RA has a D-H certificate that is
-   known to the EE and the certification request is for a key agreement
-   key pair, the EE can also use the POPOSigningKey structure (where the
+   In the special case that the CA/RA has a DH certificate that is known
+   to the EE and the certification request is for a key agreement key
+   pair, the EE can also use the POPOSigningKey structure (where the
    algorithmIdentifier field is DHBasedMAC and the signature field is
    the MAC) for demonstrating POP.
 
@@ -3339,7 +3339,7 @@ Table of Contents
 
 6.1.  Root CA Initialization
 
-   See Section 3.1.1.2 for this document's definition of "root CA".
+   [See Section 3.1.1.2 for this document's definition of "root CA".]
 
    A newly created root CA must produce a "self-certificate", which is a
    Certificate structure with the profile defined for the "newWithNew"
@@ -4135,7 +4135,7 @@ Appendix B.  The Use of Revocation Passphrase
 
    A revocation request must incorporate suitable security mechanisms,
    including proper authentication, in order to reduce the probability
-   of successful denial-of-service attacks.  A digital signature or D-H/
+   of successful denial-of-service attacks.  A digital signature or DH/
    KEM-based message protection on the request -- REQUIRED to support
    within this specification depending on the key type used if
    revocation requests are supported -- can provide the authentication
