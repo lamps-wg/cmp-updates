@@ -741,7 +741,7 @@ token delivery.
 Later sections define a set of standard messages supporting the above
 operations.  Transport protocols for conveying these exchanges in
 different environments (e.g., off-line: file-based, on-line: mail,
-HTTP [RFCDDDD], and CoAP {{RFC9482}}) are
+HTTP {{I-D.ietf-lamps-rfc6712bis}}, and CoAP {{RFC9482}}) are
 beyond the scope of this document and are specified separately.
 
 
@@ -1043,7 +1043,7 @@ the CA/RA, or can be required to decrypt
 a value in order to prove possession of the private key.
 Decrypting a value can be achieved either directly or indirectly.
 
-Note: A definition of Key Encapsulation Mechanisms can be found in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
+Note: A definition of key encapsulation mechanisms can be found in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
 The direct method is for the RA/CA to issue a random challenge to which an
 immediate response by the EE is required.
@@ -1710,11 +1710,11 @@ previous iteration. The output of the final iteration (called
 to form the symmetric key. If the MAC algorithm requires a K-bit key
 and K <= H, then the most significant K bits of BASEKEY are used. If
 K > H, then all of BASEKEY is used for the most significant H bits of
-the key, OWF("1" || BASEKEY) is used for the next most significant H
-bits of the key, OWF("2" || BASEKEY) is used for the next most
+the key, OWF("1" \|\| BASEKEY) is used for the next most significant H
+bits of the key, OWF("2" \|\| BASEKEY) is used for the next most
 significant H bits of the key, and so on, until all K bits have been
-derived. [Here "N" is the ASCII byte encoding the number N and "||"
-represents concatenation.]
+derived. \[Here "N" is the ASCII byte encoding the number N and "\|\|"
+represents concatenation.\]
 
 Note: It is RECOMMENDED that the fields of PBMParameter remain
 constant throughout the messages of a single transaction (e.g.,
@@ -1753,7 +1753,7 @@ all of BASEKEY is used for the most significant H bits of the key,
 OWF("1" \|\| BASEKEY) is used for the next most significant H bits of
 the key, OWF("2" \|\| BASEKEY) is used for the next most significant H
 bits of the key, and so on, until all K bits have been derived.
-[Here "N" is the ASCII byte encoding the number N and "\|\|" represents concatenation.]
+\[Here "N" is the ASCII byte encoding the number N and "\|\|" represents concatenation.\]
 
 Note: Hash algorithms that can be used as one-way functions are listed in
 CMP Algorithms {{RFC9481}} Section 2.
@@ -1898,7 +1898,7 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
 
   transactionID MUST be the value from the message containing the ciphertext ct in KemCiphertextInfo.
 
-  Note: The transactionID is used to ensure domain separation of the derived shared secret key between different PKI management operations. For all PKI management operations with more than one exchange the transactionID MUST be set anyway, see {{sect-5.1.1}}.  In case Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see {{KEM-Flow2}} of {{sect-e}}, the transactionID MUST be set by Bob.
+  Note: The transactionID is used to ensure domain separation of the derived shared secret key between different PKI management operations. For all PKI management operations with more than one exchange the transactionID MUST be set anyway, see {{sect-5.1.1}}. In case Bob provided a infoValue of type KemCiphertextInfo to Alice in the initial request message, see {{KEM-Flow2}} of {{sect-e}}, the transactionID MUST be set by Bob.
 
   kemContext MAY contain additional algorithm specific context information.
 
@@ -2244,7 +2244,7 @@ Note: For the purposes of this specification, the ASN.1 comment given in Appendi
 
 If certTemplate (or the altCertTemplate control) contains the subject and publicKey values, then poposkInput MUST be omitted and the signature MUST be computed on the DER-encoded value of certReq field of the CertReqMsg (or the DER-encoded value of AltCertTemplate). If certTemplate/altCertTemplate does not contain both the subject and public key values (i.e., if it contains only one of these, or neither), then poposkInput MUST be present and the signature MUST be computed on the DER-encoded value of poposkInput (i.e., the "value" OCTETs of the POPOSigningKeyInput DER).
 
-In the special case that the CA/RA has a D-H certificate that is known to the EE and the certification request is for a key agreement key pair, the EE can also use the POPOSigningKey structure (where the algorithmIdentifier field is DHBasedMAC and the signature field is the MAC) for demonstrating POP.
+In the special case that the CA/RA has a DH certificate that is known to the EE and the certification request is for a key agreement key pair, the EE can also use the POPOSigningKey structure (where the algorithmIdentifier field is DHBasedMAC and the signature field is the MAC) for demonstrating POP.
 
 On the other hand, if the certification request is for a key pair that does not support signing (i.e., a request for an encryption or key agreement certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOPrivKey structure in one of following three ways, for details see Section 4.2 and 4.3 of {{RFC4211}}.
 
@@ -3328,7 +3328,7 @@ if alternate means are suitable for a given environment (see
 
 ## Root CA Initialization
 {: id="sect-6.1"}
-See {{sect-3.1.1.2}} for this document's definition of "root CA".
+\[See {{sect-3.1.1.2}} for this document's definition of "root CA".\]
 
 A newly created root CA must produce a "self-certificate", which is a
 Certificate structure with the profile defined for the "newWithNew"
@@ -3360,7 +3360,7 @@ of existing data.
 ## Subordinate CA Initialization
 {: id="sect-6.3"}
 
-[See {{sect-3.1.1.2}} for this document's definition of "subordinate CA".]
+\[See {{sect-3.1.1.2}} for this document's definition of "subordinate CA".\]
 
 From the perspective of PKI management protocols, the initialization of a
 subordinate CA is the same as the initialization of an end entity.  The only
@@ -3915,7 +3915,7 @@ management are available in the Lightweight CMP Profile {{RFC9483}}.
 
 A revocation request must incorporate suitable security mechanisms,
 including proper authentication, in order to reduce the probability
-of successful denial-of-service attacks.  A digital signature or D-H/KEM-based message protection on the
+of successful denial-of-service attacks.  A digital signature or DH/KEM-based message protection on the
 request -- REQUIRED to support within this specification depending on the key type used if
 revocation requests are supported -- can provide the authentication
 required, but there are circumstances under which an alternative
