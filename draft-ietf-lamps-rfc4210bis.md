@@ -1592,6 +1592,19 @@ When used in a p10cr message, the CertProfileValue sequence MUST NOT contain mul
 
 The certificate profile names in the CertProfileValue sequence relate to the CertReqMsg or GenMsgContent InfoTypeAndValue elements in the given order. An empty string means no certificate profile name is associated with the respective CertReqMsg or GenMsgContent InfoTypeAndValue element. If the CertProfileValue sequence contains less certificate profile entries than CertReqMsg or GenMsgContent InfoTypeAndValue elements, the remaining CertReqMsg or GenMsgContent InfoTypeAndValue elements have no profile name associated with them.
 
+#### KemCiphertextInfo
+{: id="sect-5.1.1.5"}
+
+A PKI entity MAY provide the KEM ciphertext for MAC-based message protection using KEM (see Section 5.1.3.4) in the generalInfo field of a request message to a PKI management entity if it knows that the PKI management entity uses a KEM key pair and has the authentic public key.
+
+~~~~ asn.1
+  id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
+  KemCiphertextInfoValue ::= KemCiphertextInfo
+~~~~
+
+For more details of KEM-based message protection see {{sect-5.1.3.4}}. See {{sect-5.3.19.18}} for the definition of {id-it TBD1}.
+
+
 ### PKI Message Body
 {: id="sect-5.1.2"}
 
@@ -1801,30 +1814,9 @@ mac is the algorithm identifier of the chosen MAC algorithm, and any associated 
 
 The KDF and MAC algorithms MAY be chosen from the options in CMP Algorithms {{RFC9481}}.
 
-The InfoTypeAndValue transferring the KEM ciphertext uses OID id-it-KemCiphertextInfo, which is defined in this document as:
+The InfoTypeAndValue transferring the KEM ciphertext uses OID id-it-KemCiphertextInfo. It contains a KemCiphertextInfo structure as defined in {{sect-5.3.19.18}}.
 
-~~~~ asn.1
-  id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
-  KemCiphertextInfoValue ::= KemCiphertextInfo
-~~~~
-
-Note: This InfoTypeAndValue can be carried in a genm/genp message body as specified in {{sect-5.3.19}} or in the generalInfo field of PKIHeader in messages of other types.
-
-When id-it-KemCiphertextInfo is used, the value is either absent or of type KemCiphertextInfo.  The syntax for KemCiphertextInfo is as follows:
-
-~~~~ asn.1
-  KemCiphertextInfo ::= SEQUENCE {
-    kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
-    ct               OCTET STRING
-    kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
-  }
-~~~~
-
-kem is the algorithm identifier of the KEM algorithm, and any associated parameters, used by Bob to generate the ciphertext ct.
-
-ct is the ciphertext output from the Encapsulate function.
-
-kemContext MAY contain additional algorithm specific context information, see also the definition of ukm in {{I-D.ietf-lamps-cms-kemri, Section 3}}.
+Note: This InfoTypeAndValue can be carried in a genm/genp message body as specified in {{sect-5.3.19.18}} or in the generalInfo field of PKIHeader in messages of other types, see {{sect-5.1.1.5}}.
 
 This generic message flow assumes that Bob possesses the public KEM key of Alice. Alice can be the initiator of a PKI management operation or the responder. For more detailed figures see {{sect-e}}.
 
@@ -1848,7 +1840,7 @@ Step# Alice                                Bob
 
 1. Bob needs to possess the authentic public KEM key pk of Alice, for instance contained in a KEM certificate that was received and successfully validated by Bob beforehand.
 
-   Bob generates a shared secret ss and the associated ciphertext ct using the KEM Encapsulate function with Alice's public KEM key pk. Bob MUST NOT reuse the ss and ct for other PKI management operations. From this data, Bob produces a KemCiphertextInfo structure including the KEM algorithm identifier and the ciphertext ct and sends it to Alice in an InfoTypeAndValue structure defined above.
+   Bob generates a shared secret ss and the associated ciphertext ct using the KEM Encapsulate function with Alice's public KEM key pk. Bob MUST NOT reuse the ss and ct for other PKI management operations. From this data, Bob produces a KemCiphertextInfo structure including the KEM algorithm identifier and the ciphertext ct and sends it to Alice in an InfoTypeAndValue structure as defined in {{sect-5.3.19.18}}.
 
    ~~~~ asn.1
       Encapsulate(pk) -> (ct, ss)
@@ -1890,7 +1882,7 @@ This approach employs the conventions of using a KDF as described in {{I-D.ietf-
     KemOtherInfo ::= SEQUENCE {
       staticString      PKIFreeText,
       transactionID     OCTET STRING,
-      kemContext    [0] EXPLICIT OCTET STRING OPTIONAL
+      kemContext    [0] OCTET STRING OPTIONAL
     }
   ~~~~
 
@@ -1912,9 +1904,7 @@ End of Editorial Note >
 
 * OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.
 
-There are various ways how Alice can request and Bob can provide the KEM ciphertext, see {{sect-e}} for details. The KemCiphertextInfo can be requested by the end entity using a genm message with an InfoTypeAndValue structure of type KemCiphertextInfo where the value is absent and can be provided in the following genp message with an InfoTypeAndValue structure of the same type.
-Alternatively, the generalInfo field of the header of a PKIMessage can be used to request and provide a KemCiphertextInfo structure, also using an InfoTypeAndValue structure of type KemCiphertextInfo in each direction.
-The procedure works also without Alice explicitly requesting the KEM ciphertext, in case that Bob knows beforehand a KEM key of Alice and can expect that she is ready to use it.
+There are various ways how Alice can request, and Bob can provide the KEM ciphertext, see {{{sect-e}} for details. The KemCiphertextInfo can be requested using PKI general messages as described in {{sect-5.3.19.18}}. Alternatively, the generalInfo field of the PKIHeader can be used to convey the same request and response InfoTypeAndValue structures as described in {{sect-5.1.1.5}}. The procedure works also without Alice explicitly requesting the KEM ciphertext in case Bob knows a KEM key of Alice beforehand and can expect that she is ready to use it.
 
 If both the initiator and responder in a PKI management operation have KEM key pairs, this procedure can be applied by both entities independently, establishing and using different shared secret keys for either direction.
 
@@ -3083,7 +3073,30 @@ those CRLs that are more recent than the ones indicated by the client.
 #### KEM Ciphertext
 {: id="sect-5.3.19.18"}
 
-See {{sect-5.1.3.4}} for the definition and use of {id-it TBD1}.
+This MAY be used by a PKI entity to get the KEM ciphertext for MAC-based message protection using KEM (see {{sect-5.1.3.4}}).
+
+The PKI entity which possesses a KEM key pair can request the ciphertext by sending an InfoTypeAndValue structure of type KemCiphertextInfo where the infoValue is absent. The ciphertext can be provided in the following genp message with an InfoTypeAndValue structure of the same type.
+
+~~~~
+  GenMsg:    {id-it TBD1}, < absent >
+  GenRep:    {id-it TBD1}, KemCiphertextInfo
+~~~~
+
+~~~~ asn.1
+  KemCiphertextInfo ::= SEQUENCE {
+    kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
+    ct               OCTET STRING,
+    kemContext   [0] OCTET STRING OPTIONAL
+  }
+~~~~
+
+kem is the algorithm identifier of the KEM algorithm, and any associated parameters, used to generate the ciphertext ct.
+
+ct is the ciphertext output from the KEM Encapsulate function.
+
+kemContext MAY contain additional algorithm specific context information, see also the definition of ukm in {{I-D.ietf-lamps-cms-kemri}}, Section 3.
+
+NOTE: These InfoTypeAndValue structures can also be transferred in the generalInfo field of the PKIHeader in messages of other types (see {{sect-5.1.1.5}}).
 
 
 ### PKI General Response Content
@@ -5559,7 +5572,7 @@ KemCiphertextInfo ::= SEQUENCE {
    -- AlgId of the Key Encapsulation Mechanism algorithm
    ct               OCTET STRING
    -- Ciphertext output from the Encapsulate function
-   kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
+   kemContext   [0] OCTET STRING OPTIONAL
    -- MAY contain additional algorithm specific context information
    }
 
@@ -5569,7 +5582,7 @@ KemOtherInfo ::= SEQUENCE {
    transactionID    OCTET STRING,
    -- MUST contain the values from the message previously received
    -- containing the ciphertext (ct) in KemCiphertextInfo
-   kemContext   [0] EXPLICIT OCTET STRING OPTIONAL
+   kemContext   [0] OCTET STRING OPTIONAL
    -- MAY contain additional algorithm specific context information
   }
 
@@ -5741,6 +5754,9 @@ From version 07 -> 08:
 * Added text on usage of transactionID with KEM-bases message protection to Section 5.1.1
 
 * Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text
+
+
+* Consolidated the definition and transferal of KemCiphertextInfo. Added a new Section 5.1.1.5 introducing KemCiphertextInfo in the generlaInfo filed and moving text on how to request a KEM ciphertext using genem/genp from Section 5.1.3.4 to Section 5.3.19.18
 
 * Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117
 
