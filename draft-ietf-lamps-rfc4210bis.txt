@@ -131,8 +131,8 @@ Table of Contents
          5.1.1.1.  ImplicitConfirm
          5.1.1.2.  ConfirmWaitTime
          5.1.1.3.  OrigPKIMessage
-         5.1.1.4.  KemCiphertextInfo
-         5.1.1.5.  CertProfile
+         5.1.1.4.  CertProfile
+         5.1.1.5.  KemCiphertextInfo
        5.1.2.  PKI Message Body
        5.1.3.  PKI Message Protection
          5.1.3.1.  Shared Secret Information
@@ -1584,19 +1584,7 @@ Table of Contents
      id-it-origPKIMessage OBJECT IDENTIFIER ::= {id-it 15}
      OrigPKIMessageValue ::= PKIMessages
 
-5.1.1.4.  KemCiphertextInfo
-
-   If the PKI entity knows that the PKI management entity uses a KEM key
-   pair and has the authentic public key it can provide the KEM
-   ciphertext in the generalInfo field of a request message.
-
-     id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
-     KemCiphertextInfoValue ::= KemCiphertextInfo
-
-   For more details of KEM-based message protection see Section 5.1.3.4.
-   See Section 5.3.19.18 for the definition of {id-it TBD1}.
-
-5.1.1.5.  CertProfile
+5.1.1.4.  CertProfile
 
    This is used by the EE to indicate specific certificate profiles,
    e.g., when requesting a new certificate or a certificate request
@@ -1620,6 +1608,19 @@ Table of Contents
    less certificate profile entries than CertReqMsg or GenMsgContent
    InfoTypeAndValue elements, the remaining CertReqMsg or GenMsgContent
    InfoTypeAndValue elements have no profile name associated with them.
+
+5.1.1.5.  KemCiphertextInfo
+
+   A PKI entity MAY provide the KEM ciphertext in the generalInfo field
+   of a request message to a PKI management entity if it knows that the
+   PKI management entity uses a KEM key pair and has the authentic
+   public key.
+
+     id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
+     KemCiphertextInfoValue ::= KemCiphertextInfo
+
+   For more details of KEM-based message protection see Section 5.1.3.4.
+   See Section 5.3.19.18 for the definition of {id-it TBD1}.
 
 5.1.2.  PKI Message Body
 
@@ -1834,7 +1835,7 @@ Table of Contents
 
    Note: This InfoTypeAndValue can be carried in a genm/genp message
    body as specified in Section 5.3.19.18 or in the generalInfo field of
-   PKIHeader in messages of other types, see Section 5.1.1.4.
+   PKIHeader in messages of other types, see Section 5.1.1.5.
 
    This generic message flow assumes that Bob possesses the public KEM
    key of Alice.  Alice can be the initiator of a PKI management
@@ -1964,7 +1965,7 @@ Table of Contents
    requested using PKI general messages as described in
    Section 5.3.19.18.  Alternatively, the generalInfo field of the
    PKIHeader can be used to convey the same request and response
-   InfoTypeAndValue structures as described in Section 5.1.1.4.  The
+   InfoTypeAndValue structures as described in Section 5.1.1.5.  The
    procedure works also without Alice explicitly requesting the KEM
    ciphertext in case Bob knows a KEM key of Alice beforehand and can
    expect that she is ready to use it.
@@ -3033,7 +3034,7 @@ Table of Contents
    elliptic curve to be used; see [RFC5480].
 
    Note: The client may specify a profile name in the certProfile field,
-   see Section 5.1.1.5.
+   see Section 5.1.1.4.
 
    The id-regCtrl-rsaKeyLen control SHALL be used for algorithm
    rsaEncryption and SHALL contain the intended modulus bit length of
@@ -3127,7 +3128,7 @@ Table of Contents
 
    NOTE: These InfoTypeAndValue structures can also be transferred in
    the generalInfo field of the PKIHeader in messages of other types
-   (see Section 5.1.1.4).
+   (see Section 5.1.1.5).
 
 5.3.20.  PKI General Response Content
 
@@ -5938,7 +5939,7 @@ Appendix G.  History of Changes
       deleted text
 
    *  Consolidated the definition and transferal of KemCiphertextInfo.
-      Added a new Section 5.1.1.4 introducing KemCiphertextInfo in the
+      Added a new Section 5.1.1.5 introducing KemCiphertextInfo in the
       generlaInfo filed and moving text on how to request a KEM
       ciphertext using genem/genp from Section 5.1.3.4 to
       Section 5.3.19.18

@@ -1334,10 +1334,10 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
                         <p id="section-toc.1-1.5.2.1.2.1.2.3.1"><a href="#section-5.1.1.3" class="auto internal xref">5.1.1.3</a>.  <a href="#name-origpkimessage" class="internal xref">OrigPKIMessage</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1.2.4">
-                        <p id="section-toc.1-1.5.2.1.2.1.2.4.1"><a href="#section-5.1.1.4" class="auto internal xref">5.1.1.4</a>.  <a href="#name-kemciphertextinfo" class="internal xref">KemCiphertextInfo</a></p>
+                        <p id="section-toc.1-1.5.2.1.2.1.2.4.1"><a href="#section-5.1.1.4" class="auto internal xref">5.1.1.4</a>.  <a href="#name-certprofile" class="internal xref">CertProfile</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1.2.5">
-                        <p id="section-toc.1-1.5.2.1.2.1.2.5.1"><a href="#section-5.1.1.5" class="auto internal xref">5.1.1.5</a>.  <a href="#name-certprofile" class="internal xref">CertProfile</a></p>
+                        <p id="section-toc.1-1.5.2.1.2.1.2.5.1"><a href="#section-5.1.1.5" class="auto internal xref">5.1.1.5</a>.  <a href="#name-kemciphertextinfo" class="internal xref">KemCiphertextInfo</a></p>
 </li>
                     </ul>
 </li>
@@ -3232,34 +3232,34 @@ the RA can set the popo field to raVerified, see <a href="#sect-5.2.8.4" class="
 </div>
 <div id="sect-5.1.1.4">
 <section id="section-5.1.1.4">
-            <h5 id="name-kemciphertextinfo">
-<a href="#section-5.1.1.4" class="section-number selfRef">5.1.1.4. </a><a href="#name-kemciphertextinfo" class="section-name selfRef">KemCiphertextInfo</a>
+            <h5 id="name-certprofile">
+<a href="#section-5.1.1.4" class="section-number selfRef">5.1.1.4. </a><a href="#name-certprofile" class="section-name selfRef">CertProfile</a>
             </h5>
-<p id="section-5.1.1.4-1">If the PKI entity knows that the PKI management entity uses a KEM key pair and has the authentic public key it can provide the KEM ciphertext in the generalInfo field of a request message.<a href="#section-5.1.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.4-1">This is used by the EE to indicate specific certificate profiles, e.g., when
+requesting a new certificate or a certificate request template; see <a href="#sect-5.3.19.16" class="auto internal xref">Section 5.3.19.16</a>.<a href="#section-5.1.1.4-1" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.1.1.4-2">
 <pre>
-  id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
-  KemCiphertextInfoValue ::= KemCiphertextInfo
+  id-it-certProfile OBJECT IDENTIFIER ::= {id-it 21}
+  CertProfileValue ::= SEQUENCE SIZE (1..MAX) OF UTF8String
 </pre><a href="#section-5.1.1.4-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1.1.4-3">For more details of KEM-based message protection see <a href="#sect-5.1.3.4" class="auto internal xref">Section 5.1.3.4</a>. See <a href="#sect-5.3.19.18" class="auto internal xref">Section 5.3.19.18</a> for the definition of {id-it TBD1}.<a href="#section-5.1.1.4-3" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.4-3">When used in a p10cr message, the CertProfileValue sequence <span class="bcp14">MUST NOT</span> contain multiple certificate profile names. When used in an ir/cr/kur/genm message, the CertProfileValue sequence <span class="bcp14">MUST NOT</span> contain more certificate profile names than the number of CertReqMsg or GenMsgContent InfoTypeAndValue elements contained in the message body.<a href="#section-5.1.1.4-3" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.4-4">The certificate profile names in the CertProfileValue sequence relate to the CertReqMsg or GenMsgContent InfoTypeAndValue elements in the given order. An empty string means no certificate profile name is associated with the respective CertReqMsg or GenMsgContent InfoTypeAndValue element. If the CertProfileValue sequence contains less certificate profile entries than CertReqMsg or GenMsgContent InfoTypeAndValue elements, the remaining CertReqMsg or GenMsgContent InfoTypeAndValue elements have no profile name associated with them.<a href="#section-5.1.1.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-5.1.1.5">
 <section id="section-5.1.1.5">
-            <h5 id="name-certprofile">
-<a href="#section-5.1.1.5" class="section-number selfRef">5.1.1.5. </a><a href="#name-certprofile" class="section-name selfRef">CertProfile</a>
+            <h5 id="name-kemciphertextinfo">
+<a href="#section-5.1.1.5" class="section-number selfRef">5.1.1.5. </a><a href="#name-kemciphertextinfo" class="section-name selfRef">KemCiphertextInfo</a>
             </h5>
-<p id="section-5.1.1.5-1">This is used by the EE to indicate specific certificate profiles, e.g., when
-requesting a new certificate or a certificate request template; see <a href="#sect-5.3.19.16" class="auto internal xref">Section 5.3.19.16</a>.<a href="#section-5.1.1.5-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.5-1">A PKI entity <span class="bcp14">MAY</span> provide the KEM ciphertext in the generalInfo field of a request message to a PKI management entity if it knows that the PKI management entity uses a KEM key pair and has the authentic public key.<a href="#section-5.1.1.5-1" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.1.1.5-2">
 <pre>
-  id-it-certProfile OBJECT IDENTIFIER ::= {id-it 21}
-  CertProfileValue ::= SEQUENCE SIZE (1..MAX) OF UTF8String
+  id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
+  KemCiphertextInfoValue ::= KemCiphertextInfo
 </pre><a href="#section-5.1.1.5-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1.1.5-3">When used in a p10cr message, the CertProfileValue sequence <span class="bcp14">MUST NOT</span> contain multiple certificate profile names. When used in an ir/cr/kur/genm message, the CertProfileValue sequence <span class="bcp14">MUST NOT</span> contain more certificate profile names than the number of CertReqMsg or GenMsgContent InfoTypeAndValue elements contained in the message body.<a href="#section-5.1.1.5-3" class="pilcrow">¶</a></p>
-<p id="section-5.1.1.5-4">The certificate profile names in the CertProfileValue sequence relate to the CertReqMsg or GenMsgContent InfoTypeAndValue elements in the given order. An empty string means no certificate profile name is associated with the respective CertReqMsg or GenMsgContent InfoTypeAndValue element. If the CertProfileValue sequence contains less certificate profile entries than CertReqMsg or GenMsgContent InfoTypeAndValue elements, the remaining CertReqMsg or GenMsgContent InfoTypeAndValue elements have no profile name associated with them.<a href="#section-5.1.1.5-4" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.5-3">For more details of KEM-based message protection see <a href="#sect-5.1.3.4" class="auto internal xref">Section 5.1.3.4</a>. See <a href="#sect-5.3.19.18" class="auto internal xref">Section 5.3.19.18</a> for the definition of {id-it TBD1}.<a href="#section-5.1.1.5-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3471,7 +3471,7 @@ digital signature <span class="bcp14">MAY</span> be one of the options described
 <p id="section-5.1.3.4-9">mac is the algorithm identifier of the chosen MAC algorithm, and any associated parameters, used to calculate the MAC value.<a href="#section-5.1.3.4-9" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-10">The KDF and MAC algorithms <span class="bcp14">MAY</span> be chosen from the options in CMP Algorithms <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span>.<a href="#section-5.1.3.4-10" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-11">The InfoTypeAndValue transferring the KEM ciphertext uses OID id-it-KemCiphertextInfo. It contains a KemCiphertextInfo structure as defined in <a href="#sect-5.3.19.18" class="auto internal xref">Section 5.3.19.18</a>.<a href="#section-5.1.3.4-11" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-12">Note: This InfoTypeAndValue can be carried in a genm/genp message body as specified in <a href="#sect-5.3.19.18" class="auto internal xref">Section 5.3.19.18</a> or in the generalInfo field of PKIHeader in messages of other types, see <a href="#sect-5.1.1.4" class="auto internal xref">Section 5.1.1.4</a>.<a href="#section-5.1.3.4-12" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-12">Note: This InfoTypeAndValue can be carried in a genm/genp message body as specified in <a href="#sect-5.3.19.18" class="auto internal xref">Section 5.3.19.18</a> or in the generalInfo field of PKIHeader in messages of other types, see <a href="#sect-5.1.1.5" class="auto internal xref">Section 5.1.1.5</a>.<a href="#section-5.1.3.4-12" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-13">This generic message flow assumes that Bob possesses the public KEM key of Alice. Alice can be the initiator of a PKI management operation or the responder. For more detailed figures see <a href="#sect-e" class="auto internal xref">Appendix E</a>.<a href="#section-5.1.3.4-13" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-14">Generic Message Flow:<a href="#section-5.1.3.4-14" class="pilcrow">¶</a></p>
 <span id="name-generic-message-flow-when-a"></span><div id="KEM">
@@ -3573,7 +3573,7 @@ kemContext <span class="bcp14">MAY</span> contain additional algorithm specific 
                 <p id="section-5.1.3.4-24.1.1">OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.<a href="#section-5.1.3.4-24.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-5.1.3.4-25">There are various ways how Alice can request, and Bob can provide the KEM ciphertext, see <span class="contact-name">sect-e</span> for details. The KemCiphertextInfo can be requested using PKI general messages as described in <a href="#sect-5.3.19.18" class="auto internal xref">Section 5.3.19.18</a>. Alternatively, the generalInfo field of the PKIHeader can be used to convey the same request and response InfoTypeAndValue structures as described in <a href="#sect-5.1.1.4" class="auto internal xref">Section 5.1.1.4</a>. The procedure works also without Alice explicitly requesting the KEM ciphertext in case Bob knows a KEM key of Alice beforehand and can expect that she is ready to use it.<a href="#section-5.1.3.4-25" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-25">There are various ways how Alice can request, and Bob can provide the KEM ciphertext, see <span class="contact-name">sect-e</span> for details. The KemCiphertextInfo can be requested using PKI general messages as described in <a href="#sect-5.3.19.18" class="auto internal xref">Section 5.3.19.18</a>. Alternatively, the generalInfo field of the PKIHeader can be used to convey the same request and response InfoTypeAndValue structures as described in <a href="#sect-5.1.1.5" class="auto internal xref">Section 5.1.1.5</a>. The procedure works also without Alice explicitly requesting the KEM ciphertext in case Bob knows a KEM key of Alice beforehand and can expect that she is ready to use it.<a href="#section-5.1.3.4-25" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-26">If both the initiator and responder in a PKI management operation have KEM key pairs, this procedure can be applied by both entities independently, establishing and using different shared secret keys for either direction.<a href="#section-5.1.3.4-26" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -4756,7 +4756,7 @@ field <span class="bcp14">SHALL</span> identify a cryptographic
 algorithm. The contents of the optional parameters field will vary according
 to the algorithm identified. For example, when the algorithm is set to id-ecPublicKey,
 the parameters identify the elliptic curve to be used; see <span>[<a href="#RFC5480" class="cite xref">RFC5480</a>]</span>.<a href="#section-5.3.19.16-2" class="pilcrow">¶</a></p>
-<p id="section-5.3.19.16-3">Note: The client may specify a profile name in the certProfile field, see <a href="#sect-5.1.1.5" class="auto internal xref">Section 5.1.1.5</a>.<a href="#section-5.3.19.16-3" class="pilcrow">¶</a></p>
+<p id="section-5.3.19.16-3">Note: The client may specify a profile name in the certProfile field, see <a href="#sect-5.1.1.4" class="auto internal xref">Section 5.1.1.4</a>.<a href="#section-5.3.19.16-3" class="pilcrow">¶</a></p>
 <p id="section-5.3.19.16-4">The id-regCtrl-rsaKeyLen control <span class="bcp14">SHALL</span> be used for algorithm rsaEncryption
 and <span class="bcp14">SHALL</span> contain the intended modulus bit length of the RSA key.<a href="#section-5.3.19.16-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.3.19.16-5">
@@ -4852,7 +4852,7 @@ those CRLs that are more recent than the ones indicated by the client.<a href="#
 <p id="section-5.3.19.18-5">kem is the algorithm identifier of the KEM algorithm, and any associated parameters, used to generate the ciphertext ct.<a href="#section-5.3.19.18-5" class="pilcrow">¶</a></p>
 <p id="section-5.3.19.18-6">ct is the ciphertext output from the KEM Encapsulate function.<a href="#section-5.3.19.18-6" class="pilcrow">¶</a></p>
 <p id="section-5.3.19.18-7">kemContext <span class="bcp14">MAY</span> contain additional algorithm specific context information, see also the definition of ukm in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>]</span>, Section 3.<a href="#section-5.3.19.18-7" class="pilcrow">¶</a></p>
-<p id="section-5.3.19.18-8">NOTE: These InfoTypeAndValue structures can also be transferred in the generalInfo field of the PKIHeader in messages of other types (see <a href="#sect-5.1.1.4" class="auto internal xref">Section 5.1.1.4</a>).<a href="#section-5.3.19.18-8" class="pilcrow">¶</a></p>
+<p id="section-5.3.19.18-8">NOTE: These InfoTypeAndValue structures can also be transferred in the generalInfo field of the PKIHeader in messages of other types (see <a href="#sect-5.1.1.5" class="auto internal xref">Section 5.1.1.5</a>).<a href="#section-5.3.19.18-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -7853,7 +7853,7 @@ END
           <p id="appendix-G-3.4.1">Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text<a href="#appendix-G-3.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.5">
-          <p id="appendix-G-3.5.1">Consolidated the definition and transferal of KemCiphertextInfo. Added a new Section 5.1.1.4 introducing KemCiphertextInfo in the generlaInfo filed and moving text on how to request a KEM ciphertext using genem/genp from Section 5.1.3.4 to Section 5.3.19.18<a href="#appendix-G-3.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.5.1">Consolidated the definition and transferal of KemCiphertextInfo. Added a new Section 5.1.1.5 introducing KemCiphertextInfo in the generlaInfo filed and moving text on how to request a KEM ciphertext using genem/genp from Section 5.1.3.4 to Section 5.3.19.18<a href="#appendix-G-3.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.6">
           <p id="appendix-G-3.6.1">Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117<a href="#appendix-G-3.6.1" class="pilcrow">¶</a></p>
