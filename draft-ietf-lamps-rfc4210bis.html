@@ -3252,7 +3252,7 @@ requesting a new certificate or a certificate request template; see <a href="#se
             <h5 id="name-kemciphertextinfo">
 <a href="#section-5.1.1.5" class="section-number selfRef">5.1.1.5. </a><a href="#name-kemciphertextinfo" class="section-name selfRef">KemCiphertextInfo</a>
             </h5>
-<p id="section-5.1.1.5-1">A PKI entity <span class="bcp14">MAY</span> provide the KEM ciphertext in the generalInfo field of a request message to a PKI management entity if it knows that the PKI management entity uses a KEM key pair and has the authentic public key.<a href="#section-5.1.1.5-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.5-1">A PKI entity <span class="bcp14">MAY</span> provide the KEM ciphertext for MAC-based message protection using KEM (see Section 5.1.3.4) in the generalInfo field of a request message to a PKI management entity if it knows that the PKI management entity uses a KEM key pair and has the authentic public key.<a href="#section-5.1.1.5-1" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.1.1.5-2">
 <pre>
   id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
