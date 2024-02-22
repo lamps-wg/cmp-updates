@@ -1800,12 +1800,14 @@ Table of Contents
    authenticated, and "Bob" to denote the entity who needs to
    authenticate the messages received.
 
-   Bob must have generated the ciphertext using KEM encapsulation with
-   Alice's public key and have transferred it to Alice in an
-   InfoTypeAndValue in a previous message.  Using a KDF, Alice will
-   derive a shared secret key from the KEM shared secret and other data
-   sent by Bob. PKIProtection will contain a MAC value calculated using
-   that shared secret key, and the protectionAlg will be the following:
+   Assuming Bob possesses Alice's KEM public key, he generates the
+   ciphertext using KEM encapsulation and transfers it to Alice in an
+   InfoTypeAndValue structure.  Alice then retrieves the KEM shared
+   secret from the ciphertext using KEM decapsulation and the associated
+   KEM private key.  Using a key derivation function (KDF), she derives
+   a shared secret key from the KEM shared secret and other data sent by
+   Bob. PKIProtection will contain a MAC value calculated using that
+   shared secret key, and the protectionAlg will be the following:
 
      id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 16}
 
@@ -1838,10 +1840,11 @@ Table of Contents
    body as specified in Section 5.3.19.18 or in the generalInfo field of
    PKIHeader in messages of other types, see Section 5.1.1.5.
 
-   This generic message flow assumes that Bob possesses the public KEM
-   key of Alice.  Alice can be the initiator of a PKI management
-   operation or the responder.  For more detailed figures see
-   Appendix E.
+   In the following, a generic message flow for MAC-based protection
+   using KEM is specified in more detail.  It is assumed that Bob
+   possesses the public KEM key of Alice.  Alice can be the initiator of
+   a PKI management operation or the responder.  For more detailed
+   figures see Appendix E.
 
    Generic Message Flow:
 
