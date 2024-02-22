@@ -1701,8 +1701,7 @@ entropy (established via out-of-band means). PKIProtection will contain a
 MAC value and the protectionAlg MAY be one of the options described in CMP
 Algorithms Section 6.1 {{RFC9481}}.
 
-The PasswordBasedMac is specified as follows (see also {{RFC4211}} and
-{{RFC9045}}):
+The PasswordBasedMac as listed in Section 6.1.1 of {{RFC9481}} is specified as follows (see also {{RFC4211}} and {{RFC9045}}):
 
 ~~~~ asn.1
   id-PasswordBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 13}
@@ -1785,9 +1784,27 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 {: id="sect-5.1.3.4"}
 
 
-In case the sender of a message has a KEM key pair, it can use a shared secret key obtained by KEM decapsulation of a ciphertext received using its private KEM key.
+In case the sender of a message has a Key Encapsulation Mechanism (KEM) key pair, it can be used to establish a shared secret key for MAC-based message protection. This can be used for message authentication.
 
-This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
+This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}} which is copied here for completeness.
+
+A KEM algorithm provides three functions:
+
+* KeyGen() -> (pk, sk):
+
+> Generate the public key (pk) and a private key (sk).
+
+* Encapsulate(pk) -> (ct, ss):
+
+> Given the recipient's public key (pk), produce a ciphertext (ct) to be
+passed to the recipient and shared secret (ss) for the originator.
+
+* Decapsulate(sk, ct) -> ss:
+
+> Given the private key (sk) and the ciphertext (ct), produce the
+shared secret (ss) for the recipient.
+
+To support a particular KEM algorithm, the CMP originator MUST support the KEM Encapsulate() function. To support a particular KEM algorithm, the CMP recipient MUST support the KEM KeyGen() function and the KEM Decapsulate() function. The recipient's public key is usually carried in a certificate {{RFC5280}}.
 
 Note: In this section both entities in the communication need to send and receive messages. Also, only the client or the server side of the communication could wish to protect messages using KEM keys. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to get its messages authenticated, and "Bob" to denote the entity who needs to authenticate the messages received.
 
@@ -1803,7 +1820,7 @@ Assuming Bob possesses Alice's KEM public key, he generates the ciphertext using
   }
 ~~~~
 
-Note: The OID for id-KemBasedMac was registered in the same branch as the OIDs for id-PasswordBasedMac and id-DHBasedMac.
+Note: The OID for id-KemBasedMac was assigned on the private-use arc { iso(1) member-body(2) us(840) nortelnetworks(113533) entrust(7) }, and not assigned on an IANA-owned arc because the authors wished to placed it on the same branch as the existing OIDs for id-PasswordBasedMac and id-DHBasedMac.
 
 kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to derive the shared secret key.
 
@@ -1872,7 +1889,9 @@ Step# Alice                                Bob
 
 This shared secret key ssk can be reused by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.
 
-This approach employs the conventions of using a KDF as described in {{I-D.ietf-lamps-cms-kemri, Section 5}} with the following changes:
+This approach employs the notation of KDF(IKM, L, info) as described in {{I-D.ietf-lamps-cms-kemri, Section 5}} with the following changes:
+
+* IKM is the input key material. It is the symmetric secret called ss resulting from the key encapsulation mechanism.¶
 
 * L is dependent of the MAC algorithm that is used with the shared secret key for CMP message protection and is called len in this document
 
@@ -2332,8 +2351,8 @@ The challenge-response messages for proof-of-possession of a private key are spe
    }
 
    Rand ::= SEQUENCE {
-     int INTEGER,
-     sender GeneralName
+      int INTEGER,
+      sender GeneralName
    }
 ~~~~
 
@@ -5756,7 +5775,7 @@ From version 07 -> 08:
 * Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text
 
 
-* Consolidated the definition and transferal of KemCiphertextInfo. Added a new Section 5.1.1.5 introducing KemCiphertextInfo in the generlaInfo filed and moving text on how to request a KEM ciphertext using genem/genp from Section 5.1.3.4 to Section 5.3.19.18
+* Consolidated the definition and transferal of KemCiphertextInfo. Added a new Section 5.1.1.5 introducing KemCiphertextInfo in the generalInfo filed and moving text on how to request a KEM ciphertext using genm/genp from Section 5.1.3.4 to Section 5.3.19.18
 
 * Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117
 
