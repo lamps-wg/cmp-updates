@@ -1701,7 +1701,7 @@ entropy (established via out-of-band means). PKIProtection will contain a
 MAC value and the protectionAlg MAY be one of the options described in CMP
 Algorithms Section 6.1 {{RFC9481}}.
 
-The PasswordBasedMac as listed in Section 6.1.1 of {{RFC9481}} is specified as follows (see also {{RFC4211}} and {{RFC9045}}):
+The following text gives further details on PasswordBasedMac. It is mentioned in Section 6.1.1 of {{RFC9481}} for backward compatibility. More modern alternatives are listed in Section 6.1 of {{RFC9481}}.
 
 ~~~~ asn.1
   id-PasswordBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 13}
@@ -1806,7 +1806,7 @@ shared secret (ss) for the recipient.
 
 To support a particular KEM algorithm, the CMP originator MUST support the KEM Encapsulate() function. To support a particular KEM algorithm, the CMP recipient MUST support the KEM KeyGen() function and the KEM Decapsulate() function. The recipient's public key is usually carried in a certificate {{RFC5280}}.
 
-Note: In this section both entities in the communication need to send and receive messages. Also, only the client or the server side of the communication could wish to protect messages using KEM keys. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to get its messages authenticated, and "Bob" to denote the entity who needs to authenticate the messages received.
+Note: In this section both entities in the communication need to send and receive messages. Either side of the communication may independently wish to protect messages using a MAC key derived using KEM. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to provide MAC-based message protection, and "Bob" to denote the entity who needs to verify it.
 
 Assuming Bob possesses Alice's KEM public key, he generates the ciphertext using KEM encapsulation and transfers it to Alice in an InfoTypeAndValue structure. Alice then retrieves the KEM shared secret from the ciphertext using KEM decapsulation and the associated KEM private key. Using a key derivation function (KDF), she derives a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
 
@@ -2296,7 +2296,7 @@ The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of
                  <---       ack        -----
 ~~~~
 
-The end entity proves knowledge of the private key to the CA by providing the correct CertHash for this certificate in the certConf message. This demonstrates POP because the EE can only compute the correct CertHash if it is able to recover the encrypted certificate, and it can only recover the certificate if it is able to obtain the symmetric key using the required private key. Clearly, for this to work, the CA MUST NOT publish the certificate until the certConf message arrives (when certHash is to be used to demonstrate POP). See {{sect-5.3.18}} for further details.
+The end entity proves knowledge of the private key to the CA by providing the correct CertHash for this certificate in the certConf message. This demonstrates POP because the EE can only compute the correct CertHash if it is able to recover the encrypted certificate, and it can only recover the certificate if it is able to obtain the symmetric key using the required private key. Clearly, for this to work, the CA MUST NOT publish the certificate until the certConf message arrives (when certHash is to be used to demonstrate POP). See {{sect-5.3.18}} for further details and see {{sect-8.11}} for security considerations regarding use of Certificate Transparency logs.
 
 
 #### Direct Method - Challenge-Response Protocol
@@ -2356,11 +2356,11 @@ The challenge-response messages for proof-of-possession of a private key are spe
    }
 ~~~~
 
+More details on the fields in this syntax is available in {{sect-f}}.
+
 For a popdecc message indicating cmp2021(3) in the pvno field of the PKIHeader, the encryption of Rand MUST be transferred in the encryptedRand field in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.  The challenge field MUST contain an empty OCTET STRING.
 
-Note: The challenge field has been deprecated in favor of encryptedRand.  When using cmp2000(2) in the popdecc message header for backward compatibility, the challenge field MUST contain the encryption (involving the public key for which the certification request is being made) of Rand and encryptedRand MUST be omitted.  Using challenge (omitting the optional encryptedRand field) is bit-compatible with [RFC4210].
-
-Note: That the size of Rand needs to be appropriate for encryption, involving the public key of the requester. If, in some environment, names are so long that they cannot fit (e.g., very long DNs), then whatever portion will fit should be used (as long as it includes at least the common name, and as long as the receiver is able to deal meaningfully with the abbreviation).
+Note: The challenge field has been deprecated in favor of encryptedRand.  When using cmp2000(2) in the popdecc message header for backward compatibility, the challenge field MUST contain the encryption (involving the public key for which the certification request is being made) of Rand and encryptedRand MUST be omitted.  Using challenge (omitting the optional encryptedRand field) is bit-compatible with [RFC4210]. Note that the size of Rand, when used with challenge, needs to be appropriate for encryption, involving the public key of the requester. If, in some environment, names are so long that they cannot fit (e.g., very long DNs), then whatever portion will fit should be used (as long as it includes at least the common name, and as long as the receiver is able to deal meaningfully with the abbreviation).
 
 ~~~~ asn.1
    POPODecKeyRespContent ::= SEQUENCE OF INTEGER
@@ -3707,6 +3707,7 @@ about decrypting arbitrary "ciphertext" and revealing recovered
 "plaintext" since such a practice can lead to serious security
 vulnerabilities.
 
+The client MUST return the decrypted values only if they match the expected content type. In an Indirect Method, the decrypted value MUST be a valid certificate, and in the Direct Method, the decrypted value MUST be a Rand as defined in {{sect-5.2.8.3}}.
 
 ## Proof-Of-Possession by Exposing the Private Key
 {: id="sect-8.3"}
