@@ -1791,7 +1791,7 @@ This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm
 
 Note: In this section both entities in the communication need to send and receive messages. Also, only the client or the server side of the communication could wish to protect messages using KEM keys. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to get its messages authenticated, and "Bob" to denote the entity who needs to authenticate the messages received.
 
-Bob must have generated the ciphertext using KEM encapsulation with Alice's public key and have transferred it to Alice in an InfoTypeAndValue in a previous message. Using a KDF, Alice will derive a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
+Assuming Bob possesses Alice's KEM public key, he generates the ciphertext using KEM encapsulation and transfers it to Alice in an InfoTypeAndValue structure. Alice then retrieves the KEM shared secret from the ciphertext using KEM decapsulation and the associated KEM private key. Using a key derivation function (KDF), she derives a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
 
 ~~~~ asn.1
   id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 16}
@@ -1818,7 +1818,7 @@ The InfoTypeAndValue transferring the KEM ciphertext uses OID id-it-KemCiphertex
 
 Note: This InfoTypeAndValue can be carried in a genm/genp message body as specified in {{sect-5.3.19.18}} or in the generalInfo field of PKIHeader in messages of other types, see {{sect-5.1.1.5}}.
 
-This generic message flow assumes that Bob possesses the public KEM key of Alice. Alice can be the initiator of a PKI management operation or the responder. For more detailed figures see {{sect-e}}.
+In the following, a generic message flow for MAC-based protection using KEM is specified in more detail. It is assumed that Bob possesses the public KEM key of Alice. Alice can be the initiator of a PKI management operation or the responder. For more detailed figures see {{sect-e}}.
 
 Generic Message Flow:
 
