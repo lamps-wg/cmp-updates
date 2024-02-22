@@ -1710,8 +1710,9 @@ Table of Contents
    PKIProtection will contain a MAC value and the protectionAlg MAY be
    one of the options described in CMP Algorithms Section 6.1 [RFC9481].
 
-   The PasswordBasedMac as listed in Section 6.1.1 of [RFC9481] is
-   specified as follows (see also [RFC4211] and [RFC9045]):
+   The following text gives further details on PasswordBasedMac.  It is
+   mentioned in Section 6.1.1 of [RFC9481] for backward compatibility.
+   More modern alternatives are listed in Section 6.1 of [RFC9481].
 
      id-PasswordBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 13}
      PBMParameter ::= SEQUENCE {
@@ -1818,12 +1819,12 @@ Table of Contents
    usually carried in a certificate [RFC5280].
 
    Note: In this section both entities in the communication need to send
-   and receive messages.  Also, only the client or the server side of
-   the communication could wish to protect messages using KEM keys.  For
-   ease of explanation we use the term "Alice" to denote the entity
-   possessing the KEM key pair and who wishes to get its messages
-   authenticated, and "Bob" to denote the entity who needs to
-   authenticate the messages received.
+   and receive messages.  Either side of the communication may
+   independently wish to protect messages using a MAC key derived using
+   KEM.  For ease of explanation we use the term "Alice" to denote the
+   entity possessing the KEM key pair and who wishes to provide MAC-
+   based message protection, and "Bob" to denote the entity who needs to
+   verify it.
 
    Assuming Bob possesses Alice's KEM public key, he generates the
    ciphertext using KEM encapsulation and transfers it to Alice in an
@@ -2403,7 +2404,9 @@ Table of Contents
    symmetric key using the required private key.  Clearly, for this to
    work, the CA MUST NOT publish the certificate until the certConf
    message arrives (when certHash is to be used to demonstrate POP).
-   See Section 5.3.18 for further details.
+   See Section 5.3.18 for further details and see Section 8.11 for
+   security considerations regarding use of Certificate Transparency
+   logs.
 
 5.2.8.3.  Direct Method - Challenge-Response Protocol
 
@@ -2477,6 +2480,8 @@ Table of Contents
          sender GeneralName
       }
 
+   More details on the fields in this syntax is available in Appendix F.
+
    For a popdecc message indicating cmp2021(3) in the pvno field of the
    PKIHeader, the encryption of Rand MUST be transferred in the
    encryptedRand field in a CMS EnvelopedData structure as defined in
@@ -2489,14 +2494,13 @@ Table of Contents
    encryption (involving the public key for which the certification
    request is being made) of Rand and encryptedRand MUST be omitted.
    Using challenge (omitting the optional encryptedRand field) is bit-
-   compatible with [RFC4210].
-
-   Note: That the size of Rand needs to be appropriate for encryption,
-   involving the public key of the requester.  If, in some environment,
-   names are so long that they cannot fit (e.g., very long DNs), then
-   whatever portion will fit should be used (as long as it includes at
-   least the common name, and as long as the receiver is able to deal
-   meaningfully with the abbreviation).
+   compatible with [RFC4210].  Note that the size of Rand, when used
+   with challenge, needs to be appropriate for encryption, involving the
+   public key of the requester.  If, in some environment, names are so
+   long that they cannot fit (e.g., very long DNs), then whatever
+   portion will fit should be used (as long as it includes at least the
+   common name, and as long as the receiver is able to deal meaningfully
+   with the abbreviation).
 
       POPODecKeyRespContent ::= SEQUENCE OF INTEGER
 
@@ -3705,6 +3709,11 @@ Table of Contents
    careful about decrypting arbitrary "ciphertext" and revealing
    recovered "plaintext" since such a practice can lead to serious
    security vulnerabilities.
+
+   The client MUST return the decrypted values only if they match the
+   expected content type.  In an Indirect Method, the decrypted value
+   MUST be a valid certificate, and in the Direct Method, the decrypted
+   value MUST be a Rand as defined in Section 5.2.8.3.
 
 8.3.  Proof-Of-Possession by Exposing the Private Key
 
