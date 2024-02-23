@@ -1734,7 +1734,7 @@ ir/ip/certConf/pkiConf) to reduce the overhead associated with
 PasswordBasedMac computation.
 
 
-#### Key Agreement
+#### DH Key Pairs
 {: id="sect-5.1.3.2"}
 
 Where the sender and receiver possess finite-field or elliptic-curve-based
