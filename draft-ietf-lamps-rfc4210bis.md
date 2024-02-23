@@ -5232,14 +5232,14 @@ PBMParameter ::= SEQUENCE {
     -- of this string to values appropriate for their environment
     -- in order to reduce the risk of denial-of-service attacks.
     owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}},
-    -- AlgId for a One-Way Function
+    -- AlgId for the One-Way Function
     iterationCount      INTEGER,
     -- number of times the OWF is applied
     -- Note:  Implementations MAY wish to limit acceptable sizes
     -- of this integer to values appropriate for their environment
     -- in order to reduce the risk of denial-of-service attacks.
     mac                 AlgorithmIdentifier{MAC-ALGORITHM, {...}}
-    -- the MAC AlgId
+    -- AlgId of the Message Authentication Code algorithm
 }
 
 id-DHBasedMac OBJECT IDENTIFIER ::= { iso(1) member-body(2)
@@ -5249,8 +5249,6 @@ DHBMParameter ::= SEQUENCE {
     -- AlgId for a One-Way Function
     mac                 AlgorithmIdentifier{MAC-ALGORITHM, {...}}
     -- AlgId of the Message Authentication Code algorithm
-    -- (e.g., HMAC-SHA256, AES-GMAC [RFC9481],
-    -- or HMAC [RFC2104, RFC2202])
 }
 
 -- id-KemBasedMac and KemBMParameter were added in [RFCXXXX]
@@ -5265,8 +5263,6 @@ KemBMParameter ::= SEQUENCE {
     -- SHOULD be the maximum key length of the MAC function
     mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}
     -- AlgId of the Message Authentication Code algorithm
-    -- (e.g., HMAC-SHA256, AES-GMAC [RFC9481],
-    -- or HMAC [RFC2104, RFC2202])
 }
 
 PKIStatus ::= INTEGER {
