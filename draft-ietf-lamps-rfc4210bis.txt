@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 25 August 2024                                          Entrust
-                                                        22 February 2024
+Expires: 26 August 2024                                          Entrust
+                                                        23 February 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 August 2024.
+   This Internet-Draft will expire on 26 August 2024.
 
 Copyright Notice
 
@@ -136,7 +136,7 @@ Table of Contents
        5.1.2.  PKI Message Body
        5.1.3.  PKI Message Protection
          5.1.3.1.  Shared Secret Information
-         5.1.3.2.  Key Agreement
+         5.1.3.2.  DH Key Pairs
          5.1.3.3.  Signature
          5.1.3.4.  Key Encapsulation
          5.1.3.5.  Multiple Protection
@@ -1742,7 +1742,7 @@ Table of Contents
    ir/ip/certConf/pkiConf) to reduce the overhead associated with
    PasswordBasedMac computation.
 
-5.1.3.2.  Key Agreement
+5.1.3.2.  DH Key Pairs
 
    Where the sender and receiver possess finite-field or elliptic-curve-
    based Diffie-Hellman certificates with compatible DH parameters, in
