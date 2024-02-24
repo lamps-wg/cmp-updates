@@ -5151,7 +5151,7 @@ PKIMessages ::= SEQUENCE SIZE (1..MAX) OF PKIMessage
 
 PKIHeader ::= SEQUENCE {
     pvno                INTEGER     { cmp1999(1), cmp2000(2),
-                                      cmp2012(3) },
+                                      cmp2021(3) },
     sender              GeneralName,
     -- identifies the sender
     recipient           GeneralName,
