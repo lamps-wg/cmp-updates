@@ -1815,6 +1815,7 @@ Assuming Bob possesses Alice's KEM public key, he generates the ciphertext using
 
   KemBMParameter ::= SEQUENCE {
     kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
+    kemContext   [0] OCTET STRING OPTIONAL,
     len              INTEGER (1..MAX),
     mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}
   }
@@ -1823,6 +1824,8 @@ Assuming Bob possesses Alice's KEM public key, he generates the ciphertext using
 Note: The OID for id-KemBasedMac was assigned on the private-use arc { iso(1) member-body(2) us(840) nortelnetworks(113533) entrust(7) }, and not assigned on an IANA-owned arc because the authors wished to placed it on the same branch as the existing OIDs for id-PasswordBasedMac and id-DHBasedMac.
 
 kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to derive the shared secret key.
+
+kemContext MAY be used to transfer additional algorithm specific context information, see also the definition of ukm in {{I-D.ietf-lamps-cms-kemri}}, Section 3.
 
 len is the output length of the KDF and MUST be the desired size of the key to be used for MAC-based message protection.
 
@@ -3104,16 +3107,13 @@ The PKI entity which possesses a KEM key pair can request the ciphertext by send
 ~~~~ asn.1
   KemCiphertextInfo ::= SEQUENCE {
     kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
-    ct               OCTET STRING,
-    kemContext   [0] OCTET STRING OPTIONAL
+    ct               OCTET STRING
   }
 ~~~~
 
 kem is the algorithm identifier of the KEM algorithm, and any associated parameters, used to generate the ciphertext ct.
 
 ct is the ciphertext output from the KEM Encapsulate function.
-
-kemContext MAY contain additional algorithm specific context information, see also the definition of ukm in {{I-D.ietf-lamps-cms-kemri}}, Section 3.
 
 NOTE: These InfoTypeAndValue structures can also be transferred in the generalInfo field of the PKIHeader in messages of other types (see {{sect-5.1.1.5}}).
 
@@ -5258,6 +5258,8 @@ id-KemBasedMac OBJECT IDENTIFIER ::= { iso(1) member-body(2)
 KemBMParameter ::= SEQUENCE {
     kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
     -- AlgId of the Key Derivation Function algorithm
+    kemContext   [0] OCTET STRING OPTIONAL,
+    -- MAY contain additional algorithm specific context information
     len              INTEGER (1..MAX),
     -- Defines the length of the keying material output of the KDF
     -- SHOULD be the maximum key length of the MAC function
@@ -5588,8 +5590,6 @@ KemCiphertextInfo ::= SEQUENCE {
    -- AlgId of the Key Encapsulation Mechanism algorithm
    ct               OCTET STRING
    -- Ciphertext output from the Encapsulate function
-   kemContext   [0] OCTET STRING OPTIONAL
-   -- MAY contain additional algorithm specific context information
    }
 
 KemOtherInfo ::= SEQUENCE {
