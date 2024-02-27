@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 27 August 2024                                          Entrust
-                                                        24 February 2024
+Expires: 30 August 2024                                          Entrust
+                                                        27 February 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 August 2024.
+   This Internet-Draft will expire on 30 August 2024.
 
 Copyright Notice
 
@@ -1839,6 +1839,7 @@ Table of Contents
 
      KemBMParameter ::= SEQUENCE {
        kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
+       kemContext   [0] OCTET STRING OPTIONAL,
        len              INTEGER (1..MAX),
        mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}
      }
@@ -1851,6 +1852,10 @@ Table of Contents
 
    kdf is the algorithm identifier of the chosen KDF, and any associated
    parameters, used to derive the shared secret key.
+
+   kemContext MAY be used to transfer additional algorithm specific
+   context information, see also the definition of ukm in
+   [I-D.ietf-lamps-cms-kemri], Section 3.
 
    len is the output length of the KDF and MUST be the desired size of
    the key to be used for MAC-based message protection.
@@ -3152,18 +3157,13 @@ Table of Contents
 
      KemCiphertextInfo ::= SEQUENCE {
        kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
-       ct               OCTET STRING,
-       kemContext   [0] OCTET STRING OPTIONAL
+       ct               OCTET STRING
      }
 
    kem is the algorithm identifier of the KEM algorithm, and any
    associated parameters, used to generate the ciphertext ct.
 
    ct is the ciphertext output from the KEM Encapsulate function.
-
-   kemContext MAY contain additional algorithm specific context
-   information, see also the definition of ukm in
-   [I-D.ietf-lamps-cms-kemri], Section 3.
 
    NOTE: These InfoTypeAndValue structures can also be transferred in
    the generalInfo field of the PKIHeader in messages of other types
@@ -5466,6 +5466,8 @@ Appendix F.  Compilable ASN.1 Definitions
    KemBMParameter ::= SEQUENCE {
        kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
        -- AlgId of the Key Derivation Function algorithm
+       kemContext   [0] OCTET STRING OPTIONAL,
+       -- MAY contain additional algorithm specific context information
        len              INTEGER (1..MAX),
        -- Defines the length of the keying material output of the KDF
        -- SHOULD be the maximum key length of the MAC function
@@ -5796,8 +5798,6 @@ Appendix F.  Compilable ASN.1 Definitions
       -- AlgId of the Key Encapsulation Mechanism algorithm
       ct               OCTET STRING
       -- Ciphertext output from the Encapsulate function
-      kemContext   [0] OCTET STRING OPTIONAL
-      -- MAY contain additional algorithm specific context information
       }
 
    KemOtherInfo ::= SEQUENCE {
