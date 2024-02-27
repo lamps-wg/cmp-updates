@@ -1916,14 +1916,6 @@ This approach employs the notation of KDF(IKM, L, info) as described in {{I-D.ie
 
   kemContext MAY contain additional algorithm specific context information.
 
-\< Editorial Note: With the update to -V08, the fields senderNonce, recipNonce, len, and mac were removed from the KemOtherInfo sequence.
-
-  The kemContext was added to KemCiphertextInfo and KemOtherInfo for offer similar flexibility as cms-kemri offers with ukm.
-
-  The authors are waiting for further expert review from the WG on the specification of KEM-based message protection.
-
-End of Editorial Note >
-
 * OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.
 
 There are various ways how Alice can request, and Bob can provide the KEM ciphertext, see {{{sect-e}} for details. The KemCiphertextInfo can be requested using PKI general messages as described in {{sect-5.3.19.18}}. Alternatively, the generalInfo field of the PKIHeader can be used to convey the same request and response InfoTypeAndValue structures as described in {{sect-5.1.1.5}}. The procedure works also without Alice explicitly requesting the KEM ciphertext in case Bob knows a KEM key of Alice beforehand and can expect that she is ready to use it.
@@ -5771,10 +5763,9 @@ From version 07 -> 08:
 
 * Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text
 
-
 * Consolidated the definition and transferal of KemCiphertextInfo. Added a new Section 5.1.1.5 introducing KemCiphertextInfo in the generalInfo filed and moving text on how to request a KEM ciphertext using genm/genp from Section 5.1.3.4 to Section 5.3.19.18
 
-* Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117
+* Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117. Also introducing optional field kemContext to KemBasedMac and KemOtherInfo as CMP-specific alternative to ukm in cms-kemri.
 
 * Added ToDo for reviewing the reduced content of KemOtherInfo to Section 5.1.3.4
 
