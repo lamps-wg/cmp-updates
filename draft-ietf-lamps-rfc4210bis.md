@@ -1701,7 +1701,7 @@ entropy (established via out-of-band means). PKIProtection will contain a
 MAC value and the protectionAlg MAY be one of the options described in CMP
 Algorithms Section 6.1 {{RFC9481}}.
 
-The following text gives further details on PasswordBasedMac. It is mentioned in Section 6.1.1 of {{RFC9481}} for backward compatibility. More modern alternatives are listed in Section 6.1 of {{RFC9481}}.
+The algorithm identifier id-PasswordBasedMac is defined in Section 4.4 of {{RFC4211}} and updated by {{RFC9045}}. It is mentioned in Section 6.1.1 of {{RFC9481}} for backward compatibility. More modern alternatives are listed in Section 6.1 of {{RFC9481}}.
 
 ~~~~ asn.1
   id-PasswordBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 13}
@@ -1712,6 +1712,10 @@ The following text gives further details on PasswordBasedMac. It is mentioned in
      mac                 AlgorithmIdentifier
   }
 ~~~~
+
+The following text gives a method of key expansion to be used when the MAC-algorithm requires an input length that is larger than the size of the one-way-function.
+
+Note: Section 4.4 of {{RFC4211}} and {{RFC9045}} do not mention this key expansion method and gives an example using HMAC algorithms where key expansion is not needed. It is recognized that this omission in {{RFC4211}} can lead to confusion and possible incompatibility if {{RFC4210}} key expansion is not used when needed. Therefore, when key expansion is required (when K > H) the key expansion defined in in the following text MUST be used.
 
 In the above protectionAlg, the salt value is appended to the shared
 secret input. The OWF is then applied iterationCount times, where the
@@ -5759,7 +5763,7 @@ From version 07 -> 08:
 
 * Added text on usage of transactionID with KEM-bases message protection to Section 5.1.1
 
-* Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text
+* Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text and adding some text explaining when a key expansion is required.
 
 * Consolidated the definition and transferal of KemCiphertextInfo. Added a new Section 5.1.1.5 introducing KemCiphertextInfo in the generalInfo filed and moving text on how to request a KEM ciphertext using genm/genp from Section 5.1.3.4 to Section 5.3.19.18
 
