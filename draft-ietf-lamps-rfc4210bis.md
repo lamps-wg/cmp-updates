@@ -5012,8 +5012,6 @@ The module contains those changes to the normative ASN.1 module from
 Appendix F of {{RFC4210}} that were specified in {{RFC9480}},
 as well as changes made in this document.
 
-< TBD: Should we also include the 1988 ASN.1 Module? >
-
 ~~~~ asn.1
 PKIXCMP-2023
     { iso(1) identified-organization(3) dod(6) internet(1)
