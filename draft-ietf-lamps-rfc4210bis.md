@@ -2225,6 +2225,16 @@ of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of {{RFC4211
    }
 ~~~~
 
+#### raVerified
+{: id="sect-5.2.8.1"}
+
+When using raVerified, the RA MUST check the proof-of-possession provided by the EE. It MAY use raVerified together with providing the original message containing the POP provided by the EE in the generalInfo field using the id-it-origPKIMessage, see {{sect-5.1.1.3}}.
+
+If the RA performs changes to a certification request received from an EE, where these changes break the POP provided by the EE, or if the RA requests a certificate on behalf of an EE which provided the POP out-of-band, the RA MUST use the raVerified choice. Otherwise, it SHOULD NOT use raVerified.
+
+#### POPOSigningKey Structure
+{: id="sect-5.2.8.2"}
+
 If the certification request is for a key pair that supports signing (i.e., a request for a verification certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOSigningKey structure, for details see Section 4.1 of {{RFC4211}}.
 
 ~~~~ asn.1
@@ -2254,7 +2264,10 @@ If certTemplate (or the altCertTemplate control) contains the subject and public
 
 In the special case that the CA/RA has a DH certificate that is known to the EE and the certification request is for a key agreement key pair, the EE can also use the POPOSigningKey structure (where the algorithmIdentifier field is DHBasedMAC and the signature field is the MAC) for demonstrating POP.
 
-On the other hand, if the certification request is for a key pair that does not support signing (i.e., a request for an encryption or key agreement certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOPrivKey structure in one of following three ways, for details see Section 4.2 and 4.3 of {{RFC4211}}.
+#### POPOPrivKey Structure
+{: id="sect-5.2.8.3"}
+
+If the certification request is for a key pair that does not support signing (i.e., a request for an encryption or key agreement certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOPrivKey structure in one of following three ways, for details see Section 4.2 and 4.3 of {{RFC4211}}.
 
 ~~~~ asn.1
    POPOPrivKey ::= CHOICE {
@@ -2272,8 +2285,8 @@ On the other hand, if the certification request is for a key pair that does not 
 ~~~~
 
 
-#### Inclusion of the Private Key
-{: id="sect-5.2.8.1"}
+##### Inclusion of the Private Key
+{: id="sect-5.2.8.3.1"}
 
 This method demonstrates proof-of-possession of the private key by including the encrypted private key in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.
 
@@ -2282,8 +2295,8 @@ For a certification request message indicating cmp2021(3) in the pvno field of t
 Note: The thisMessage choice has been deprecated in favor of encryptedKey.  When using cmp2000(2) in the certification request message header for backward compatibility, the thisMessage choice of POPOPrivKey is used containing the encrypted private key in an EncryptedValue structure wrapped in a BIT STRING.  This allows the necessary conveyance and protection of the private key while maintaining bits-on-the-wire compatibility with {{RFC4211}}.
 
 
-#### Indirect Method - Encrypted Certificate
-{: id="sect-5.2.8.2"}
+##### Indirect Method - Encrypted Certificate
+{: id="sect-5.2.8.3.2"}
 
 The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form, see {{sect-5.2.2}}.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage choice of POPOPrivKey.
 
@@ -2298,8 +2311,8 @@ The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of
 The end entity proves knowledge of the private key to the CA by providing the correct CertHash for this certificate in the certConf message. This demonstrates POP because the EE can only compute the correct CertHash if it is able to recover the encrypted certificate, and it can only recover the certificate if it is able to obtain the symmetric key using the required private key. Clearly, for this to work, the CA MUST NOT publish the certificate until the certConf message arrives (when certHash is to be used to demonstrate POP). See {{sect-5.3.18}} for further details and see {{sect-8.11}} for security considerations regarding use of Certificate Transparency logs.
 
 
-#### Direct Method - Challenge-Response Protocol
-{: id="sect-5.2.8.3"}
+##### Direct Method - Challenge-Response Protocol
+{: id="sect-5.2.8.3.3"}
 
 The "direct" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages popdecc of type POPODecKeyChall and popdecr of type POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage choice of POPOPrivKey.
 
@@ -2321,7 +2334,7 @@ The complete protocol then looks as follows (note that req' does not necessarily
                  <--- ack -----
 ~~~~
 
-This protocol is obviously much longer than the exchange given in {{sect-5.2.8.2}} above, but allows a local Registration Authority to be involved and has the property that the certificate itself is not actually created until the proof-of-possession is complete. In some environments, a different order of the above messages may be required, such as the following (this may be determined by policy):
+This protocol is obviously much longer than the exchange given in {{sect-5.2.8.3.2}} above, but allows a local Registration Authority to be involved and has the property that the certificate itself is not actually created until the proof-of-possession is complete. In some environments, a different order of the above messages may be required, such as the following (this may be determined by policy):
 
 ~~~~
                 EE            RA            CA
@@ -2397,7 +2410,7 @@ RAVerified: This is not an EE decision; the RA uses this if and only if it has v
 
 SKPOP: If the EE has a signing key pair, this is the only POP method specified for use in the request for a corresponding certificate.
 
-EKPOPThisMessage (deprecated), KAKPOPThisMessage (deprecated), EKPOPEncryptedKey, KAKPOPEncryptedKey, KEMKPOPEncryptedKey: Whether or not to give up its private key to the CA/RA is an EE decision. If the EE decides to reveal its key, then these are the only POP methods available in this specification to achieve this (and the key pair type and protocol version used will determine which of these methods to use).  The reason for deprecating EKPOPThisMessage and KAKPOPThisMessage options has been given in {{sect-5.2.8.1}}.
+EKPOPThisMessage (deprecated), KAKPOPThisMessage (deprecated), EKPOPEncryptedKey, KAKPOPEncryptedKey, KEMKPOPEncryptedKey: Whether or not to give up its private key to the CA/RA is an EE decision. If the EE decides to reveal its key, then these are the only POP methods available in this specification to achieve this (and the key pair type and protocol version used will determine which of these methods to use).  The reason for deprecating EKPOPThisMessage and KAKPOPThisMessage options has been given in {{sect-5.2.8.3.1}}.
 
 KAKPOPThisMessageDHMAC: The EE can only use this method if (1) the CA/RA has a DH certificate available for this purpose, and (2) the EE already has a copy of this certificate. If both these conditions hold, then this technique is clearly supported and may be used by the EE, if desired.
 
@@ -2771,7 +2784,7 @@ Within CertConfirmContent, omission of a CertStatus structure
 corresponding to a certificate supplied in the previous response
 message indicates REJECTION of the certificate.  Thus, an empty
 CertConfirmContent (a zero-length SEQUENCE) MAY be used to indicate
-rejection of all supplied certificates.  See {{sect-5.2.8.2}},
+rejection of all supplied certificates.  See {{sect-5.2.8.3.2}},
 for a discussion of the certHash field with respect to
 proof-of-possession.
 
@@ -3703,7 +3716,7 @@ about decrypting arbitrary "ciphertext" and revealing recovered
 "plaintext" since such a practice can lead to serious security
 vulnerabilities.
 
-The client MUST return the decrypted values only if they match the expected content type. In an Indirect Method, the decrypted value MUST be a valid certificate, and in the Direct Method, the decrypted value MUST be a Rand as defined in {{sect-5.2.8.3}}.
+The client MUST return the decrypted values only if they match the expected content type. In an Indirect Method, the decrypted value MUST be a valid certificate, and in the Direct Method, the decrypted value MUST be a Rand as defined in {{sect-5.2.8.3.3}}.
 
 ## Proof-Of-Possession by Exposing the Private Key
 {: id="sect-8.3"}
@@ -3748,7 +3761,7 @@ exchanges from either party) and is therefore RECOMMENDED.
 Long-term security typically requires perfect forward secrecy (pfs).
 When transferring encrypted long-term confidential values such as centrally generated private keys or revocation passphrases, pfs likely is important.
 Yet it is not needed for CMP message protection providing integrity and authenticity because transfer of PKI messages is usually completed in very limited time.
-For the same reason it typically is not required for the indirect method of providing a POP {{sect-5.2.8.2}} delivering the newly issued certificate in encrypted form.
+For the same reason it typically is not required for the indirect method of providing a POP {{sect-5.2.8.3.2}} delivering the newly issued certificate in encrypted form.
 
 Encrypted values {{sect-5.2.2}} are transferred using CMS EnvelopedData [RFC5652], which does not offer pfs. In cases where long-term security is needed, CMP messages SHOULD be transferred over a mechanism that provides pfs, such as TLS.
 
@@ -5773,7 +5786,7 @@ From version 07 -> 08:
 
 * Added a cross-reference to Section 5.1.1.3 regarding use of OrigPKIMessage to Section 5.1.3.5
 
-* Added POP for KEM keys to Section 5.2.8. Restructured the section and fixed some references which broke from RFC2510 to RFC4210
+* Added POP for KEM keys to Section 5.2.8. Restructured the section and fixed some references which broke from RFC2510 to RFC4210. Introduced a section on the usage of raVerified.
 
 * Fixed the issue in Section 5.3.19.15, resulting from a change made in draft-ietf-lamps-cmp-updates-14, that no plain public-key can be used in the request message in CMPCertificate.
 
