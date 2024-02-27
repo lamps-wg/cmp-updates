@@ -149,9 +149,9 @@ Table of Contents
        5.2.6.  Archive Options
        5.2.7.  Publication Information
        5.2.8.  Proof-of-Possession Structures
-         5.2.8.1.  Inclusion of the Private Key
-         5.2.8.2.  Indirect Method - Encrypted Certificate
-         5.2.8.3.  Direct Method - Challenge-Response Protocol
+         5.2.8.1.  raVerified
+         5.2.8.2.  POPOSigningKey Structure
+         5.2.8.3.  POPOPrivKey Structure
          5.2.8.4.  Summary of PoP Options
        5.2.9.  GeneralizedTime
      5.3.  Operation-Specific Data Structures
@@ -2302,6 +2302,22 @@ Table of Contents
          keyAgreement    [3] POPOPrivKey
       }
 
+5.2.8.1.  raVerified
+
+   When using raVerified, the RA MUST check the proof-of-possession
+   provided by the EE.  It MAY use raVerified together with providing
+   the original message containing the POP provided by the EE in the
+   generalInfo field using the id-it-origPKIMessage, see
+   Section 5.1.1.3.
+
+   If the RA performs changes to a certification request received from
+   an EE, where these changes break the POP provided by the EE, or if
+   the RA requests a certificate on behalf of an EE which provided the
+   POP out-of-band, the RA MUST use the raVerified choice.  Otherwise,
+   it SHOULD NOT use raVerified.
+
+5.2.8.2.  POPOSigningKey Structure
+
    If the certification request is for a key pair that supports signing
    (i.e., a request for a verification certificate), then the proof-of-
    possession of the private key is demonstrated through use of the
@@ -2346,12 +2362,14 @@ Table of Contents
    algorithmIdentifier field is DHBasedMAC and the signature field is
    the MAC) for demonstrating POP.
 
-   On the other hand, if the certification request is for a key pair
-   that does not support signing (i.e., a request for an encryption or
-   key agreement certificate), then the proof-of-possession of the
-   private key is demonstrated through use of the POPOPrivKey structure
-   in one of following three ways, for details see Section 4.2 and 4.3
-   of [RFC4211].
+5.2.8.3.  POPOPrivKey Structure
+
+   If the certification request is for a key pair that does not support
+   signing (i.e., a request for an encryption or key agreement
+   certificate), then the proof-of-possession of the private key is
+   demonstrated through use of the POPOPrivKey structure in one of
+   following three ways, for details see Section 4.2 and 4.3 of
+   [RFC4211].
 
       POPOPrivKey ::= CHOICE {
          thisMessage [0] BIT STRING, -- deprecated
@@ -2366,7 +2384,7 @@ Table of Contents
          challengeResp (1)
       }
 
-5.2.8.1.  Inclusion of the Private Key
+5.2.8.3.1.  Inclusion of the Private Key
 
    This method demonstrates proof-of-possession of the private key by
    including the encrypted private key in the CertRequest in the
@@ -2388,7 +2406,7 @@ Table of Contents
    necessary conveyance and protection of the private key while
    maintaining bits-on-the-wire compatibility with [RFC4211].
 
-5.2.8.2.  Indirect Method - Encrypted Certificate
+5.2.8.3.2.  Indirect Method - Encrypted Certificate
 
    The "indirect" method mentioned previously in Section 4.3
    demonstrates proof-of-possession of the private key by having the CA
@@ -2415,7 +2433,7 @@ Table of Contents
    security considerations regarding use of Certificate Transparency
    logs.
 
-5.2.8.3.  Direct Method - Challenge-Response Protocol
+5.2.8.3.3.  Direct Method - Challenge-Response Protocol
 
    The "direct" method mentioned previously in Section 4.3 demonstrates
    proof-of-possession of the private key by having the end entity
@@ -2447,7 +2465,7 @@ Table of Contents
                     <--- ack -----
 
    This protocol is obviously much longer than the exchange given in
-   Section 5.2.8.2 above, but allows a local Registration Authority to
+   Section 5.2.8.3.2 above, but allows a local Registration Authority to
    be involved and has the property that the certificate itself is not
    actually created until the proof-of-possession is complete.  In some
    environments, a different order of the above messages may be
@@ -2556,7 +2574,7 @@ Table of Contents
    available in this specification to achieve this (and the key pair
    type and protocol version used will determine which of these methods
    to use).  The reason for deprecating EKPOPThisMessage and
-   KAKPOPThisMessage options has been given in Section 5.2.8.1.
+   KAKPOPThisMessage options has been given in Section 5.2.8.3.1.
 
    KAKPOPThisMessageDHMAC: The EE can only use this method if (1) the
    CA/RA has a DH certificate available for this purpose, and (2) the EE
@@ -2887,7 +2905,7 @@ Table of Contents
    corresponding to a certificate supplied in the previous response
    message indicates REJECTION of the certificate.  Thus, an empty
    CertConfirmContent (a zero-length SEQUENCE) MAY be used to indicate
-   rejection of all supplied certificates.  See Section 5.2.8.2, for a
+   rejection of all supplied certificates.  See Section 5.2.8.3.2, for a
    discussion of the certHash field with respect to proof-of-possession.
 
 5.3.19.  PKI General Message Content
@@ -3715,7 +3733,7 @@ Table of Contents
    The client MUST return the decrypted values only if they match the
    expected content type.  In an Indirect Method, the decrypted value
    MUST be a valid certificate, and in the Direct Method, the decrypted
-   value MUST be a Rand as defined in Section 5.2.8.3.
+   value MUST be a Rand as defined in Section 5.2.8.3.3.
 
 8.3.  Proof-Of-Possession by Exposing the Private Key
 
@@ -3759,8 +3777,8 @@ Table of Contents
    providing integrity and authenticity because transfer of PKI messages
    is usually completed in very limited time.  For the same reason it
    typically is not required for the indirect method of providing a POP
-   Section 5.2.8.2 delivering the newly issued certificate in encrypted
-   form.
+   Section 5.2.8.3.2 delivering the newly issued certificate in
+   encrypted form.
 
    Encrypted values Section 5.2.2 are transferred using CMS
    EnvelopedData [RFC5652], which does not offer pfs.  In cases where
@@ -5997,7 +6015,8 @@ Appendix G.  History of Changes
       OrigPKIMessage to Section 5.1.3.5
 
    *  Added POP for KEM keys to Section 5.2.8.  Restructured the section
-      and fixed some references which broke from RFC2510 to RFC4210
+      and fixed some references which broke from RFC2510 to RFC4210.
+      Introduced a section on the usage of raVerified.
 
    *  Fixed the issue in Section 5.3.19.15, resulting from a change made
       in draft-ietf-lamps-cmp-updates-14, that no plain public-key can
