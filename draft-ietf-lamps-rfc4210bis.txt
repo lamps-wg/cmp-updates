@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 30 August 2024                                          Entrust
-                                                        27 February 2024
+Expires: 31 August 2024                                          Entrust
+                                                        28 February 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 August 2024.
+   This Internet-Draft will expire on 31 August 2024.
 
 Copyright Notice
 
@@ -2304,17 +2304,17 @@ Table of Contents
 
 5.2.8.1.  raVerified
 
-   When using raVerified, the RA MUST check the proof-of-possession
-   provided by the EE.  It MAY use raVerified together with providing
-   the original message containing the POP provided by the EE in the
-   generalInfo field using the id-it-origPKIMessage, see
-   Section 5.1.1.3.
+   An EE MUST NOT use raVerified.  If an RA performs changes to a
+   certification request breaking the provided proof-of-possession
+   (POP), or if the RA requests a certificate on behalf of an EE and
+   cannot provide the POP itself, the RA MUST use raVerified.
+   Otherwise, it SHOULD NOT use raVerified.
 
-   If the RA performs changes to a certification request received from
-   an EE, where these changes break the POP provided by the EE, or if
-   the RA requests a certificate on behalf of an EE which provided the
-   POP out-of-band, the RA MUST use the raVerified choice.  Otherwise,
-   it SHOULD NOT use raVerified.
+   When introducing raVerified, the RA MUST check the existing POP, or
+   it MUST ensure by other means that the EE is the holder of the
+   private key.  The RA MAY provide the original message containing the
+   POP in the generalInfo field using the id-it-origPKIMessage, see
+   Section 5.1.1.3, enabling the CA to verify it.
 
 5.2.8.2.  POPOSigningKey Structure
 

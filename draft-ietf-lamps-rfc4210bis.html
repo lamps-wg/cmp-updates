@@ -1047,7 +1047,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 30 August 2024</td>
+<td class="center">Expires 31 August 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-02-27" class="published">27 February 2024</time>
+<time datetime="2024-02-28" class="published">28 February 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-08-30">30 August 2024</time></dd>
+<dd class="expires"><time datetime="2024-08-31">31 August 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1144,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 30 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 31 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3940,8 +3940,8 @@ of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of <span>[<a
             <h5 id="name-raverified">
 <a href="#section-5.2.8.1" class="section-number selfRef">5.2.8.1. </a><a href="#name-raverified" class="section-name selfRef">raVerified</a>
             </h5>
-<p id="section-5.2.8.1-1">When using raVerified, the RA <span class="bcp14">MUST</span> check the proof-of-possession provided by the EE. It <span class="bcp14">MAY</span> use raVerified together with providing the original message containing the POP provided by the EE in the generalInfo field using the id-it-origPKIMessage, see <a href="#sect-5.1.1.3" class="auto internal xref">Section 5.1.1.3</a>.<a href="#section-5.2.8.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.2.8.1-2">If the RA performs changes to a certification request received from an EE, where these changes break the POP provided by the EE, or if the RA requests a certificate on behalf of an EE which provided the POP out-of-band, the RA <span class="bcp14">MUST</span> use the raVerified choice. Otherwise, it <span class="bcp14">SHOULD NOT</span> use raVerified.<a href="#section-5.2.8.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.1-1">An EE <span class="bcp14">MUST NOT</span> use raVerified. If an RA performs changes to a certification request breaking the provided proof-of-possession (POP), or if the RA requests a certificate on behalf of an EE and cannot provide the POP itself, the RA <span class="bcp14">MUST</span> use raVerified. Otherwise, it <span class="bcp14">SHOULD NOT</span> use raVerified.<a href="#section-5.2.8.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.1-2">When introducing raVerified, the RA <span class="bcp14">MUST</span> check the existing POP, or it <span class="bcp14">MUST</span> ensure by other means that the EE is the holder of the private key. The RA <span class="bcp14">MAY</span> provide the original message containing the POP in the generalInfo field using the id-it-origPKIMessage, see <a href="#sect-5.1.1.3" class="auto internal xref">Section 5.1.1.3</a>, enabling the CA to verify it.<a href="#section-5.2.8.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-5.2.8.2">
