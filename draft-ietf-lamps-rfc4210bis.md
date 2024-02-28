@@ -2228,9 +2228,9 @@ of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of {{RFC4211
 #### raVerified
 {: id="sect-5.2.8.1"}
 
-When using raVerified, the RA MUST check the proof-of-possession provided by the EE. It MAY use raVerified together with providing the original message containing the POP provided by the EE in the generalInfo field using the id-it-origPKIMessage, see {{sect-5.1.1.3}}.
+An EE MUST NOT use raVerified. If an RA performs changes to a certification request breaking the provided proof-of-possession (POP), or if the RA requests a certificate on behalf of an EE and cannot provide the POP itself, the RA MUST use raVerified. Otherwise, it SHOULD NOT use raVerified.
 
-If the RA performs changes to a certification request received from an EE, where these changes break the POP provided by the EE, or if the RA requests a certificate on behalf of an EE which provided the POP out-of-band, the RA MUST use the raVerified choice. Otherwise, it SHOULD NOT use raVerified.
+When introducing raVerified, the RA MUST check the existing POP, or it MUST ensure by other means that the EE is the holder of the private key. The RA MAY provide the original message containing the POP in the generalInfo field using the id-it-origPKIMessage, see {{sect-5.1.1.3}}, enabling the CA to verify it.
 
 #### POPOSigningKey Structure
 {: id="sect-5.2.8.2"}
