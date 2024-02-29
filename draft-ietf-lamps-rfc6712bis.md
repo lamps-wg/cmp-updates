@@ -132,7 +132,7 @@ providing this functionality vanished.  The remaining features CMP
 requires from its transfer protocols are connection and error
 handling.
 
-In addition to reliable transport, CMP requires connection and error handling
+CMP can benefit from utilizing a reliable transport and it requires connection and error handling
 from the transfer protocol, which is all covered by HTTP.  Additionally,
 delayed delivery of CMP response messages may be handled at transfer level,
 regardless of the message contents.  Since {{RFC9480}} extends the polling

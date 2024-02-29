@@ -65,9 +65,10 @@ informative:
   I-D.ietf-lamps-rfc6712bis:
   RFC1847:
   RFC2510:
+  RFC2585:
   RFC4210:
   RFC4212:
-  RFC4510:
+  RFC4511:
   RFC5912:
   RFC7299:
   RFC8649:
@@ -460,12 +461,15 @@ communicate directly with the CA in order to refresh its certificate.
 {: id="sect-3.1.1.4"}
 
 A Key Generation Authority (KGA) is a PKI management entity generating key
-pairs on behalf of an end entity.  Typically, such central key generation
-is performed by the CA itself.  The KGA knows the private key that it generated
-for the end entity.  The CA may delegate its authorization for generating
-key pairs on behalf of an end entity to another PKI management entity, such
-as an RA or a separate entity (see Section 4.5 for respective extended key
-usages).
+pairs on behalf of an end entity. As the KGA generates the key pair it
+knows the public and the private part.
+
+This document views the KGA as an OPTIONAL component. When it is not present
+and central key generation is needed, the CA is assumed to be able to carry
+out the KGA's functions so that the PKI management protocol messages are the
+same from the end-entity's point of view. If certain tasks of a CA are
+delegated to other components, this delegation needs authorization, which can
+be indicated by extended key usages (see {{sect-4.5}}).
 
 Note: When doing central generation of key pairs, implementers should consider
 the implications of server-side retention on the overall security of the
@@ -530,8 +534,12 @@ management
   example, a CA may shorten the validity period requested).  Note
   that policy may dictate that the CA must not publish or
   otherwise distribute the certificate until the requesting entity
-  has reviewed and accepted the newly-created certificate or the indirect POP is completed
-  (typically through use of the certConf message). In case of publication of the certificate or a precertificate in a Certificate Transparency log {{RFC9162}}, the certificate must be revoked if it was not accepted or the indirect POP could not be completed.
+  has reviewed and accepted the newly-created certificate or the
+  POP is completed. In case of publication of the certificate
+  (when using indirect POP, see {{sect-8.11}}) or a precertificate
+  in a Certificate Transparency log {{RFC9162}}, the certificate
+  must be revoked if it was not accepted by the EE or the POP could
+  not be completed.
 
 1. A graceful, scheduled change-over from one non-compromised CA
   key pair to the next (CA key update) must be supported (note
@@ -696,7 +704,7 @@ messages are defined can be grouped as follows.
       producing a certificate, some means for publishing it is
       needed.  The "means" defined in PKIX MAY involve the messages
       specified in Sections {{<sect-5.3.13}} to {{<sect-5.3.16}}, or MAY involve other
-      methods (LDAP, for example) as described in {{RFC4510}}, {{RFC4510}}
+      methods (LDAP, for example) as described in {{RFC4511}}, {{RFC2585}}
       (the "Operational Protocols" documents of the PKIX
       series of specifications).
 
@@ -950,8 +958,8 @@ otherwise made available.)
 ## Proof-of-Possession (POP) of Private Key
 {: id="sect-4.3"}
 
-Proof-of-possession (POP) is where a PKI management entity (CA/RA) challenges
-an end entity to prove that it has access to the private key
+Proof-of-possession (POP) is where a PKI management entity (CA/RA)
+verifies if an end entity has access to the private key
 corresponding to a given public key. The question of whether, and in
 what circumstances, POPs add value to a PKI is a debate as old as PKI
 itself! See {{sect-8.1}} for a further discussion on the necessity
@@ -1002,7 +1010,7 @@ possession of the private key.
 {: id="sect-4.3.2"}
 
 For encryption keys, the end entity can provide the private key to
-the CA/RA, or can be required to decrypt a value in order to prove
+the CA/RA (e.g., for archiving), or can be required to decrypt a value in order to prove
 possession of the private key.  Decrypting a
 value can be achieved either directly or indirectly.
 
@@ -1039,7 +1047,7 @@ appropriate parameters when necessary.
 {: id="sect-4.3.4"}
 
 For key encapsulation mechanism (KEM) keys, the end entity can provide the private key to
-the CA/RA, or can be required to decrypt
+the CA/RA (e.g., for archiving), or can be required to decrypt
 a value in order to prove possession of the private key.
 Decrypting a value can be achieved either directly or indirectly.
 
@@ -1301,7 +1309,7 @@ verification.
 
 
 
-## Extended Key Usage
+## Extended Key Usage for PKI Entities
 {: id="sect-4.5"}
 
 The extended key usage (EKU) extension indicates the purposes for which the
@@ -1595,7 +1603,7 @@ The certificate profile names in the CertProfileValue sequence relate to the Cer
 #### KemCiphertextInfo
 {: id="sect-5.1.1.5"}
 
-A PKI entity MAY provide the KEM ciphertext for MAC-based message protection using KEM (see Section 5.1.3.4) in the generalInfo field of a request message to a PKI management entity if it knows that the PKI management entity uses a KEM key pair and has the authentic public key.
+A PKI entity MAY provide the KEM ciphertext for MAC-based message protection using KEM (see Section 5.1.3.4) in the generalInfo field of a request message to a PKI management entity if it knows that the PKI management entity uses a KEM key pair and has its public key.
 
 ~~~~ asn.1
   id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
@@ -1796,7 +1804,7 @@ A KEM algorithm provides three functions:
 
 * KeyGen() -> (pk, sk):
 
-> Generate the public key (pk) and a private key (sk).
+> Generate the public key (pk) and a private (secret) key (sk).
 
 * Encapsulate(pk) -> (ct, ss):
 
@@ -1810,7 +1818,7 @@ shared secret (ss) for the recipient.
 
 To support a particular KEM algorithm, the CMP originator MUST support the KEM Encapsulate() function. To support a particular KEM algorithm, the CMP recipient MUST support the KEM KeyGen() function and the KEM Decapsulate() function. The recipient's public key is usually carried in a certificate {{RFC5280}}.
 
-Note: In this section both entities in the communication need to send and receive messages. Either side of the communication may independently wish to protect messages using a MAC key derived using KEM. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to provide MAC-based message protection, and "Bob" to denote the entity who needs to verify it.
+Note: In this section both entities in the communication need to send and receive messages. Either side of the communication may independently wish to protect messages using a MAC key derived from the KEM output. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to provide MAC-based message protection, and "Bob" to denote the entity who needs to verify it.
 
 Assuming Bob possesses Alice's KEM public key, he generates the ciphertext using KEM encapsulation and transfers it to Alice in an InfoTypeAndValue structure. Alice then retrieves the KEM shared secret from the ciphertext using KEM decapsulation and the associated KEM private key. Using a key derivation function (KDF), she derives a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
 
@@ -1922,7 +1930,7 @@ This approach employs the notation of KDF(IKM, L, info) as described in {{I-D.ie
 
 * OKM is the output keying material of the KDF used for MAC-based message protection of length len and is called ssk in this document.
 
-There are various ways how Alice can request, and Bob can provide the KEM ciphertext, see {{{sect-e}} for details. The KemCiphertextInfo can be requested using PKI general messages as described in {{sect-5.3.19.18}}. Alternatively, the generalInfo field of the PKIHeader can be used to convey the same request and response InfoTypeAndValue structures as described in {{sect-5.1.1.5}}. The procedure works also without Alice explicitly requesting the KEM ciphertext in case Bob knows a KEM key of Alice beforehand and can expect that she is ready to use it.
+There are various ways how Alice can request, and Bob can provide the KEM ciphertext, see {{sect-e}} for details. The KemCiphertextInfo can be requested using PKI general messages as described in {{sect-5.3.19.18}}. Alternatively, the generalInfo field of the PKIHeader can be used to convey the same request and response InfoTypeAndValue structures as described in {{sect-5.1.1.5}}. The procedure works also without Alice explicitly requesting the KEM ciphertext in case Bob knows a KEM key of Alice beforehand and can expect that she is ready to use it.
 
 If both the initiator and responder in a PKI management operation have KEM key pairs, this procedure can be applied by both entities independently, establishing and using different shared secret keys for either direction.
 
@@ -2559,7 +2567,7 @@ certificate containing either a new subject public key or the current
 subject public key (although the latter practice may not be
 appropriate for some environments).
 
-See{{sect-5.2.1}} and {{RFC4211}} for CertReqMessages syntax.
+See {{sect-5.2.1}} and {{RFC4211}} for CertReqMessages syntax.
 
 
 ### Key Update Response Content
@@ -3763,7 +3771,7 @@ When transferring encrypted long-term confidential values such as centrally gene
 Yet it is not needed for CMP message protection providing integrity and authenticity because transfer of PKI messages is usually completed in very limited time.
 For the same reason it typically is not required for the indirect method of providing a POP {{sect-5.2.8.3.2}} delivering the newly issued certificate in encrypted form.
 
-Encrypted values {{sect-5.2.2}} are transferred using CMS EnvelopedData [RFC5652], which does not offer pfs. In cases where long-term security is needed, CMP messages SHOULD be transferred over a mechanism that provides pfs, such as TLS.
+Encrypted values {{sect-5.2.2}} are transferred using CMS EnvelopedData [RFC5652], which does not offer pfs. In cases where long-term security is needed, CMP messages SHOULD be transferred over a mechanism that provides pfs, such as TLS with appropriate cipher suites selected.
 
 ## Private Keys for Certificate Signing and CMP Message Protection
 {: id="sect-8.6"}
@@ -3819,7 +3827,7 @@ and their security strength is available in CMP Algorithms {{RFC9481}} Section
 ## Recurring Usage of KEM Keys for Message Protection
 {: id="sect-8.8"}
 
-Each PKI entity using key encapsulation for MAC-based message protection, see {{sect-5.1.3.4}}, MUST use a fresh shared secret key (ssk) for each PKI management operation. This can be enforced by using senderNonce and recipNonce header fields in all messages of the PKI management operation.
+For each PKI management operation using MAC-based message protection involving KEM, see {{sect-5.1.3.4}}, the KEM Encapsulate() function, providing a fresh KEM ciphertext (ct) and shared secret (ss), MUST be invoked. This can be enforced by using senderNonce and recipNonce header fields in all messages of the PKI management operation.
 
 It is assumed that the overall data size of the CMP messages
 in a PKI management operation protected by a single shared secret key
@@ -3838,7 +3846,7 @@ variant of the FO transform [Hofheinz].
 
 Therefore, given a long-term public key using an IND-CCA2 secure KEM
 algorithm, there is no limit to the number of CMP messages that can
-be encrypted under it.
+be authenticated using KEM keys for MAC-based message protection.
 
 
 ## Trust Anchor Provisioning Using CMP Messages
@@ -5871,7 +5879,7 @@ From version 01 -> 02:
 * Broaden the scope from human users also to devices and services
 
 * Addressed idnits feedback, specifically changing from historic LDAP V2 to
-  LDAP V3 (RFC4510)
+  LDAP V3 (RFC4511)
 
 * Did some further editorial alignment to the XML
 
