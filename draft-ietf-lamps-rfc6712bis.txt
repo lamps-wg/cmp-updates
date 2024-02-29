@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 31 August 2024                                          J. Gray
+Expires: 1 September 2024                                        J. Gray
                                                                  Entrust
-                                                        28 February 2024
+                                                        29 February 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 August 2024.
+   This Internet-Draft will expire on 1 September 2024.
 
 Copyright Notice
 
@@ -139,14 +139,14 @@ Table of Contents
    requires from its transfer protocols are connection and error
    handling.
 
-   In addition to reliable transport, CMP requires connection and error
-   handling from the transfer protocol, which is all covered by HTTP.
-   Additionally, delayed delivery of CMP response messages may be
-   handled at transfer level, regardless of the message contents.  Since
-   [RFC9480] extends the polling mechanism specified in the second
-   version of CMP [RFC4210] to cover all types of PKI management
-   transactions, delays detected at application level may also be
-   handled within CMP, using pollReq and pollRep messages.
+   CMP can benefit from utilizing a reliable transport and it requires
+   connection and error handling from the transfer protocol, which is
+   all covered by HTTP.  Additionally, delayed delivery of CMP response
+   messages may be handled at transfer level, regardless of the message
+   contents.  Since [RFC9480] extends the polling mechanism specified in
+   the second version of CMP [RFC4210] to cover all types of PKI
+   management transactions, delays detected at application level may
+   also be handled within CMP, using pollReq and pollRep messages.
 
    The usage of HTTP for transferring CMP messages exclusively uses the
    POST method for requests, effectively tunneling CMP over HTTP.  While
