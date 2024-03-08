@@ -1875,14 +1875,17 @@ a certificate request template, or Certificate Revocation List (CRL) updates.<a 
             <p id="section-1.3-2.5.1">Added support for KEM keys for proof-of-possession to <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> and <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>, for message protection to <a href="#sect-5.1.1" class="auto internal xref">Section 5.1.1</a>, <a href="#sect-5.1.3.4" class="auto internal xref">Section 5.1.3.4</a>, and <a href="#sect-e" class="auto internal xref">Appendix E</a>, and for usage with CMS EnvelopedData to <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.<a href="#section-1.3-2.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.3-2.6">
-            <p id="section-1.3-2.6.1">Incorporated the request message behavioral clarifications from Appendix
-C of <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span> to <a href="#sect-5" class="auto internal xref">Section 5</a>. The definition of altCertTemplate was incorporated into <a href="#sect-5.2.1" class="auto internal xref">Section 5.2.1</a> and the clarification on POPOSigningKey and on POPOPrivKey was incorporated into <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>.<a href="#section-1.3-2.6.1" class="pilcrow">¶</a></p>
+            <p id="section-1.3-2.6.1">Deprecated CAKeyUpdAnnContent and ckuann in favor of RootCaKeyUpdateContent and ckuannV3<a href="#section-1.3-2.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.3-2.7">
-            <p id="section-1.3-2.7.1">Added support support for CMS EnvelopedData to different proof-of-possession methods for transferring encrypted private keys, certificates, and challenges to <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>.<a href="#section-1.3-2.7.1" class="pilcrow">¶</a></p>
+            <p id="section-1.3-2.7.1">Incorporated the request message behavioral clarifications from Appendix
+C of <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span> to <a href="#sect-5" class="auto internal xref">Section 5</a>. The definition of altCertTemplate was incorporated into <a href="#sect-5.2.1" class="auto internal xref">Section 5.2.1</a> and the clarification on POPOSigningKey and on POPOPrivKey was incorporated into <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>.<a href="#section-1.3-2.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.3-2.8">
-            <p id="section-1.3-2.8.1">Added <a href="#sect-8.1" class="auto internal xref">Section 8.1</a>, <a href="#sect-8.5" class="auto internal xref">Section 8.5</a>, <a href="#sect-8.8" class="auto internal xref">Section 8.8</a>, and <a href="#sect-8.11" class="auto internal xref">Section 8.11</a>.<a href="#section-1.3-2.8.1" class="pilcrow">¶</a></p>
+            <p id="section-1.3-2.8.1">Added support support for CMS EnvelopedData to different proof-of-possession methods for transferring encrypted private keys, certificates, and challenges to <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>.<a href="#section-1.3-2.8.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.3-2.9">
+            <p id="section-1.3-2.9.1">Added <a href="#sect-8.1" class="auto internal xref">Section 8.1</a>, <a href="#sect-8.5" class="auto internal xref">Section 8.5</a>, <a href="#sect-8.8" class="auto internal xref">Section 8.8</a>, and <a href="#sect-8.11" class="auto internal xref">Section 8.11</a>.<a href="#section-1.3-2.9.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -7915,10 +7918,10 @@ END
 <p id="appendix-G-2">From version 08 -&gt; 09:<a href="#appendix-G-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-3.1">
-          <p id="appendix-G-3.1.1">Deprecating CAKeyUpdAnnContent and ckuann in favor of RootCaKeyUpdateContent and ckuannV3 in CMP V3 as proposed by Tomas<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.1.1">Deprecated CAKeyUpdAnnContent and ckuann in favor of RootCaKeyUpdateContent and ckuannV3 in CMP V3 as proposed by Tomas<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.2">
-          <p id="appendix-G-3.2.1">Deleting an obsolete sentence in Section 8.8<a href="#appendix-G-3.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.2.1">Deleted an obsolete sentence in Section 8.8<a href="#appendix-G-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-G-4">From version 07 -&gt; 08:<a href="#appendix-G-4" class="pilcrow">¶</a></p>
