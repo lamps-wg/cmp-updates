@@ -3827,7 +3827,7 @@ and their security strength is available in CMP Algorithms {{RFC9481}} Section
 ## Recurring Usage of KEM Keys for Message Protection
 {: id="sect-8.8"}
 
-For each PKI management operation using MAC-based message protection involving KEM, see {{sect-5.1.3.4}}, the KEM Encapsulate() function, providing a fresh KEM ciphertext (ct) and shared secret (ss), MUST be invoked. This can be enforced by using senderNonce and recipNonce header fields in all messages of the PKI management operation.
+For each PKI management operation using MAC-based message protection involving KEM, see {{sect-5.1.3.4}}, the KEM Encapsulate() function, providing a fresh KEM ciphertext (ct) and shared secret (ss), MUST be invoked.
 
 It is assumed that the overall data size of the CMP messages
 in a PKI management operation protected by a single shared secret key
@@ -5774,6 +5774,11 @@ END
 
 Note: This appendix will be deleted in the final version of the document.
 
+
+From version 08 -> 09:
+
+
+* Deleting an obsolete sentence in Section 8.8
 
 From version 07 -> 08:
 
