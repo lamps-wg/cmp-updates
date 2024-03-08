@@ -309,6 +309,8 @@ This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes spe
 
 * Added support for KEM keys for proof-of-possession to {{sect-4.3}} and {{sect-5.2.8}}, for message protection to {{sect-5.1.1}}, {{sect-5.1.3.4}}, and {{sect-e}}, and for usage with CMS EnvelopedData to {{sect-5.2.2}}.
 
+* Deprecated CAKeyUpdAnnContent and ckuann in favor of RootCaKeyUpdateContent and ckuannV3
+
 * Incorporated the request message behavioral clarifications from Appendix
   C of {{RFC4210}} to {{sect-5}}. The definition of altCertTemplate was incorporated into {{sect-5.2.1}} and the clarification on POPOSigningKey and on POPOPrivKey was incorporated into {{sect-5.2.8}}.
 
@@ -1618,33 +1620,35 @@ For more details of KEM-based message protection see {{sect-5.1.3.4}}. See {{sec
 
 ~~~~ asn.1
   PKIBody ::= CHOICE {
-     ir       [0]  CertReqMessages,       --Initialization Req
-     ip       [1]  CertRepMessage,        --Initialization Resp
-     cr       [2]  CertReqMessages,       --Certification Req
-     cp       [3]  CertRepMessage,        --Certification Resp
-     p10cr    [4]  CertificationRequest,  --PKCS #10 Cert.  Req.
-     popdecc  [5]  POPODecKeyChallContent --pop Challenge
-     popdecr  [6]  POPODecKeyRespContent, --pop Response
-     kur      [7]  CertReqMessages,       --Key Update Request
-     kup      [8]  CertRepMessage,        --Key Update Response
-     krr      [9]  CertReqMessages,       --Key Recovery Req
-     krp      [10] KeyRecRepContent,      --Key Recovery Resp
-     rr       [11] RevReqContent,         --Revocation Request
-     rp       [12] RevRepContent,         --Revocation Response
-     ccr      [13] CertReqMessages,       --Cross-Cert.  Request
-     ccp      [14] CertRepMessage,        --Cross-Cert.  Resp
-     ckuann   [15] CAKeyUpdAnnContent,    --CA Key Update Ann.
-     cann     [16] CertAnnContent,        --Certificate Ann.
-     rann     [17] RevAnnContent,         --Revocation Ann.
-     crlann   [18] CRLAnnContent,         --CRL Announcement
-     pkiconf  [19] PKIConfirmContent,     --Confirmation
-     nested   [20] NestedMessageContent,  --Nested Message
-     genm     [21] GenMsgContent,         --General Message
-     genp     [22] GenRepContent,         --General Response
-     error    [23] ErrorMsgContent,       --Error Message
-     certConf [24] CertConfirmContent,    --Certificate Confirm
-     pollReq  [25] PollReqContent,        --Polling Request
-     pollRep  [26] PollRepContent         --Polling Response
+     ir       [0]  CertReqMessages,        --Initialization Req
+     ip       [1]  CertRepMessage,         --Initialization Resp
+     cr       [2]  CertReqMessages,        --Certification Req
+     cp       [3]  CertRepMessage,         --Certification Resp
+     p10cr    [4]  CertificationRequest,   --PKCS #10 Cert.  Req.
+     popdecc  [5]  POPODecKeyChallContent, --pop Challenge
+     popdecr  [6]  POPODecKeyRespContent,  --pop Response
+     kur      [7]  CertReqMessages,        --Key Update Request
+     kup      [8]  CertRepMessage,         --Key Update Response
+     krr      [9]  CertReqMessages,        --Key Recovery Req
+     krp      [10] KeyRecRepContent,       --Key Recovery Resp
+     rr       [11] RevReqContent,          --Revocation Request
+     rp       [12] RevRepContent,          --Revocation Response
+     ccr      [13] CertReqMessages,        --Cross-Cert.  Request
+     ccp      [14] CertRepMessage,         --Cross-Cert.  Resp
+     ckuann   [15] CAKeyUpdAnnContent,     --CA Key Update Ann.,
+                                           -- deprecated with cmp2021
+     cann     [16] CertAnnContent,         --Certificate Ann.
+     rann     [17] RevAnnContent,          --Revocation Ann.
+     crlann   [18] CRLAnnContent,          --CRL Announcement
+     pkiconf  [19] PKIConfirmContent,      --Confirmation
+     nested   [20] NestedMessageContent,   --Nested Message
+     genm     [21] GenMsgContent,          --General Message
+     genp     [22] GenRepContent,          --General Response
+     error    [23] ErrorMsgContent,        --Error Message
+     certConf [24] CertConfirmContent,     --Certificate Confirm
+     pollReq  [25] PollReqContent,         --Polling Request
+     pollRep  [26] PollRepContent          --Polling Response
+     ckuannV3 [27] RootCaKeyUpdateContent, --CA Key Update Ann.
   }
 ~~~~
 
@@ -2678,13 +2682,16 @@ When a CA updates its own key pair, the following data structure MAY
 be used to announce this event.
 
 ~~~~ asn.1
-  CAKeyUpdAnnContent ::= SEQUENCE {
-     oldWithNew         Certificate,
-     newWithOld         Certificate,
-     newWithNew         Certificate
+  RootCaKeyUpdateContent ::= SEQUENCE {
+     newWithNew              CMPCertificate,
+     newWithOld          [0] CMPCertificate OPTIONAL,
+     oldWithNew          [1] CMPCertificate OPTIONAL
   }
 ~~~~
 
+To indicate support for ckuannV3 with RootCaKeyUpdateContent in an announcement message, the pvno cmp2021 MUST be used. Details on the usage of the protocol version number (pvno) are described in Section 7.
+
+In contrast to ckuann message using CAKeyUpdAnnContent as supported with cmp2000, ckuannV3 using RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew, depending on the needs of the EE.
 
 ### Certificate Announcement
 {: id="sect-5.3.14"}
@@ -2883,8 +2890,10 @@ to send its private decryption key to the CA for archival purposes).
 This MAY be used by the CA to announce a CA key update event.
 
 ~~~~
-  GenMsg:    {id-it 5}, CAKeyUpdAnnContent
+  GenMsg:    {id-it 18}, RootCaKeyUpdateValue
 ~~~~
+
+See {{sect-5.3.13}} for details of CA key update announcements.
 
 
 #### CRL
@@ -2998,14 +3007,14 @@ This MAY be used by the client to get CA certificates.
 
 This MAY be used by the client to get an update of a root CA certificate,
 which is provided in the body of the request message.  In contrast to the
-ckuann message, this approach follows the request/response model.
+ckuannV3 message, this approach follows the request/response model.
 
 The EE SHOULD reference its current trust anchor in RootCaCertValue
 in the request body, giving the root CA certificate if available.
 
 ~~~~
   GenMsg:    {id-it 20}, RootCaCertValue | < absent >
-  GenRep:    {id-it 18}, RootCaKeyUpdateContent | < absent >
+  GenRep:    {id-it 18}, RootCaKeyUpdateValue | < absent >
 ~~~~
 
 ~~~~ asn.1
@@ -3020,8 +3029,9 @@ in the request body, giving the root CA certificate if available.
   }
 ~~~~
 
-Note: In contrast to CAKeyUpdAnnContent, this type offers omitting newWithOld
-and oldWithNew in the GenRep message, depending on the needs of the EE.
+Note: In contrast to CAKeyUpdAnnContent (which was deprecated with pvno cmp2021),
+RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew,
+depending on the needs of the EE.
 
 
 #### Certificate Request Template
@@ -3638,7 +3648,7 @@ is needed for the request being sent or for the expected response.
 Note: Using cmp2000 as the default pvno is done to avoid extra message exchanges
 for version negotiation and to foster compatibility with cmp2000 implementations.
 Version cmp2021 syntax is only needed if a message exchange uses hashAlg
-(in CertStatus) or EnvelopedData.
+(in CertStatus), EnvelopedData, or RootCaKeyUpdateContent.
 
 If a server receives a message with a version that it supports, then
 the version of the response message MUST be the same as the received
@@ -4603,16 +4613,16 @@ announcement message that can be made available (via some transport
 mechanism) to the relevant end entities.  A confirmation message is
 not required from the end entities.
 
-ckuann message:
+ckuannV3 message:
 
 ~~~~
  Field        Value                        Comment
 --------------------------------------------------------------
  sender       CA name CA name
- body         ckuann(CAKeyUpdAnnContent)
- oldWithNew   present                  see Appendix D.3 above
- newWithOld   present                  see Appendix D.3 above
+ body         ckuannV3(RootCaKeyUpdateContent)
  newWithNew   present                  see Appendix D.3 above
+ newWithOld   optionally present       see Appendix D.3 above
+ oldWithNew   optionally present       see Appendix D.3 above
  extraCerts   optionally present       can be used to "publish"
                                        certificates (e.g.,
                                        certificates signed using
@@ -5219,7 +5229,8 @@ PKIBody ::= CHOICE {       -- message-specific body elements
     rp       [12] RevRepContent,          --Revocation Response
     ccr      [13] CertReqMessages,        --Cross-Cert. Request
     ccp      [14] CertRepMessage,         --Cross-Cert. Response
-    ckuann   [15] CAKeyUpdAnnContent,     --CA Key Update Ann.
+    ckuann   [15] CAKeyUpdAnnContent,     --CA Key Update Ann.,
+                                          -- deprecated with cmp2021
     cann     [16] CertAnnContent,         --Certificate Ann.
     rann     [17] RevAnnContent,          --Revocation Ann.
     crlann   [18] CRLAnnContent,          --CRL Announcement
@@ -5231,6 +5242,10 @@ PKIBody ::= CHOICE {       -- message-specific body elements
     certConf [24] CertConfirmContent,     --Certificate Confirm
     pollReq  [25] PollReqContent,         --Polling Request
     pollRep  [26] PollRepContent          --Polling Response
+    ckuannV3 [27] RootCaKeyUpdateContent, --CA Key Update Ann. CMP V3
+    -- Use cmp2021 with ckuannV3; if backward compatibility with
+    -- cmp2000 is required, use ckuann, see Section 5.2.2
+
 }
 
 PKIProtection ::= BIT STRING
@@ -5512,6 +5527,8 @@ CAKeyUpdAnnContent ::= SEQUENCE {
     newWithOld   CMPCertificate, -- new pub signed with old priv
     newWithNew   CMPCertificate  -- new pub signed with new priv
 }
+-- With cmp2021 the use of CAKeyUpdAnnContent is deprecated , use
+-- RootCaKeyUpdateContent instead.
 
 CertAnnContent ::= CMPCertificate
 
@@ -5777,8 +5794,9 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 08 -> 09:
 
+* Deprecated CAKeyUpdAnnContent and ckuann in favor of RootCaKeyUpdateContent and ckuannV3 in CMP V3 as proposed by Tomas
 
-* Deleting an obsolete sentence in Section 8.8
+* Deleted an obsolete sentence in Section 8.8
 
 From version 07 -> 08:
 
