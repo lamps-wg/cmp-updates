@@ -2827,9 +2827,9 @@ Table of Contents
        cAKeyUpdAnnV3  [0] RootCaKeyUpdateContent
    }
 
-   To indicate support for ckuann with RootCaKeyUpdateContent in the
-   ckuann message, the pvno cmp2021 MUST be used.  Details on the usage
-   of the protocol version number (pvno) are described in Section 7.
+   To indicate support for RootCaKeyUpdateContent in the ckuann message,
+   the pvno cmp2021 MUST be used.  Details on the usage of the protocol
+   version number (pvno) are described in Section 7.
 
    In contrast to CAKeyUpdAnnContent as supported with cmp2000,
    RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew,
