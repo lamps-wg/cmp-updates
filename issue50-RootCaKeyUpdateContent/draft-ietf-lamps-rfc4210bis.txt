@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 9 September 2024                                        Entrust
-                                                            8 March 2024
+Expires: 12 September 2024                                       Entrust
+                                                           11 March 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 September 2024.
+   This Internet-Draft will expire on 12 September 2024.
 
 Copyright Notice
 
@@ -388,8 +388,7 @@ Table of Contents
       Section 5.1.3.4, and Appendix E, and for usage with CMS
       EnvelopedData to Section 5.2.2.
 
-   *  Deprecated CAKeyUpdAnnContent and ckuann in favor of
-      RootCaKeyUpdateContent and ckuannV3
+   *  Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent.
 
    *  Incorporated the request message behavioral clarifications from
       Appendix C of [RFC4210] to Section 5.  The definition of
@@ -1171,8 +1170,7 @@ Table of Contents
        the new private key (the "new with new" certificate);
 
    5.  Publish these new certificates via the repository and/or other
-       means (perhaps using a CAKeyUpdAnn message or
-       RootCaKeyUpdateContent);
+       means (perhaps using a ckuann message or RootCaKeyUpdateContent);
 
    6.  Export the new CA public key so that end entities may acquire it
        using the "out-of-band" mechanism (if required).
@@ -1648,8 +1646,7 @@ Table of Contents
         rp       [12] RevRepContent,          --Revocation Response
         ccr      [13] CertReqMessages,        --Cross-Cert.  Request
         ccp      [14] CertRepMessage,         --Cross-Cert.  Resp
-        ckuann   [15] CAKeyUpdAnnContent,     --CA Key Update Ann.,
-                                              -- deprecated with cmp2021
+        ckuann   [15] CAKeyUpdContent,        --CA Key Update Ann.
         cann     [16] CertAnnContent,         --Certificate Ann.
         rann     [17] RevAnnContent,          --Revocation Ann.
         crlann   [18] CRLAnnContent,          --CRL Announcement
@@ -1661,7 +1658,6 @@ Table of Contents
         certConf [24] CertConfirmContent,     --Certificate Confirm
         pollReq  [25] PollReqContent,         --Polling Request
         pollRep  [26] PollRepContent          --Polling Response
-        ckuannV3 [27] RootCaKeyUpdateContent, --CA Key Update Ann.
      }
 
    The specific types are described in Section 5.3 below.
@@ -2826,14 +2822,18 @@ Table of Contents
         oldWithNew          [1] CMPCertificate OPTIONAL
      }
 
-   To indicate support for ckuannV3 with RootCaKeyUpdateContent in an
-   announcement message, the pvno cmp2021 MUST be used.  Details on the
-   usage of the protocol version number (pvno) are described in
-   Section 7.
+   CAKeyUpdContent ::= CHOICE {
+       cAKeyUpdAnnV2      CAKeyUpdAnnContent, -- deprecated
+       cAKeyUpdAnnV3  [0] RootCaKeyUpdateContent
+   }
 
-   In contrast to ckuann message using CAKeyUpdAnnContent as supported
-   with cmp2000, ckuannV3 using RootCaKeyUpdateContent offers omitting
-   newWithOld and oldWithNew, depending on the needs of the EE.
+   To indicate support for ckuann with RootCaKeyUpdateContent in the
+   ckuann message, the pvno cmp2021 MUST be used.  Details on the usage
+   of the protocol version number (pvno) are described in Section 7.
+
+   In contrast to CAKeyUpdAnnContent as supported with cmp2000,
+   RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew,
+   depending on the needs of the EE.
 
 5.3.14.  Certificate Announcement
 
@@ -3078,8 +3078,8 @@ Table of Contents
 
    This MAY be used by the client to get an update of a root CA
    certificate, which is provided in the body of the request message.
-   In contrast to the ckuannV3 message, this approach follows the
-   request/response model.
+   In contrast to the ckuann message, this approach follows the request/
+   response model.
 
    The EE SHOULD reference its current trust anchor in RootCaCertValue
    in the request body, giving the root CA certificate if available.
@@ -3674,7 +3674,7 @@ Table of Contents
    message exchanges for version negotiation and to foster compatibility
    with cmp2000 implementations.  Version cmp2021 syntax is only needed
    if a message exchange uses hashAlg (in CertStatus), EnvelopedData, or
-   RootCaKeyUpdateContent.
+   ckuann with RootCaKeyUpdateContent.
 
    If a server receives a message with a version that it supports, then
    the version of the response message MUST be the same as the received
@@ -4852,12 +4852,12 @@ D.4.  Root CA Key Update
    mechanism) to the relevant end entities.  A confirmation message is
    not required from the end entities.
 
-   ckuannV3 message:
+   ckuann message:
 
     Field        Value                        Comment
    --------------------------------------------------------------
     sender       CA name CA name
-    body         ckuannV3(RootCaKeyUpdateContent)
+    body         ckuann(RootCaKeyUpdateContent)
     newWithNew   present                  see Appendix D.3 above
     newWithOld   optionally present       see Appendix D.3 above
     oldWithNew   optionally present       see Appendix D.3 above
@@ -4935,9 +4935,11 @@ D.5.  PKI Information Request/Response
                         value
      -- the symmetric algorithm that this CA expects to be used
      -- in later PKI messages (for encryption)
-   CAKeyUpdateInfo      optionally present, with
+   RootCaKeyUpdate      optionally present, with
                         relevant value
-     -- the CA MAY provide information about a relevant root CA
+     -- Use RootCaKeyUpdate; if backward compatibility with cmp2000 is
+     -- required, use CAKeyUpdateInfo.
+     -- The CA MAY provide information about a relevant root CA
      -- key pair using this field (note that this does not imply
      -- that the responding CA is the root CA in question)
    CurrentCRL           optionally present, with relevant value
@@ -5456,8 +5458,7 @@ Appendix F.  Compilable ASN.1 Definitions
        rp       [12] RevRepContent,          --Revocation Response
        ccr      [13] CertReqMessages,        --Cross-Cert. Request
        ccp      [14] CertRepMessage,         --Cross-Cert. Response
-       ckuann   [15] CAKeyUpdAnnContent,     --CA Key Update Ann.,
-                                             -- deprecated with cmp2021
+       ckuann   [15] CAKeyUpdContent,        --CA Key Update Ann.
        cann     [16] CertAnnContent,         --Certificate Ann.
        rann     [17] RevAnnContent,          --Revocation Ann.
        crlann   [18] CRLAnnContent,          --CRL Announcement
@@ -5469,10 +5470,6 @@ Appendix F.  Compilable ASN.1 Definitions
        certConf [24] CertConfirmContent,     --Certificate Confirm
        pollReq  [25] PollReqContent,         --Polling Request
        pollRep  [26] PollRepContent          --Polling Response
-       ckuannV3 [27] RootCaKeyUpdateContent, --CA Key Update Ann. CMP V3
-       -- Use cmp2021 with ckuannV3; if backward compatibility with
-       -- cmp2000 is required, use ckuann, see Section 5.2.2
-
    }
 
    PKIProtection ::= BIT STRING
@@ -5754,6 +5751,12 @@ Appendix F.  Compilable ASN.1 Definitions
        newWithOld   CMPCertificate, -- new pub signed with old priv
        newWithNew   CMPCertificate  -- new pub signed with new priv
    }
+
+   -- CAKeyUpdContent was added in [RFCXXXX]
+   CAKeyUpdContent ::= CHOICE {
+       cAKeyUpdAnnV2      CAKeyUpdAnnContent, -- deprecated
+       cAKeyUpdAnnV3  [0] RootCaKeyUpdateContent
+   }
    -- With cmp2021 the use of CAKeyUpdAnnContent is deprecated , use
    -- RootCaKeyUpdateContent instead.
 
@@ -5887,6 +5890,7 @@ Appendix F.  Compilable ASN.1 Definitions
    --      PreferredSymmAlgValue   ::= AlgorithmIdentifier{{...}}
    --   id-it-caKeyUpdateInfo  OBJECT IDENTIFIER ::= {id-it 5}
    --      CAKeyUpdateInfoValue    ::= CAKeyUpdAnnContent
+   --      - id-it-caKeyUpdateInfo was deprecated with cmp2021
    --   id-it-currentCRL       OBJECT IDENTIFIER ::= {id-it 6}
    --      CurrentCRLValue         ::= CertificateList
    --   id-it-unsupportedOIDs  OBJECT IDENTIFIER ::= {id-it 7}
@@ -6019,8 +6023,8 @@ Appendix G.  History of Changes
 
    From version 08 -> 09:
 
-   *  Deprecated CAKeyUpdAnnContent and ckuann in favor of
-      RootCaKeyUpdateContent and ckuannV3 in CMP V3 as proposed by Tomas
+   *  Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent
+      in CMP V3 as proposed by Tomas
 
    *  Deleted an obsolete sentence in Section 8.8
 
