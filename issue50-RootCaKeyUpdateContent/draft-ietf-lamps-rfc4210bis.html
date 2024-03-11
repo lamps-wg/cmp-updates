@@ -1047,7 +1047,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 9 September 2024</td>
+<td class="center">Expires 12 September 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-03-08" class="published">8 March 2024</time>
+<time datetime="2024-03-11" class="published">11 March 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-09-09">9 September 2024</time></dd>
+<dd class="expires"><time datetime="2024-09-12">12 September 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1144,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 9 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1875,7 +1875,7 @@ a certificate request template, or Certificate Revocation List (CRL) updates.<a 
             <p id="section-1.3-2.5.1">Added support for KEM keys for proof-of-possession to <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> and <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>, for message protection to <a href="#sect-5.1.1" class="auto internal xref">Section 5.1.1</a>, <a href="#sect-5.1.3.4" class="auto internal xref">Section 5.1.3.4</a>, and <a href="#sect-e" class="auto internal xref">Appendix E</a>, and for usage with CMS EnvelopedData to <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.<a href="#section-1.3-2.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.3-2.6">
-            <p id="section-1.3-2.6.1">Deprecated CAKeyUpdAnnContent and ckuann in favor of RootCaKeyUpdateContent and ckuannV3<a href="#section-1.3-2.6.1" class="pilcrow">¶</a></p>
+            <p id="section-1.3-2.6.1">Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent.<a href="#section-1.3-2.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.3-2.7">
             <p id="section-1.3-2.7.1">Incorporated the request message behavioral clarifications from Appendix
@@ -2778,7 +2778,7 @@ is out of scope for this document.<a href="#section-4.4-8" class="pilcrow">¶</a
 </li>
             <li id="section-4.4.1-2.5">
               <p id="section-4.4.1-2.5.1">Publish these new certificates via the repository and/or other
-  means (perhaps using a CAKeyUpdAnn message or RootCaKeyUpdateContent);<a href="#section-4.4.1-2.5.1" class="pilcrow">¶</a></p>
+  means (perhaps using a ckuann message or RootCaKeyUpdateContent);<a href="#section-4.4.1-2.5.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-4.4.1-2.6">
               <p id="section-4.4.1-2.6.1">Export the new CA public key so that end entities may acquire it
@@ -3296,8 +3296,7 @@ requesting a new certificate or a certificate request template; see <a href="#se
      rp       [12] RevRepContent,          --Revocation Response
      ccr      [13] CertReqMessages,        --Cross-Cert.  Request
      ccp      [14] CertRepMessage,         --Cross-Cert.  Resp
-     ckuann   [15] CAKeyUpdAnnContent,     --CA Key Update Ann.,
-                                           -- deprecated with cmp2021
+     ckuann   [15] CAKeyUpdContent,        --CA Key Update Ann.
      cann     [16] CertAnnContent,         --Certificate Ann.
      rann     [17] RevAnnContent,          --Revocation Ann.
      crlann   [18] CRLAnnContent,          --CRL Announcement
@@ -3309,7 +3308,6 @@ requesting a new certificate or a certificate request template; see <a href="#se
      certConf [24] CertConfirmContent,     --Certificate Confirm
      pollReq  [25] PollReqContent,         --Polling Request
      pollRep  [26] PollRepContent          --Polling Response
-     ckuannV3 [27] RootCaKeyUpdateContent, --CA Key Update Ann.
   }
 </pre><a href="#section-5.1.2-1" class="pilcrow">¶</a>
 </div>
@@ -4422,10 +4420,15 @@ be used to announce this event.<a href="#section-5.3.13-1" class="pilcrow">¶</a
      newWithOld          [0] CMPCertificate OPTIONAL,
      oldWithNew          [1] CMPCertificate OPTIONAL
   }
+
+CAKeyUpdContent ::= CHOICE {
+    cAKeyUpdAnnV2      CAKeyUpdAnnContent, -- deprecated
+    cAKeyUpdAnnV3  [0] RootCaKeyUpdateContent
+}
 </pre><a href="#section-5.3.13-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.3.13-3">To indicate support for ckuannV3 with RootCaKeyUpdateContent in an announcement message, the pvno cmp2021 <span class="bcp14">MUST</span> be used. Details on the usage of the protocol version number (pvno) are described in Section 7.<a href="#section-5.3.13-3" class="pilcrow">¶</a></p>
-<p id="section-5.3.13-4">In contrast to ckuann message using CAKeyUpdAnnContent as supported with cmp2000, ckuannV3 using RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew, depending on the needs of the EE.<a href="#section-5.3.13-4" class="pilcrow">¶</a></p>
+<p id="section-5.3.13-3">To indicate support for ckuann with RootCaKeyUpdateContent in the ckuann message, the pvno cmp2021 <span class="bcp14">MUST</span> be used. Details on the usage of the protocol version number (pvno) are described in Section 7.<a href="#section-5.3.13-3" class="pilcrow">¶</a></p>
+<p id="section-5.3.13-4">In contrast to CAKeyUpdAnnContent as supported with cmp2000, RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew, depending on the needs of the EE.<a href="#section-5.3.13-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-5.3.14">
@@ -4786,7 +4789,7 @@ language tag.)  If none of the offered tags are supported, an error
             </h5>
 <p id="section-5.3.19.15-1">This <span class="bcp14">MAY</span> be used by the client to get an update of a root CA certificate,
 which is provided in the body of the request message.  In contrast to the
-ckuannV3 message, this approach follows the request/response model.<a href="#section-5.3.19.15-1" class="pilcrow">¶</a></p>
+ckuann message, this approach follows the request/response model.<a href="#section-5.3.19.15-1" class="pilcrow">¶</a></p>
 <p id="section-5.3.19.15-2">The EE <span class="bcp14">SHOULD</span> reference its current trust anchor in RootCaCertValue
 in the request body, giving the root CA certificate if available.<a href="#section-5.3.19.15-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.3.19.15-3">
@@ -5466,7 +5469,7 @@ is needed for the request being sent or for the expected response.<a href="#sect
 <p id="section-7-3">Note: Using cmp2000 as the default pvno is done to avoid extra message exchanges
 for version negotiation and to foster compatibility with cmp2000 implementations.
 Version cmp2021 syntax is only needed if a message exchange uses hashAlg
-(in CertStatus), EnvelopedData, or RootCaKeyUpdateContent.<a href="#section-7-3" class="pilcrow">¶</a></p>
+(in CertStatus), EnvelopedData, or ckuann with RootCaKeyUpdateContent.<a href="#section-7-3" class="pilcrow">¶</a></p>
 <p id="section-7-4">If a server receives a message with a version that it supports, then
 the version of the response message <span class="bcp14">MUST</span> be the same as the received
 version.  If a server receives a message with a version higher or
@@ -6702,13 +6705,13 @@ keyIdentifiers must contain appropriate values, et cetera.<a href="#appendix-D.3
 announcement message that can be made available (via some transport
 mechanism) to the relevant end entities.  A confirmation message is
 not required from the end entities.<a href="#appendix-D.4-1" class="pilcrow">¶</a></p>
-<p id="appendix-D.4-2">ckuannV3 message:<a href="#appendix-D.4-2" class="pilcrow">¶</a></p>
+<p id="appendix-D.4-2">ckuann message:<a href="#appendix-D.4-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-D.4-3">
 <pre>
  Field        Value                        Comment
 --------------------------------------------------------------
  sender       CA name CA name
- body         ckuannV3(RootCaKeyUpdateContent)
+ body         ckuann(RootCaKeyUpdateContent)
  newWithNew   present                  see Appendix D.3 above
  newWithOld   optionally present       see Appendix D.3 above
  oldWithNew   optionally present       see Appendix D.3 above
@@ -6796,9 +6799,11 @@ PreferredSymmAlg     present (object identifier one
                      value
   -- the symmetric algorithm that this CA expects to be used
   -- in later PKI messages (for encryption)
-CAKeyUpdateInfo      optionally present, with
+RootCaKeyUpdate      optionally present, with
                      relevant value
-  -- the CA MAY provide information about a relevant root CA
+  -- Use RootCaKeyUpdate; if backward compatibility with cmp2000 is
+  -- required, use CAKeyUpdateInfo.
+  -- The CA MAY provide information about a relevant root CA
   -- key pair using this field (note that this does not imply
   -- that the responding CA is the root CA in question)
 CurrentCRL           optionally present, with relevant value
@@ -7350,8 +7355,7 @@ PKIBody ::= CHOICE {       -- message-specific body elements
     rp       [12] RevRepContent,          --Revocation Response
     ccr      [13] CertReqMessages,        --Cross-Cert. Request
     ccp      [14] CertRepMessage,         --Cross-Cert. Response
-    ckuann   [15] CAKeyUpdAnnContent,     --CA Key Update Ann.,
-                                          -- deprecated with cmp2021
+    ckuann   [15] CAKeyUpdContent,        --CA Key Update Ann.
     cann     [16] CertAnnContent,         --Certificate Ann.
     rann     [17] RevAnnContent,          --Revocation Ann.
     crlann   [18] CRLAnnContent,          --CRL Announcement
@@ -7363,10 +7367,6 @@ PKIBody ::= CHOICE {       -- message-specific body elements
     certConf [24] CertConfirmContent,     --Certificate Confirm
     pollReq  [25] PollReqContent,         --Polling Request
     pollRep  [26] PollRepContent          --Polling Response
-    ckuannV3 [27] RootCaKeyUpdateContent, --CA Key Update Ann. CMP V3
-    -- Use cmp2021 with ckuannV3; if backward compatibility with
-    -- cmp2000 is required, use ckuann, see Section 5.2.2
-
 }
 
 PKIProtection ::= BIT STRING
@@ -7648,6 +7648,12 @@ CAKeyUpdAnnContent ::= SEQUENCE {
     newWithOld   CMPCertificate, -- new pub signed with old priv
     newWithNew   CMPCertificate  -- new pub signed with new priv
 }
+
+-- CAKeyUpdContent was added in [RFCXXXX]
+CAKeyUpdContent ::= CHOICE {
+    cAKeyUpdAnnV2      CAKeyUpdAnnContent, -- deprecated
+    cAKeyUpdAnnV3  [0] RootCaKeyUpdateContent
+}
 -- With cmp2021 the use of CAKeyUpdAnnContent is deprecated , use
 -- RootCaKeyUpdateContent instead.
 
@@ -7781,6 +7787,7 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --      PreferredSymmAlgValue   ::= AlgorithmIdentifier{{...}}
 --   id-it-caKeyUpdateInfo  OBJECT IDENTIFIER ::= {id-it 5}
 --      CAKeyUpdateInfoValue    ::= CAKeyUpdAnnContent
+--      - id-it-caKeyUpdateInfo was deprecated with cmp2021
 --   id-it-currentCRL       OBJECT IDENTIFIER ::= {id-it 6}
 --      CurrentCRLValue         ::= CertificateList
 --   id-it-unsupportedOIDs  OBJECT IDENTIFIER ::= {id-it 7}
@@ -7918,7 +7925,7 @@ END
 <p id="appendix-G-2">From version 08 -&gt; 09:<a href="#appendix-G-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-3.1">
-          <p id="appendix-G-3.1.1">Deprecated CAKeyUpdAnnContent and ckuann in favor of RootCaKeyUpdateContent and ckuannV3 in CMP V3 as proposed by Tomas<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.1.1">Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent in CMP V3 as proposed by Tomas<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.2">
           <p id="appendix-G-3.2.1">Deleted an obsolete sentence in Section 8.8<a href="#appendix-G-3.2.1" class="pilcrow">¶</a></p>
