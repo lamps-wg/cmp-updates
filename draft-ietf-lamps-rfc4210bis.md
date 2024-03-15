@@ -303,7 +303,7 @@ This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes spe
 
 * Extended {{sect-3.1.2}} regarding use of Certificate Transparency logs.
 
-* Updated {{sect-4.4.1}} clarifying the definition of "new with new" certificate validity period.
+* Updated {{sect-4.4}} introducing RootCaKeyUpdateContent as alternative to using a repository to acquire new root CA certificates.
 
 * Added {{sect-5.1.1.3}} containing description of origPKIMessage content moved here from {{sect-5.1.3.4}}.
 
@@ -1068,50 +1068,60 @@ A certification request message for a KEM certificate SHALL use POPOPrivKey by u
 {: id="sect-4.4"}
 
 This discussion only applies to CAs that are directly trusted by some
-end entities.  Self-signed CAs SHALL be considered as directly
-trusted CAs.  Recognizing whether a non-self-signed CA is supposed to
-be directly trusted for some end entities is a matter of CA policy
-and is thus beyond the scope of this document.
+end entities.  Recognizing whether a self-signed or non-self-signed
+CA is supposed to be directly trusted for some end entities is a
+matter of CA policy and end entity configuration. This is thus beyond
+the scope of this document.
 
 The basis of the procedure described here is that the CA protects its
-new public key using its previous private key and vice versa.  Thus,
-when a CA updates its key pair it must generate two extra
-cACertificate attribute values if certificates are made available
-using an X.500 directory (for a total of four: OldWithOld,
-OldWithNew, NewWithOld, and NewWithNew).
+new public key using its previous private key and vice versa. Thus,
+when a CA updates its key pair it may generate two link certificates
+"old with new" and "new with old".
+
+Note: The usage of link certificates has been shown to be very use
+case specific and no assumptions are done on this aspect.
+RootCaKeyUpdateContent is updated to specify these link certificates
+as optional.
+
+Note: When an LDAP directory is used to publish root CA updates, the
+old and new root CA certificates together with the two link
+certificates are stored as cACertificate attribute values.
 
 When a CA changes its key pair, those entities who have acquired the
-old CA public key via "out-of-band" means are most affected.  It is
-these end entities who will need access to the new CA public key
-protected with the old CA private key.  However, they will only
-require this for a limited period (until they have acquired the new
-CA public key via the "out-of-band" mechanism).  This will typically
-be easily achieved when these end entities' certificates expire.
+old CA public key via "out-of-band" means are most affected.  These
+end entities need to acquire the new CA public key in a trusted way.
+This may be achieved "out-of-band", by using a repository, or by
+using online messages also containing the link certificates
+"new with old". Once the end entity acquired and properly verified
+the new CA public key, it must load the new trust anchor information
+into its trusted store.
 
 The data structure used to protect the new and old CA public keys is
-a standard certificate (which may also contain extensions).  There
-are no new data structures required.
+typically a standard X.509 v3 self-signed certificate (which may also
+contain extensions).  There are no new data structures required.
 
-Note 1:  This scheme does not make use of any of the X.509 v3
-extensions as it must be able to work even for version 1
-certificates.  The presence of the KeyIdentifier extension would make
-for efficiency improvements.
+Note: Sometimes root CA certificates do not make use of
+X.509 v3 extensions and may be X.509 v1 certificates. Therefore, a
+root CA key update must be able to work for version 1 certificates.
+The use of the X.509 v3 KeyIdentifier extension is recommended for
+easier path building.
 
-Note 2:.  While the scheme could be generalized to cover cases where
+Note:  While the scheme could be generalized to cover cases where
 the CA updates its key pair more than once during the validity period
 of one of its end entities' certificates, this generalization seems
 of dubious value.  Not having this generalization simply means that
 the validity periods of certificates issued with the old CA key pair
-cannot exceed the end of the OldWithNew validity period.
+cannot exceed the end of the "old with new" certificate validity
+period.
 
-Note 3:  This scheme ensures that end entities will acquire the new
-CA public key, at the latest by the expiry of the last certificate
-they owned that was signed with the old CA private key (via the
-"out-of-band" means).  Certificate and/or key update operations
-occurring at other times do not necessarily require this (depending
-on the end entity's equipment).
+Note:  This scheme offers a mechanism to ensures that end entities
+will acquire the new CA public key, at the latest by the expiry of
+the last certificate they owned that was signed with the old CA
+private key.  Certificate and/or key update operations occurring at
+other times do not necessarily require this (depending on the end
+entity's equipment).
 
-Note 4:  In practice, a new root CA may have a slightly different subject
+Note:  In practice, a new root CA may have a slightly different subject
 DN, e.g., indicating a generation identifier like the year of issuance or
 a version number, for instance in an OU element.  How to bridge trust to
 the new root CA certificate in a CA DN change or a cross-certificate scenario
@@ -1123,40 +1133,42 @@ is out of scope for this document.
 To change the key of the CA, the CA operator does the following:
 
 
-1. Generate a new key pair;
-
-1. Create a certificate containing the old CA public key signed with
-  the new private key (the "old with new" certificate);
+1. Generate a new key pair.
 
 1. Create a certificate containing the new CA public key signed with
-  the old private key (the "new with old" certificate);
+  the new private key (the "new with new" certificate).
 
-1. Create a certificate containing the new CA public key signed with
-  the new private key (the "new with new" certificate);
+1. Optionally: Create a link certificate containing the new CA public
+  key signed with the old private key (the "new with old"
+  certificate).
 
-1. Publish these new certificates via the repository and/or other
-  means (perhaps using a CAKeyUpdAnn message or RootCaKeyUpdateContent);
+1. Optionally: Create a link certificate containing the old CA public
+  key signed with the new private key (the "old with new"
+  certificate).
 
-1. Export the new CA public key so that end entities may acquire it
-  using the "out-of-band" mechanism (if required).
+1. Publish these new certificates so that end entities may acquire
+  it, e.g., using a repository or RootCaKeyUpdateContent.
 
-The old CA private key is then no longer required.  However, the old
-CA public key will remain in use for some time.  The old CA public
-key is no longer required (other than for non-repudiation) when all
-end entities of this CA have securely acquired the new CA public key.
+The old CA private key is then no longer required when the validity
+of the the "old with old" certificate ended. However, the old
+CA public key will remain in use for validating the "new with old"
+link certificate until the new CA public key is loaded into the
+trusted store. The old CA public key is no longer required (other
+than for non-repudiation) when all end entities of this CA have
+securely acquired and stored the new CA public key.
 
-The "old with new" certificate must have a validity period with the same
-notBefore and notAfter time as the "old with old" certificate.
+The "new with new" certificate must have a validity period with a notBefore
+time that is before the notAfter time of the "old with old" certificate and
+a notAfter time that is after the notBefore time of the next update of this
+certificate.
 
 The "new with old" certificate must have a validity period with the same
 notBefore time as the "new with new" certificate and a notAfter time by which
 all end entities of this CA will securely possess the new CA public key (at
 the latest, at the notAfter time of the "old with old" certificate).
 
-The "new with new" certificate must have a validity period with a notBefore
-time that is before the notAfter time of the "old with old" certificate and
-a notAfter time that is after the notBefore time of the next update of this
-certificate.
+The "old with new" certificate must have a validity period with the same
+notBefore and notAfter time as the "old with old" certificate.
 
 Note:  Further operational considerations on transition from one root CA
 self-signed certificate to the next is available in [RFC 8649 Section 5](#RFC8649).
@@ -1170,130 +1182,90 @@ other things) the certificate containing the public key of the
 signer.  However, once a CA is allowed to update its key there are a
 range of new possibilities.  These are shown in the table below.
 
-~~~~
-             Repository contains NEW    Repository contains only OLD
-               and OLD public keys       public key (due to, e.g.,
-                                           delay in publication)
-                PSE      PSE Contains  PSE Contains    PSE Contains
-             Contains     OLD public    NEW public      OLD public
-            NEW public       key            key            key
-                key
+|     | Verifier's PSE contains NEW public key | Verifier's PSE contains OLD public key |
+|:----|:---------------------------------------|:---------------------------------------|
+| Signer's certificate is protected using NEW key pair | Case 1: The verifier can directly verify the certificate. | Case 2: The verifier is missing the NEW public key. |
+| Signer's certificate is protected using OLD key pair | Case 3: The verifier is missing the OLD public key. | Case 4: The verifier can directly verify the certificate. |
 
- Signer's   Case 1:      Case 3:       Case 5:        Case 7:
- certifi-   This is      In this case  Although the   In this case
- cate is    the          the verifier  CA operator    the CA
- protected  standard     must access   has not        operator  has
- using NEW  case where   the           updated the    not updated
- key pair   the          repository in repository the the repository
-            verifier     order to get  verifier can   and so the
-            can          the value of  verify the     verification
-            directly     the NEW       certificate    will FAIL
-            verify the   public key    directly -
-            certificate                this is thus
-            without                    the same as
-            using the                  case 1.
-            repository
 
- Signer's   Case 2:      Case 4:       Case 6:        Case 8:
- certifi-   In this      In this case  The verifier   Although the
- cate is    case the     the verifier  thinks this    CA operator
- protected  verifier     can directly  is the         has not
- using OLD  must         verify the    situation of   updated the
- key pair   access the   certificate   case 2 and     repository the
-            repository   without       will access    verifier can
-            in order     using the     the            verify the
-            to get the   repository    repository;    certificate
-            value of                   however, the   directly -
-            the OLD                    verification   this is thus
-            public key                 will FAIL      the same as
-                                                      case 4.
-~~~~
-
-Note: Instead of using a repository, the end entity can use the root CA update
-general message to request the respective certificates from a PKI management
-entity, see {{sect-5.3.19.15}}, and follow the required validation steps.
-
-#### Verification in Cases 1, 4, 5, and 8
+#### Verification in Cases 1 and 4
 {: id="sect-4.4.2.1"}
 
 In these cases, the verifier has a local copy of the CA public key
 that can be used to verify the certificate directly.  This is the
 same as the situation where no key change has occurred.
 
-Note that case 8 may arise between the time when the CA operator has
-generated the new key pair and the time when the CA operator stores
-the updated attributes in the repository.  Case 5 can only arise if
-the CA operator has issued both the signer's and verifier's
-certificates during this "gap" (the CA operator SHOULD avoid this as
-it leads to the failure cases described below)
-
 
 #### Verification in Case 2
 {: id="sect-4.4.2.2"}
 
-In case 2, the verifier must get access to the old public key of the
-CA.  The verifier does the following:
-
-
-1. Look up the caCertificate attribute in the repository and pick
-  the OldWithNew certificate (determined based on validity periods;
-  note that the subject and issuer fields must match);
-
-1. Verify that this is correct using the new CA key (which the
-  verifier has locally);
-
-1. If correct, check the signer's certificate using the old CA key.
-
-Case 2 will arise when the CA operator has issued the signer's
-certificate, then changed the key, and then issued the verifier's
+In case 2, the verifier must get access to the new public key of the
+CA. Case 2 will arise when the CA operator has issued the verifier's
+certificate, then changed the CA's key, and then issued the signer's
 certificate; so it is quite a typical case.
+
+The verifier does the following:
+
+
+1. Get the "new with new" and "new with old" certificate.
+
+
+
+    1. If a repository is available, look up the caCertificate
+      attribute in the repository and pick the "new with new" and
+      "new with old" certificates.
+
+    1. If no repository is available, the verifier can use the root
+      CA update general message to request the new root CA and link
+      certificates from a PKI management entity, see {{sect-5.3.19.15}}.
+
+    1. Otherwise, get it "out-of-band" in a trustworthy manner.
+
+
+1. If received the two certificates, check that the validity periods
+  and the subject and issuer fields match. Verify the signatures
+  using the old CA key (which the verifier has locally). Securely
+  store the new trust anchor information if all checks were
+  successful.
+
+1. If correct, check the signer's certificate using the new CA key.
 
 
 #### Verification in Case 3
 {: id="sect-4.4.2.3"}
 
-In case 3, the verifier must get access to the new public key of the
-CA.  In case a repository is used, the verifier does the following:
+In case 3, the verifier must get access to the old public key of the
+CA. Case 3 will arise when the CA operator has issued the signer's
+certificate, then changed the key, and then issued the verifier's
+certificate.
+
+The verifier does the following:
 
 
-1. Look up the cACertificate attribute in the repository and pick
-  the NewWithOld certificate (determined based on validity periods;
-  note that the subject and issuer fields must match);
-
-1. Verify that this is correct using the old CA key (which the
-  verifier has stored locally);
-
-1. If correct, check the signer's certificate using the new CA key.
-
-Case 3 will arise when the CA operator has issued the verifier's
-certificate, then changed the key, and then issued the signer's
-certificate; so it is also quite a typical case.
-
-Note: Alternatively, the verifier can use the root CA update general message
-to request the respective certificates from a PKI management entity, see {{sect-5.3.19.15}}, and follow the required validation steps.
+1. Get the "old with new" certificate.
 
 
-#### Failure of Verification in Case 6
-{: id="sect-4.4.2.4"}
 
-In this case, the CA has issued the verifier's PSE, which contains
-the new key, without updating the repository attributes.  This means
-that the verifier has no means to get a trustworthy version of the
-CA's old key and so verification fails.
+    1. If a repository is available, look up the caCertificate
+      attribute in the repository and pick the "old with new"
+      certificates.
 
-Note that the failure is the CA operator's fault.
+    1. If no repository is available and the verifier has an
+      untrusted copy of the old root CA certificate, e.g., the
+      signer provided it in-band, the verifier can use the root
+      CA update general message to request the link certificate from
+      a PKI management entity, see {{sect-5.3.19.15}}.
+
+    1. Otherwise, get it "out-of-band" in a trustworthy manner.
 
 
-#### Failure of Verification in Case 7
-{: id="sect-4.4.2.5"}
+1. If received the link certificates, check that the validity periods
+  and the subject and issuer fields match. Verify the signatures
+  using the new CA key (which the verifier has locally). Securely
+  store the old trust anchor information if all checks were
+  successful, if needed.
 
-In this case, the CA has issued the signer's certificate protected
-with the new key without updating the repository attributes.  This
-means that the verifier has no means to get a trustworthy version of
-the CA's new key and so verification fails.
-
-Note that the failure is again the CA operator's fault.
-
+1. If correct, check the signer's certificate using the old CA key.
 
 
 ### Revocation - Change of CA Key
@@ -5777,6 +5749,8 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 08 -> 09:
 
+
+* Updated Section 4.4 incorporating RootCaKeyUpdateContent as alternative to using a repository for providing root CA key updates.
 
 * Deleting an obsolete sentence in Section 8.8
 
