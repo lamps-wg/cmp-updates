@@ -1134,11 +1134,11 @@ Table of Contents
    typically a standard X.509 v3 self-signed certificate (which may also
    contain extensions).  There are no new data structures required.
 
-   Note: Sometime root CA certificates do not make use of any of the
-   X.509 v3 extensions and may be X.509 v1 certificates.  Therefore,
-   root CA key update must be able to even for version 1 certificates.
-   Anyhow, to make use of the KeyIdentifier extension for easier path
-   building, the use of X.509 v3 is recommended.
+   Note: Sometimes root CA certificates do not make use of X.509 v3
+   extensions and may be X.509 v1 certificates.  Therefore, a root CA
+   key update must be able to work for version 1 certificates.  The use
+   of the X.509 v3 KeyIdentifier extension is recommended for easier
+   path building.
 
    Note: While the scheme could be generalized to cover cases where the
    CA updates its key pair more than once during the validity period of
