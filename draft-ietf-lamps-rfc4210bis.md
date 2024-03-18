@@ -177,8 +177,8 @@ to CMP version 2 are: improving crypto agility, extending the polling mechanism,
 adding new general message types, and adding extended key usages to identify
 special CMP server authorizations.  Introducing CMP version 3 to be used only
 for changes to the ASN.1 syntax, which are: support of EnvelopedData instead
-of EncryptedValue and hashAlg for indicating a hash AlgorithmIdentifier in
-certConf messages.
+of EncryptedValue, hashAlg for indicating a hash AlgorithmIdentifier in
+certConf messages, and RootCaKeyUpdateContent in ckuann messages.
 
 In addition to the changes specified in CMP Updates RFC 9480 this document
 adds support for management of KEM certificates.
@@ -308,6 +308,8 @@ This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes spe
 * Added {{sect-5.1.1.3}} containing description of origPKIMessage content moved here from {{sect-5.1.3.4}}.
 
 * Added support for KEM keys for proof-of-possession to {{sect-4.3}} and {{sect-5.2.8}}, for message protection to {{sect-5.1.1}}, {{sect-5.1.3.4}}, and {{sect-e}}, and for usage with CMS EnvelopedData to {{sect-5.2.2}}.
+
+* Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent.
 
 * Incorporated the request message behavioral clarifications from Appendix
   C of {{RFC4210}} to {{sect-5}}. The definition of altCertTemplate was incorporated into {{sect-5.2.1}} and the clarification on POPOSigningKey and on POPOPrivKey was incorporated into {{sect-5.2.8}}.
@@ -1135,7 +1137,7 @@ To change the key of the CA, the CA operator does the following:
   the new private key (the "new with new" certificate);
 
 1. Publish these new certificates via the repository and/or other
-  means (perhaps using a CAKeyUpdAnn message or RootCaKeyUpdateContent);
+  means (perhaps using a ckuann message or RootCaKeyUpdateContent);
 
 1. Export the new CA public key so that end entities may acquire it
   using the "out-of-band" mechanism (if required).
@@ -1618,33 +1620,33 @@ For more details of KEM-based message protection see {{sect-5.1.3.4}}. See {{sec
 
 ~~~~ asn.1
   PKIBody ::= CHOICE {
-     ir       [0]  CertReqMessages,       --Initialization Req
-     ip       [1]  CertRepMessage,        --Initialization Resp
-     cr       [2]  CertReqMessages,       --Certification Req
-     cp       [3]  CertRepMessage,        --Certification Resp
-     p10cr    [4]  CertificationRequest,  --PKCS #10 Cert.  Req.
-     popdecc  [5]  POPODecKeyChallContent --pop Challenge
-     popdecr  [6]  POPODecKeyRespContent, --pop Response
-     kur      [7]  CertReqMessages,       --Key Update Request
-     kup      [8]  CertRepMessage,        --Key Update Response
-     krr      [9]  CertReqMessages,       --Key Recovery Req
-     krp      [10] KeyRecRepContent,      --Key Recovery Resp
-     rr       [11] RevReqContent,         --Revocation Request
-     rp       [12] RevRepContent,         --Revocation Response
-     ccr      [13] CertReqMessages,       --Cross-Cert.  Request
-     ccp      [14] CertRepMessage,        --Cross-Cert.  Resp
-     ckuann   [15] CAKeyUpdAnnContent,    --CA Key Update Ann.
-     cann     [16] CertAnnContent,        --Certificate Ann.
-     rann     [17] RevAnnContent,         --Revocation Ann.
-     crlann   [18] CRLAnnContent,         --CRL Announcement
-     pkiconf  [19] PKIConfirmContent,     --Confirmation
-     nested   [20] NestedMessageContent,  --Nested Message
-     genm     [21] GenMsgContent,         --General Message
-     genp     [22] GenRepContent,         --General Response
-     error    [23] ErrorMsgContent,       --Error Message
-     certConf [24] CertConfirmContent,    --Certificate Confirm
-     pollReq  [25] PollReqContent,        --Polling Request
-     pollRep  [26] PollRepContent         --Polling Response
+     ir       [0]  CertReqMessages,        --Initialization Req
+     ip       [1]  CertRepMessage,         --Initialization Resp
+     cr       [2]  CertReqMessages,        --Certification Req
+     cp       [3]  CertRepMessage,         --Certification Resp
+     p10cr    [4]  CertificationRequest,   --PKCS #10 Cert.  Req.
+     popdecc  [5]  POPODecKeyChallContent, --pop Challenge
+     popdecr  [6]  POPODecKeyRespContent,  --pop Response
+     kur      [7]  CertReqMessages,        --Key Update Request
+     kup      [8]  CertRepMessage,         --Key Update Response
+     krr      [9]  CertReqMessages,        --Key Recovery Req
+     krp      [10] KeyRecRepContent,       --Key Recovery Resp
+     rr       [11] RevReqContent,          --Revocation Request
+     rp       [12] RevRepContent,          --Revocation Response
+     ccr      [13] CertReqMessages,        --Cross-Cert.  Request
+     ccp      [14] CertRepMessage,         --Cross-Cert.  Resp
+     ckuann   [15] CAKeyUpdContent,        --CA Key Update Ann.
+     cann     [16] CertAnnContent,         --Certificate Ann.
+     rann     [17] RevAnnContent,          --Revocation Ann.
+     crlann   [18] CRLAnnContent,          --CRL Announcement
+     pkiconf  [19] PKIConfirmContent,      --Confirmation
+     nested   [20] NestedMessageContent,   --Nested Message
+     genm     [21] GenMsgContent,          --General Message
+     genp     [22] GenRepContent,          --General Response
+     error    [23] ErrorMsgContent,        --Error Message
+     certConf [24] CertConfirmContent,     --Certificate Confirm
+     pollReq  [25] PollReqContent,         --Polling Request
+     pollRep  [26] PollRepContent          --Polling Response
   }
 ~~~~
 
@@ -2678,13 +2680,21 @@ When a CA updates its own key pair, the following data structure MAY
 be used to announce this event.
 
 ~~~~ asn.1
-  CAKeyUpdAnnContent ::= SEQUENCE {
-     oldWithNew         Certificate,
-     newWithOld         Certificate,
-     newWithNew         Certificate
+  RootCaKeyUpdateContent ::= SEQUENCE {
+     newWithNew              CMPCertificate,
+     newWithOld          [0] CMPCertificate OPTIONAL,
+     oldWithNew          [1] CMPCertificate OPTIONAL
   }
+
+CAKeyUpdContent ::= CHOICE {
+    cAKeyUpdAnnV2      CAKeyUpdAnnContent, -- deprecated
+    cAKeyUpdAnnV3  [0] RootCaKeyUpdateContent
+}
 ~~~~
 
+To indicate support for RootCaKeyUpdateContent in the ckuann message, the pvno cmp2021 MUST be used. Details on the usage of the protocol version number (pvno) are described in Section 7.
+
+In contrast to CAKeyUpdAnnContent as supported with cmp2000, RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew, depending on the needs of the EE.
 
 ### Certificate Announcement
 {: id="sect-5.3.14"}
@@ -2883,8 +2893,10 @@ to send its private decryption key to the CA for archival purposes).
 This MAY be used by the CA to announce a CA key update event.
 
 ~~~~
-  GenMsg:    {id-it 5}, CAKeyUpdAnnContent
+  GenMsg:    {id-it 18}, RootCaKeyUpdateValue
 ~~~~
+
+See {{sect-5.3.13}} for details of CA key update announcements.
 
 
 #### CRL
@@ -3005,7 +3017,7 @@ in the request body, giving the root CA certificate if available.
 
 ~~~~
   GenMsg:    {id-it 20}, RootCaCertValue | < absent >
-  GenRep:    {id-it 18}, RootCaKeyUpdateContent | < absent >
+  GenRep:    {id-it 18}, RootCaKeyUpdateValue | < absent >
 ~~~~
 
 ~~~~ asn.1
@@ -3020,8 +3032,9 @@ in the request body, giving the root CA certificate if available.
   }
 ~~~~
 
-Note: In contrast to CAKeyUpdAnnContent, this type offers omitting newWithOld
-and oldWithNew in the GenRep message, depending on the needs of the EE.
+Note: In contrast to CAKeyUpdAnnContent (which was deprecated with pvno cmp2021),
+RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew,
+depending on the needs of the EE.
 
 
 #### Certificate Request Template
@@ -3638,7 +3651,7 @@ is needed for the request being sent or for the expected response.
 Note: Using cmp2000 as the default pvno is done to avoid extra message exchanges
 for version negotiation and to foster compatibility with cmp2000 implementations.
 Version cmp2021 syntax is only needed if a message exchange uses hashAlg
-(in CertStatus) or EnvelopedData.
+(in CertStatus), EnvelopedData, or ckuann with RootCaKeyUpdateContent.
 
 If a server receives a message with a version that it supports, then
 the version of the response message MUST be the same as the received
@@ -4609,10 +4622,10 @@ ckuann message:
  Field        Value                        Comment
 --------------------------------------------------------------
  sender       CA name CA name
- body         ckuann(CAKeyUpdAnnContent)
- oldWithNew   present                  see Appendix D.3 above
- newWithOld   present                  see Appendix D.3 above
+ body         ckuann(RootCaKeyUpdateContent)
  newWithNew   present                  see Appendix D.3 above
+ newWithOld   optionally present       see Appendix D.3 above
+ oldWithNew   optionally present       see Appendix D.3 above
  extraCerts   optionally present       can be used to "publish"
                                        certificates (e.g.,
                                        certificates signed using
@@ -4695,9 +4708,11 @@ PreferredSymmAlg     present (object identifier one
                      value
   -- the symmetric algorithm that this CA expects to be used
   -- in later PKI messages (for encryption)
-CAKeyUpdateInfo      optionally present, with
+RootCaKeyUpdate      optionally present, with
                      relevant value
-  -- the CA MAY provide information about a relevant root CA
+  -- Use RootCaKeyUpdate; if backward compatibility with cmp2000 is
+  -- required, use CAKeyUpdateInfo.
+  -- The CA MAY provide information about a relevant root CA
   -- key pair using this field (note that this does not imply
   -- that the responding CA is the root CA in question)
 CurrentCRL           optionally present, with relevant value
@@ -5219,7 +5234,7 @@ PKIBody ::= CHOICE {       -- message-specific body elements
     rp       [12] RevRepContent,          --Revocation Response
     ccr      [13] CertReqMessages,        --Cross-Cert. Request
     ccp      [14] CertRepMessage,         --Cross-Cert. Response
-    ckuann   [15] CAKeyUpdAnnContent,     --CA Key Update Ann.
+    ckuann   [15] CAKeyUpdContent,        --CA Key Update Ann.
     cann     [16] CertAnnContent,         --Certificate Ann.
     rann     [17] RevAnnContent,          --Revocation Ann.
     crlann   [18] CRLAnnContent,          --CRL Announcement
@@ -5513,6 +5528,14 @@ CAKeyUpdAnnContent ::= SEQUENCE {
     newWithNew   CMPCertificate  -- new pub signed with new priv
 }
 
+-- CAKeyUpdContent was added in [RFCXXXX]
+CAKeyUpdContent ::= CHOICE {
+    cAKeyUpdAnnV2      CAKeyUpdAnnContent, -- deprecated
+    cAKeyUpdAnnV3  [0] RootCaKeyUpdateContent
+}
+-- With cmp2021 the use of CAKeyUpdAnnContent is deprecated , use
+-- RootCaKeyUpdateContent instead.
+
 CertAnnContent ::= CMPCertificate
 
 RevAnnContent ::= SEQUENCE {
@@ -5643,6 +5666,7 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --      PreferredSymmAlgValue   ::= AlgorithmIdentifier{{...}}
 --   id-it-caKeyUpdateInfo  OBJECT IDENTIFIER ::= {id-it 5}
 --      CAKeyUpdateInfoValue    ::= CAKeyUpdAnnContent
+--      - id-it-caKeyUpdateInfo was deprecated with cmp2021
 --   id-it-currentCRL       OBJECT IDENTIFIER ::= {id-it 6}
 --      CurrentCRLValue         ::= CertificateList
 --   id-it-unsupportedOIDs  OBJECT IDENTIFIER ::= {id-it 7}
@@ -5777,8 +5801,9 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 08 -> 09:
 
+* Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent in CMP V3 as proposed by Tomas
 
-* Deleting an obsolete sentence in Section 8.8
+* Deleted an obsolete sentence in Section 8.8
 
 From version 07 -> 08:
 
