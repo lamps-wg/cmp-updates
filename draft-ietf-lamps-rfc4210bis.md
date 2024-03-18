@@ -1207,28 +1207,33 @@ certificate; so it is quite a typical case.
 The verifier does the following:
 
 
-1. Get the "new with new" and "new with old" certificate.
+1. Get the "new with new" and "new with old" certificates. The
+  location to retrieve theses certificates from, may be available in
+  the authority information access extension of the "old with old"
+  certificate, see caIssuers access method in Section 4.2.2.1 of
+  {{RFC5280}}, or it may be locally configured.
 
 
 
-    1. If a repository is available, look up the caCertificate
-      attribute in the repository and pick the "new with new" and
-      "new with old" certificates.
+    1. If a repository is available, look up the certificates in the
+      caCertificate attribute.
 
-    1. If no repository is available, the verifier can use the root
-      CA update general message to request the new root CA and link
-      certificates from a PKI management entity, see {{sect-5.3.19.15}}.
+    1. If a HTTP or FTP server is available, pick the certificates
+      from the "certs-only" CMS message.
 
-    1. Otherwise, get it "out-of-band" in a trustworthy manner.
+    1. If a CMP server is available, request the certificates using
+      the root CA update general message, see {{sect-5.3.19.15}}.
+
+    1. Otherwise, the get the certificates "out-of-band" using any
+      trustworthy mechanism.
 
 
-1. If received the two certificates, check that the validity periods
+1. If received the certificates, check that the validity periods
   and the subject and issuer fields match. Verify the signatures
-  using the old CA key (which the verifier has locally). Securely
-  store the new trust anchor information if all checks were
-  successful.
+  using the old root CA key (which the verifier has locally).
 
-1. If correct, check the signer's certificate using the new CA key.
+1. If all checks were successful, securely store the new trust anchor
+  information and validate the signer's certificate.
 
 
 #### Verification in Case 3
@@ -1242,30 +1247,35 @@ certificate.
 The verifier does the following:
 
 
-1. Get the "old with new" certificate.
+1. Get the "old with new" certificate. The location to retrieve
+  theses certificates from, may be available in the authority
+  information access extension of the "new with new" certificate, see
+  caIssuers access method in Section 4.2.2.1 of {{RFC5280}}, or it
+  may be locally configured.
 
 
 
-    1. If a repository is available, look up the caCertificate
-      attribute in the repository and pick the "old with new"
-      certificates.
+    1. If a repository is available, look up the certificate in the
+      caCertificate attribute.
 
-    1. If no repository is available and the verifier has an
-      untrusted copy of the old root CA certificate, e.g., the
-      signer provided it in-band, the verifier can use the root
-      CA update general message to request the link certificate from
-      a PKI management entity, see {{sect-5.3.19.15}}.
+    1. If a HTTP or FTP server is available, pick the certificate
+      from the "certs-only" CMS message.
 
-    1. Otherwise, get it "out-of-band" in a trustworthy manner.
+    1. If a CMP server and an untrusted copy of the old root CA
+      certificate is available (e.g., the signer provided it in-band
+      in the CMP extraCerts filed), request the certificate using the
+      root CA update general message, see {{sect-5.3.19.15}}.
+
+    1. Otherwise, the get the certificate "out-of-band" using any
+      trustworthy mechanism.
 
 
-1. If received the link certificates, check that the validity periods
+1. If received the certificate, check that the validity periods
   and the subject and issuer fields match. Verify the signatures
-  using the new CA key (which the verifier has locally). Securely
-  store the old trust anchor information if all checks were
-  successful, if needed.
+  using the new root CA key (which the verifier has locally).
 
-1. If correct, check the signer's certificate using the old CA key.
+1. If all checks were successful, securely store the old trust anchor
+  information and validate the signer's certificate.
 
 
 ### Revocation - Change of CA Key
