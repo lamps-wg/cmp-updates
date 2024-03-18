@@ -1224,7 +1224,7 @@ The verifier does the following:
     1. If a CMP server is available, request the certificates using
       the root CA update general message, see {{sect-5.3.19.15}}.
 
-    1. Otherwise, the get the certificates "out-of-band" using any
+    1. Otherwise, get the certificates "out-of-band" using any
       trustworthy mechanism.
 
 
@@ -1266,7 +1266,7 @@ The verifier does the following:
       in the CMP extraCerts filed), request the certificate using the
       root CA update general message, see {{sect-5.3.19.15}}.
 
-    1. Otherwise, the get the certificate "out-of-band" using any
+    1. Otherwise, get the certificate "out-of-band" using any
       trustworthy mechanism.
 
 
