@@ -1262,7 +1262,7 @@ Table of Contents
        3.  If a CMP server is available, request the certificates using
            the root CA update general message, see Section 5.3.19.15.
 
-       4.  Otherwise, the get the certificates "out-of-band" using any
+       4.  Otherwise, get the certificates "out-of-band" using any
            trustworthy mechanism.
 
    2.  If received the certificates, check that the validity periods and
@@ -1299,7 +1299,7 @@ Table of Contents
            using the root CA update general message, see
            Section 5.3.19.15.
 
-       4.  Otherwise, the get the certificate "out-of-band" using any
+       4.  Otherwise, get the certificate "out-of-band" using any
            trustworthy mechanism.
 
    2.  If received the certificate, check that the validity periods and
