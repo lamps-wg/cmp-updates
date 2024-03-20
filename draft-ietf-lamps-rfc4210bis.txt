@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 19 September 2024                                       Entrust
-                                                           18 March 2024
+Expires: 21 September 2024                                       Entrust
+                                                           20 March 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 September 2024.
+   This Internet-Draft will expire on 21 September 2024.
 
 Copyright Notice
 
@@ -288,7 +288,7 @@ Table of Contents
    (PKI) Certificate Management Protocol (CMP).  Protocol messages are
    defined for certificate creation and management.  The term
    "certificate" in this document refers to an X.509v3 Certificate as
-   defined in [ITU.X509.2000].
+   defined in [RFC5280].
 
 1.1.  Changes Since RFC 2510
 
@@ -3933,7 +3933,7 @@ Table of Contents
 
    This document updates the ASN.1 modules of CMP Updates Appendix A.2
    [RFC9480].  The OID TBD2 (id-mod-cmp2023-02) was registered in the
-   SMI Security for PKIX Module Identifier registry to identify the
+   "SMI Security for PKIX Module Identifier" registry to identify the
    updated ASN.1 module.
 
    In the SMI-numbers registry "SMI Security for PKIX CMP Information
@@ -3952,6 +3952,11 @@ Table of Contents
    The new OID 1.2.840.113533.7.66.16 was registered by Entrust for id-
    KemBasedMac in the arch 1.2.840.113533.7.66.  Entrust registered also
    the OIDs for id-PasswordBasedMac and id-DHBasedMac there.
+
+   All existing references to [RFC2510], [RFC4210], and [RFC9480] at
+   https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml except
+   those in the "SMI Security for PKIX Module Identifier" registry
+   should be replaced with references to this document.
 
    < ToDo: The new OID TBD3 for the ASN.1 module
    KEMAlgorithmInformation-2023 will be defined in draft-ietf-lamps-cms-
@@ -4035,13 +4040,6 @@ Table of Contents
               Internet-Draft, draft-ietf-lamps-cms-kemri-08, 6 February
               2024, <https://datatracker.ietf.org/doc/html/draft-ietf-
               lamps-cms-kemri-08>.
-
-   [ITU.X509.2000]
-              International Telecommunications Union, "Information
-              technology - Open Systems Interconnection - The Directory:
-              Public-key and attribute certificate frameworks",
-              ITU-T Recommendation X.509, ISO Standard 9594-8, March
-              2000.
 
    [MvOV97]   Menezes, A., van Oorschot, P., and S. Vanstone, "Handbook
               of Applied Cryptography", CRC Press ISBN 0-8493-8523-7,
@@ -6016,14 +6014,19 @@ Appendix G.  History of Changes
 
    From version 08 -> 09:
 
+   *  Changed reference from ITU-T X.509 to RFC 5280 (see thread " CMP
+      vs RFC5280").
+
    *  Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent
-      in CMP V3 as proposed by Tomas
+      in CMP V3 as proposed by Tomas.
 
    *  Updated Section 4.4 incorporating RootCaKeyUpdateContent as
       alternative to using a repository for providing root CA key
       updates.
 
-   *  Deleting an obsolete sentence in Section 8.8
+   *  Deleting an obsolete sentence in Section 8.8.
+
+   *  Added IANA considerations addressing IANA early review.
 
    From version 07 -> 08:
 
