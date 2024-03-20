@@ -455,7 +455,7 @@ We also thank all reviewers of this document for their valuable feedback.
 
 Note: This appendix will be deleted in the final version of the document.
 
-From version 05 -> 06:
+From version 04 -> 05:
 
 
 * Added IANA considerations addressing IANA early review.
