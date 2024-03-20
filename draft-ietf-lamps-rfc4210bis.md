@@ -874,13 +874,13 @@ This gives two further possibilities: confirmed or not.
 
 
 
-### Mandatory Schemes
+### Registration / Certification Schemes
 {: id="sect-4.2.2"}
 
 The criteria above allow for a large number of initial
 registration/certification schemes.  This specification mandates that
-conforming CA equipment, RA equipment, and EE equipment MUST support
-the second scheme listed below ({{sect-4.2.2.2}}).  Any entity MAY
+conforming CA equipment, RA equipment, and EE equipment must support
+the second scheme listed below ({{sect-4.2.2.2}}).  Any entity may
 additionally support other schemes, if desired.
 
 #### Centralized Scheme
@@ -913,11 +913,11 @@ In terms of the classification above, this scheme is where:
 
 * initiation occurs at the end entity;
 
-* message authentication is REQUIRED;
+* message authentication is required;
 
 * "key generation" occurs at the end entity (see {{sect-4.2.1.3}});
 
-* a confirmation message is REQUIRED.
+* a confirmation message is required.
 
 Note: An Initial Authentication Key (IAK) can be either a symmetric key or
 an asymmetric private key with a certificate issued by another PKI trusted
@@ -5780,6 +5780,11 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+
+From version 08 -> 09:
+
+* Updated the title of Section 4.2.2 and removed normative language
 
 
 From version 08 -> 09:
