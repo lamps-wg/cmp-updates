@@ -1965,7 +1965,7 @@ Table of Contents
    in [I-D.ietf-lamps-cms-kemri], Section 5 with the following changes:
 
    *  IKM is the input key material.  It is the symmetric secret called
-      ss resulting from the key encapsulation mechanism.¶
+      ss resulting from the key encapsulation mechanism.
 
    *  L is dependent of the MAC algorithm that is used with the shared
       secret key for CMP message protection and is called len in this
