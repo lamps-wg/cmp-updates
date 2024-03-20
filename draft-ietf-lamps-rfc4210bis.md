@@ -1889,9 +1889,9 @@ This shared secret key ssk can be reused by Alice for MAC-based protection of fu
 
 This approach employs the notation of KDF(IKM, L, info) as described in {{I-D.ietf-lamps-cms-kemri, Section 5}} with the following changes:
 
-* IKM is the input key material. It is the symmetric secret called ss resulting from the key encapsulation mechanism.¶
+* IKM is the input key material. It is the symmetric secret called ss resulting from the key encapsulation mechanism.
 
-* L is dependent of the MAC algorithm that is used with the shared secret key for CMP message protection and is called len in this document
+* L is dependent of the MAC algorithm that is used with the shared secret key for CMP message protection and is called len in this document.
 
 * info is an additional input to the KDF, is called context in this document, and contains the DER-encoded KemOtherInfo structure defined as:
 
