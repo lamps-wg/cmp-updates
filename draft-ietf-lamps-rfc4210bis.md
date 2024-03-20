@@ -5782,6 +5782,11 @@ END
 Note: This appendix will be deleted in the final version of the document.
 
 
+
+From version 08 -> 09:
+
+* Updated Sections 3, 4, and to modernize the text and eliminate normative language. This is intended to adapt to the style of a framework that the document has now acquired, due to many profiles (e.g., Appendix C and D, RFC 9483, 3GPP, UNISIG) have been created that use normative language.
+
 From version 08 -> 09:
 
 * Changed reference from ITU-T X.509 to RFC 5280 (see thread " CMP vs RFC5280").
