@@ -874,7 +874,7 @@ This gives two further possibilities: confirmed or not.
 
 
 
-### Mandatory Schemes
+### Registration / Certification Schemes
 {: id="sect-4.2.2"}
 
 The criteria above allow for a large number of initial
@@ -5780,6 +5780,11 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+
+From version 09 -> 10:
+
+* Updating headline of Section 4.2.2
 
 
 From version 08 -> 09:
