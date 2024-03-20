@@ -144,7 +144,6 @@ normative:
   RFC9045:
   RFC9481:
   I-D.ietf-lamps-cms-kemri:
-  ITU.X509.2000:
   MvOV97:
     title: Handbook of Applied Cryptography
     author:
@@ -221,7 +220,7 @@ This document describes the Internet X.509 Public Key Infrastructure
 (PKI) Certificate Management Protocol (CMP).  Protocol messages are
 defined for certificate creation and management.  The term
 "certificate" in this document refers to an X.509v3 Certificate as
-defined in {{ITU.X509.2000}}.
+defined in {{RFC5280}}.
 
 ## Changes Since RFC 2510
 {: id="sect-1.1"}
@@ -5783,7 +5782,9 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 08 -> 09:
 
-* Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent in CMP V3 as proposed by Tomas
+* Changed reference from ITU-T X.509 to RFC 5280 (see thread " CMP vs RFC5280").
+
+* Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent in CMP V3 as proposed by Tomas.
 
 * Updated Section 4.4 incorporating RootCaKeyUpdateContent as alternative to using a repository for providing root CA key updates.
 
