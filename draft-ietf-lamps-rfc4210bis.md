@@ -3886,7 +3886,7 @@ If a certificate or its precertificate was published in a CT log it must be revo
 
 # IANA Considerations {#sect-9}
 
-This document updates the ASN.1 modules of CMP Updates Appendix A.2 {{RFC9480}}. The OID TBD2 (id-mod-cmp2023-02) was registered in the SMI Security for PKIX Module Identifier registry to identify the updated ASN.1 module.
+This document updates the ASN.1 modules of CMP Updates Appendix A.2 {{RFC9480}}. The OID TBD2 (id-mod-cmp2023-02) was registered in the "SMI Security for PKIX Module Identifier" registry to identify the updated ASN.1 module.
 
 In the SMI-numbers registry "SMI Security for PKIX CMP Information Types (1.3.6.1.5.5.7.4)" (see https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.4) as defined in {{RFC7299}} one addition has been performed.
 
@@ -3899,6 +3899,8 @@ One new entry has been added:
    Reference: [RFCXXXX]
 
 The new OID 1.2.840.113533.7.66.16 was registered by Entrust for id-KemBasedMac in the arch 1.2.840.113533.7.66. Entrust registered also the OIDs for id-PasswordBasedMac and id-DHBasedMac there.
+
+All existing references to {{RFC2510}}, {{RFC4210}}, and {{RFC9480}} at https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml except those in the "SMI Security for PKIX Module Identifier" registry should be replaced with references to this document.
 
 < ToDo: The new OID TBD3 for the ASN.1 module KEMAlgorithmInformation-2023 will be defined in draft-ietf-lamps-cms-kemri. >
 
@@ -5788,7 +5790,9 @@ From version 08 -> 09:
 
 * Updated Section 4.4 incorporating RootCaKeyUpdateContent as alternative to using a repository for providing root CA key updates.
 
-* Deleting an obsolete sentence in Section 8.8
+* Deleting an obsolete sentence in Section 8.8.
+
+* Added IANA considerations addressing IANA early review.
 
 
 From version 07 -> 08:

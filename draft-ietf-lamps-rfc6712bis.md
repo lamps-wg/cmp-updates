@@ -433,6 +433,10 @@ users:
 
 # IANA Considerations {#sect-6}
 
+The reference to {{RFC2510}} at https://www.iana.org/assignments/media-types/media-types.xhtml should be replaced with a reference to this document.
+
+The reference to {{RFC4210}} at https://www.iana.org/assignments/core-parameters/core-parameters.xhtml should be replaced with a reference to this document.
+
 No further action by the IANA is necessary for this document or any anticipated
 updates.
 
@@ -450,6 +454,11 @@ We also thank all reviewers of this document for their valuable feedback.
 # History of Changes {#History}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 05 -> 06:
+
+
+* Added IANA considerations addressing IANA early review.
 
 From version 03 -> 04:
 
