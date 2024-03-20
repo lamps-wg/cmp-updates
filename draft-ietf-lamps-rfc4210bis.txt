@@ -1969,7 +1969,7 @@ Table of Contents
 
    *  L is dependent of the MAC algorithm that is used with the shared
       secret key for CMP message protection and is called len in this
-      document
+      document.
 
    *  info is an additional input to the KDF, is called context in this
       document, and contains the DER-encoded KemOtherInfo structure
