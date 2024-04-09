@@ -2436,7 +2436,7 @@ See {{sect-5.2.1}} and {{RFC4211}} for CertReqMessages syntax.
 ### Initialization Response
 {: id="sect-5.3.2"}
 
-An Initialization response message contains as the PKIBody an
+An Initialization response message contains as the PKIBody a
 CertRepMessage data structure, which has for each certificate
 requested a PKIStatusInfo field, a subject certificate, and possibly
 a private key (normally encrypted using EnvelopedData, see {{RFC9483}} Section
