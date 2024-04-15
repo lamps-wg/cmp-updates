@@ -1043,11 +1043,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">RFC4210bis</td>
-<td class="right">March 2024</td>
+<td class="right">April 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 21 September 2024</td>
+<td class="center">Expires 17 October 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-03-20" class="published">20 March 2024</time>
+<time datetime="2024-04-15" class="published">15 April 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-09-21">21 September 2024</time></dd>
+<dd class="expires"><time datetime="2024-10-17">17 October 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1144,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 17 October 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1250,7 +1250,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
                     </ul>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.2">
-                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-mandatory-schemes" class="internal xref">Mandatory Schemes</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-initial-registration-certifi" class="internal xref">Initial Registration/Certification Schemes</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.2.2.1">
                         <p id="section-toc.1-1.4.2.2.2.2.2.1.1"><a href="#section-4.2.2.1" class="auto internal xref">4.2.2.1</a>.  <a href="#name-centralized-scheme" class="internal xref">Centralized Scheme</a></p>
@@ -1670,7 +1670,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
                 <p id="section-toc.1-1.14.2.3.1"><a href="#appendix-C.3" class="auto internal xref">C.3</a>.  <a href="#name-proof-of-possession-profile" class="internal xref">Proof-of-Possession Profile</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.4">
-                <p id="section-toc.1-1.14.2.4.1"><a href="#appendix-C.4" class="auto internal xref">C.4</a>.  <a href="#name-initial-registration-certifi" class="internal xref">Initial Registration/Certification (Basic Authenticated Scheme)</a></p>
+                <p id="section-toc.1-1.14.2.4.1"><a href="#appendix-C.4" class="auto internal xref">C.4</a>.  <a href="#name-initial-registration-certific" class="internal xref">Initial Registration/Certification (Basic Authenticated Scheme)</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.5">
                 <p id="section-toc.1-1.14.2.5.1"><a href="#appendix-C.5" class="auto internal xref">C.5</a>.  <a href="#name-certificate-request-2" class="internal xref">Certificate Request</a></p>
@@ -1779,7 +1779,7 @@ method at the CMP transport level.<a href="#section-1.1-2.3.1" class="pilcrow">�
 </li>
           <li class="normal" id="section-1.1-2.4">
             <p id="section-1.1-2.4.1">The CMP transport protocol issues are handled in a separate
-document <span>[<a href="#I-D.ietf-lamps-rfc6712bis" class="cite xref">I-D.ietf-lamps-rfc6712bis</a>]</span>, thus the Transports section is removed.<a href="#section-1.1-2.4.1" class="pilcrow">¶</a></p>
+document <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</span>, thus the Transports section is removed.<a href="#section-1.1-2.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.1-2.5">
             <p id="section-1.1-2.5.1">A new implicit confirmation method is introduced to reduce the
@@ -1810,8 +1810,8 @@ certificate holder that acts as the indicated type of PKI management entity.<a h
 e.g., batch processing of messages.<a href="#section-1.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.2-2.3">
-            <p id="section-1.2-2.3.1">Use the type EnvelopedData as the preferred choice instead of EncryptedValue
-to better support crypto agility in CMP.<a href="#section-1.2-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.3.1">Use the CMS <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> type EnvelopedData as the preferred choice instead of
+EncryptedValue to better support crypto agility in CMP.<a href="#section-1.2-2.3.1" class="pilcrow">¶</a></p>
 <p id="section-1.2-2.3.2">
 For reasons of completeness and consistency, the type EncryptedValue has been
 exchanged in all occurrences.  This includes the protection of centrally
@@ -1841,7 +1841,7 @@ a certificate request template, or Certificate Revocation List (CRL) updates.<a 
             <p id="section-1.2-2.7.1">Deleted the mandatory algorithm profile in <a href="#sect-c.2" class="auto internal xref">Appendix C.2</a> and refer instead to Section 7 of <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span>.<a href="#section-1.2-2.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.2-2.8">
-            <p id="section-1.2-2.8.1">Added <a href="#sect-8.6" class="auto internal xref">Section 8.6</a>, <a href="#sect-8.7" class="auto internal xref">Section 8.7</a>, <a href="#sect-8.9" class="auto internal xref">Section 8.9</a>, and <a href="#sect-8.10" class="auto internal xref">Section 8.10</a>.<a href="#section-1.2-2.8.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.8.1">Added security considerations Sections <a href="#sect-8.6" class="auto internal xref">8.6</a>, <a href="#sect-8.7" class="auto internal xref">8.7</a>, <a href="#sect-8.9" class="auto internal xref">8.9</a>, and <a href="#sect-8.10" class="auto internal xref">8.10</a>.<a href="#section-1.2-2.8.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1876,10 +1876,10 @@ a certificate request template, or Certificate Revocation List (CRL) updates.<a 
 C of <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span> to <a href="#sect-5" class="auto internal xref">Section 5</a>. The definition of altCertTemplate was incorporated into <a href="#sect-5.2.1" class="auto internal xref">Section 5.2.1</a> and the clarification on POPOSigningKey and on POPOPrivKey was incorporated into <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>.<a href="#section-1.3-2.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.3-2.8">
-            <p id="section-1.3-2.8.1">Added support support for CMS EnvelopedData to different proof-of-possession methods for transferring encrypted private keys, certificates, and challenges to <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>.<a href="#section-1.3-2.8.1" class="pilcrow">¶</a></p>
+            <p id="section-1.3-2.8.1">Added support for CMS EnvelopedData to different proof-of-possession methods for transferring encrypted private keys, certificates, and challenges to <a href="#sect-5.2.8" class="auto internal xref">Section 5.2.8</a>.<a href="#section-1.3-2.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.3-2.9">
-            <p id="section-1.3-2.9.1">Added <a href="#sect-8.1" class="auto internal xref">Section 8.1</a>, <a href="#sect-8.5" class="auto internal xref">Section 8.5</a>, <a href="#sect-8.8" class="auto internal xref">Section 8.8</a>, and <a href="#sect-8.11" class="auto internal xref">Section 8.11</a>.<a href="#section-1.3-2.9.1" class="pilcrow">¶</a></p>
+            <p id="section-1.3-2.9.1">Added security considerations Sections <a href="#sect-8.1" class="auto internal xref">8.1</a>, <a href="#sect-8.5" class="auto internal xref">8.5</a>, <a href="#sect-8.8" class="auto internal xref">8.8</a>, and <a href="#sect-8.11" class="auto internal xref">8.11</a>.<a href="#section-1.3-2.9.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -2010,7 +2010,8 @@ Certification Authority.  The functions that the registration
 authority may carry out will vary from case to case but <span class="bcp14">MAY</span> include
 personal authentication, token distribution, checking certificate requests
 and authentication of their origin, revocation reporting,
-name assignment, key generation, archival of key pairs, et cetera.<a href="#section-3.1.1.3-1" class="pilcrow">¶</a></p>
+name assignment, key generation (KGA, see <a href="#sect-3.1.1.4" class="auto internal xref">Section 3.1.1.4</a>), archival
+of key pairs, et cetera.<a href="#section-3.1.1.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.1.1.3-2">This document views the RA as an <span class="bcp14">OPTIONAL</span> component: when it is not
 present, the CA is assumed to be able to carry out the RA's functions
 so that the PKI management protocols are the same from the end-entity's
@@ -2084,10 +2085,10 @@ management<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-3.1.2-2.5">
               <p id="section-3.1.2-2.5.1">PKI management protocols must not preclude the generation of key
-  pairs by the end entity concerned, by a KGA, by an RA, or by a CA.  Key
+  pairs by the end entity concerned, by a KGA, or by a CA.  Key
   generation may also occur elsewhere, but for the purposes of PKI
   management we can regard key generation as occurring wherever
-  the key is first present at an end entity, RA, or CA.<a href="#section-3.1.2-2.5.1" class="pilcrow">¶</a></p>
+  the key is first present at an end entity, KGA, or CA.<a href="#section-3.1.2-2.5.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-3.1.2-2.6">
               <p id="section-3.1.2-2.6.1">PKI management protocols must support the publication of
@@ -2105,7 +2106,7 @@ management<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
             <li id="section-3.1.2-2.8">
               <p id="section-3.1.2-2.8.1">PKI management protocols must be usable over a variety of
   "transport" mechanisms, specifically including mail, HTTP,
-  TCP/IP, CoAP, and off-line file-based.<a href="#section-3.1.2-2.8.1" class="pilcrow">¶</a></p>
+  MQTT, CoAP, and off-line file-based.<a href="#section-3.1.2-2.8.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-3.1.2-2.9">
               <p id="section-3.1.2-2.9.1">Final authority for certification creation rests with the CA.
@@ -2113,7 +2114,7 @@ management<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
   issued by a CA will contain what was requested; a CA may alter
   certificate field values or may add, delete, or alter extensions
   according to its operating policy.  In other words, all PKI
-  entities (end-entities, RAs, and CAs) must be capable of
+  entities (end-entities, RAs, KGAs, and CAs) must be capable of
   handling responses to requests for certificates in which the
   actual certificate issued is different from that requested (for
   example, a CA may shorten the validity period requested).  Note
@@ -2132,9 +2133,9 @@ management<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
   that if the CA key is compromised, re-initialization must be
   performed for all entities in the domain of that CA).  An end
   entity whose PSE contains the new CA public key (following a CA
-  key update) must also be able to verify certificates verifiable
+  key update) may also need to be able to verify certificates verifiable
   using the old public key.  End entities who directly trust the
-  old CA key pair must also be able to verify certificates signed
+  old CA key pair may also need to be able to verify certificates signed
   using the new CA private key (required for situations where the
   old CA public key is "hardwired" into the end entity's
   cryptographic equipment).<a href="#section-3.1.2-2.10.1" class="pilcrow">¶</a></p>
@@ -2145,15 +2146,15 @@ management<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
   must be designed so that end entities will use the same protocol
   regardless of whether the communication is with an RA or CA.
   Naturally, the end entity must use the correct RA or CA public
-  key to protect the communication.<a href="#section-3.1.2-2.11.1" class="pilcrow">¶</a></p>
+  key to verify the protection of the communication.<a href="#section-3.1.2-2.11.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-3.1.2-2.12">
               <p id="section-3.1.2-2.12.1">Where an end entity requests a certificate containing a given
   public key value, the end entity must be ready to demonstrate
   possession of the corresponding private key value.  This may be
   accomplished in various ways, depending on the type of
-  certification request.  See <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> for details of the in-
-  band methods defined for the PKIX-CMP (i.e., Certificate
+  certification request.  See <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> for details of the
+  in-band methods defined for the PKIX-CMP (i.e., Certificate
   Management Protocol) messages.<a href="#section-3.1.2-2.12.1" class="pilcrow">¶</a></p>
 </li>
           </ol>
@@ -2222,12 +2223,12 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
   key).<a href="#section-3.1.3-4.1.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-3.1.3-4.2">
-              <p id="section-3.1.3-4.2.1">End entity initialization: this includes importing a root CA
+              <p id="section-3.1.3-4.2.1">End entity initialization: This includes importing a root CA
   public key and requesting information about the options supported
   by a PKI management entity.<a href="#section-3.1.3-4.2.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-3.1.3-4.3">
-              <p id="section-3.1.3-4.3.1">Certification: various operations result in the creation of new
+              <p id="section-3.1.3-4.3.1">Certification: Various operations result in the creation of new
   certificates:<a href="#section-3.1.3-4.3.1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.1.3-4.3.2">
 <li id="section-3.1.3-4.3.2.1">
@@ -2237,11 +2238,12 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
    that end entity.  The end result of this process (when it is
    successful) is that a CA issues a certificate for an end
    entity's public key, and returns that certificate to the end
-   entity and/or posts that certificate in a public repository.
+   entity and/or posts that certificate in a repository.
    This process may, and typically will, involve multiple
    "steps", possibly including an initialization of the end
    entity's equipment.  For example, the end entity's equipment
-   must be securely initialized with the public key of a CA, to
+   must be securely initialized with the public key of a CA, e.g.,
+   using zero touch methods like BRSKI <span>[<a href="#RFC8995" class="cite xref">RFC8995</a>]</span> or SCTP <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>, to
    be used in validating certificate paths.  Furthermore, an end
    entity typically needs to be initialized with its own key
    pair(s).<a href="#section-3.1.3-4.3.2.1.1" class="pilcrow">¶</a></p>
@@ -2301,12 +2303,12 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
               </ol>
 </li>
             <li id="section-3.1.3-4.4">
-              <p id="section-3.1.3-4.4.1">Certificate/CRL discovery operations: some PKI management
+              <p id="section-3.1.3-4.4.1">Certificate/CRL discovery operations: Some PKI management
   operations result in the publication of certificates or CRLs:<a href="#section-3.1.3-4.4.1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.1.3-4.4.2">
 <li id="section-3.1.3-4.4.2.1">
                   <p id="section-3.1.3-4.4.2.1.1">certificate publication: Having gone to the trouble of
-   producing a certificate, some means for publishing it is
+   producing a certificate, some means for publishing may be
    needed.  The "means" defined in PKIX <span class="bcp14">MAY</span> involve the messages
    specified in Sections <a href="#sect-5.3.13" class="auto internal xref">5.3.13</a> to <a href="#sect-5.3.16" class="auto internal xref">5.3.16</a>, or <span class="bcp14">MAY</span> involve other
    methods (LDAP, for example) as described in <span>[<a href="#RFC4511" class="cite xref">RFC4511</a>]</span>, <span>[<a href="#RFC2585" class="cite xref">RFC2585</a>]</span>
@@ -2319,7 +2321,7 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
               </ol>
 </li>
             <li id="section-3.1.3-4.5">
-              <p id="section-3.1.3-4.5.1">Recovery operations: some PKI management operations are used when
+              <p id="section-3.1.3-4.5.1">Recovery operations: Some PKI management operations are used when
   an end entity has "lost" its PSE:<a href="#section-3.1.3-4.5.1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.1.3-4.5.2">
 <li id="section-3.1.3-4.5.2.1">
@@ -2334,7 +2336,7 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
               </ol>
 </li>
             <li id="section-3.1.3-4.6">
-              <p id="section-3.1.3-4.6.1">Revocation operations: some PKI management operations result in the creation
+              <p id="section-3.1.3-4.6.1">Revocation operations: Some PKI management operations result in the creation
   of new CRL entries and/or new CRLs:<a href="#section-3.1.3-4.6.1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.1.3-4.6.2">
 <li id="section-3.1.3-4.6.2.1">
@@ -2344,7 +2346,7 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
               </ol>
 </li>
             <li id="section-3.1.3-4.7">
-              <p id="section-3.1.3-4.7.1">PSE operations: whilst the definition of PSE operations (e.g.,
+              <p id="section-3.1.3-4.7.1">PSE operations: Whilst the definition of PSE operations (e.g.,
   moving a PSE, changing a PIN, etc.) are beyond the scope of this
   specification, we do define a PKIMessage (CertRepMessage) that
   can form the basis of such operations.<a href="#section-3.1.3-4.7.1" class="pilcrow">¶</a></p>
@@ -2357,10 +2359,10 @@ use of on-line protocols.  For example, when hardware tokens are
 used, many of the operations <span class="bcp14">MAY</span> be achieved as part of the physical
 token delivery.<a href="#section-3.1.3-5" class="pilcrow">¶</a></p>
 <p id="section-3.1.3-6">Later sections define a set of standard messages supporting the above
-operations.  Transport protocols for conveying these exchanges in
+operations.  Transfer protocols for conveying these exchanges in
 different environments (e.g., off-line: file-based, on-line: mail,
-HTTP <span>[<a href="#I-D.ietf-lamps-rfc6712bis" class="cite xref">I-D.ietf-lamps-rfc6712bis</a>]</span>, and CoAP <span>[<a href="#RFC9482" class="cite xref">RFC9482</a>]</span>) are
-beyond the scope of this document and are specified separately.<a href="#section-3.1.3-6" class="pilcrow">¶</a></p>
+HTTP <span>[<a href="#I-D.ietf-lamps-rfc6712bis" class="cite xref">I-D.ietf-lamps-rfc6712bis</a>]</span>, MQTT, and CoAP <span>[<a href="#RFC9482" class="cite xref">RFC9482</a>]</span>) are
+beyond the scope of this document and must be specified separately.<a href="#section-3.1.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2395,8 +2397,11 @@ occur.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2">However, we can classify the initial registration/certification
 schemes that are supported by this specification.  Note that the word
 "initial", above, is crucial: we are dealing with the situation where
-the end entity in question has had no previous contact with the PKI.
-Where the end entity already possesses certified keys, then some
+the end entity in question has had no previous contact with the PKI,
+except having received the Root CA certificate of that PKI by some
+zero touch methods like BRSKI <span>[<a href="#RFC8995" class="cite xref">RFC8995</a>]</span> and
+<span>[<a href="#I-D.ietf-anima-brski-ae" class="cite xref">I-D.ietf-anima-brski-ae</a>]</span> or SCTP <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>.  Where the end
+entity already possesses certified keys, then some
 simplifications/alternatives are possible.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3">Having classified the schemes that are supported by this
 specification we can then specify some as mandatory and some as
@@ -2405,8 +2410,16 @@ number of the cases that will arise in real use, whilst the optional
 schemes are available for special cases that arise less frequently.
 In this way, we achieve a balance between flexibility and ease of
 implementation.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
-<p id="section-4.2-4">We will now describe the classification of initial
-registration/certification schemes.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.2-4">Further classification of mandatory and optional schemes addressing
+different environments is available, e.g., in <a href="#sect-c" class="auto internal xref">Appendix C</a> and
+<a href="#sect-d" class="auto internal xref">Appendix D</a> of this specification on managing human user certificates
+as well as in the Lightweight CMP Profile <span>[<a href="#RFC9483" class="cite xref">RFC9483</a>]</span> on fully
+automating certificate management in a machine-to-machine and IoT
+environment.  Also industry standards like <span>[<a href="#ETSI-3GPP.33.310" class="cite xref">ETSI-3GPP.33.310</a>]</span> for
+mobile networks and <span>[<a href="#UNISIG.Subset-137" class="cite xref">UNISIG.Subset-137</a>]</span> for Rail Automation adopted
+CMP and specified a set of mandatory schemes for their use case.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.2-5">We will now describe the classification of initial
+registration/certification schemes.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
 <div id="sect-4.2.1">
 <section id="section-4.2.1">
           <h4 id="name-criteria-used">
@@ -2422,7 +2435,8 @@ initiation of the initial registration/certification exchanges as
 occurring wherever the first PKI message relating to the end entity
 is produced.  Note that the real-world initiation of the
 registration/certification procedure may occur elsewhere (e.g., a
-personnel department may telephone an RA operator).<a href="#section-4.2.1.1-1" class="pilcrow">¶</a></p>
+personnel department may telephone an RA operator or using zero touch
+methods like BRSKI <span>[<a href="#RFC8995" class="cite xref">RFC8995</a>]</span> or SCTP <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>).<a href="#section-4.2.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.1.1-2">The possible locations are at the end entity, an RA, or a CA.<a href="#section-4.2.1.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2450,10 +2464,10 @@ The trust establishment in this external PKI is out of scope of this document.<a
 </li>
             </ul>
 <p id="section-4.2.1.2-4">Thus, we can classify the initial registration/certification scheme
-according to whether or not the on-line end entity -&gt; PKI messages
-are authenticated or not.<a href="#section-4.2.1.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.2.1.2-5">Note 1: We do not discuss the authentication of the PKI -&gt; end entity
-messages here, as this is always <span class="bcp14">REQUIRED</span>.  In any case, it can be
+according to whether or not the on-line 'end entity -&gt; PKI management
+entity' messages are authenticated or not.<a href="#section-4.2.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.2.1.2-5">Note 1: We do not discuss the authentication of the 'PKI management
+entity -&gt; end entity' messages here, as this is always <span class="bcp14">REQUIRED</span>.  In any case, it can be
 achieved simply once the root-CA public key has been installed at the
 end entity's equipment or it can be based on the initial
 authentication key.<a href="#section-4.2.1.2-5" class="pilcrow">¶</a></p>
@@ -2476,7 +2490,7 @@ generated elsewhere and transported to the end entity, RA, or CA
 using a (proprietary or standardized) key generation request/response
 protocol (outside the scope of this specification).<a href="#section-4.2.1.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.1.3-2">Thus, there are three possibilities for the location of "key generation":
-the end entity, an RA, or a CA.<a href="#section-4.2.1.3-2" class="pilcrow">¶</a></p>
+the end entity, a KGA, or a CA.<a href="#section-4.2.1.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-4.2.1.4">
@@ -2497,14 +2511,17 @@ symmetric or asymmetric authentication key or other means).<a href="#section-4.2
 </div>
 <div id="sect-4.2.2">
 <section id="section-4.2.2">
-          <h4 id="name-mandatory-schemes">
-<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-mandatory-schemes" class="section-name selfRef">Mandatory Schemes</a>
+          <h4 id="name-initial-registration-certifi">
+<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-initial-registration-certifi" class="section-name selfRef">Initial Registration/Certification Schemes</a>
           </h4>
 <p id="section-4.2.2-1">The criteria above allow for a large number of initial
 registration/certification schemes.  This specification mandates that
 conforming CA equipment, RA equipment, and EE equipment <span class="bcp14">MUST</span> support
 the second scheme listed below (<a href="#sect-4.2.2.2" class="auto internal xref">Section 4.2.2.2</a>).  Any entity <span class="bcp14">MAY</span>
 additionally support other schemes, if desired.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-2">&lt;  ToDo: PKIX-CMP was defined back in 1999. Since then, it has been profiled for different environments. Not all environments that use CMP for certificate management require an initial registration/certification scheme. Therefore, the authors propose to amend the above requirements as follows:
+ALT: This specification mandates that conforming CA equipment, RA equipment, and EE equipment <span class="bcp14">MUST</span> support the second scheme listed below (Section 4.2.2.2).  Any entity <span class="bcp14">MAY</span> additionally support other schemes, if desired.
+NEW: Examples of possible initial registration/certification schemes can be found in the following.  An entity may support other schemas specified in profiles of PKIX-CMP, such as RFC 9483.  &gt;<a href="#section-4.2.2-2" class="pilcrow">¶</a></p>
 <div id="sect-4.2.2.1">
 <section id="section-4.2.2.1">
             <h5 id="name-centralized-scheme">
@@ -2553,11 +2570,12 @@ received and to decrypt any encrypted values.<a href="#section-4.2.2.1-3" class=
                 <p id="section-4.2.2.2-2.4.1">a confirmation message is <span class="bcp14">REQUIRED</span>.<a href="#section-4.2.2.2-2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-4.2.2.2-3">Note: An Initial Authentication Key (IAK) can be either a symmetric key or
+<p id="section-4.2.2.2-3">&lt;  ToDo: If this scheme is mainla an option the authors propose removing the normative language.  If the basic authentication scheme stays normative, at least the requirment for the confirmation message should be reduced from <span class="bcp14">REQUIRED</span> to <span class="bcp14">RECOMMENDED</span> or <span class="bcp14">OPTIONAL</span>, since some profiles of PKIX-CMP regard the confirmation roundtrip as optional, e.g., SCTP <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>.  &gt;<a href="#section-4.2.2.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2.2.2-4">Note: An Initial Authentication Key (IAK) can be either a symmetric key or
 an asymmetric private key with a certificate issued by another PKI trusted
 for this purpose.  The establishment of such trust is out of scope of this
-document.<a href="#section-4.2.2.2-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.2.2.2-4">
+document.<a href="#section-4.2.2.2-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.2.2.2-5">
 <pre>
 In terms of message flow, the basic authenticated scheme is as
 follows:
@@ -2581,11 +2599,11 @@ follows:
                                                  create response
                 --&lt;&lt;-- conf ack (optional)    --&lt;&lt;--
   handle response
-</pre><a href="#section-4.2.2.2-4" class="pilcrow">¶</a>
+</pre><a href="#section-4.2.2.2-5" class="pilcrow">¶</a>
 </div>
-<p id="section-4.2.2.2-5">(Where verification of the cert confirmation message fails, the RA/CA
+<p id="section-4.2.2.2-6">Note: Where verification of the cert confirmation message fails, the RA/CA
 <span class="bcp14">MUST</span> revoke the newly issued certificate if it has been published or
-otherwise made available.)<a href="#section-4.2.2.2-5" class="pilcrow">¶</a></p>
+otherwise made available.<a href="#section-4.2.2.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2640,7 +2658,7 @@ POP during certification).<a href="#section-4.3-4" class="pilcrow">¶</a></p>
 <a href="#section-4.3.1" class="section-number selfRef">4.3.1. </a><a href="#name-signature-keys" class="section-name selfRef">Signature Keys</a>
           </h4>
 <p id="section-4.3.1-1">For signature keys, the end entity can sign a value to prove
-possession of the private key.<a href="#section-4.3.1-1" class="pilcrow">¶</a></p>
+possession of the private key, see <a href="#sect-5.2.8.2" class="auto internal xref">Section 5.2.8.2</a>.<a href="#section-4.3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-4.3.2">
@@ -2649,9 +2667,9 @@ possession of the private key.<a href="#section-4.3.1-1" class="pilcrow">¶</a><
 <a href="#section-4.3.2" class="section-number selfRef">4.3.2. </a><a href="#name-encryption-keys" class="section-name selfRef">Encryption Keys</a>
           </h4>
 <p id="section-4.3.2-1">For encryption keys, the end entity can provide the private key to
-the CA/RA (e.g., for archiving), or can be required to decrypt a value in order to prove
+the CA/RA (e.g., for archiving), see <a href="#sect-5.2.8.3.1" class="auto internal xref">Section 5.2.8.3.1</a>, or can be required to decrypt a value in order to prove
 possession of the private key.  Decrypting a
-value can be achieved either directly or indirectly.<a href="#section-4.3.2-1" class="pilcrow">¶</a></p>
+value can be achieved either directly (see <a href="#sect-5.2.8.3.3" class="auto internal xref">Section 5.2.8.3.3</a>) or indirectly (see <a href="#sect-5.2.8.3.2" class="auto internal xref">Section 5.2.8.3.2</a>).<a href="#section-4.3.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.3.2-2">The direct method is for the RA/CA to issue a random challenge to
 which an immediate response by the EE is required.<a href="#section-4.3.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.3.2-3">The indirect method is to issue a certificate that is encrypted for
@@ -2686,9 +2704,9 @@ appropriate parameters when necessary.<a href="#section-4.3.3-2" class="pilcrow"
 <a href="#section-4.3.4" class="section-number selfRef">4.3.4. </a><a href="#name-key-encapsulation-mechanism" class="section-name selfRef">Key Encapsulation Mechanism Keys</a>
           </h4>
 <p id="section-4.3.4-1">For key encapsulation mechanism (KEM) keys, the end entity can provide the private key to
-the CA/RA (e.g., for archiving), or can be required to decrypt
+the CA/RA (e.g., for archiving), see <a href="#sect-5.2.8.3.1" class="auto internal xref">Section 5.2.8.3.1</a>, or can be required to decrypt
 a value in order to prove possession of the private key.
-Decrypting a value can be achieved either directly or indirectly.<a href="#section-4.3.4-1" class="pilcrow">¶</a></p>
+Decrypting a value can be achieved either directly (see <a href="#sect-5.2.8.3.3" class="auto internal xref">Section 5.2.8.3.3</a>) or indirectly (see <a href="#sect-5.2.8.3.2" class="auto internal xref">Section 5.2.8.3.2</a>).<a href="#section-4.3.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.3.4-2">Note: A definition of key encapsulation mechanisms can be found in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08#section-1" class="relref">Section 1</a></span>.<a href="#section-4.3.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.3.4-3">The direct method is for the RA/CA to issue a random challenge to which an
 immediate response by the EE is required.<a href="#section-4.3.4-3" class="pilcrow">¶</a></p>
@@ -3857,50 +3875,51 @@ structure is used.<a href="#section-5.2.4-1" class="pilcrow">¶</a></p>
 <a href="#section-5.2.5" class="section-number selfRef">5.2.5. </a><a href="#name-out-of-band-root-ca-public-" class="section-name selfRef">Out-of-band root CA Public Key</a>
           </h4>
 <p id="section-5.2.5-1">Each root CA must be able to publish its current public key via some
-"out-of-band" means.  While such mechanisms are beyond the scope of
+"out-of-band" means or together with the respective link certificate using an online mechanism.  While such mechanisms are beyond the scope of
 this document, we define data structures that can support such
 mechanisms.<a href="#section-5.2.5-1" class="pilcrow">¶</a></p>
-<p id="section-5.2.5-2">There are generally two methods available: either the CA directly
+<p id="section-5.2.5-2">There are generally two methods available: Either the CA directly
 publishes its self-signed certificate, or this information is
-available via the Directory (or equivalent) and the CA publishes a
+available via the directory (or equivalent) and the CA publishes a
 hash of this value to allow verification of its integrity before use.<a href="#section-5.2.5-2" class="pilcrow">¶</a></p>
-<div class="lang-asn.1 sourcecode" id="section-5.2.5-3">
+<p id="section-5.2.5-3">Note: An alternative to out-of-band distribution of root CA public keys the CA can provide the self-signed certificate together with link certificates, e.g., using using RootCaKeyUpdateContent (<a href="#sect-5.3.19.15" class="auto internal xref">Section 5.3.19.15</a>).<a href="#section-5.2.5-3" class="pilcrow">¶</a></p>
+<div class="lang-asn.1 sourcecode" id="section-5.2.5-4">
 <pre>
   OOBCert ::= Certificate
-</pre><a href="#section-5.2.5-3" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.5-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2.5-4">The fields within this certificate are restricted as follows:<a href="#section-5.2.5-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.5-5">The fields within this certificate are restricted as follows:<a href="#section-5.2.5-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.2.5-5.1">
-              <p id="section-5.2.5-5.1.1">The certificate <span class="bcp14">MUST</span> be self-signed (i.e., the signature must be
-verifiable using the SubjectPublicKeyInfo field);<a href="#section-5.2.5-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5.2.5-6.1">
+              <p id="section-5.2.5-6.1.1">The certificate <span class="bcp14">MUST</span> be self-signed (i.e., the signature must be
+verifiable using the SubjectPublicKeyInfo field);<a href="#section-5.2.5-6.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-5.2.5-5.2">
-              <p id="section-5.2.5-5.2.1">The subject and issuer fields <span class="bcp14">MUST</span> be identical;<a href="#section-5.2.5-5.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-5.2.5-6.2">
+              <p id="section-5.2.5-6.2.1">The subject and issuer fields <span class="bcp14">MUST</span> be identical;<a href="#section-5.2.5-6.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-5.2.5-5.3">
-              <p id="section-5.2.5-5.3.1">If the subject field is NULL, then both subjectAltNames and
+            <li class="normal" id="section-5.2.5-6.3">
+              <p id="section-5.2.5-6.3.1">If the subject field is NULL, then both subjectAltNames and
 issuerAltNames extensions <span class="bcp14">MUST</span> be present and have exactly the
-same value;<a href="#section-5.2.5-5.3.1" class="pilcrow">¶</a></p>
+same value;<a href="#section-5.2.5-6.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-5.2.5-5.4">
-              <p id="section-5.2.5-5.4.1">The values of all other extensions must be suitable for a self-signed
+            <li class="normal" id="section-5.2.5-6.4">
+              <p id="section-5.2.5-6.4.1">The values of all other extensions must be suitable for a self-signed
 certificate (e.g., key identifiers for subject and issuer must be the
-same).<a href="#section-5.2.5-5.4.1" class="pilcrow">¶</a></p>
+same).<a href="#section-5.2.5-6.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<div class="lang-asn.1 sourcecode" id="section-5.2.5-6">
+<div class="lang-asn.1 sourcecode" id="section-5.2.5-7">
 <pre>
   OOBCertHash ::= SEQUENCE {
      hashAlg     [0] AlgorithmIdentifier     OPTIONAL,
      certId      [1] CertId                  OPTIONAL,
      hashVal         BIT STRING
   }
-</pre><a href="#section-5.2.5-6" class="pilcrow">¶</a>
+</pre><a href="#section-5.2.5-7" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2.5-7">The intention of the hash value is that anyone who has securely
+<p id="section-5.2.5-8">The intention of the hash value is that anyone who has securely
 received the hash value (via the out-of-band means) can verify a
-self-signed certificate for that CA.<a href="#section-5.2.5-7" class="pilcrow">¶</a></p>
+self-signed certificate for that CA.<a href="#section-5.2.5-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-5.2.6">
@@ -5865,7 +5884,7 @@ Tomi Kause, and Tero Mononen, the original authors of <span>[<a href="#RFC4210" 
 <dd class="break"></dd>
 <dt id="I-D.ietf-lamps-rfc6712bis">[I-D.ietf-lamps-rfc6712bis]</dt>
         <dd>
-<span class="refAuthor">Brockhaus, H.</span>, <span class="refAuthor">von Oheimb, D.</span>, <span class="refAuthor">Ounsworth, M.</span>, and <span class="refAuthor">J. Gray</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure -- HTTP Transfer for the Certificate Management Protocol (CMP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-rfc6712bis-04</span>, <time datetime="2024-03-01" class="refDate">1 March 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc6712bis-04">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc6712bis-04</a>&gt;</span>. </dd>
+<span class="refAuthor">Brockhaus, H.</span>, <span class="refAuthor">von Oheimb, D.</span>, <span class="refAuthor">Ounsworth, M.</span>, and <span class="refAuthor">J. Gray</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure -- HTTP Transfer for the Certificate Management Protocol (CMP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-rfc6712bis-05</span>, <time datetime="2024-03-20" class="refDate">20 March 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc6712bis-05">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc6712bis-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC1847">[RFC1847]</dt>
         <dd>
@@ -5895,13 +5914,29 @@ Tomi Kause, and Tero Mononen, the original authors of <span>[<a href="#RFC4210" 
         <dd>
 <span class="refAuthor">Hoffman, P.</span> and <span class="refAuthor">J. Schaad</span>, <span class="refTitle">"New ASN.1 Modules for the Public Key Infrastructure Using X.509 (PKIX)"</span>, <span class="seriesInfo">RFC 5912</span>, <span class="seriesInfo">DOI 10.17487/RFC5912</span>, <time datetime="2010-06" class="refDate">June 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5912">https://www.rfc-editor.org/rfc/rfc5912</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC6712">[RFC6712]</dt>
+        <dd>
+<span class="refAuthor">Kause, T.</span> and <span class="refAuthor">M. Peylo</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure -- HTTP Transfer for the Certificate Management Protocol (CMP)"</span>, <span class="seriesInfo">RFC 6712</span>, <span class="seriesInfo">DOI 10.17487/RFC6712</span>, <time datetime="2012-09" class="refDate">September 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6712">https://www.rfc-editor.org/rfc/rfc6712</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC7299">[RFC7299]</dt>
         <dd>
 <span class="refAuthor">Housley, R.</span>, <span class="refTitle">"Object Identifier Registry for the PKIX Working Group"</span>, <span class="seriesInfo">RFC 7299</span>, <span class="seriesInfo">DOI 10.17487/RFC7299</span>, <time datetime="2014-07" class="refDate">July 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7299">https://www.rfc-editor.org/rfc/rfc7299</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC8572">[RFC8572]</dt>
+        <dd>
+<span class="refAuthor">Watsen, K.</span>, <span class="refAuthor">Farrer, I.</span>, and <span class="refAuthor">M. Abrahamsson</span>, <span class="refTitle">"Secure Zero Touch Provisioning (SZTP)"</span>, <span class="seriesInfo">RFC 8572</span>, <span class="seriesInfo">DOI 10.17487/RFC8572</span>, <time datetime="2019-04" class="refDate">April 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8572">https://www.rfc-editor.org/rfc/rfc8572</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8649">[RFC8649]</dt>
         <dd>
 <span class="refAuthor">Housley, R.</span>, <span class="refTitle">"Hash Of Root Key Certificate Extension"</span>, <span class="seriesInfo">RFC 8649</span>, <span class="seriesInfo">DOI 10.17487/RFC8649</span>, <time datetime="2019-08" class="refDate">August 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8649">https://www.rfc-editor.org/rfc/rfc8649</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8995">[RFC8995]</dt>
+        <dd>
+<span class="refAuthor">Pritikin, M.</span>, <span class="refAuthor">Richardson, M.</span>, <span class="refAuthor">Eckert, T.</span>, <span class="refAuthor">Behringer, M.</span>, and <span class="refAuthor">K. Watsen</span>, <span class="refTitle">"Bootstrapping Remote Secure Key Infrastructure (BRSKI)"</span>, <span class="seriesInfo">RFC 8995</span>, <span class="seriesInfo">DOI 10.17487/RFC8995</span>, <time datetime="2021-05" class="refDate">May 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8995">https://www.rfc-editor.org/rfc/rfc8995</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-anima-brski-ae">[I-D.ietf-anima-brski-ae]</dt>
+        <dd>
+<span class="refAuthor">von Oheimb, D.</span>, <span class="refAuthor">Fries, S.</span>, and <span class="refAuthor">H. Brockhaus</span>, <span class="refTitle">"BRSKI-AE: Alternative Enrollment Protocols in BRSKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-anima-brski-ae-10</span>, <time datetime="2024-03-01" class="refDate">1 March 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-anima-brski-ae-10">https://datatracker.ietf.org/doc/html/draft-ietf-anima-brski-ae-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9162">[RFC9162]</dt>
         <dd>
@@ -5940,8 +5975,16 @@ Tomi Kause, and Tero Mononen, the original authors of <span>[<a href="#RFC4210" 
 <span class="refAuthor">Fujisaki, E.</span> and <span class="refAuthor">T. Okamoto</span>, <span class="refTitle">"Secure Integration of Asymmetric and Symmetric Encryption Schemes"</span>, <span class="refContent">Springer Science and Business Media LLC</span>, <span class="seriesInfo">Journal of Cryptology vol. 26, no. 1, pp. 80-101</span>, <span class="seriesInfo">DOI 10.1007/s00145-011-9114-1</span>, <time datetime="2011-12" class="refDate">December 2011</time>, <span>&lt;<a href="https://doi.org/10.1007/s00145-011-9114-1">https://doi.org/10.1007/s00145-011-9114-1</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Hofheinz">[Hofheinz]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Hofheinz, D.</span>, <span class="refAuthor">Hövelmanns, K.</span>, and <span class="refAuthor">E. Kiltz</span>, <span class="refTitle">"A Modular Analysis of the Fujisaki-Okamoto Transformation"</span>, <span class="refContent">Springer International Publishing</span>, <span class="seriesInfo">Theory of Cryptography pp. 341-371</span>, <span class="seriesInfo">DOI 10.1007/978-3-319-70500-2_12</span>, <span class="seriesInfo">ISBN ["9783319704999", "9783319705002"]</span>, <time datetime="2017" class="refDate">2017</time>, <span>&lt;<a href="https://doi.org/10.1007/978-3-319-70500-2_12">https://doi.org/10.1007/978-3-319-70500-2_12</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ETSI-3GPP.33.310">[ETSI-3GPP.33.310]</dt>
+        <dd>
+<span class="refAuthor">3GPP</span>, <span class="refTitle">"Network Domain Security (NDS); Authentication Framework (AF)"</span>, <span class="seriesInfo">3GPP TS 33.310 16.6.0</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="http://www.3gpp.org/ftp/Specs/html-info/33310.htm">http://www.3gpp.org/ftp/Specs/html-info/33310.htm</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="UNISIG.Subset-137">[UNISIG.Subset-137]</dt>
+      <dd>
+<span class="refAuthor">UNISIG</span>, <span class="refTitle">"ERTMS/ETCS On-line Key Management FFFIS"</span>, <span class="seriesInfo">Subset-137, V1.0.0 </span>, <time datetime="2015-12" class="refDate">December 2015</time>, <span>&lt;<a href="https://www.era.europa.eu/system/files/2023-01/sos3_index083_-_subset-137_v100.pdf">https://www.era.europa.eu/system/files/2023-01/sos3_index083_-_subset-137_v100.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -6238,8 +6281,8 @@ protocol <span class="bcp14">MUST</span> be supported).<a href="#appendix-C.3-5"
 </div>
 <div id="sect-c.4">
 <section id="appendix-C.4">
-        <h3 id="name-initial-registration-certifi">
-<a href="#appendix-C.4" class="section-number selfRef">C.4. </a><a href="#name-initial-registration-certifi" class="section-name selfRef">Initial Registration/Certification (Basic Authenticated Scheme)</a>
+        <h3 id="name-initial-registration-certific">
+<a href="#appendix-C.4" class="section-number selfRef">C.4. </a><a href="#name-initial-registration-certific" class="section-name selfRef">Initial Registration/Certification (Basic Authenticated Scheme)</a>
         </h3>
 <p id="appendix-C.4-1">An (uninitialized) end entity requests a (first) certificate from a
 CA.  When the CA responds with a message containing a certificate,
@@ -7915,193 +7958,202 @@ END
 <a href="#appendix-G" class="section-number selfRef">Appendix G. </a><a href="#name-history-of-changes" class="section-name selfRef">History of Changes</a>
       </h2>
 <p id="appendix-G-1">Note: This appendix will be deleted in the final version of the document.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
-<p id="appendix-G-2">From version 08 -&gt; 09:<a href="#appendix-G-2" class="pilcrow">¶</a></p>
+<p id="appendix-G-2">From version 09 -&gt; 10:<a href="#appendix-G-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-3.1">
-          <p id="appendix-G-3.1.1">Changed reference from ITU-T X.509 to RFC 5280 (see thread " CMP vs RFC5280").<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.1.1">Implemented some minor editorial changes modernizing the text in Section 3, 4, and 5.2.8 as proposed during IETF 119, but without chnaging normative language.<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.2">
-          <p id="appendix-G-3.2.1">Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent in CMP V3 as proposed by Tomas.<a href="#appendix-G-3.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-3.3">
-          <p id="appendix-G-3.3.1">Updated Section 4.4 incorporating RootCaKeyUpdateContent as alternative to using a repository for providing root CA key updates.<a href="#appendix-G-3.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-3.4">
-          <p id="appendix-G-3.4.1">Deleting an obsolete sentence in Section 8.8.<a href="#appendix-G-3.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-3.5">
-          <p id="appendix-G-3.5.1">Added IANA considerations addressing IANA early review.<a href="#appendix-G-3.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.2.1">Adding two ToDos for further discussion to Section 4.2.2 based on the comment from Tomas Gustavsson as presented during IETF 119.<a href="#appendix-G-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-4">From version 07 -&gt; 08:<a href="#appendix-G-4" class="pilcrow">¶</a></p>
+<p id="appendix-G-4">From version 08 -&gt; 09:<a href="#appendix-G-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-5.1">
-          <p id="appendix-G-5.1.1">Aligned with released RFC 9480 - RFC 9483<a href="#appendix-G-5.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-5.1.1">Changed reference from ITU-T X.509 to RFC 5280 (see thread " CMP vs RFC5280").<a href="#appendix-G-5.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-5.2">
-          <p id="appendix-G-5.2.1">Updated Section 1.3<a href="#appendix-G-5.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-5.2.1">Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent in CMP V3 as proposed by Tomas.<a href="#appendix-G-5.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-5.3">
-          <p id="appendix-G-5.3.1">Added text on usage of transactionID with KEM-bases message protection to Section 5.1.1<a href="#appendix-G-5.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-5.3.1">Updated Section 4.4 incorporating RootCaKeyUpdateContent as alternative to using a repository for providing root CA key updates.<a href="#appendix-G-5.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-5.4">
-          <p id="appendix-G-5.4.1">Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text and adding some text explaining when a key expansion is required.<a href="#appendix-G-5.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-5.4.1">Deleting an obsolete sentence in Section 8.8.<a href="#appendix-G-5.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-5.5">
-          <p id="appendix-G-5.5.1">Consolidated the definition and transferal of KemCiphertextInfo. Added a new Section 5.1.1.5 introducing KemCiphertextInfo in the generalInfo filed and moving text on how to request a KEM ciphertext using genm/genp from Section 5.1.3.4 to Section 5.3.19.18<a href="#appendix-G-5.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-5.6">
-          <p id="appendix-G-5.6.1">Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117. Also introducing optional field kemContext to KemBasedMac and KemOtherInfo as CMP-specific alternative to ukm in cms-kemri.<a href="#appendix-G-5.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-5.7">
-          <p id="appendix-G-5.7.1">Added ToDo for reviewing the reduced content of KemOtherInfo to Section 5.1.3.4<a href="#appendix-G-5.7.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-5.8">
-          <p id="appendix-G-5.8.1">Added a cross-reference to Section 5.1.1.3 regarding use of OrigPKIMessage to Section 5.1.3.5<a href="#appendix-G-5.8.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-5.9">
-          <p id="appendix-G-5.9.1">Added POP for KEM keys to Section 5.2.8. Restructured the section and fixed some references which broke from RFC2510 to RFC4210. Introduced a section on the usage of raVerified.<a href="#appendix-G-5.9.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-5.10">
-          <p id="appendix-G-5.10.1">Fixed the issue in Section 5.3.19.15, resulting from a change made in draft-ietf-lamps-cmp-updates-14, that no plain public-key can be used in the request message in CMPCertificate.<a href="#appendix-G-5.10.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-5.11">
-          <p id="appendix-G-5.11.1">Updated Appendix B regarding KEM-based message protection and usage of CMS EnvelopedData<a href="#appendix-G-5.11.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-5.5.1">Added IANA considerations addressing IANA early review.<a href="#appendix-G-5.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-6">From version 06 -&gt; 07:<a href="#appendix-G-6" class="pilcrow">¶</a></p>
+<p id="appendix-G-6">From version 07 -&gt; 08:<a href="#appendix-G-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-7.1">
-          <p id="appendix-G-7.1.1">Updated section 5.1.1.4 addressing a question from Liao Lijun on how to interpret less profile names than certReqMsgs<a href="#appendix-G-7.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-7.1.1">Aligned with released RFC 9480 - RFC 9483<a href="#appendix-G-7.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-7.2">
-          <p id="appendix-G-7.2.1">Updated section 5.1.3.4 specifying establishing a shares secret key for one arbitrary side of the CMP communication only<a href="#appendix-G-7.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-7.2.1">Updated Section 1.3<a href="#appendix-G-7.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-7.3">
-          <p id="appendix-G-7.3.1">Removed the note and the security consideration regarding combiner function for HPKE<a href="#appendix-G-7.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-7.3.1">Added text on usage of transactionID with KEM-bases message protection to Section 5.1.1<a href="#appendix-G-7.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-7.4">
-          <p id="appendix-G-7.4.1">Added security considerations 8.1 and 8.8<a href="#appendix-G-7.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-7.4.1">Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text and adding some text explaining when a key expansion is required.<a href="#appendix-G-7.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-7.5">
-          <p id="appendix-G-7.5.1">Updates IANA Considerations in section 9 to add new OID for the updates ASN.1 module and for id-it-KemCiphertextInfo<a href="#appendix-G-7.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-7.5.1">Consolidated the definition and transferal of KemCiphertextInfo. Added a new Section 5.1.1.5 introducing KemCiphertextInfo in the generalInfo filed and moving text on how to request a KEM ciphertext using genm/genp from Section 5.1.3.4 to Section 5.3.19.18<a href="#appendix-G-7.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-7.6">
-          <p id="appendix-G-7.6.1">Added new appendix E showing different variants of using KEM keys for PKI message protection<a href="#appendix-G-7.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-7.6.1">Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117. Also introducing optional field kemContext to KemBasedMac and KemOtherInfo as CMP-specific alternative to ukm in cms-kemri.<a href="#appendix-G-7.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-7.7">
-          <p id="appendix-G-7.7.1">Updates ASN.1 module in appendix F<a href="#appendix-G-7.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-7.7.1">Added ToDo for reviewing the reduced content of KemOtherInfo to Section 5.1.3.4<a href="#appendix-G-7.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-7.8">
+          <p id="appendix-G-7.8.1">Added a cross-reference to Section 5.1.1.3 regarding use of OrigPKIMessage to Section 5.1.3.5<a href="#appendix-G-7.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-7.9">
+          <p id="appendix-G-7.9.1">Added POP for KEM keys to Section 5.2.8. Restructured the section and fixed some references which broke from RFC2510 to RFC4210. Introduced a section on the usage of raVerified.<a href="#appendix-G-7.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-7.10">
+          <p id="appendix-G-7.10.1">Fixed the issue in Section 5.3.19.15, resulting from a change made in draft-ietf-lamps-cmp-updates-14, that no plain public-key can be used in the request message in CMPCertificate.<a href="#appendix-G-7.10.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-7.11">
+          <p id="appendix-G-7.11.1">Updated Appendix B regarding KEM-based message protection and usage of CMS EnvelopedData<a href="#appendix-G-7.11.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-8">From version 05 -&gt; 06:<a href="#appendix-G-8" class="pilcrow">¶</a></p>
+<p id="appendix-G-8">From version 06 -&gt; 07:<a href="#appendix-G-8" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-9.1">
-          <p id="appendix-G-9.1.1">Updated section 5.1.3.4 exchanging HPKE with plain KEM+KDF as also used in draft-ietf-lamps-cms-kemri<a href="#appendix-G-9.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-9.1.1">Updated section 5.1.1.4 addressing a question from Liao Lijun on how to interpret less profile names than certReqMsgs<a href="#appendix-G-9.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-9.2">
+          <p id="appendix-G-9.2.1">Updated section 5.1.3.4 specifying establishing a shares secret key for one arbitrary side of the CMP communication only<a href="#appendix-G-9.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-9.3">
+          <p id="appendix-G-9.3.1">Removed the note and the security consideration regarding combiner function for HPKE<a href="#appendix-G-9.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-9.4">
+          <p id="appendix-G-9.4.1">Added security considerations 8.1 and 8.8<a href="#appendix-G-9.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-9.5">
+          <p id="appendix-G-9.5.1">Updates IANA Considerations in section 9 to add new OID for the updates ASN.1 module and for id-it-KemCiphertextInfo<a href="#appendix-G-9.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-9.6">
+          <p id="appendix-G-9.6.1">Added new appendix E showing different variants of using KEM keys for PKI message protection<a href="#appendix-G-9.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-9.7">
+          <p id="appendix-G-9.7.1">Updates ASN.1 module in appendix F<a href="#appendix-G-9.7.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-10">From version 04 -&gt; 05:<a href="#appendix-G-10" class="pilcrow">¶</a></p>
+<p id="appendix-G-10">From version 05 -&gt; 06:<a href="#appendix-G-10" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-11.1">
-          <p id="appendix-G-11.1.1">Updated sections 5.1.3.4, 5.2.2, and 8.9 addressing comments from Russ (see thread "I-D Action: draft-ietf-lamps-rfc4210bis-04.txt")<a href="#appendix-G-11.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-11.1.1">Updated section 5.1.3.4 exchanging HPKE with plain KEM+KDF as also used in draft-ietf-lamps-cms-kemri<a href="#appendix-G-11.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-12">From version 03 -&gt; 04:<a href="#appendix-G-12" class="pilcrow">¶</a></p>
+<p id="appendix-G-12">From version 04 -&gt; 05:<a href="#appendix-G-12" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-13.1">
-          <p id="appendix-G-13.1.1">Added Section 4.3.4 regarding POP for KEM keys<a href="#appendix-G-13.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-13.2">
-          <p id="appendix-G-13.2.1">Added Section 5.1.3.4 on message protection using KEM keys and HPKE<a href="#appendix-G-13.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-13.3">
-          <p id="appendix-G-13.3.1">Aligned Section 5.2.2 on guidance which CMS key management technique to use with encrypted values (see thread "CMS: selection of key management technique to use for EnvelopedData") also adding support for KEM keys<a href="#appendix-G-13.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-13.4">
-          <p id="appendix-G-13.4.1">Added Section 8.9 and extended Section 3.1.2 regarding use of Certificate Transparency logs<a href="#appendix-G-13.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-13.5">
-          <p id="appendix-G-13.5.1">Deleted former Appendix C as announced in the -03<a href="#appendix-G-13.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-13.6">
-          <p id="appendix-G-13.6.1">Fixed some nits resulting from XML -&gt; MD conversion<a href="#appendix-G-13.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-13.1.1">Updated sections 5.1.3.4, 5.2.2, and 8.9 addressing comments from Russ (see thread "I-D Action: draft-ietf-lamps-rfc4210bis-04.txt")<a href="#appendix-G-13.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-14">From version 02 -&gt; 03:<a href="#appendix-G-14" class="pilcrow">¶</a></p>
+<p id="appendix-G-14">From version 03 -&gt; 04:<a href="#appendix-G-14" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-15.1">
-          <p id="appendix-G-15.1.1">Updated Section 4.4.1 clarifying the definition of "new with new" certificate
-validity period (see thread "RFC4210bis - notAfter time of newWithNew certificate")<a href="#appendix-G-15.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-15.1.1">Added Section 4.3.4 regarding POP for KEM keys<a href="#appendix-G-15.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-15.2">
-          <p id="appendix-G-15.2.1">Added ToDo to Section 4.3 and 5.2.8 on required alignment regarding POP for
-KEM keys.<a href="#appendix-G-15.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-15.2.1">Added Section 5.1.3.4 on message protection using KEM keys and HPKE<a href="#appendix-G-15.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-15.3">
-          <p id="appendix-G-15.3.1">Updated Sections 5.2.1, 5.2.8, and 5.2.8.1 incorporating text of former Appendix
-C (see thread "draft-ietf-lamps-rfc4210bis - ToDo on review of Appendix C")<a href="#appendix-G-15.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-15.3.1">Aligned Section 5.2.2 on guidance which CMS key management technique to use with encrypted values (see thread "CMS: selection of key management technique to use for EnvelopedData") also adding support for KEM keys<a href="#appendix-G-15.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-15.4">
-          <p id="appendix-G-15.4.1">Added a ToDo to Appendix B to indicate additional review need to try pushing
-the content to Sections 4 and Section 5<a href="#appendix-G-15.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-15.4.1">Added Section 8.9 and extended Section 3.1.2 regarding use of Certificate Transparency logs<a href="#appendix-G-15.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-15.5">
+          <p id="appendix-G-15.5.1">Deleted former Appendix C as announced in the -03<a href="#appendix-G-15.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-15.6">
+          <p id="appendix-G-15.6.1">Fixed some nits resulting from XML -&gt; MD conversion<a href="#appendix-G-15.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-16">From version 01 -&gt; 02:<a href="#appendix-G-16" class="pilcrow">¶</a></p>
+<p id="appendix-G-16">From version 02 -&gt; 03:<a href="#appendix-G-16" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-17.1">
-          <p id="appendix-G-17.1.1">Added Section 3.1.1.4 introducing the Key Generation Authority<a href="#appendix-G-17.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-17.1.1">Updated Section 4.4.1 clarifying the definition of "new with new" certificate
+validity period (see thread "RFC4210bis - notAfter time of newWithNew certificate")<a href="#appendix-G-17.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-17.2">
-          <p id="appendix-G-17.2.1">Added Section 5.1.1.3 containing description of origPKIMessage content moved
-here from Section 5.1.3.4<a href="#appendix-G-17.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-17.2.1">Added ToDo to Section 4.3 and 5.2.8 on required alignment regarding POP for
+KEM keys.<a href="#appendix-G-17.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-17.3">
-          <p id="appendix-G-17.3.1">Added ToDos on defining POP and message protection using KEM keys<a href="#appendix-G-17.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-17.3.1">Updated Sections 5.2.1, 5.2.8, and 5.2.8.1 incorporating text of former Appendix
+C (see thread "draft-ietf-lamps-rfc4210bis - ToDo on review of Appendix C")<a href="#appendix-G-17.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-17.4">
-          <p id="appendix-G-17.4.1">Added a ToDo to Section 4.4.3<a href="#appendix-G-17.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-17.5">
-          <p id="appendix-G-17.5.1">Added a ToDo to Appendix C to do a more detailed review<a href="#appendix-G-17.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-17.6">
-          <p id="appendix-G-17.6.1">Removed concrete algorithms and referred to CMP Algorithms instead<a href="#appendix-G-17.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-17.7">
-          <p id="appendix-G-17.7.1">Added references to Appendix D and E as well as the Lightweight CMP Profile
-for further information<a href="#appendix-G-17.7.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-17.8">
-          <p id="appendix-G-17.8.1">Broaden the scope from human users also to devices and services<a href="#appendix-G-17.8.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-17.9">
-          <p id="appendix-G-17.9.1">Addressed idnits feedback, specifically changing from historic LDAP V2 to
-LDAP V3 (RFC4511)<a href="#appendix-G-17.9.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-17.10">
-          <p id="appendix-G-17.10.1">Did some further editorial alignment to the XML<a href="#appendix-G-17.10.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-17.4.1">Added a ToDo to Appendix B to indicate additional review need to try pushing
+the content to Sections 4 and Section 5<a href="#appendix-G-17.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-18">From version 00 -&gt; 01:<a href="#appendix-G-18" class="pilcrow">¶</a></p>
+<p id="appendix-G-18">From version 01 -&gt; 02:<a href="#appendix-G-18" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-19.1">
-          <p id="appendix-G-19.1.1">Performed all updates specified in CMP Updates Section 2 and Appendix A.2.<a href="#appendix-G-19.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-19.1.1">Added Section 3.1.1.4 introducing the Key Generation Authority<a href="#appendix-G-19.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-19.2">
-          <p id="appendix-G-19.2.1">Did some editorial alignment to the XML<a href="#appendix-G-19.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-19.2.1">Added Section 5.1.1.3 containing description of origPKIMessage content moved
+here from Section 5.1.3.4<a href="#appendix-G-19.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-19.3">
+          <p id="appendix-G-19.3.1">Added ToDos on defining POP and message protection using KEM keys<a href="#appendix-G-19.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-19.4">
+          <p id="appendix-G-19.4.1">Added a ToDo to Section 4.4.3<a href="#appendix-G-19.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-19.5">
+          <p id="appendix-G-19.5.1">Added a ToDo to Appendix C to do a more detailed review<a href="#appendix-G-19.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-19.6">
+          <p id="appendix-G-19.6.1">Removed concrete algorithms and referred to CMP Algorithms instead<a href="#appendix-G-19.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-19.7">
+          <p id="appendix-G-19.7.1">Added references to Appendix D and E as well as the Lightweight CMP Profile
+for further information<a href="#appendix-G-19.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-19.8">
+          <p id="appendix-G-19.8.1">Broaden the scope from human users also to devices and services<a href="#appendix-G-19.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-19.9">
+          <p id="appendix-G-19.9.1">Addressed idnits feedback, specifically changing from historic LDAP V2 to
+LDAP V3 (RFC4511)<a href="#appendix-G-19.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-19.10">
+          <p id="appendix-G-19.10.1">Did some further editorial alignment to the XML<a href="#appendix-G-19.10.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-20">Version 00:<a href="#appendix-G-20" class="pilcrow">¶</a></p>
-<p id="appendix-G-21">This version consists of the text of RFC4210 with the following changes:<a href="#appendix-G-21" class="pilcrow">¶</a></p>
+<p id="appendix-G-20">From version 00 -&gt; 01:<a href="#appendix-G-20" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-G-22.1">
-          <p id="appendix-G-22.1.1">Introduced the authors of this document and thanked the authors of RFC4210
-for their work.<a href="#appendix-G-22.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-G-21.1">
+          <p id="appendix-G-21.1.1">Performed all updates specified in CMP Updates Section 2 and Appendix A.2.<a href="#appendix-G-21.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-G-22.2">
-          <p id="appendix-G-22.2.1">Added a paragraph to the introduction explaining the background of this document.<a href="#appendix-G-22.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-G-21.2">
+          <p id="appendix-G-21.2.1">Did some editorial alignment to the XML<a href="#appendix-G-21.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-G-22.3">
-          <p id="appendix-G-22.3.1">Added the change history to this appendix.<a href="#appendix-G-22.3.1" class="pilcrow">¶</a></p>
+      </ul>
+<p id="appendix-G-22">Version 00:<a href="#appendix-G-22" class="pilcrow">¶</a></p>
+<p id="appendix-G-23">This version consists of the text of RFC4210 with the following changes:<a href="#appendix-G-23" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-G-24.1">
+          <p id="appendix-G-24.1.1">Introduced the authors of this document and thanked the authors of RFC4210
+for their work.<a href="#appendix-G-24.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-24.2">
+          <p id="appendix-G-24.2.1">Added a paragraph to the introduction explaining the background of this document.<a href="#appendix-G-24.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-24.3">
+          <p id="appendix-G-24.3.1">Added the change history to this appendix.<a href="#appendix-G-24.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
