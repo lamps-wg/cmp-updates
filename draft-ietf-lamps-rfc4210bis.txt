@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 17 October 2024                                         Entrust
-                                                           15 April 2024
+Expires: 20 October 2024                                         Entrust
+                                                           18 April 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 October 2024.
+   This Internet-Draft will expire on 20 October 2024.
 
 Copyright Notice
 
@@ -2655,7 +2655,7 @@ Table of Contents
 
 5.3.2.  Initialization Response
 
-   An Initialization response message contains as the PKIBody an
+   An Initialization response message contains as the PKIBody a
    CertRepMessage data structure, which has for each certificate
    requested a PKIStatusInfo field, a subject certificate, and possibly
    a private key (normally encrypted using EnvelopedData, see [RFC9483]
@@ -6089,10 +6089,12 @@ Appendix G.  History of Changes
 
    *  Implemented some minor editorial changes modernizing the text in
       Section 3, 4, and 5.2.8 as proposed during IETF 119, but without
-      chnaging normative language.
+      changing normative language.
 
-   *  Adding two ToDos for further discussion to Section 4.2.2 based on
+   *  Added two ToDos for further discussion to Section 4.2.2 based on
       the comment from Tomas Gustavsson as presented during IETF 119.
+
+   *  Addressed erratum 7888
 
    From version 08 -> 09:
 
