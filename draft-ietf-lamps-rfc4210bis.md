@@ -267,7 +267,7 @@ defined in {{RFC5280}}.
   enhancements and improved explanatory text on several issues.
 
 
-## Changes Since RFC 4210
+## Updates Made by RFC 9480
 {: id="sect-1.2"}
 
 CMP Updates {{RFC9480}} and CMP Algorithms {{RFC9481}} updated {{RFC4210}}, supporting the PKI management operations specified in the Lightweight CMP
@@ -312,7 +312,7 @@ Profile {{RFC9483}}, in the following areas:
 * Added security considerations Sections {{<sect-8.6}}, {{<sect-8.7}}, {{<sect-8.9}}, and {{<sect-8.10}}.
 
 
-## Changes Made by This Document
+## Changes Since RFC 9480
 {: id="sect-1.3"}
 
 This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes specified by Section 2 and Appendix C.2 of {{RFC9480}} as described in {{sect-1.2}}. Additionally this document updates the content of {{RFC4210}} in the following areas:
@@ -524,7 +524,7 @@ management
   algorithms suit it for its own key pair(s).
 
 1. PKI management protocols must not preclude the generation of key
-  pairs by the end entity concerned, by a KGA, or by a CA.  Key
+  pairs by the end entity concerned, by a KGA or by a CA.  Key
   generation may also occur elsewhere, but for the purposes of PKI
   management we can regard key generation as occurring wherever
   the key is first present at an end entity, KGA, or CA.
@@ -666,7 +666,7 @@ messages are defined can be grouped as follows.
       "steps", possibly including an initialization of the end
       entity's equipment.  For example, the end entity's equipment
       must be securely initialized with the public key of a CA, e.g.,
-      using zero touch methods like BRSKI {{RFC8995}} or SCTP {{RFC8572}}, to
+      using zero-touch methods like BRSKI {{RFC8995}} or SCTP {{RFC8572}}, to
       be used in validating certificate paths.  Furthermore, an end
       entity typically needs to be initialized with its own key
       pair(s).
@@ -770,7 +770,7 @@ token delivery.
 
 Later sections define a set of standard messages supporting the above
 operations.  Transfer protocols for conveying these exchanges in
-different environments (e.g., off-line: file-based, on-line: mail,
+various environments (e.g., off-line: file-based, on-line: mail,
 HTTP {{I-D.ietf-lamps-rfc6712bis}}, MQTT, and CoAP {{RFC9482}}) are
 beyond the scope of this document and must be specified separately.
 
@@ -800,9 +800,9 @@ However, we can classify the initial registration/certification
 schemes that are supported by this specification.  Note that the word
 "initial", above, is crucial: we are dealing with the situation where
 the end entity in question has had no previous contact with the PKI,
-except having received the Root CA certificate of that PKI by some
-zero touch methods like BRSKI {{RFC8995}} and
-{{I-D.ietf-anima-brski-ae}} or SCTP {{RFC8572}}.  Where the end
+except having received the root CA certificate of that PKI by some
+zero-touch method like BRSKI {{RFC8995}} and
+{{I-D.ietf-anima-brski-ae}} or SCTP {{RFC8572}}.  In case the end
 entity already possesses certified keys, then some
 simplifications/alternatives are possible.
 
@@ -821,7 +821,7 @@ as well as in the Lightweight CMP Profile {{RFC9483}} on fully
 automating certificate management in a machine-to-machine and IoT
 environment.  Also industry standards like {{ETSI-3GPP.33.310}} for
 mobile networks and {{UNISIG.Subset-137}} for Rail Automation adopted
-CMP and specified a set of mandatory schemes for their use case.
+CMP and have specified a set of mandatory schemes for their use case.
 
 We will now describe the classification of initial
 registration/certification schemes.
@@ -917,9 +917,9 @@ conforming CA equipment, RA equipment, and EE equipment MUST support
 the second scheme listed below ({{sect-4.2.2.2}}).  Any entity MAY
 additionally support other schemes, if desired.
 
-<  ToDo: PKIX-CMP was defined back in 1999. Since then, it has been profiled for different environments. Not all environments that use CMP for certificate management require an initial registration/certification scheme. Therefore, the authors propose to amend the above requirements as follows:
-ALT: This specification mandates that conforming CA equipment, RA equipment, and EE equipment MUST support the second scheme listed below (Section 4.2.2.2).  Any entity MAY additionally support other schemes, if desired.
-NEW: Examples of possible initial registration/certification schemes can be found in the following.  An entity may support other schemas specified in profiles of PKIX-CMP, such as RFC 9483.  >
+<  ToDo: PKIX-CMP was defined back in 1999. Since then, it has been profiled for different environments. Not all environments that use CMP for certificate management require an initial registration/certification scheme. Therefore, the authors propose to adapt the above requirements as follows:
+OLD: This specification mandates that conforming CA equipment, RA equipment, and EE equipment MUST support the second scheme listed below (Section 4.2.2.2).  Any entity MAY additionally support other schemes, if desired.
+NEW: Examples of possible initial registration/certification schemes can be found in the following subsections.  An entity may support other schemas specified in profiles of PKIX-CMP, such as RFC 9483.  >
 
 #### Centralized Scheme
 {: id="sect-4.2.2.1"}
@@ -957,7 +957,7 @@ In terms of the classification above, this scheme is where:
 
 * a confirmation message is REQUIRED.
 
-<  ToDo: If this scheme is mainla an option the authors propose removing the normative language.  If the basic authentication scheme stays normative, at least the requirment for the confirmation message should be reduced from REQUIRED to RECOMMENDED or OPTIONAL, since some profiles of PKIX-CMP regard the confirmation roundtrip as optional, e.g., SCTP {{RFC8572}}.  >
+<  ToDo: If this scheme is mainly an option, the authors propose removing the normative language.  If the basic authentication scheme stays normative, at least the requirement for the confirmation message should be reduced from REQUIRED to RECOMMENDED or OPTIONAL, since some profiles of PKIX-CMP regard the confirmation roundtrip as optional, e.g., SZTP {{RFC8572}}.  >
 
 Note: An Initial Authentication Key (IAK) can be either a symmetric key or
 an asymmetric private key with a certificate issued by another PKI trusted
@@ -2190,7 +2190,7 @@ publishes its self-signed certificate, or this information is
 available via the directory (or equivalent) and the CA publishes a
 hash of this value to allow verification of its integrity before use.
 
-Note: An alternative to out-of-band distribution of root CA public keys the CA can provide the self-signed certificate together with link certificates, e.g., using using RootCaKeyUpdateContent ({{sect-5.3.19.15}}).
+Note: As an alternative to out-of-band distribution of root CA public keys, the CA can provide the self-signed certificate together with link certificates, e.g., using using RootCaKeyUpdateContent ({{sect-5.3.19.15}}).
 
 ~~~~ asn.1
   OOBCert ::= Certificate
@@ -5826,9 +5826,9 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 09 -> 10:
 
-* Implemented some minor editorial changes modernizing the text in Section 3, 4, and 5.2.8 as proposed during IETF 119, but without changing normative language.
+* Implemented some minor editorial changes modernizing the text in Section 3, 4, and 5.2.8 as proposed during IETF 119, without changing normative language.
 
-* Added two ToDos for further discussion to Section 4.2.2 based on the comment from Tomas Gustavsson as presented during IETF 119.
+* Added to Section 4.2.2 two ToDos for further discussion, based on the comment from Tomas Gustavsson as presented during IETF 119.
 
 * Addressed erratum 7888
 
