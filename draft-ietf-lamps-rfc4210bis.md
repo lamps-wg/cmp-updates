@@ -5823,6 +5823,11 @@ END
 Note: This appendix will be deleted in the final version of the document.
 
 
+From version 10 -> 11:
+
+* Updated the title of Section 4.2.2 and removed normative language
+
+
 From version 09 -> 10:
 
 * Implemented some minor editorial changes modernizing the text in Section 3, 4, and 5.2.8 as proposed during IETF 119, without changing normative language.
@@ -5830,11 +5835,6 @@ From version 09 -> 10:
 * Added to Section 4.2.2 two ToDos for further discussion, based on the comment from Tomas Gustavsson as presented during IETF 119.
 
 * Addressed erratum 7888
-
-
-From version 08 -> 09:
-
-* Updated the title of Section 4.2.2 and removed normative language
 
 
 From version 08 -> 09:
