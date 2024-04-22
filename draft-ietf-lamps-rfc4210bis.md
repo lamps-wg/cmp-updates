@@ -70,8 +70,12 @@ informative:
   RFC4212:
   RFC4511:
   RFC5912:
+  RFC6712:
   RFC7299:
+  RFC8572:
   RFC8649:
+  RFC8995:
+  I-D.ietf-anima-brski-ae:
   RFC9162:
   NIST.SP.800_90Ar1:
   IEEE.802.1AR-2018: DOI.10.1109/IEEESTD.2018.8423794
@@ -129,6 +133,21 @@ informative:
     date: 2022
   Fujisaki: DOI.10.1007/s00145-011-9114-1
   Hofheinz: DOI.10.1007/978-3-319-70500-2_12
+  ETSI-3GPP.33.310:
+    target: http://www.3gpp.org/ftp/Specs/html-info/33310.htm
+    title: 'Network Domain Security (NDS); Authentication Framework (AF)'
+    author:
+    - org: 3GPP
+    date: 2020-12
+    seriesinfo:
+      3GPP TS: 33.310 16.6.0
+  UNISIG.Subset-137:
+    target: https://www.era.europa.eu/system/files/2023-01/sos3_index083_-_subset-137_v100.pdf
+    title: 'ERTMS/ETCS On-line Key Management FFFIS'
+    author:
+    - org: UNISIG
+    date: 2015-12
+    seriesinfo: Subset-137, V1.0.0
 
 normative:
   RFC2985:
@@ -239,7 +258,7 @@ defined in {{RFC5280}}.
   method at the CMP transport level.
 
 * The CMP transport protocol issues are handled in a separate
-  document {{I-D.ietf-lamps-rfc6712bis}}, thus the Transports section is removed.
+  document {{RFC6712}}, thus the Transports section is removed.
 
 * A new implicit confirmation method is introduced to reduce the
   number of protocol messages exchanged in a transaction.
@@ -248,7 +267,7 @@ defined in {{RFC5280}}.
   enhancements and improved explanatory text on several issues.
 
 
-## Changes Since RFC 4210
+## Updates Made by RFC 9480
 {: id="sect-1.2"}
 
 CMP Updates {{RFC9480}} and CMP Algorithms {{RFC9481}} updated {{RFC4210}}, supporting the PKI management operations specified in the Lightweight CMP
@@ -262,8 +281,8 @@ Profile {{RFC9483}}, in the following areas:
 * Extended the description of multiple protection to cover additional use cases,
   e.g., batch processing of messages.
 
-* Use the type EnvelopedData as the preferred choice instead of EncryptedValue
-  to better support crypto agility in CMP.
+* Use the CMS {{RFC5652}} type EnvelopedData as the preferred choice instead of
+  EncryptedValue to better support crypto agility in CMP.
 
   For reasons of completeness and consistency, the type EncryptedValue has been
   exchanged in all occurrences.  This includes the protection of centrally
@@ -290,10 +309,10 @@ Profile {{RFC9483}}, in the following areas:
 
 * Deleted the mandatory algorithm profile in {{sect-c.2}} and refer instead to Section 7 of {{RFC9481}}.
 
-* Added {{sect-8.6}}, {{sect-8.7}}, {{sect-8.9}}, and {{sect-8.10}}.
+* Added security considerations Sections {{<sect-8.6}}, {{<sect-8.7}}, {{<sect-8.9}}, and {{<sect-8.10}}.
 
 
-## Changes Made by This Document
+## Changes Since RFC 9480
 {: id="sect-1.3"}
 
 This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes specified by Section 2 and Appendix C.2 of {{RFC9480}} as described in {{sect-1.2}}. Additionally this document updates the content of {{RFC4210}} in the following areas:
@@ -313,9 +332,9 @@ This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes spe
 * Incorporated the request message behavioral clarifications from Appendix
   C of {{RFC4210}} to {{sect-5}}. The definition of altCertTemplate was incorporated into {{sect-5.2.1}} and the clarification on POPOSigningKey and on POPOPrivKey was incorporated into {{sect-5.2.8}}.
 
-* Added support support for CMS EnvelopedData to different proof-of-possession methods for transferring encrypted private keys, certificates, and challenges to {{sect-5.2.8}}.
+* Added support for CMS EnvelopedData to different proof-of-possession methods for transferring encrypted private keys, certificates, and challenges to {{sect-5.2.8}}.
 
-* Added {{sect-8.1}}, {{sect-8.5}}, {{sect-8.8}}, and {{sect-8.11}}.
+* Added security considerations Sections {{<sect-8.1}}, {{<sect-8.5}}, {{<sect-8.8}}, and {{<sect-8.11}}.
 
 
 # Requirements {#sect-2}
@@ -433,7 +452,8 @@ Certification Authority.  The functions that the registration
 authority may carry out will vary from case to case but MAY include
 personal authentication, token distribution, checking certificate requests
 and authentication of their origin, revocation reporting,
-name assignment, key generation, archival of key pairs, et cetera.
+name assignment, key generation (KGA, see {{sect-3.1.1.4}}), archival
+of key pairs, et cetera.
 
 This document views the RA as an OPTIONAL component: when it is not
 present, the CA is assumed to be able to carry out the RA's functions
@@ -504,10 +524,10 @@ management
   algorithms suit it for its own key pair(s).
 
 1. PKI management protocols must not preclude the generation of key
-  pairs by the end entity concerned, by a KGA, by an RA, or by a CA.  Key
+  pairs by the end entity concerned, by a KGA or by a CA.  Key
   generation may also occur elsewhere, but for the purposes of PKI
   management we can regard key generation as occurring wherever
-  the key is first present at an end entity, RA, or CA.
+  the key is first present at an end entity, KGA, or CA.
 
 1. PKI management protocols must support the publication of
   certificates by the end entity concerned, by an RA, or by a CA.
@@ -522,14 +542,14 @@ management
 
 1. PKI management protocols must be usable over a variety of
   "transport" mechanisms, specifically including mail, HTTP,
-  TCP/IP, CoAP, and off-line file-based.
+  MQTT, CoAP, and off-line file-based.
 
 1. Final authority for certification creation rests with the CA.
   No RA or end entity equipment can assume that any certificate
   issued by a CA will contain what was requested; a CA may alter
   certificate field values or may add, delete, or alter extensions
   according to its operating policy.  In other words, all PKI
-  entities (end-entities, RAs, and CAs) must be capable of
+  entities (end-entities, RAs, KGAs, and CAs) must be capable of
   handling responses to requests for certificates in which the
   actual certificate issued is different from that requested (for
   example, a CA may shorten the validity period requested).  Note
@@ -547,9 +567,9 @@ management
   that if the CA key is compromised, re-initialization must be
   performed for all entities in the domain of that CA).  An end
   entity whose PSE contains the new CA public key (following a CA
-  key update) must also be able to verify certificates verifiable
+  key update) may also need to be able to verify certificates verifiable
   using the old public key.  End entities who directly trust the
-  old CA key pair must also be able to verify certificates signed
+  old CA key pair may also need to be able to verify certificates signed
   using the new CA private key (required for situations where the
   old CA public key is "hardwired" into the end entity's
   cryptographic equipment).
@@ -559,14 +579,14 @@ management
   must be designed so that end entities will use the same protocol
   regardless of whether the communication is with an RA or CA.
   Naturally, the end entity must use the correct RA or CA public
-  key to protect the communication.
+  key to verify the protection of the communication.
 
 1. Where an end entity requests a certificate containing a given
   public key value, the end entity must be ready to demonstrate
   possession of the corresponding private key value.  This may be
   accomplished in various ways, depending on the type of
-  certification request.  See {{sect-4.3}} for details of the in-
-  band methods defined for the PKIX-CMP (i.e., Certificate
+  certification request.  See {{sect-4.3}} for details of the
+  in-band methods defined for the PKIX-CMP (i.e., Certificate
   Management Protocol) messages.
 
 
@@ -626,11 +646,11 @@ messages are defined can be grouped as follows.
   required (e.g., production of initial CRLs, export of CA public
   key).
 
-1. End entity initialization: this includes importing a root CA
+1. End entity initialization: This includes importing a root CA
   public key and requesting information about the options supported
   by a PKI management entity.
 
-1. Certification: various operations result in the creation of new
+1. Certification: Various operations result in the creation of new
   certificates:
 
 
@@ -641,11 +661,12 @@ messages are defined can be grouped as follows.
       that end entity.  The end result of this process (when it is
       successful) is that a CA issues a certificate for an end
       entity's public key, and returns that certificate to the end
-      entity and/or posts that certificate in a public repository.
+      entity and/or posts that certificate in a repository.
       This process may, and typically will, involve multiple
       "steps", possibly including an initialization of the end
       entity's equipment.  For example, the end entity's equipment
-      must be securely initialized with the public key of a CA, to
+      must be securely initialized with the public key of a CA, e.g.,
+      using zero-touch methods like BRSKI {{RFC8995}} or SCTP {{RFC8572}}, to
       be used in validating certificate paths.  Furthermore, an end
       entity typically needs to be initialized with its own key
       pair(s).
@@ -696,13 +717,13 @@ messages are defined can be grouped as follows.
       update, but involving a cross-certificate.
 
 
-1. Certificate/CRL discovery operations: some PKI management
+1. Certificate/CRL discovery operations: Some PKI management
   operations result in the publication of certificates or CRLs:
 
 
 
     1. certificate publication: Having gone to the trouble of
-      producing a certificate, some means for publishing it is
+      producing a certificate, some means for publishing may be
       needed.  The "means" defined in PKIX MAY involve the messages
       specified in Sections {{<sect-5.3.13}} to {{<sect-5.3.16}}, or MAY involve other
       methods (LDAP, for example) as described in {{RFC4511}}, {{RFC2585}}
@@ -712,7 +733,7 @@ messages are defined can be grouped as follows.
     1. CRL publication: As for certificate publication.
 
 
-1. Recovery operations: some PKI management operations are used when
+1. Recovery operations: Some PKI management operations are used when
   an end entity has "lost" its PSE:
 
 
@@ -726,7 +747,7 @@ messages are defined can be grouped as follows.
       exchange may be needed to support such recovery.
 
 
-1. Revocation operations: some PKI management operations result in the creation
+1. Revocation operations: Some PKI management operations result in the creation
   of new CRL entries and/or new CRLs:
 
 
@@ -735,7 +756,7 @@ messages are defined can be grouped as follows.
       abnormal situation requiring certificate revocation.
 
 
-1. PSE operations: whilst the definition of PSE operations (e.g.,
+1. PSE operations: Whilst the definition of PSE operations (e.g.,
   moving a PSE, changing a PIN, etc.) are beyond the scope of this
   specification, we do define a PKIMessage (CertRepMessage) that
   can form the basis of such operations.
@@ -748,10 +769,10 @@ used, many of the operations MAY be achieved as part of the physical
 token delivery.
 
 Later sections define a set of standard messages supporting the above
-operations.  Transport protocols for conveying these exchanges in
-different environments (e.g., off-line: file-based, on-line: mail,
-HTTP {{I-D.ietf-lamps-rfc6712bis}}, and CoAP {{RFC9482}}) are
-beyond the scope of this document and are specified separately.
+operations.  Transfer protocols for conveying these exchanges in
+various environments (e.g., off-line: file-based, on-line: mail,
+HTTP {{I-D.ietf-lamps-rfc6712bis}}, MQTT, and CoAP {{RFC9482}}) are
+beyond the scope of this document and must be specified separately.
 
 
 
@@ -778,8 +799,11 @@ occur.
 However, we can classify the initial registration/certification
 schemes that are supported by this specification.  Note that the word
 "initial", above, is crucial: we are dealing with the situation where
-the end entity in question has had no previous contact with the PKI.
-Where the end entity already possesses certified keys, then some
+the end entity in question has had no previous contact with the PKI,
+except having received the root CA certificate of that PKI by some
+zero-touch method like BRSKI {{RFC8995}} and
+{{I-D.ietf-anima-brski-ae}} or SCTP {{RFC8572}}.  In case the end
+entity already possesses certified keys, then some
 simplifications/alternatives are possible.
 
 Having classified the schemes that are supported by this
@@ -789,6 +813,15 @@ number of the cases that will arise in real use, whilst the optional
 schemes are available for special cases that arise less frequently.
 In this way, we achieve a balance between flexibility and ease of
 implementation.
+
+Further classification of mandatory and optional schemes addressing
+different environments is available, e.g., in {{sect-c}} and
+{{sect-d}} of this specification on managing human user certificates
+as well as in the Lightweight CMP Profile {{RFC9483}} on fully
+automating certificate management in a machine-to-machine and IoT
+environment.  Also industry standards like {{ETSI-3GPP.33.310}} for
+mobile networks and {{UNISIG.Subset-137}} for Rail Automation adopted
+CMP and have specified a set of mandatory schemes for their use case.
 
 We will now describe the classification of initial
 registration/certification schemes.
@@ -804,7 +837,8 @@ initiation of the initial registration/certification exchanges as
 occurring wherever the first PKI message relating to the end entity
 is produced.  Note that the real-world initiation of the
 registration/certification procedure may occur elsewhere (e.g., a
-personnel department may telephone an RA operator).
+personnel department may telephone an RA operator or using zero touch
+methods like BRSKI {{RFC8995}} or SCTP {{RFC8572}}).
 
 The possible locations are at the end entity, an RA, or a CA.
 
@@ -830,11 +864,11 @@ In this specification, such authentication is achieved by two different means:
   The trust establishment in this external PKI is out of scope of this document.
 
 Thus, we can classify the initial registration/certification scheme
-according to whether or not the on-line end entity -> PKI messages
-are authenticated or not.
+according to whether or not the on-line 'end entity -> PKI management
+entity' messages are authenticated or not.
 
-Note 1: We do not discuss the authentication of the PKI -> end entity
-messages here, as this is always REQUIRED.  In any case, it can be
+Note 1: We do not discuss the authentication of the 'PKI management
+entity -> end entity' messages here, as this is always REQUIRED.  In any case, it can be
 achieved simply once the root-CA public key has been installed at the
 end entity's equipment or it can be based on the initial
 authentication key.
@@ -857,7 +891,7 @@ using a (proprietary or standardized) key generation request/response
 protocol (outside the scope of this specification).
 
 Thus, there are three possibilities for the location of "key generation":
-the end entity, an RA, or a CA.
+the end entity, a KGA, or a CA.
 
 
 #### Confirmation of Successful Certification
@@ -873,8 +907,7 @@ symmetric or asymmetric authentication key or other means).
 This gives two further possibilities: confirmed or not.
 
 
-
-### Registration / Certification Schemes
+### Initial Registration/Certification Schemes
 {: id="sect-4.2.2"}
 
 The criteria above allow for a large number of initial
@@ -882,6 +915,10 @@ registration/certification schemes.  This specification mandates that
 conforming CA equipment, RA equipment, and EE equipment must support
 the second scheme listed below ({{sect-4.2.2.2}}).  Any entity may
 additionally support other schemes, if desired.
+
+<  ToDo: PKIX-CMP was defined back in 1999. Since then, it has been profiled for different environments. Not all environments that use CMP for certificate management require an initial registration/certification scheme. Therefore, the authors propose to adapt the above requirements as follows:
+OLD: This specification mandates that conforming CA equipment, RA equipment, and EE equipment MUST support the second scheme listed below (Section 4.2.2.2).  Any entity MAY additionally support other schemes, if desired.
+NEW: Examples of possible initial registration/certification schemes can be found in the following subsections.  An entity may support other schemas specified in profiles of PKIX-CMP, such as RFC 9483.  >
 
 #### Centralized Scheme
 {: id="sect-4.2.2.1"}
@@ -919,6 +956,8 @@ In terms of the classification above, this scheme is where:
 
 * a confirmation message is required.
 
+<  ToDo: If this scheme is mainly an option, the authors propose removing the normative language.  If the basic authentication scheme stays normative, at least the requirement for the confirmation message should be reduced from REQUIRED to RECOMMENDED or OPTIONAL, since some profiles of PKIX-CMP regard the confirmation roundtrip as optional, e.g., SZTP {{RFC8572}}.  >
+
 Note: An Initial Authentication Key (IAK) can be either a symmetric key or
 an asymmetric private key with a certificate issued by another PKI trusted
 for this purpose.  The establishment of such trust is out of scope of this
@@ -949,9 +988,9 @@ follows:
   handle response
 ~~~~
 
-(Where verification of the cert confirmation message fails, the RA/CA
+Note: Where verification of the cert confirmation message fails, the RA/CA
 MUST revoke the newly issued certificate if it has been published or
-otherwise made available.)
+otherwise made available.
 
 
 
@@ -1004,16 +1043,16 @@ POP during certification).
 {: id="sect-4.3.1"}
 
 For signature keys, the end entity can sign a value to prove
-possession of the private key.
+possession of the private key, see {{sect-5.2.8.2}}.
 
 
 ### Encryption Keys
 {: id="sect-4.3.2"}
 
 For encryption keys, the end entity can provide the private key to
-the CA/RA (e.g., for archiving), or can be required to decrypt a value in order to prove
+the CA/RA (e.g., for archiving), see {{sect-5.2.8.3.1}}, or can be required to decrypt a value in order to prove
 possession of the private key.  Decrypting a
-value can be achieved either directly or indirectly.
+value can be achieved either directly (see {{sect-5.2.8.3.3}}) or indirectly (see {{sect-5.2.8.3.2}}).
 
 The direct method is for the RA/CA to issue a random challenge to
 which an immediate response by the EE is required.
@@ -1048,9 +1087,9 @@ appropriate parameters when necessary.
 {: id="sect-4.3.4"}
 
 For key encapsulation mechanism (KEM) keys, the end entity can provide the private key to
-the CA/RA (e.g., for archiving), or can be required to decrypt
+the CA/RA (e.g., for archiving), see {{sect-5.2.8.3.1}}, or can be required to decrypt
 a value in order to prove possession of the private key.
-Decrypting a value can be achieved either directly or indirectly.
+Decrypting a value can be achieved either directly (see {{sect-5.2.8.3.3}}) or indirectly (see {{sect-5.2.8.3.2}}).
 
 Note: A definition of key encapsulation mechanisms can be found in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
 
@@ -2141,14 +2180,16 @@ See {{RFC4211}} for CertId syntax.
 {: id="sect-5.2.5"}
 
 Each root CA must be able to publish its current public key via some
-"out-of-band" means.  While such mechanisms are beyond the scope of
+"out-of-band" means or together with the respective link certificate using an online mechanism.  While such mechanisms are beyond the scope of
 this document, we define data structures that can support such
 mechanisms.
 
-There are generally two methods available: either the CA directly
+There are generally two methods available: Either the CA directly
 publishes its self-signed certificate, or this information is
-available via the Directory (or equivalent) and the CA publishes a
+available via the directory (or equivalent) and the CA publishes a
 hash of this value to allow verification of its integrity before use.
+
+Note: As an alternative to out-of-band distribution of root CA public keys, the CA can provide the self-signed certificate together with link certificates, e.g., using using RootCaKeyUpdateContent ({{sect-5.3.19.15}}).
 
 ~~~~ asn.1
   OOBCert ::= Certificate
@@ -2436,7 +2477,7 @@ See {{sect-5.2.1}} and {{RFC4211}} for CertReqMessages syntax.
 ### Initialization Response
 {: id="sect-5.3.2"}
 
-An Initialization response message contains as the PKIBody an
+An Initialization response message contains as the PKIBody a
 CertRepMessage data structure, which has for each certificate
 requested a PKIStatusInfo field, a subject certificate, and possibly
 a private key (normally encrypted using EnvelopedData, see {{RFC9483}} Section
@@ -5780,6 +5821,15 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+
+From version 09 -> 10:
+
+* Implemented some minor editorial changes modernizing the text in Section 3, 4, and 5.2.8 as proposed during IETF 119, without changing normative language.
+
+* Added to Section 4.2.2 two ToDos for further discussion, based on the comment from Tomas Gustavsson as presented during IETF 119.
+
+* Addressed erratum 7888
 
 
 From version 08 -> 09:
