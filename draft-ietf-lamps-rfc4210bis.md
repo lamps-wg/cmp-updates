@@ -923,7 +923,7 @@ ToDo: PKIX-CMP was defined back in 1999. Since then, it has been profiled for di
 
 OLD: This specification mandates that conforming CA equipment, RA equipment, and EE equipment MUST support the second scheme listed below (Section 4.2.2.2).  Any entity MAY additionally support other schemes, if desired.
 
-NEW: Examples of possible initial registration/certification schemes can be found in the following subsections.  An entity may support other schemas specified in profiles of PKIX-CMP, such as RFC 9483.
+NEW: Examples of possible initial registration/certification schemes can be found in the following subsections.  An entity may support other schemas specified in profiles of PKIX-CMP, such as Appendixes C and D or RFC 9483.
 >
 
 #### Centralized Scheme
