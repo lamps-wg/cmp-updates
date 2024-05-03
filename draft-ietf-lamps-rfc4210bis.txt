@@ -937,7 +937,7 @@ Table of Contents
    scheme listed below (Section 4.2.2.2).  Any entity MAY additionally
    support other schemes, if desired.
 
-   <
+   <--
 
    ToDo: PKIX-CMP was defined back in 1999.  Since then, it has been
    profiled for different environments.  Not all environments that use
@@ -955,6 +955,7 @@ Table of Contents
    other schemas specified in profiles of PKIX-CMP, such as Appendixes C
    and D or RFC 9483.
 
+   -->
 
 4.2.2.1.  Centralized Scheme
 
@@ -988,7 +989,7 @@ Table of Contents
 
    *  a confirmation message is REQUIRED.
 
-   <
+   <--
 
    ToDo: The authors know of environments where initialization using CMP
    is not needed, even though CMP us used for managing certificates.
@@ -1008,6 +1009,7 @@ Table of Contents
    should stays normative, at least the requirement for the confirmation
    message should be reduced from REQUIRED to RECOMMENDED or OPTIONAL.
 
+   -->
 
    Note: An Initial Authentication Key (IAK) can be either a symmetric
    key or an asymmetric private key with a certificate issued by another
