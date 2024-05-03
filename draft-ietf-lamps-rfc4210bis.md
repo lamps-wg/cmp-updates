@@ -966,7 +966,7 @@ In terms of the classification above, this scheme is where:
 
 <
 
-ToDo: The authors know of environments where initialization using CMP is not needed, even though CMP us used for managing certificates. 
+ToDo: The authors know of environments where initialization using CMP is not needed, even though CMP us used for managing certificates.
 
 For example, BRSKI {{RFC8995}} offers zero touch bootstrapping including enrollment of an initial certificate of the operational domain. If CMP is further used for managing this and further operational certificate, initialization is not needed. In such cases it does not make sense to require implementing initialization.  SZTP {{RFC8572}} uses only the certificate request message. Neither the respective certificate response message nor the certConf message are used. In {{RFC9483}} and {{I-D.ietf-anima-brski-ae}} using the certConf message is optional.
 
