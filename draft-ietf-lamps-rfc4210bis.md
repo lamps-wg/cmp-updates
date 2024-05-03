@@ -918,9 +918,13 @@ conforming CA equipment, RA equipment, and EE equipment MUST support
 the second scheme listed below ({{sect-4.2.2.2}}).  Any entity MAY
 additionally support other schemes, if desired.
 
-<  ToDo: PKIX-CMP was defined back in 1999. Since then, it has been profiled for different environments. Not all environments that use CMP for certificate management require an initial registration/certification scheme. Therefore, the authors propose to adapt the above requirements as follows:
+<
+ToDo: PKIX-CMP was defined back in 1999. Since then, it has been profiled for different environments. Not all environments that use CMP for certificate management require an initial registration/certification scheme. Therefore, the authors propose to adapt the above requirements as follows:
+
 OLD: This specification mandates that conforming CA equipment, RA equipment, and EE equipment MUST support the second scheme listed below (Section 4.2.2.2).  Any entity MAY additionally support other schemes, if desired.
-NEW: Examples of possible initial registration/certification schemes can be found in the following subsections.  An entity may support other schemas specified in profiles of PKIX-CMP, such as RFC 9483.  >
+
+NEW: Examples of possible initial registration/certification schemes can be found in the following subsections.  An entity may support other schemas specified in profiles of PKIX-CMP, such as RFC 9483.
+>
 
 #### Centralized Scheme
 {: id="sect-4.2.2.1"}
