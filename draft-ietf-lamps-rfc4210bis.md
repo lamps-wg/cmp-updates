@@ -452,8 +452,7 @@ Certification Authority.  The functions that the registration
 authority may carry out will vary from case to case but MAY include
 personal authentication, token distribution, checking certificate requests
 and authentication of their origin, revocation reporting,
-name assignment, key generation (KGA, see {{sect-3.1.1.4}}), archival
-of key pairs, et cetera.
+name assignment, archival of key pairs, et cetera.
 
 This document views the RA as an OPTIONAL component: when it is not
 present, the CA is assumed to be able to carry out the RA's functions
@@ -498,6 +497,8 @@ system; in some case retention is good, for example for escrow reasons, but
 in other cases the server should clear its copy after delivery to the end
 entity.
 
+Note: If the CA delegates key generation to a KGA, the KGA can be collocated
+with the RA.
 
 
 ### PKI Management Requirements
