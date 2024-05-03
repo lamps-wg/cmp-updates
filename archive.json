@@ -1,0 +1,1629 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2023-07-11T00:35:13.384339+00:00",
+  "repo": "lamps-wg/cmp-updates",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDOInbtzM5ZzEGp",
+      "title": "Ephemeral KEM key pair for message protection",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/2",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Antonio pointed me again at https://eprint.iacr.org/2017/634.pdf. \r\nIn figure 3 an authenticated key exchange protocol is described where both parties are authenticated. There P1 generates an ephemeral KEM key pair pk/sk and sends it together with of the encrypted value using P2's public KEM key to P2. In return P2 sends two encrypted values, one using the ephemeral public key pk and one using the public KEM key of P1. Finally all concatenate the three resulting keys using a hash function.\r\nShould we extend Section 5.1.3.4 accordingly also adding an ephemeral KEM key?",
+      "createdAt": "2022-12-21T16:09:59Z",
+      "updatedAt": "2023-06-15T15:48:44Z",
+      "closedAt": "2023-06-15T15:48:44Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Does anyone has an opinion?",
+          "createdAt": "2023-01-19T08:29:59Z",
+          "updatedAt": "2023-01-19T08:29:59Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Design team meeting minutes:\r\nWe submit the version of Section 5.1.3.4 with out the third HPKE and then ask on the LAMPS list if people think that we should add a third HPKE with an ephemeral KEM keypair to the exchange as proposed in figure 3 of the paper.",
+          "createdAt": "2023-01-19T17:16:11Z",
+          "updatedAt": "2023-01-19T17:23:31Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Design team meeting minutes:\r\nMike offered to read the paper and provide his opinion on this topic. ",
+          "createdAt": "2023-01-19T17:16:47Z",
+          "updatedAt": "2023-01-19T17:23:23Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Some things I note from the paper:\r\n\r\n> In key exchange constructions using a KEM, it is common\r\nto hash the \u201cview\u201d of each participant (i.e., all received and\r\nsent messages) into the final key\r\n\r\nShould we do that? That would be equivalent to the TLS \"transcript\". It might solve one of the problems we have with the client and server using different values for `HPKE.L`.",
+          "createdAt": "2023-01-19T23:15:41Z",
+          "updatedAt": "2023-01-19T23:15:41Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think this is the relevant sentence for the issue of adding a 3rd (ephemeral) KEM key to the handshake:\r\n\r\n> Concretely, security of Kyber.AKE in the Canetti\u2013\r\nKrawczyk model with weak forward secrecy [27] follows\r\nMy u\r\ndirectly from the generic security bounds of [22], [37]. (Note\r\nthat full forward secrecy is not achievable for a two-round\r\nauthenticated key-exchange protocol [27].)\r\n\r\n---\r\nI agree with that analysis. Here is my reasoning:\r\n\r\nConsider first a basic 2-key KEM AKE \r\n\r\n```\r\nStatic long-term KEM keys: (pk_c, priv_c), (pk_s, priv_s)\r\n\r\nClient:\r\n(c1, k1) <- KEM.encaps(pk_s)\r\n\r\nServer:\r\nk1 <- KEM.decaps(c1, priv_s)\r\n(c2, k2) <- KEM.encaps(pk_c)\r\n\r\nClient: \r\nk2 <- KEM.decaps(c2, priv_c)\r\n\r\nBoth:\r\nkey := H(k1, k2)\r\n```\r\n\r\nHere if an attacker records the traffic `c1, c2` and then is able to learn, even some time later, both parties' private keys `priv_s, priv_c`, then they can re-run the KEM.decaps()'s and recover both `k1, k2`, and then the final `key`.\r\n\r\nThis is, I believe, already an improvement over the current CMP KeyTrans or KeyAgree message protection where only the server's private key is required to decrypt the exchanged key.\r\n\r\nThe paper goes a step further by adding an ephemeral key (I believe it should be fine to add it to either party). This means that obtaining `key` requires knowledge of both long-term private keys, plus the ephemeral private key which is discarded at the end of the handshake. They claim this provides \"weak forward secrecy\". I think they are implying that \"full forward secrecy\" would require both parties to have ephemeral keys, which would require an extra 0.5 round-trip to exchange the 4th ciphertext.\r\n\r\n--- \r\nMy opinion is that Static-Static KEM AKE is already improved over KeyTrans or KeyAgree in CMP, but if it does not cost us anything to add an ephemeral key as described in the paper, then why not.\r\n\r\nI would feel more confident if everyone thinks about this and agrees with my logic ... including Hans Aschaur, who has an excellent mind for these crypto puzzles.\r\n",
+          "createdAt": "2023-01-19T23:39:33Z",
+          "updatedAt": "2023-01-19T23:41:22Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> The paper goes a step further by adding an ephemeral key (I believe it should be fine to add it to either party). This means that obtaining `key` requires knowledge of both long-term private keys, plus the ephemeral private key which is discarded at the end of the handshake. They claim this provides \"weak forward secrecy\". I think they are implying that \"full forward secrecy\" would require both parties to have ephemeral keys, which would require an extra 0.5 round-trip to exchange the 4th ciphertext.\r\n\r\nI am uncertain if an extra 0.5 round-trip would be required as the client could include its ephemeral public KEM key in the first genm messages together with its certificate. The first message exchange is unprotected, but I think a man-in-the-middle could exchange the ephemeral key, but this would also brake the establishment of the shared key later on.\r\n \r\n> My opinion is that Static-Static KEM AKE is already improved over KeyTrans or KeyAgree in CMP, but if it does not cost us anything to add an ephemeral key as described in the paper, then why not.\r\n\r\nAs of now [authkem ](https://github.com/claucece/draft-celi-wiggers-tls-authkem)dose not include a third ephemeral KEM key as well. But I see your point.\r\nWhat doe the implementer think about this? Is it cumbersome to add a third HPKE with an ephemeral KEM key to the exchange?",
+          "createdAt": "2023-01-26T16:43:14Z",
+          "updatedAt": "2023-01-26T16:43:14Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> Some things I note from the paper:\r\n> \r\n> > In key exchange constructions using a KEM, it is common\r\n> > to hash the \u201cview\u201d of each participant (i.e., all received and\r\n> > sent messages) into the final key\r\n> \r\n> Should we do that? That would be equivalent to the TLS \"transcript\". It might solve one of the problems we have with the client and server using different values for `HPKE.L`.\r\n\r\nWhat do the implementers think, would it be much harder to incorporate a hash on the PKIMessage into the HPKE Send/RecieveExportBase than only incorporating transactionID, senderNonce, and recipNonce? ",
+          "createdAt": "2023-01-26T16:48:08Z",
+          "updatedAt": "2023-01-26T16:48:08Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I will add L to HpkeCiphertext. Therefore I thing it is sufficient using transactionID, senderNonce, and recipNonce for domain separation.\r\n",
+          "createdAt": "2023-02-28T08:15:02Z",
+          "updatedAt": "2023-02-28T08:15:02Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I propose to go ahead without an additional ephemeral KEM key. This is also in line with draft-ietf-lamps-cms-kemri.",
+          "createdAt": "2023-02-28T08:16:24Z",
+          "updatedAt": "2023-02-28T08:16:24Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> This is also in line with draft-ietf-lamps-cms-kemri.\r\n\r\nI think their design rationale does not translate to CMP, so this justification is not sufficient. CMS is an offline / non-interactive protocol so they do not have the luxury of doing an online key establishment. CMP is already an online / interactive protocol, so we could add an ephemeral KEM without impacting the message flows.\r\n\r\nThat said, there is an argument that the KEMs in CMP are used for authentication, not for long-term confidentiality (except for encryption of server-generated keys?)\r\n\r\n\r\nI suggest we add a Security Consideration like the following:\r\n\r\n> Security Considerations\r\n> Forward Secrecy of KEMs\r\n> In general, mutually-authenticated KEM exchanges (\"Authenticated Key Exchanges (AKEs)\") embed an ephemeral KEM in order to add forward secrecy protecting against later decryption of the content if the long-term private keys become known. This attack does not apply because CMP uses mutually-authenticated KEM exchanges for the purposes of computing a MAC for authentication, so this usage does not have forward secrecy concerns.\r\n\r\n\r\nNOTE: this SecCon should mention the option for the client to provide an ephemeral protocol protection key if it wishes to have  forward secrecy on the encrypted server-generated key.",
+          "createdAt": "2023-03-02T16:45:05Z",
+          "updatedAt": "2023-03-02T16:51:13Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I feel like the forward secrecy is relevant for all keys used for CMP protection of central key generation. Therefore, I propose to extend the scope of this security consideration to protection of centrally generated keys. ",
+          "createdAt": "2023-03-03T09:05:24Z",
+          "updatedAt": "2023-03-03T09:05:24Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@ounsworth What do you think of this text?\r\n`Forward Secrecy for long-term protection\r\n\r\nAuthenticity of CMP messages relies on signature-based or MAC-based protection. Long-term protection is not required as it is assumed that a PKI management operation using CMP is concluded in a reasonably short time.\r\n\r\nWhen encrypted values are transported as described in Section 5.2.2, long-term security requirements may be relevant.  CMP used CMS EnvelopedData for protecting such encrypted values.  As CMS is an offline / non-interactive protocol, it does not offer forward secrecy out of the box.  As CMP is an interactive protocol, ephemeral keys could be introduced instead of using the existing long-term keys.  This would introduce forward secrecy and would offer enhanced long-term security.`",
+          "createdAt": "2023-03-03T09:22:10Z",
+          "updatedAt": "2023-03-03T09:22:43Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "In the meantime the current draft contains the domain separation using the KemOtherInfo \r\n`  KemOtherInfo ::= SEQUENCE {\r\n    staticString     PKIFreeText,\r\n    transactionID    OCTET STRING,\r\n    senderNonce      OCTET STRING,\r\n    recipNonce       OCTET STRING,\r\n    len              INTEGER (1..MAX),\r\n    ct               OCTET STRING\r\n  }\r\n\r\nstaticString MUST be \"CMP-KEM\"\r\n\r\ntransactionID, senderNonce, and recipNonce MUST be the values from the message previously received containing the ciphertext ct in KemCiphertext\r\n\r\nlen MUST be the value from that KemCiphertext\r\n\r\nct MUST be the ciphertext from that KemCiphertext`\r\n\r\nDo we need all these data as context information for domain separation, specifically ct?",
+          "createdAt": "2023-05-09T13:36:07Z",
+          "updatedAt": "2023-05-09T13:39:22Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The second point in this issue was on adding perfect forward secresy using additional ephemeral KEM keys to the exchange.\r\nThe result of the current discussion is, not do do this, but to add the following ecurity consideration.\r\n`Forward Secrecy for long-term protection\r\n\r\nAuthenticity of CMP messages relies on signature-based or MAC-based protection. Long-term protection is not required as it is assumed that a PKI management operation using CMP is concluded in a reasonably short time.\r\n\r\nWhen encrypted values are transported as described in Section 5.2.2, long-term security requirements may be relevant. CMP used CMS EnvelopedData for protecting such encrypted values. As CMS is an offline / non-interactive protocol, it does not offer forward secrecy out of the box. As CMP is an interactive protocol, ephemeral keys could be introduced instead of using the existing long-term keys. This would introduce forward secrecy and would offer enhanced long-term security.`\r\n\r\nAny comments on the tect of this securtiy consideration?",
+          "createdAt": "2023-05-09T13:38:55Z",
+          "updatedAt": "2023-05-09T13:38:55Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "If we whish to add ephemeral keys, this would require the delivery of this ephemeral kem key together with the KEM certificate. This would require an additional id-it InfoTypeAndValue.\r\n\r\nThis should be optional, as it is only needed with encrypted delivery of a centrally generated key pair.\r\nDo we want to go this extra mile? ",
+          "createdAt": "2023-05-09T13:45:48Z",
+          "updatedAt": "2023-05-09T13:50:58Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Do we need to add the hash of the whole PKIMessage containing the KemCiphertext as input for KemOtherInfo?",
+          "createdAt": "2023-05-10T14:49:25Z",
+          "updatedAt": "2023-05-10T14:49:25Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 11.05.23\r\nProposal is to add TLS for the cases where longterm privacy is needed.",
+          "createdAt": "2023-05-11T15:31:17Z",
+          "updatedAt": "2023-05-11T15:31:17Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> Meeting 11.05.23 Proposal is to add TLS for the cases where longterm privacy is needed.\r\n\r\nTo be clear: that is principally cases where private keys are transported over CMP.",
+          "createdAt": "2023-05-11T15:37:39Z",
+          "updatedAt": "2023-05-11T15:37:39Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@ounsworth What do you think of this security consideration?\r\n@DDvO Any proposals for rephrasing?\r\n\r\n## Perfect Forward Secrecy\r\n\r\nLong-term security typically requires perfect forward secrecy (pfs).  PKI management operations are usially completed in a limited time and therefore CMP message protection providing integrity and authenticity does not require long-term security.  When encrypted valuest, e.g., centrally generated private keys or revocation passphrases, are transferred, long-term confidentiality and therefore pfs may be important.  In contrast, long-term security is may not be required when the indirect method is used to provide a POP {{sect-5.2.8.2}} by delivering the newly issued certificates in encrypted form.\r\n\r\nEncrypted values {{sect-5.2.2}} are transferred using CMS EnvelopedData [RFC5652] which does not offer pfs.  If long-term security is required, CMP messages SHOULD be transferred using TLS, or a comparable security protocol offering pfs.",
+          "createdAt": "2023-05-24T15:51:33Z",
+          "updatedAt": "2023-05-24T15:51:33Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "Fixing some typos etc., re-ordering the items for streamlined reading, and taking into consideration that for the time frame of authenticity and integrity, not a whole CMP transaction is relevant but just a single message transfer:\r\n\r\n\r\nLong-term security typically requires perfect forward secrecy (pfs).\r\nWhen transferring encrypted long-term confidential values such as centrally generated private keys or revocation passphrases, pfs likely is important. \r\nYet it is not needed for CMP message protection providing integrity and authenticity because transfer of PKI management messages is usually completed in very limited time. \r\nFor the same reason it typically is not required for the indirect method of providing a POP {{sect-5.2.8.2}} delivering the newly issued certificate in encrypted form.\r\n\r\nEncrypted values {{sect-5.2.2}} are transferred using CMS EnvelopedData [RFC5652], which does not offer pfs. In cases where long-term security is needed, CMP messages SHOULD be transferred over a mechanism that provides pfs, such as TLS.\r\n",
+          "createdAt": "2023-05-25T07:50:14Z",
+          "updatedAt": "2023-05-25T07:50:14Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you for rephrasing.",
+          "createdAt": "2023-05-25T08:10:06Z",
+          "updatedAt": "2023-05-26T10:48:12Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks for the updated text.   Looks good.   Just one comment:  Is there something that will indicate this part is in the context of KEM?   When I read it, I was thinking you can get PFS with an ephemeral ECDH (or DH) key in EnvelopedData.   So we probably need to make sure it is clear this applies when KEM is used because we don't offer PFS when KEM is used.",
+          "createdAt": "2023-06-07T18:23:34Z",
+          "updatedAt": "2023-06-07T18:23:34Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Looks good.\r\n\r\nOne comment:\r\n> When transferring encrypted long-term confidential values such as centrally generated private keys or revocation passphrases, pfs likely is important.\r\n\r\nThere is actually more to this story. There is a chicken-and-egg situation here because you are typically encrypting the private keys or revocation keys back to the key holder, so if you have compromised the client sufficiently to obtain the (transport) keys then presumably you already have access to the keys being transported. This further reduces the importance of forward secrecy.",
+          "createdAt": "2023-06-07T18:24:56Z",
+          "updatedAt": "2023-06-07T18:27:21Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> Is there something that will indicate this part is in the context of KEM? When I read it, I was thinking you can get PFS with an ephemeral ECDH (or DH) key in EnvelopedData.\r\n\r\nCMS KeyAgreeRecipientInfo for EnvelopedData uses the static ECDH (or DH) public key from the recipient's certificate identified by the KeyAgreeRecipientIdentifier.\r\nSee https://datatracker.ietf.org/doc/html/rfc5652#section-6.2.2\r\n`The\r\n      KeyAgreeRecipientIdentifier is a CHOICE with two alternatives\r\n      specifying the recipient's certificate, and thereby the\r\n      recipient's public key, that was used by the sender to generate a\r\n      pairwise key-encryption key.`\r\nTherefore, I thought that psf is a general topic. \r\n@johngray-dev Am I wrong?",
+          "createdAt": "2023-06-13T14:49:31Z",
+          "updatedAt": "2023-06-13T14:57:53Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> There is actually more to this story. There is a chicken-and-egg situation here because you are typically encrypting the private keys or revocation keys back to the key holder, so if you have compromised the client sufficiently to obtain the (transport) keys then presumably you already have access to the keys being transported. This further reduces the importance of forward secrecy.\r\n\r\nThis is right. Generally, any centrally generated key or revocation passphrase relys on the security of the keys used to protect its delivery. The point for psf is, that one could cash or sniff the communication and at a later point in time decrypts the encrypted value and so get access to the new keymaterial. Finally it is also a mater of security of the algorithms used to protect the delivery of the encrypted values and the encrypted keys themselves.\r\n@ounsworth Do you think we should change something in the text?",
+          "createdAt": "2023-06-13T14:57:33Z",
+          "updatedAt": "2023-06-13T15:00:20Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 15.6.23\r\nIssue can be closed",
+          "createdAt": "2023-06-15T15:48:44Z",
+          "updatedAt": "2023-06-15T15:48:44Z"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOInbtzM5Z6paC",
+      "title": "No need for `id-hpke-mac` and `HpkeMacParameter` nor for key identifiers",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/3",
+      "state": "CLOSED",
+      "author": "DDvO",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Currently, [section  5.1.3.4 ](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-5.1.3.4 ) contains the definitions\r\n\r\n> ```\r\n>   id-hpke-mac OBJECT IDENTIFIER ::= { TBD2 }\r\n> ```\r\n> When id-hpke-mac is used, the parameters MUST employ the HpkeMacParameter syntax. The syntax for HpkeMacParameter is as follows:\r\n> ```\r\n>   HpkeMacParameter ::= SEQUENCE {\r\n>      mac                 AlgorithmIdentifier\r\n>      -- the MAC AlgId\r\n>   }\r\n> ```\r\nI see no need for these.\r\n\r\nAny MAC-based message protection is sufficiently determined by the algorithm identifier of the MAC alg used for the given message and by (the selection of) the symmetric key being used. This general case is already covered by [section 5.1.3.1](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#name-shared-secret-information) and by the beginning of [section 5.1.1 ](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#name-pki-message-header) giving hints on how to address the symmetric key.\r\nFor instance, for the PBM defined in [RFC 4211 section 4.4](https://www.rfc-editor.org/rfc/rfc4211#section-4.4), the set of core algorithms and auxiliary values (such as the salt) used are encoded in a `PBMParameter` structure, and the shared secret may be implicit or determined by `sender` field, plus optionally the `senderKID` field, of the message header. This way, the message protection can be interpreted without further input/history.\r\n[moved to #6:]~BTW, IMO it would be helpful if section 5.1.1 also mentioned how to determine the symmetric key being used, namely using the `sender` and `senderKID` message header fields.~\r\n\r\n[moved to #6:]~Actually, the HPKE+MAC-based message protection is 'just' another special case of the MAC-based message protection very briefly described in section 5.1.3.1. So IMO all the text of  5.1.3.4 should better move there (strictly speaking, as a subsection of 5.1.3.1, but I'd say we can and should save the extra nesting).~\r\n\r\nThe only special/new thing about this MAC method is how to arrive at the shared symmetric key.\r\nHere its is not a pre-shared one, but it is produced on-the-fly using a preparatory message exchange with the KEM cert and the respective KEM key pair of each party.\r\n\r\nWhen the first two messages have been exchanged, the symmetric 'session' key to use for MAC-protecting all further messages of the given transaction has been established. Note that because it is ephemeral, it cannot be (sufficiently) addressed by any static info such as the sender/recipient name and/or the sender/recipient cert or their subject key identifiers (SKID).\r\nTherefore, it does not really help to place the SKID anywhere in the message, be it as part of the `HpkeMacParameter` structure or as the the `senderKID` and `recipKID` message header fields.\r\n\r\nAnyway, the established symmetric 'session' key needs to be remembered by both parties as long as the transaction is active. Therefore, it must be stored along with their transaction contexts, and it is entirely sufficient to identify/address this symmetric 'session' key using the `transactionID`.\r\n\r\nThe fact that all messages starting with the third one are protected using a symmetric key established by then \r\nis implicitly clear for the rest of the transaction. So semantically there is no need to give any indication about this (such as `id-hpke-mac`) in the protected messages. OTOH, for technical reasons some protection alg identifier should be given, and it is most straightforward to place the MAC alg identifier directly in the `protectionAlg` field. (BTW, the sender of each message could even choose a different MAC algorithm each time, though this flexibility is not needed.)\r\n\r\nThus, for the reasons given, `id-hpke-mac` and `HpkeMacParameter` are not needed,\r\nneither do we need any way of further referencing the KEM certs and keys used in the first steps.",
+      "createdAt": "2022-12-22T21:07:49Z",
+      "updatedAt": "2023-01-19T13:46:22Z",
+      "closedAt": "2023-01-19T13:46:21Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "David, thank you for this issue.\r\nYou point at some additional issues unrelated to the topic in the tile. Please open separate issues, it makes it easier to separately discuss them. It confuses me to mx things. thank you.\r\n\r\nI support you proposal to directly use the MAC algorithm OID instead of id-hpke-mac in the protectionAlg field of the request message. I will provide an update of the text reflecting this change and we can possibly discuss it in the afternoon. ",
+          "createdAt": "2023-01-19T08:41:10Z",
+          "updatedAt": "2023-01-19T08:41:10Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "> You point at some additional issues unrelated to the topic in the tilte. Please open separate issues, it makes it easier to separately discuss them. It confuses me to mix things. thank you.\r\n\r\nI noticed two such topics - done for them.\r\n \r\n> I support you proposal to directly use the MAC algorithm OID instead of id-hpke-mac in the protectionAlg field of the request message. I will provide an update of the text reflecting this change and we can possibly discuss it in the afternoon.\r\n\r\nPleased to hear.",
+          "createdAt": "2023-01-19T09:39:49Z",
+          "updatedAt": "2023-01-19T09:39:49Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Resolved in https://github.com/lamps-wg/cmp-updates/commit/ec4fa3e3b120a151a3448a0e17490957424b587c",
+          "createdAt": "2023-01-19T13:46:21Z",
+          "updatedAt": "2023-01-19T13:46:21Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOInbtzM5Z6pbr",
+      "title": "Open point in Key Encapsulation section: how to convey L?",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/4",
+      "state": "CLOSED",
+      "author": "DDvO",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "How does the recipient of an `HpkeCiphertext` know/learn the value of  the length `L` that the sender chose in its call of `SendExportBase`, to be re-used in the `ReceiveExportBase` call of the recipient?",
+      "createdAt": "2022-12-22T21:07:56Z",
+      "updatedAt": "2023-02-28T08:23:46Z",
+      "closedAt": "2023-02-28T08:23:46Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "L is the output length of the KDF in byte and therefore the length of the secret derived from the HPKE. This secret will be used for MAC-based message protection using a MAC algorithm according to CMP Algorithms Section 6.2 https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cmp-algorithms-15#section-6.2 . Therefore, I think, L is specified by the length of the symmetric key to be used by the MAC algorithm.\r\n@Mike, is this understanding correct, or do you think we need to explicitly specify L in the HpkeCiphertext?",
+          "createdAt": "2023-01-19T09:18:58Z",
+          "updatedAt": "2023-01-19T09:18:58Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Design team meeting minutes:\r\nI will add L to HpkeCiphertext and make enc optional.\r\nThe client needs to send an HpkeCiphertext  with kem, kdf, and L omitting enc in the first genm message.\r\nThe server should accept the L an include into the HpkeCiphertext  of the genp message.\r\nThe client must check that the L from genp is at least as large as the security level of the chosen MAC algorithm.",
+          "createdAt": "2023-01-19T17:19:19Z",
+          "updatedAt": "2023-01-19T17:23:01Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I mentioned in \\#2 that if we include the overall transcript in the final key derivation (as recommended in the Kyber paper), then that maybe solves the problem of the client and server using different L values.",
+          "createdAt": "2023-01-20T00:10:11Z",
+          "updatedAt": "2023-01-20T18:25:27Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I will add L to HpkeCiphertext.",
+          "createdAt": "2023-02-28T08:23:46Z",
+          "updatedAt": "2023-02-28T08:23:46Z"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "I_kwDOInbtzM5Z8OB5",
+      "title": "Be consistent: client - server vs. PKI entity - PKI management entity",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/5",
+      "state": "CLOSED",
+      "author": "DDvO",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "[Section 5.1.3.4. ](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-5.1.3.4)[Key Encapsulation](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#name-key-encapsulation) uses both pairs of terms interchangeably.\r\n\r\nFor consistency, better stick to one of them. My preference, for simplicity, would be: client - server.\r\nThe terms \"client\" and \"server\" are those used also in, e.g., section 5.1.1, and various other places.",
+      "createdAt": "2022-12-23T06:37:07Z",
+      "updatedAt": "2023-02-28T12:41:05Z",
+      "closedAt": "2023-02-28T12:41:04Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "You are right, this is confusing.\r\nPKI entity and PKI management entity refer to the parties involved in the PKI management operation. We use these terms in the Lightweight CMP Profile. RFC4210 uses the terms end entity and PKI, CA, or RA. Client and server refer to the role in a single exchange where one has the client and one the server role. Client and server is also used in RFC 4210, but less often that end entity and PKI/CA/RA. Therefore, I tend to use end entity and PKI if the roles in the PKI management operation are meant. ",
+          "createdAt": "2023-01-19T09:35:02Z",
+          "updatedAt": "2023-01-19T09:35:02Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "I just found that at least according to RFC 4210, \"PKI entity\" can mean any PKI component: CA, RA, or EE. \r\nSo certainly better to use \"end entity\" and \"PKI\" than \"PKI entity\".\r\n\r\nYet regarding the HPKE-baesd message flow described in 5.1.3.4,\r\nthis is not actually confined to EE - PKI communication: it can be used also, e.g., between (L)RA and RA, or RA and CA.\r\nSo also for this generality I propose to use \"client\" and \"server\" here and to mention that the client usually is an EE and the server a PKI management entity.",
+          "createdAt": "2023-01-19T09:53:56Z",
+          "updatedAt": "2023-01-19T09:53:56Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> this is not actually confined to EE - PKI communication: it can be used also, e.g., between (L)RA and RA, or RA and CA.\r\n\r\nThis is why I used PKI entity here instead of end entity, as it can be the EE, RA, or CA, as you stated above.",
+          "createdAt": "2023-01-19T14:20:55Z",
+          "updatedAt": "2023-01-19T14:20:55Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I could add (client) and (server) in Figure 2 like\r\n\r\nStep# PKI entity (client)                  PKI management entity (server)\r\n\r\nfor clarification.",
+          "createdAt": "2023-01-19T14:24:13Z",
+          "updatedAt": "2023-01-19T14:24:13Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Design team meeting minutes:\r\nI will add a note right after Figure 2 to state that the PKI entity has kemCertC and the PKI management entity has kemCertS.\r\nI will also add PKI entity after the first occurrence of clinet with kemCertC and the same for PKI management entity. ",
+          "createdAt": "2023-01-19T17:21:38Z",
+          "updatedAt": "2023-01-19T17:22:43Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> Design team meeting minutes: I will add a note right after Figure 2 to state that the PKI entity has kemCertC and the PKI management entity has kemCertS. I will also add PKI entity after the first occurrence of clinet with kemCertC and the same for PKI management entity.\r\n\r\nImplemented",
+          "createdAt": "2023-02-28T12:41:04Z",
+          "updatedAt": "2023-02-28T12:41:04Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "I_kwDOInbtzM5cUN9p",
+      "title": "Clarify in section 5.1.1 how to determine the symmetric key being used",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/6",
+      "state": "CLOSED",
+      "author": "DDvO",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "[this issue has been carved out from #3]\r\n\r\nIt would be helpful if section 5.1.1 also mentioned how to determine the symmetric key being used, \r\nnamely using the `sender` and `senderKID` message header fields.",
+      "createdAt": "2023-01-19T09:34:22Z",
+      "updatedAt": "2023-05-10T12:12:59Z",
+      "closedAt": "2023-05-10T12:12:59Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "There is already a ToDo in the text to add some content to the description of senderKID and recipKID. My proposal would be to use the subjectKID of the KEM certificates used by the end entity and the PKI.\r\nWhat do you think? ",
+          "createdAt": "2023-01-19T09:38:20Z",
+          "updatedAt": "2023-01-19T09:38:20Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "> There is already a ToDo in the text to add some content to the description of senderKID and recipKID.\r\n\r\nYou mean `< ToDo: Possibly add a protection mechanism using KEM keys. >`?\r\n\r\nThe recipKID is not needed for KEM keys.\r\n\r\n> My proposal would be to use the subjectKID of the KEM certificates used by the end entity and the PKI. What do you think?\r\n\r\nSo you mean, to place in the `senderKID` field the subject key identifier (SKID) of the KEM cert used by the respective sender?\r\n\r\nCertainly it is preferable to use the SKID if it is available, so I support requiring its use in this case.\r\nYet note that RFC 5280 requires its presence in X.509v3 compliant certs only for CA certs.\r\nSo we should also mention somehow that the `sender` field may be used if needed. \r\nWhich is already stated by RFC 4210 (though not specifically for symmetric keys) and inherited in 5.1.1:\r\n\r\n> The sender field contains the name of the sender of the PKIMessage. This name (in conjunction with senderKID, if supplied) should be sufficient to indicate the key to use to verify the protection on the message. ",
+          "createdAt": "2023-01-19T10:16:28Z",
+          "updatedAt": "2023-01-19T10:16:28Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "As we need two HPKE exchanges to establish a shared secret capable authenticating the server and the client, the KEM certificates of both sides are needed, like with D-H. Therefore, I think we need to use both senderKID and recipKID.\r\nWe can discuss later in our meeting.",
+          "createdAt": "2023-01-19T14:08:55Z",
+          "updatedAt": "2023-01-19T14:13:06Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Design team meeting minutes:\r\nThis issue was not discussed.",
+          "createdAt": "2023-01-19T17:22:28Z",
+          "updatedAt": "2023-01-19T17:22:28Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "done",
+          "createdAt": "2023-03-01T07:57:16Z",
+          "updatedAt": "2023-03-01T07:57:16Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@DDvO can you please check if this is what you requested?",
+          "createdAt": "2023-03-02T17:03:44Z",
+          "updatedAt": "2023-03-02T17:03:44Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@DDvO Ping",
+          "createdAt": "2023-05-09T13:15:13Z",
+          "updatedAt": "2023-05-09T13:15:13Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "As we changed to unilateral authenticated KEM key establishment, there is no need to identify a KEM key from the recipient. Therefore in Section 5.1.1 the subsentence in parentheses\r\n`(recipKID will normally only be required where protection of the message also uses the recipient's KEM key)`\r\nmust be removed.",
+          "createdAt": "2023-05-10T11:22:19Z",
+          "updatedAt": "2023-05-10T11:22:19Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "Actually better return to the original subsentence in parentheses referring to DH keys:\r\n`(recipKID will normally only be required where protection of the message uses Diffie-Hellman (DH) keys)`\r\n\r\nsuch that the paragraph becomes\r\n\r\n> senderKID and recipKID are usable to indicate which keys have been used to protect the message (recipKID will normally only be required where protection of the message uses Diffie-Hellman (DH) keys). These fields MUST be used if required to uniquely identify a key (e.g., if more than one key is associated with a given sender name). The senderKID SHOULD be used in any case.\r\n\r\n",
+          "createdAt": "2023-05-10T11:47:19Z",
+          "updatedAt": "2023-05-10T11:47:19Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "done",
+          "createdAt": "2023-05-10T12:12:59Z",
+          "updatedAt": "2023-05-10T12:12:59Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOInbtzM5cUPGj",
+      "title": "Move all of section 5.1.3.4 into section 5.1.3.1 ?",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/7",
+      "state": "CLOSED",
+      "author": "DDvO",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "[this issue was carved out of #3]\r\n\r\nThe HPKE+MAC-based message protection is 'just' another special case of the MAC-based message protection very briefly described in section 5.1.3.1. So IMO all the text of 5.1.3.4 should better move there (strictly speaking, as a subsection of 5.1.3.1, but I'd say we can and should save the extra nesting).",
+      "createdAt": "2023-01-19T09:38:07Z",
+      "updatedAt": "2023-01-19T14:12:13Z",
+      "closedAt": "2023-01-19T14:12:12Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Currently Section 5.1.3 is structured based on the keys to use for message protection. Here we use KEM keys for message protection and only use a symmetric key indirectly, like with Diffie-Hellmann in Section 5.1.3.2. I would propose to rename Section 5.1.3.1 to focus it more on pre-shared keys and passwords and keep the protection using KEM keys in Section 5.1.3.4.",
+          "createdAt": "2023-01-19T09:43:38Z",
+          "updatedAt": "2023-01-19T09:43:38Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "Sounds good to me.",
+          "createdAt": "2023-01-19T10:18:49Z",
+          "updatedAt": "2023-01-19T10:18:49Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Resolved with https://github.com/lamps-wg/cmp-updates/commit/92bacd31fa196e317930b6e2197c3f3673dd75bd",
+          "createdAt": "2023-01-19T14:12:12Z",
+          "updatedAt": "2023-01-19T14:12:12Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOInbtzM5c3axo",
+      "title": "Using HPKE SetupBase+KDF, HPKE SendExportBase, or plain KEM+KDF",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/8",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://datatracker.ietf.org/doc/html/draft-celi-wiggers-tls-authkem-01#section-3.1 uses SetupExport.\r\nhttps://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-5.1.3.4 uses SendExportBase.\r\nAre there reasons for using SetupExport + KDF instead of SendExportBase?",
+      "createdAt": "2023-01-26T11:59:52Z",
+      "updatedAt": "2023-05-09T13:00:10Z",
+      "closedAt": "2023-05-09T13:00:10Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The WG recommended use of HPKE for establishing a shared secret key.  Today HPKE specifies only a D-H bases KEM in RFC9180 Section 4.1.  To be independent to HPKE this document could also use the approach shown in https://datatracker.ietf.org/doc/draft-ietf-lamps-cms-kemri/ only relying on the availability of a KeyGen, Encapsulate, and Decapsulate function.  This would ease this specification and allow further reuse of profiling KEM algorithms for use in CMS.  What do others think? ",
+          "createdAt": "2023-03-01T07:58:26Z",
+          "updatedAt": "2023-03-01T08:00:19Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Authors meeting 3.2.23:\r\nI will submit a version including the HPKE SendExportBase based approach and then I will provide an update providing the plain KEM+KDF approach as this is the preferred choice of the group.",
+          "createdAt": "2023-03-02T17:06:45Z",
+          "updatedAt": "2023-03-02T17:06:45Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The change to plain KEM+KDF will be submitted with version -05 ",
+          "createdAt": "2023-03-03T07:45:12Z",
+          "updatedAt": "2023-03-03T07:45:12Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The changes to plain KEM+KDF was presented to IETF116 and supported",
+          "createdAt": "2023-05-09T13:00:10Z",
+          "updatedAt": "2023-05-09T13:00:10Z"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "I_kwDOInbtzM5c3cA1",
+      "title": "Is there a planning for adding a Kyber profile to HPKE",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/9",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://datatracker.ietf.org/doc/html/rfc9180#section-4.1 offers a DH profile for HPKE. Is there any activity ongoing to provide a Kyber based profile.",
+      "createdAt": "2023-01-26T12:04:11Z",
+      "updatedAt": "2023-03-02T17:08:53Z",
+      "closedAt": "2023-03-02T17:08:52Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@ounsworth could you ask this question at IETF116 CRFG meeting if you are on-site?",
+          "createdAt": "2023-01-26T16:19:41Z",
+          "updatedAt": "2023-01-26T16:19:41Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 2.3.23:\r\nWhen moving away from HPKI to plain KEM+KDF, we do not rely on HPKE supporting any specific KEM algorithm.\r\nBut anyhow, it would be interesting if CRFG will profile Kyber for HPKE. ",
+          "createdAt": "2023-03-02T17:08:52Z",
+          "updatedAt": "2023-03-02T17:08:52Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "I_kwDOInbtzM5du1Qh",
+      "title": "Proof of Possession: \"certain attacks\"",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/10",
+      "state": "CLOSED",
+      "author": "thomwiggers",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": ">[4.3. ](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-4.3)[Proof-of-Possession (POP) of Private Key](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#name-proof-of-possession-pop-of-)\r\n> In order to prevent _certain attacks_ [...]\r\n\r\n(emphasis mine)\r\n\r\nWe've had quite a bit of discussion about \"certain attacks\" on the mailing list. The remainder of the text hints a bit at attacks in deployments where the binding between the end entity and the key isn't rigorously checked, but does it make sense to e.g. refer to [Appendix A of this paper](https://s3.amazonaws.com/files.douglas.stebila.ca/files/research/papers/CCS-GHLOSZ22.pdf) which makes a little bit more of an overview?\r\n\r\n(This comment comes from my academic writing background, so leaving this or other references out for editorial reasons is perfectly fine)",
+      "createdAt": "2023-02-06T13:19:47Z",
+      "updatedAt": "2023-05-17T14:37:00Z",
+      "closedAt": "2023-05-17T14:37:00Z",
+      "comments": [
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Oh hey, I wrote Appendix A of that paper.\r\n+1 to this suggestion!",
+          "createdAt": "2023-02-23T01:15:41Z",
+          "updatedAt": "2023-02-23T01:15:54Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@ounsworth do you want to add a security consideration briefly describing the risk/attack a POP addresses bases on Appendix A of that paper?",
+          "createdAt": "2023-02-27T13:52:34Z",
+          "updatedAt": "2023-02-27T13:52:34Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Authors meeting 2.3.23:\r\nMike will provide a summary as security consideration.",
+          "createdAt": "2023-03-02T16:08:47Z",
+          "updatedAt": "2023-03-02T16:08:47Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "concluded with Mike's PR",
+          "createdAt": "2023-05-17T14:37:00Z",
+          "updatedAt": "2023-05-17T14:37:00Z"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "I_kwDOInbtzM5du4z_",
+      "title": "4.3.4 PoP of KEM keys: mention encaps/decaps?",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/11",
+      "state": "CLOSED",
+      "author": "thomwiggers",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> [4.3.4. ](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-4.3.4)[Key Encapsulation Mechanism Keys](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#name-key-encapsulation-mechanism)\r\n\r\n> [...]\r\n> The indirect method is to issue a certificate that is encrypted for the end entity (and have the end entity demonstrate its ability to decrypt this certificate in the confirmation message). This allows a CA to issue a certificate in a form that can only be used by the intended end entity.\r\n\r\nI'm nitpicking a bit, but perhaps it makes sense to clarify that we encrypt the certificate using a shared key encapsulated to the private key, and that the ciphertext needs to be provided along the certificate as well.\r\n\r\nFor example:\r\n\r\n> The indirect method is to issue a certificate that is encrypted for the end entity using a shared secret key encapsulated to the private key (and have the end entity demonstrate its ability to decapsulate the shared secret key from the ciphertext and decrypt this certificate in the confirmation message). This allows a CA to issue a certificate in a form that can only be used by the intended end entity.\r\n\r\nA bit verbose, perhaps, but it may help clarify that the KEM mechanism does differ from the encryption key mechanism in this important way.",
+      "createdAt": "2023-02-06T13:28:35Z",
+      "updatedAt": "2023-03-03T07:56:16Z",
+      "closedAt": "2023-03-03T07:56:16Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you for this proposal.\r\nWhen using the indirect method, the encrypted certificate is provided using EnvelopedData. This implies providing an encrypted content encryption key. But certainly it is good to explicitly state usage of encyps/decaps here.\r\nFinally it is even more complex as the shared secret key is derived from the encypsulated key using a KDF :-)\r\n\r\n`The indirect method is to issue a certificate that is encrypted for the end entity using a shared secret key derived from a key encapsulated using its public key (and have the end entity demonstrate its ability to use its private key for decapsulation of the KEM ciphertext, derive the shared secret key, decrypt this certificate, and provide a hash of the certificate in the confirmation message).  This allows a CA to issue a certificate in a form that can only be used by the intended end entity.`",
+          "createdAt": "2023-03-01T08:29:12Z",
+          "updatedAt": "2023-03-01T08:29:12Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 2023-3-2:\r\nYou could borrow the KEM definition from either\r\nhttps://datatracker.ietf.org/doc/html/draft-ietf-tls-hybrid-design#name-key-encapsulation-mechanism\r\n\r\nor \r\n\r\nhttps://datatracker.ietf.org/doc/draft-ietf-lamps-cms-kemri/\r\nsection 1",
+          "createdAt": "2023-03-02T16:14:26Z",
+          "updatedAt": "2023-03-02T16:14:26Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Adding `Note: A definition of Key Encapsulation Mechanisms can be found in {{I-D.ietf-cms-kemri, Section 1}}.`",
+          "createdAt": "2023-03-03T07:55:54Z",
+          "updatedAt": "2023-03-03T07:55:54Z"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "I_kwDOInbtzM5dvKyk",
+      "title": "Security considerations: Interactions with Certificate Transparency",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/14",
+      "state": "CLOSED",
+      "author": "thomwiggers",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The implicit method of proof-of-possession, for encryption key- and KEM-based certificates, relies on the end-entity not obtaining the issued certificate if they do not posses the private key to decrypt the certificate.\r\n\r\nThis means that a certificate _is_ created and, if CMP is used to issue WebPKI certificates, recorded to the certificate transparency logs: after all, we need to include the SCT statements in the certificate. Most submitters will likely submit precertificates instead of full certificates (which, in CT 1.0, include the poison precertificate extension, or in CT 2.0, use CMS syntax). But normal certificates _can_ be submitted, and if they are submitted before the PoP is completed, the certificate can be obtained from the CT logs: see for example this cert (which does have the poison extension https://crt.sh/?id=8512435380)",
+      "createdAt": "2023-02-06T14:15:04Z",
+      "updatedAt": "2023-03-03T08:07:32Z",
+      "closedAt": "2023-03-03T08:07:31Z",
+      "comments": [
+        {
+          "author": "thomwiggers",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This comment is an extension of the discussion we had on the mailing list https://mailarchive.ietf.org/arch/msg/tls/McnWDK1UQ_hSNRwGg8mjHD0tWEY/",
+          "createdAt": "2023-02-06T14:17:34Z",
+          "updatedAt": "2023-02-06T14:17:34Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "You are right, using CT logs is a special case.\r\n\r\nCurrently Section 3.1.2 writes\r\n`Note that policy may dictate that the CA must not publish or otherwise distribute the certificate until the requesting entity has reviewed and accepted the newly-created certificate (typically through use of the certConf message).` \r\nI would propose extending the sentence to \r\n`Note that policy may dictate that the CA must not publish or otherwise distribute the certificate until the requesting entity has reviewed and accepted the newly-created certificate or the indirect POP is completed (typically through use of the certConf message). In case of publication of the certificate or a precertificate in a Certificate Transparency log [RFC9162], the certificate must be revoked if it was not accepted or the indirect POP could not be completed.`\r\n\r\nAlso Section 4.2.2.2 states\r\n`(Where verification of the cert confirmation message fails, the RA/CA MUST revoke the newly issued certificate if it has been published or otherwise made available.)`\r\n\r\nBut I would also add a security consideration:\r\n`8.9 Usage of Certificate Transparency Logs\r\nIf a certificate or its precertificate was published in a Certificate Transparency log [RFC9162] it must be revoked, if a required certConf message could not be verified, especially when the implicit POP was used.`",
+          "createdAt": "2023-03-01T09:36:49Z",
+          "updatedAt": "2023-03-01T09:36:49Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I suggest we add an additional sentence to this security consideration:\r\n\r\n> CAs that support indirect PoP MUST NOT also publish final certificates to CT logs. The risk is that a malicious actor could fetch the final certificate from the CT log and use that to spoof a response to the implicit PoP challenge via a certConf response. This risk does not apply to CT precertificates, so those are ok to publish.",
+          "createdAt": "2023-03-02T16:42:12Z",
+          "updatedAt": "2023-03-02T16:42:12Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Extended the security considerations as proposed by Mike",
+          "createdAt": "2023-03-03T08:07:31Z",
+          "updatedAt": "2023-03-03T08:07:31Z"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "I_kwDOInbtzM5fpKRR",
+      "title": "Additional PKIFailureInfo badKemExchange?",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/15",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "ToDo in Section 5.1.3.4: An additional PKIFailureInfo badKemExchange could be defined and used alternatively. ",
+      "createdAt": "2023-03-01T09:48:48Z",
+      "updatedAt": "2023-03-02T16:40:08Z",
+      "closedAt": "2023-03-02T16:40:07Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Authors meeting 2.3.23:\r\nWe go with badMessageCheck",
+          "createdAt": "2023-03-02T16:40:07Z",
+          "updatedAt": "2023-03-02T16:40:07Z"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "I_kwDOInbtzM5fpKlZ",
+      "title": "Adding l and mac to HpkeCiphertext ",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/16",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "ToDo in Section 5.1.3.4: As discussed in the last meeting and according to [draft-ietf-lamps-cms-kemri] I added the explicit value of l.  I also propose adding the mac OID.  What do others think?",
+      "createdAt": "2023-03-01T09:49:43Z",
+      "updatedAt": "2023-03-02T16:41:00Z",
+      "closedAt": "2023-03-02T16:40:59Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 2.3.23:\r\nkeep L\r\nremove mac ",
+          "createdAt": "2023-03-02T16:40:59Z",
+          "updatedAt": "2023-03-02T16:40:59Z"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "id": "I_kwDOInbtzM5fpL28",
+      "title": "Adding support for KEM to Section 5.2.8",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/17",
+      "state": "OPEN",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "ToDo in Section 5.2.8: Adding support for KEM keys and fixing some inconsistencies in Section 5.2.8.3 resulting from the update of RFC2510 to RFC4210\r\n",
+      "createdAt": "2023-03-01T09:52:52Z",
+      "updatedAt": "2023-05-25T07:31:17Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 2.3.23:\r\nDo this after IETF116",
+          "createdAt": "2023-03-02T16:43:15Z",
+          "updatedAt": "2023-03-02T16:43:15Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "Looks like this is still ToDo.",
+          "createdAt": "2023-05-25T07:24:35Z",
+          "updatedAt": "2023-05-25T07:25:06Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yes, we need to look into it ... :-)",
+          "createdAt": "2023-05-25T07:31:17Z",
+          "updatedAt": "2023-05-25T07:31:17Z"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "I_kwDOInbtzM5fpMqQ",
+      "title": "Appendix B would needs a review",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/18",
+      "state": "OPEN",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "ToDo: Review Appendix B and try to push the content to Section 4 or Section 5 of this document.\r\nToDo: Possibly add support for certificates containing KEM keys.\r\n",
+      "createdAt": "2023-03-01T09:54:24Z",
+      "updatedAt": "2023-05-25T07:30:33Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 3.2.23:\r\nAddress after IETF116",
+          "createdAt": "2023-03-02T16:44:25Z",
+          "updatedAt": "2023-03-02T16:44:25Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "Looks like this is due meanwhile.\r\nWho should ideally review this?",
+          "createdAt": "2023-05-25T07:23:10Z",
+          "updatedAt": "2023-05-25T07:23:10Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This is still a ToDo. Probably we need to digg into it a bit :-)",
+          "createdAt": "2023-05-25T07:30:33Z",
+          "updatedAt": "2023-05-25T07:30:33Z"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "I_kwDOInbtzM5lc4Lf",
+      "title": "Review of updates Section 5.1.3.4 and Appendix E",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/20",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I updates the section on mesage protection using a KEM key pair and added an appendisx on different szenarios regarding which side owns the KEM key.\r\n\r\nAny review is appreciated.",
+      "createdAt": "2023-05-09T13:42:52Z",
+      "updatedAt": "2023-05-12T11:38:12Z",
+      "closedAt": "2023-05-12T11:38:12Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 11.05.23\r\nImprove the first paragraphe regadring terminoligy 'sender' and 'recipient'.\r\nMay be add  som text like Mike proposed:\r\n\"Here we use the term \"sender\" to mean the entity initiating a given request, who needs to be authenticated, and \"recipient\" to mean the entity who needs to authenticate the request being received. In case the sender ...\"",
+          "createdAt": "2023-05-11T15:37:58Z",
+          "updatedAt": "2023-05-11T15:37:58Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Mike proposed adding a note explaining why Bob used the KDF not together with the KEM.",
+          "createdAt": "2023-05-12T08:14:48Z",
+          "updatedAt": "2023-05-12T08:14:48Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It was aslo discussed to extend the description of steps 1-3 of figure 2 more explicitly, like in older versions of the document.",
+          "createdAt": "2023-05-12T08:15:50Z",
+          "updatedAt": "2023-05-12T08:15:50Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "done",
+          "createdAt": "2023-05-12T11:38:12Z",
+          "updatedAt": "2023-05-12T11:38:12Z"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "id": "I_kwDOInbtzM5lj-yk",
+      "title": "Rename KemCiphertext  to e.g. KemCiphertextInfo",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/21",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Feedback from Andreas",
+      "createdAt": "2023-05-10T13:23:37Z",
+      "updatedAt": "2023-05-11T15:38:18Z",
+      "closedAt": "2023-05-11T15:38:18Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Change is implemented",
+          "createdAt": "2023-05-11T15:38:18Z",
+          "updatedAt": "2023-05-11T15:38:18Z"
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "id": "I_kwDOInbtzM5lkHx2",
+      "title": "Review definition of len",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/22",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Is the sentence \r\n`It SHOULD be the maximum key length of the MAC function and MUST NOT be larger that 255*Nh of the KDF where Nh is the output size of the KDF.`\r\nstill correct and needed.\r\nIt came from HPKE and it requires the sender of the ciphertext to know the MAC function to be used for protection. ",
+      "createdAt": "2023-05-10T13:43:03Z",
+      "updatedAt": "2023-05-12T08:11:02Z",
+      "closedAt": "2023-05-12T08:11:02Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Remove kdf and len from KemCiphertextInfo and introduce a KEMBMParameter Alg OID containing kdf, len, and mac.",
+          "createdAt": "2023-05-11T15:58:10Z",
+          "updatedAt": "2023-05-11T15:58:10Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "done, see #26 ",
+          "createdAt": "2023-05-12T08:11:02Z",
+          "updatedAt": "2023-05-12T08:11:02Z"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "id": "I_kwDOInbtzM5lkJEw",
+      "title": "Can we use Alice and Bob within an RFC with regard to inclusive language ",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/23",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Alternatively we could use 'Peer A' and 'Peer B'",
+      "createdAt": "2023-05-10T13:46:01Z",
+      "updatedAt": "2023-05-12T08:13:06Z",
+      "closedAt": "2023-05-12T08:13:06Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@ralienpp checkt with IETF regarding usage of Alice and Bob. The feedback is, that usage of Alice and Bob is fine regarding inclusive language.",
+          "createdAt": "2023-05-12T08:13:06Z",
+          "updatedAt": "2023-05-12T08:13:06Z"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "id": "I_kwDOInbtzM5lkX98",
+      "title": "Security Consideration according to KEM",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/24",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Potentially add something like in cms-kemri: KEM algorithms that offer indistinguishability under adaptive chosen ciphertext attack (IND-CCA2) security are appropriate",
+      "createdAt": "2023-05-10T14:16:59Z",
+      "updatedAt": "2023-05-24T13:58:01Z",
+      "closedAt": "2023-05-24T13:58:01Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 11.05.23\r\nPotentially add this topic to CMP Algorithms",
+          "createdAt": "2023-05-11T16:00:19Z",
+          "updatedAt": "2023-05-11T16:00:19Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Proposal from John on email:\r\n\r\nIn CMS KEM draft-ietf-lamps-cms-kemri we have the following note:\r\n\r\nTo be appropriate for use with this specification, the KEM algorithm\r\nMUST explicitly be designed to be secure when the public key is used\r\nmany times. For example, a KEM algorithm with a single-use public\r\nkey is not appropriate because the public key is expected to be\r\ncarried in a long-lived certificate [RFC5280] and used over and over.\r\nThus, KEM algorithms that offer indistinguishability under adaptive\r\nchosen ciphertext attack (IND-CCA2) security are appropriate. A\r\ncommon design pattern for obtaining IND-CCA2 security with public key\r\nreuse is to apply the Fujisaki-Okamoto (FO) transform [FO] or a\r\nvariant of the FO transform [HHK].\r\n\r\nWe could probably reuse some or most of this text because it is possible a CMP server or client could use a KEM key for a long period of time for message protection. We could recommend the server rotate its protection keys periodically to mitigate this issue (I think that would be a best practice). Therefore a KEM with a limited use key would not be acceptable, and an IND-CCA2 KEM should be recommended.",
+          "createdAt": "2023-05-12T12:17:23Z",
+          "updatedAt": "2023-05-12T12:17:23Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This issue will be addressed in the context of #25 ",
+          "createdAt": "2023-05-24T13:58:00Z",
+          "updatedAt": "2023-05-24T13:58:00Z"
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "id": "I_kwDOInbtzM5lkbGf",
+      "title": "Data threshold for message protection",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/25",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Do we want to add a generic security consideration on how much data shall be protected using one key.",
+      "createdAt": "2023-05-10T14:23:56Z",
+      "updatedAt": "2023-06-15T16:01:32Z",
+      "closedAt": "2023-06-15T16:01:32Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 11.05.23\r\nJohn offerd to look into it.",
+          "createdAt": "2023-05-11T16:02:17Z",
+          "updatedAt": "2023-05-11T16:02:17Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "In CMS KEM draft-ietf-lamps-cms-kemri we have the following note: \r\n\r\nTo be appropriate for use with this specification, the KEM algorithm\r\n   MUST explicitly be designed to be secure when the public key is used\r\n   many times.  For example, a KEM algorithm with a single-use public\r\n   key is not appropriate because the public key is expected to be\r\n   carried in a long-lived certificate [RFC5280] and used over and over.\r\n   Thus, KEM algorithms that offer indistinguishability under adaptive\r\n   chosen ciphertext attack (IND-CCA2) security are appropriate.  A\r\n   common design pattern for obtaining IND-CCA2 security with public key\r\n   reuse is to apply the Fujisaki-Okamoto (FO) transform [FO] or a\r\n   variant of the FO transform [HHK].\r\n\r\nWe could probably reuse some or most of this text because it is possible a CMP server or client *could* use a KEM key for a long period of time for message protection.   We could recommend the server rotate its protection keys periodically to mitigate this issue (I think that would be a best practice).  Therefore a KEM with a limited use key would not be acceptable, and an IND-CCA2 KEM should be recommended. ",
+          "createdAt": "2023-05-11T19:23:23Z",
+          "updatedAt": "2023-05-11T19:23:23Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you for this proposal. I extended the text a little to\r\n\"Recurring Usage of KEM Keys for Message Protection\r\n\r\nA shared secret key (ssk) used for MAC-based message protection MUST\r\nonly be used for the PKI management operation indicated by the\r\ntransactionID in the KemOtherInfo.\r\n\r\nIt is assumed that the overall size of data of all CMP messages in a\r\nPKI management operation protected by one shared secret key is small\r\nand not introducing additional security risks.\r\n\r\nTo be appropriate for use with this specification, the KEM algorithm\r\nMUST explicitly be designed to be secure when the public key is used\r\nmany times. For example, a KEM algorithm with a single-use public\r\nkey is not appropriate because the public key is expected to be\r\ncarried in a long-lived certificate [RFC5280] and used over and over.\r\nThus, KEM algorithms that offer indistinguishability under adaptive\r\nchosen ciphertext attack (IND-CCA2) security are appropriate. A\r\ncommon design pattern for obtaining IND-CCA2 security with public key\r\nreuse is to apply the Fujisaki-Okamoto (FO) transform [Fujisaki] or a\r\nvariant of the FO transform [Hofheinz].\"\r\n\r\n@johngray-dev what do you think?",
+          "createdAt": "2023-05-22T15:32:32Z",
+          "updatedAt": "2023-05-22T15:32:32Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "To me this sounds good.\r\nI'd suggest Just a re-phrase of the 2nd paragraph to:\r\n\r\nIt is assumed that the overall data size of the CMP messages\r\nin a PKI management operation protected by a single ssk\r\nis small enough not to introduce extra security risks.",
+          "createdAt": "2023-05-25T07:20:47Z",
+          "updatedAt": "2023-05-25T07:20:47Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you for the proposal.",
+          "createdAt": "2023-05-25T07:29:37Z",
+          "updatedAt": "2023-05-25T07:29:37Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This looks good to me too. \r\n\r\nI suggest adding a summary sentence to the end of the IND-CCA2 paragraph:\r\n> Therefore, given a long-term public key using an IND-CCA2 secure KEM algorithm, there is no limit to the number of CMP messages that can be encrypted under it.",
+          "createdAt": "2023-06-07T18:31:29Z",
+          "updatedAt": "2023-06-07T18:37:31Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks for the suggested edits.   They look good to me.    Therefore, to summarize all the changes:\r\n\r\n\"Recurring Usage of KEM Keys for Message Protection\r\n\r\nA shared secret key (ssk) used for MAC-based message protection MUST\r\nonly be used for the PKI management operation indicated by the\r\ntransactionID in the KemOtherInfo.\r\n\r\nIt is assumed that the overall data size of the CMP messages\r\nin a PKI management operation protected by a single shared secret key\r\nis small enough not to introduce extra security risks.\r\n\r\nTo be appropriate for use with this specification, the KEM algorithm\r\nMUST explicitly be designed to be secure when the public key is used\r\nmany times. For example, a KEM algorithm with a single-use public\r\nkey is not appropriate because the public key is expected to be\r\ncarried in a long-lived certificate [RFC5280] and used over and over.\r\nThus, KEM algorithms that offer indistinguishability under adaptive\r\nchosen ciphertext attack (IND-CCA2) security are appropriate. A\r\ncommon design pattern for obtaining IND-CCA2 security with public key\r\nreuse is to apply the Fujisaki-Okamoto (FO) transform [Fujisaki] or a\r\nvariant of the FO transform [Hofheinz].  \r\n\r\nTherefore, given a long-term public key using an IND-CCA2 secure KEM\r\nalgorithm, there is no limit to the number of CMP messages that can \r\nbe encrypted under it.\"",
+          "createdAt": "2023-06-07T18:38:10Z",
+          "updatedAt": "2023-06-07T18:38:10Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> A shared secret key (ssk) used for MAC-based message protection MUST\r\n> only be used for the PKI management operation indicated by the\r\n> transactionID in the KemOtherInfo.\r\n\r\nIt is right, that one ssk shall only be used for one PKI management operation. But I struggle with 'indicated by  ...', specifically as the transactionID is optional.\r\nMay be we can rephrase.\r\n\r\n`Each PKI management operation MUST use a fresh KEM cyphertext (ct)  and therefore a frech shared secret key (ssk) for MAC-based message protection.`",
+          "createdAt": "2023-06-13T16:19:15Z",
+          "updatedAt": "2023-06-13T16:19:15Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "Yeah, unfortunately we cannot fully rely on the presence of the transactionID.\r\n\r\nI suggest focusing on `ssk` only:\r\n\r\n```\r\nThe shared secret key (ssk) used for MAC-based message protection must be fresh for each PKI management operation.\r\n```\r\nbecause this is what matters more directly\r\nand also is what we refer to in the related statement\r\n> This shared secret key ssk can be reused by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.",
+          "createdAt": "2023-06-14T06:53:24Z",
+          "updatedAt": "2023-06-14T06:53:24Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "I also suggest moving the new sentence just after the related one in 5.1.3.4, simply as follows:\r\n> Yet it MUST be fresh per each PKI management operation.\r\n",
+          "createdAt": "2023-06-14T07:11:05Z",
+          "updatedAt": "2023-06-14T07:11:05Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I prefere refering to using a fresh `ct` as it is clearer and anyhow results in a fresh `ssk`.",
+          "createdAt": "2023-06-14T14:04:40Z",
+          "updatedAt": "2023-06-14T14:04:40Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "What do you think of this proposal as first paragraphe for Section 8.8.\r\n`Each PKI entity using key encapsulation for message protection, see {{sect-5.1.3.4}}, MUST receive a fresh KEM ciphertext (ct) for each PKI management operation to derive a fresh shared secret key (ssk) for MAC-based message protection.`",
+          "createdAt": "2023-06-14T14:56:05Z",
+          "updatedAt": "2023-06-14T14:56:05Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "After exchange with @DDvO this is the final proposal:\r\n`Each PKI entity using key encapsulation for MAC-based message protection, see {{sect-5.1.3.4}}, MUST use a fresh KEM ciphertext (ct) for each PKI management operation to derive a fresh shared secret key (ssk).`",
+          "createdAt": "2023-06-15T06:15:10Z",
+          "updatedAt": "2023-06-15T06:15:10Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 15.6.23\r\nAs the freshnes of the (ct) cannot be ensured by Alice, it is recommended to use randomn recipNonces in the message requesting the (ct).\r\n\r\n`Each PKI entity using key encapsulation for MAC-based message protection, see [Section 5.1.3.4], MUST use a fresh shared secret key (ssk) for each PKI management operation. This can be enforced by using senderNonce and recipNonce header fields in all messages of the PKI management operation.`",
+          "createdAt": "2023-06-15T15:20:19Z",
+          "updatedAt": "2023-06-15T15:59:44Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 15.6.23 \r\nIssue can be closed after the update",
+          "createdAt": "2023-06-15T15:51:43Z",
+          "updatedAt": "2023-06-15T15:51:43Z"
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "id": "I_kwDOInbtzM5lwLaf",
+      "title": "Introduction of KemBMParameter",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/26",
+      "state": "OPEN",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Meeting 11.5.23\r\nIt was decided to introduce an new AlgID for KEM based message protection\r\n`  id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 TBD4}\r\n\r\n  KemBMParameter ::= SEQUENCE {\r\n    kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},\r\n    len              INTEGER (1..MAX),\r\n    mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}\r\n  }`",
+      "createdAt": "2023-05-12T07:45:15Z",
+      "updatedAt": "2023-06-23T16:42:34Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "There is id-PasswordBasedMac OBJECT IDENTIFIER ::= { 1 2 840 113533 7 66 13 } and id-DHBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 30}, see: http://oid-info.com/get/1.2.840.113533.7.66\r\n\r\n@johngray-dev @ounsworth As both OIDs are registered in the Entrust OID tree, is it possible that Entrust will could also register id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 TBD4}?",
+          "createdAt": "2023-05-12T07:54:23Z",
+          "updatedAt": "2023-05-12T07:54:23Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "done",
+          "createdAt": "2023-05-12T08:10:24Z",
+          "updatedAt": "2023-05-12T08:10:24Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "There is id-PasswordBasedMac OBJECT IDENTIFIER ::= { 1 2 840 113533 7 66 13 } and id-DHBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 30}, see: http://oid-info.com/get/1.2.840.113533.7.66\r\n\r\n@johngray-dev @ounsworth As both OIDs are registered in the Entrust OID tree, is it possible that Entrust will could also register id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 TBD4}?",
+          "createdAt": "2023-05-23T11:11:37Z",
+          "updatedAt": "2023-05-23T11:18:05Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "```\r\n1.2.840.113533.7.66.16  kemBasedMac\r\n```\r\n\r\nI guess the others, like id-passwordBasedMac are Entrust OIDs; they were never registered under the IANA PKIX arc, so I guess it makes sense for this one also (ie this is not a prototyping OID, but actually the final OID). Good.",
+          "createdAt": "2023-06-07T18:51:28Z",
+          "updatedAt": "2023-06-07T18:51:28Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Looks good.   I am not sure if we have to officially register it anywhere, but it has been registered in the same place internally.   I guess if IETF accepts it, that makes it official.   Perhaps I will go over to the IANA people at 117 and ask them about it just to be clear....  :)",
+          "createdAt": "2023-06-07T18:52:43Z",
+          "updatedAt": "2023-06-07T18:52:43Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 15.6.23\r\nWe keep this issue until we have feedback from Russ on our proposal using the Entrust OID.",
+          "createdAt": "2023-06-15T15:50:52Z",
+          "updatedAt": "2023-06-15T15:50:52Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "2023-06-16:\r\n> John:\r\nThe problem with placeholder OIDs is that some implementions never move to the \"production\" OID.  If Entrust wants to assign permanent ones, I have no objection.\r\nRuss\r\n\r\nI think we can go ahead and use the OID mentioned above:\r\n\r\n```\r\n1.2.840.113533.7.66.16  kemBasedMac\r\n```\r\n",
+          "createdAt": "2023-06-18T15:33:37Z",
+          "updatedAt": "2023-06-18T15:33:37Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes, Agreed.   I is in an Arc that we own, and we have reserved space of it.   So sure, we can make it permanent.\r\n",
+          "createdAt": "2023-06-23T16:42:34Z",
+          "updatedAt": "2023-06-23T16:42:34Z"
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "id": "I_kwDOInbtzM5l8WSM",
+      "title": "Add clarification to Section 5.1.1.4. - CertProfile",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/28",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Liao Lijun adked the following question:\r\n\r\n\"As stated in \" 2.4. New Section 5.1.1.3. - CertProfile\":\r\n\r\n   id-it-certProfile  OBJECT IDENTIFIER ::= {id-it 21}\r\n   CertProfileValue ::= SEQUENCE SIZE (1..MAX) OF UTF8String\r\n\r\nWhen used in an ir/cr/kur/genm, the value MUST NOT contain more elements than the number of CertReqMsg or InfoTypeAndValue elements and the certificate profile names refer to the elements in the given order.\r\n\r\nMy question is how to interpret the profile names if the names in the CertProfileValue field is less than the CertReqMsg? For example, there are 4 CertReqMsg entries, but only 3 values in CertProfileValue.\"",
+      "createdAt": "2023-05-15T15:18:20Z",
+      "updatedAt": "2023-06-20T06:19:37Z",
+      "closedAt": "2023-06-20T06:19:37Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "My feedback was:\r\n\"If you have multiple certReqMsg in an ir/cr/kur/p10cr, you should use the certProfile names in the same order. If you have no certProfile for one or several certReqMsg you can put theses either at the end of the sequence in the ir/cr/kur/p10cr or add a \u201c\u201d (empty string) as certProfile name to the sequence.\"\r\n\r\nWe should add a correcponding note to the rfc4210bis.",
+          "createdAt": "2023-05-15T15:19:12Z",
+          "updatedAt": "2023-05-15T15:19:12Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I added this text to Section 5.1.1.4\r\n\r\n\"If you have multiple certReqMsg in an ir/cr/kur/p10cr, you MUST use the certProfile names in the same order as the certReqMsg. If you have no certProfile for one or several certReqMsg you can put theses either at the end of the sequence in the ir/cr/kur/p10cr or add an empty string as certProfile name to the sequence.\"\r\n\r\n@johngray-dev @DDvO @xipki Do you have any comments?",
+          "createdAt": "2023-05-22T15:45:20Z",
+          "updatedAt": "2023-05-22T15:45:20Z"
+        },
+        {
+          "author": "xipki",
+          "authorAssociation": "NONE",
+          "body": "Looks fine for me.\n\nLijun\n\nHendrik Brockhaus ***@***.***> schrieb am Mo., 22. Mai 2023,\n17:45:\n\n> I added this text to Section 5.1.1.4\n>\n> \"If you have multiple certReqMsg in an ir/cr/kur/p10cr, you MUST use the\n> certProfile names in the same order as the certReqMsg. If you have no\n> certProfile for one or several certReqMsg you can put theses either at the\n> end of the sequence in the ir/cr/kur/p10cr or add an empty string as\n> certProfile name to the sequence.\"\n>\n> @johngray-dev <https://github.com/johngray-dev> @DDvO\n> <https://github.com/DDvO> @xipki <https://github.com/xipki> Do you have\n> any comments?\n>\n> \u2014\n> Reply to this email directly, view it on GitHub\n> <https://github.com/lamps-wg/cmp-updates/issues/28#issuecomment-1557461369>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/ABWFTMHDDK6VDZLZFZOD74LXHOCZXANCNFSM6AAAAAAYCLHK44>\n> .\n> You are receiving this because you were mentioned.Message ID:\n> ***@***.***>\n>\n",
+          "createdAt": "2023-05-22T16:15:56Z",
+          "updatedAt": "2023-05-22T16:15:56Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "> I added this text to Section 5.1.1.4\r\n\r\nThis change is not (yet) visible at https://github.com/lamps-wg/cmp-updates/blob/main/draft-ietf-lamps-rfc4210bis.md\r\nI suppose the new text is meant to be placed after this sentence:\r\n> When used in an ir/cr/kur/genm, the value MUST NOT contain more elements than the number of CertReqMsg or InfoTypeAndValue elements and the certificate profile names refer to the elements in the given order.\r\n\r\nand before this sentence:\r\n> When used in a p10cr, the value MUST NOT contain multiple certificate profile names.\r\n\r\nSo far, it supposedly reads as:\r\n\r\n> If you have multiple certReqMsg in an ir/cr/kur/p10cr, you MUST use the certProfile names in the same order as the certReqMsg. If you have no certProfile for one or several certReqMsg you can put theses either at the end of the sequence in the ir/cr/kur/p10cr or add an empty string as certProfile name to the sequence.\r\n\r\nWe should not use \"you\" in the spec.\r\n\r\nI propose re-combining and re-phrasing these text sections as follows:\r\n\r\nWhen used in a p10cr message, the sequence MUST NOT contain multiple certificate profile names.\r\nWhen used in an ir/cr/kur/genm message, the sequence MUST NOT contain more certificate profile names \r\nthan the number of CertReqMsg or InfoTypeAndValue elements contained in the message body,\r\n\r\nThe certificate profile names in the sequence relate to the CertReqMsg or InfoTypeAndValue elements in the given order. An empty string has the same meaning as if no element is present at the given sequence position: \r\nno certificate profile name being associated with the respective CertReqMsg or InfoTypeAndValue element.\r\n",
+          "createdAt": "2023-05-24T14:36:03Z",
+          "updatedAt": "2023-05-24T14:36:03Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you @DDvO for your proposal.\r\nAre there any further comments?\r\n\r\n@johngray-dev Anything from your side?",
+          "createdAt": "2023-05-24T15:53:46Z",
+          "updatedAt": "2023-05-24T15:54:19Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "  The original text seemed clear to me, but I see where the question could come from, so I agree we should try to clarify without making it more complicated.  The updated message from David is good, I was going to suggest we make it clear that when CertProfile is required by one or more CertReqMsg, either the Cert profile Name or an empty string (to indicate no profile name), MUST be present in the same order.   So effectively we are saying they must have the same number of elements.  However, I think we still should allow a more efficient use case:\r\n\r\nFor example, say you have 3 certReqMsg (this is a common and supported use-case at Entrust).   Say you want to use a cert profile for only the 2nd certReqMsg.   The most efficient structure would be a Sequence of 2 CertProfiles (the first one being the empty string, the second one containing the profile name). Anything else should not be required.   The first one requires the empty String to act as a placeholder, but if all the ones at the end don't require it, then it shouldn't be needed.\r\n\r\nIn practise, the most efficient structure would be for the client to re-order the 3 certReqMsg so that the first one was the one that required the cert profile.   Then they would only need a CertProfileValue sequence of 1 as the 2nd and 3rd would both be empty.  Forcing them to send empty ASN.1 sequences is just a waste of bytes.\r\n\r\nI can try to come up with some text to see if that can be further clarified if you agree that this type of efficiency makes sense.    Or for the sake of simplicity and clarity, we could just say when CertProfile is used, it MUST contain the same number of sequence elements as the number of CertReqMsg, and where no Cert profile name is required, an Empty String must be used as a placeholder... ",
+          "createdAt": "2023-06-15T12:45:19Z",
+          "updatedAt": "2023-06-15T12:48:22Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think we are aligned on the issue. If you propose a leaner wording, it will be fine.",
+          "createdAt": "2023-06-15T14:21:47Z",
+          "updatedAt": "2023-06-15T14:21:47Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Meeting 15.6.23\r\nJohn will review and potentially add some text.",
+          "createdAt": "2023-06-15T15:49:57Z",
+          "updatedAt": "2023-06-15T15:49:57Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think this covers all the bases.  I also added clarity by specifically mentioned the names of the structures so it is clear what is being discussed.  \r\n\r\nWhen used in a p10cr message, the CertProfileValue sequence MUST NOT contain multiple certificate profile names.  When used in an ir/cr/kur/genm message, the CertProfileValue sequence MUST NOT contain more certificate profile names than the number of CertReqMsg or GenMsgContent InfoTypeAndValue elements contained in the message body.\r\n\r\nThe certificate profile names in the CertProfileValue sequence relate to the CertReqMsg or GenMsgContent InfoTypeAndValue elements in the given order. An empty string means no certificate profile name is associated with the respective CertReqMsg or GenMsgContent InfoTypeAndValue element.  If the CertProfileValue sequence contains less certificate profile entries than CertReqMsg or GenMsgContent InfoTypeAndValue elements, the remaining CertReqMsg or GenMsgContent InfoTypeAndValue elements have no profile name associated with them.   ",
+          "createdAt": "2023-06-16T16:44:44Z",
+          "updatedAt": "2023-06-16T16:48:25Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you John. I will update the section accordingly.",
+          "createdAt": "2023-06-20T06:03:05Z",
+          "updatedAt": "2023-06-20T06:03:05Z"
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "id": "I_kwDOInbtzM5qHxsi",
+      "title": "KEM protection is hard to follow and understand",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/30",
+      "state": "CLOSED",
+      "author": "Akretsch",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "- https://github.com/lamps-wg/cmp-updates/blob/main/draft-ietf-lamps-rfc4210bis.md#key-encapsulation refers to https://github.com/lamps-wg/cmp-updates/blob/main/draft-ietf-lamps-rfc4210bis.md#variants-of-using-kem-keys-for-pki-message-protection-sect-e for implementation details. The implementer has to jump between both sections to get an sufficient understanding.\r\n- KEM protection can be used only between two PKI entities (hop to hop) and the protection cannot  be validated by third PKI entities (end to end)? So always a reprotection is needed to keep integrity?\r\n- https://github.com/lamps-wg/cmp-updates/blob/main/draft-ietf-lamps-rfc4210bis.md#variants-of-using-kem-keys-for-pki-message-protection-sect-e shows some message flows:\r\n  -  Please make more clear that one message flow is covered by one transaction. \r\n  - Please specify more in detail the required content of genm, genp and request.\r\n  -  The first message flow introduces KEM certificates: \r\n     - How to obtain, how to validate such certificates? \r\n     - How the right certificate to use can identified in extraCerts?\r\n     - Should the chain also be in extraCerts?\r\n  - The second message flow seems to use KEM keys without certificate:   \r\n    - What means \"protection depending on available key material\"?\r\n    - How the PKI Entitiy (Bob) obtains the authenticated public key? Could this replace the KEM certificates in the first message flow too?\r\n  - The third message flow shows a failed transaction.\r\n    - How Bob identifies the right KEM certificate in extraCerts?\r\n\r\n  \r\n ",
+      "createdAt": "2023-06-29T09:06:16Z",
+      "updatedAt": "2023-07-10T11:11:33Z",
+      "closedAt": "2023-07-10T11:11:28Z",
+      "comments": [
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "Thank you for this interesting feedback.\r\n\r\nFor managing the various points mentioned, it would have helped to provide at least the three rather unrelated outer items in separate issues. I am not allowed to edit the above text, but I copied the text of your first two items to #32 and #33 and partly amended it there.",
+          "createdAt": "2023-06-29T10:37:32Z",
+          "updatedAt": "2023-06-29T14:19:00Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "It remains in this issue here to comment on the last item referring to [Appendix E:](https://github.com/lamps-wg/cmp-updates/blob/main/draft-ietf-lamps-rfc4210bis.md#variants-of-using-kem-keys-for-pki-message-protection-sect-e):\r\n\r\n> Please make more clear that one message flow is covered by one transaction.\r\n\r\nI suggest adding this text, which also provides further clarification how the given message flows should be understood:\r\n\r\n\"For any PKI management operation started by a PKI entity with any type of `request` message, the following message flows describe the adaptations needed to support the use of a KEM key. There are three cases to distinguish, namely whether the PKI entity or the by PKI management entity uses a KEM key, and whether in the latter case the PKI entity already knows initially the KEM key of the PKI management entity. In case both sides use KEM keys, adaptations need to be combined such that for each direction a shared secret is established\"\r\n\r\n> Please specify more in detail the required content of genm, genp and request.\r\n\r\nIn the first message flow, I suggest two small additions.\r\n* extend \"format unprotected genm\" to \"format unprotected genm with empty PKIBody\".\r\n(BTW, this 'empty' genm will look much like the genm described in https://www.rfc-editor.org/rfc/rfc4210#appendix-E.5, but confusion is avoided because the latter sort of genm is required to be protected.)\r\n* extend \"KEM ciphertext in PKIBody\" to \"KEM ciphertext as the only InfoTypeAndValue in PKIBody\".\r\n\r\nIn the second message flow, I suggest extending \"KEM ciphertext in generalInfo\" to  \"KEM ciphertext in generalInfo of PKIHeader\"\r\n\r\nBTW, I suggest replacing in the third message flow \"as shown in Figure 4 above\" by \"as shown in the Figure before\" because the constant number 4 cannot be a assumed to be fixed/correct.\r\n\r\n> The first message flow introduces KEM certificates:\r\n> How to obtain, how to validate such certificates?\r\n\r\nThey should be obtained as usual by a CA, which of course needs to support producing certs for KEM public keys.\r\nThe validation of such a cert and its chain does not depend on the KEM key in the EE cert.\r\n\r\n> How the right certificate to use can identified in extraCerts?\r\n> Should the chain also be in extraCerts?\r\n\r\nI suggest clarifying this by replacing  \"containing KEM certificate in extraCerts\" by\r\n\"with extraCerts consisting of the KEM certificate followed by this chain\" and similarly in the third message flow.\r\n\r\n> The second message flow seems to use KEM keys without certificate:\r\n\r\nThere we do not make assumptions where the public KEM key comes from,\r\nbut usually the client will have obtained it before from the server as part of a KEM certificate.\r\n\r\n> What means \"protection depending on available key material\"?\r\n\r\nThis just means that the entity protects its message in the usual way:\r\nIf it has a signature key, it uses this, or else it uses MAC-based protection,\r\nusing any pre-shared secret or shared symmetric key derived by (EC)DH \r\nor also using a key derived via KEM (in the opposite direction).\r\n\r\n> How the PKI Entity (Bob) obtains the authenticated public key?\r\n\r\nBy any means, for instance as described in the third message flow.\r\n\r\n> Could this replace the KEM certificates in the first message flow too?\r\n\r\nNo, the first message flow is for using KEM in the opposite direction.\r\n\r\n> The third message flow shows a failed transaction.\r\n\r\nNot quite - the error message here just indicates to the client \r\nthat it needs to use the KEM key contained in the extraCerts.\r\n\r\nBTW, unfortunately the failInfo code is somewhat misleading because \r\n`wrongIntegrity` is normally used to indicate that the protection by the PKI entity is wrong,\r\nbut here it indicates the inability of the PKI management entity to protect its first response using KEM.\r\nHere I propose using a new, to-the-point `failInfo` code or some other indication for this special case,\r\nfor example giving no `failInfo` field, which would be less confusing than using `wrongIntegrity`.\r\n\r\nWhether the PKI entity sees this error as a termination of the PKI management operation\r\nor uses the same transaction ID for the subsequent `request` is not specified and looks like it does no matter.\r\n\r\n> How Bob identifies the right KEM certificate in extraCerts?\r\n\r\nAs before: it should be stated that it must be in the first extraCert (and followed by the respective chain).",
+          "createdAt": "2023-07-04T14:59:55Z",
+          "updatedAt": "2023-07-04T15:19:55Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Issue resolved with above mentioned commit",
+          "createdAt": "2023-07-10T11:11:28Z",
+          "updatedAt": "2023-07-10T11:11:28Z"
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "id": "I_kwDOInbtzM5qIHTW",
+      "title": "Section 5.1.1.4: clarify restriction on number of certProfile elements",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/31",
+      "state": "CLOSED",
+      "author": "DDvO",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "For clarity, please replace\r\n\r\n> When used in an ir/cr/kur/genm message, the CertProfileValue sequence MUST NOT contain more certificate profile names than the number of CertReqMsg or GenMsgContent InfoTypeAndValue elements contained in the message body.\r\n\r\nby, e.g.,\r\n\r\n> When used in an ir/cr/kur message, the number of profile names in the CertProfileValue sequence MUST NOT exceed the number of CertReqMsg elements contained in the message body.\r\nSimilarly, when used in a genm message, this number MUST NOT exceed the number of InfoTypeAndValue elements in the message body.",
+      "createdAt": "2023-06-29T10:08:08Z",
+      "updatedAt": "2023-07-10T11:29:11Z",
+      "closedAt": "2023-07-10T11:29:10Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I am uncertain if this change is needed.\r\nI feel like the text is correct and ciscumvents dublication of text.\r\n\r\n> For clarity, please replace\r\n> \r\n> > When used in an ir/cr/kur/genm message, the CertProfileValue sequence MUST NOT contain more certificate profile names than the number of CertReqMsg or GenMsgContent InfoTypeAndValue elements contained in the message body.\r\n> \r\n> by, e.g.,\r\n> \r\n> > When used in an ir/cr/kur message, the number of profile names in the CertProfileValue sequence MUST NOT exceed the number of CertReqMsg elements contained in the message body.\r\n> > Similarly, when used in a genm message, this number MUST NOT exceed the number of InfoTypeAndValue elements in the message body.\r\n\r\nRFC4211 definiert: CertReqMessages ::= SEQUENCE SIZE (1..MAX) OF CertReqMsg\r\nRFC4210 definiert: GenMsgContent ::= SEQUENCE OF InfoTypeAndValue\r\n\r\nWe want to say that the number of elements in CertProfileValue must not be larger than the number of element in CertReqMessages or GenMsgContent. So maybe we could rephrase like this.\r\n\r\n`When used in an ir/cr/kur/genm message, the CertProfileValue sequence MUST NOT contain more certificate profile names than the number of elements in the CertReqMessages or GenMsgContent sequence.`\r\n\r\n@johngray-dev As this text was contributed from you, what do you think?\r\nBTW, this change may also affect the next paragraphe.",
+          "createdAt": "2023-06-29T11:10:19Z",
+          "updatedAt": "2023-06-29T11:10:19Z"
+        },
+        {
+          "author": "RufusJWB",
+          "authorAssociation": "NONE",
+          "body": "There must be a misunderstanding. This:\r\n\r\n> > When used in an ir/cr/kur/genm message, the CertProfileValue sequence MUST NOT contain more certificate profile names than the number of CertReqMsg or GenMsgContent InfoTypeAndValue elements contained in the message body.\r\n\r\nis not the actual text from https://datatracker.ietf.org/doc/draft-ietf-lamps-cmp-updates/23/ chapter 2.4 . There you write \r\n\r\n>    When used in an ir/cr/kur/genm, the value MUST NOT contain more\r\n>    elements than the number of CertReqMsg or InfoTypeAndValue elements\r\n>    and the certificate profile names refer to the elements in the given\r\n>    order.\r\n\r\nAnd one more question: what happens if the number of elements in the CertProfileValue sequence is neither 1 nor the number of CertReqMsg but smaller than the number of CertReqMsg. For example there are two values in the CertProfileValue sequence but three CertReqMsg. Wouldn't it be more reasonable to say, that the number of elements in the CertProfileValue sequence needs to be either 1 or exactly the number of CertReqMsg?",
+          "createdAt": "2023-06-29T13:41:14Z",
+          "updatedAt": "2023-06-29T13:42:01Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Regarding rfc4210bis, this topic was already discussed and concluded in #28.\r\nCMP-Updates was approved a year ago, but there are some changes from the AD review of the Lightweight CMP Profile in the pipeline for AUTH48.\r\nRfc4210bis shall include the changes from CMP Updates and will obsolete this document when published.\r\nIf there is no change request regarding rfc4210bis, we should close this issue here.",
+          "createdAt": "2023-06-29T13:51:29Z",
+          "updatedAt": "2023-06-29T13:51:29Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The issue was mainly about the wording in [Section 2.4 of V23 of CMP Updates](https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cmp-updates-23#section-2.4).\r\n\r\nThe current text in [Section 5.1.1.4 of rfc4210bis](https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-07#section-5.1.1.4) seams to be sufficient.",
+          "createdAt": "2023-07-10T11:29:10Z",
+          "updatedAt": "2023-07-10T11:29:10Z"
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "id": "I_kwDOInbtzM5qIQro",
+      "title": "Overall structure of spec for KEM use should be improved",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/32",
+      "state": "CLOSED",
+      "author": "DDvO",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "@Akretsch wrote in #30:\r\n\r\n> https://github.com/lamps-wg/cmp-updates/blob/main/draft-ietf-lamps-rfc4210bis.md#key-encapsulation refers to https://github.com/lamps-wg/cmp-updates/blob/main/draft-ietf-lamps-rfc4210bis.md#variants-of-using-kem-keys-for-pki-message-protection-sect-e for implementation details. The implementer has to jump between both sections to get an sufficient understanding.\r\n\r\nOne more point to add on this, which he also mentioned to me this morning: \r\nThe security considerations section 8.8: https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#name-recurring-usage-of-kem-keys contains an important functional requirement:\r\n> Each PKI entity using key encapsulation for MAC-based message protection, see [Section 5.1.3.4](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#sect-5.1.3.4), MUST use a fresh shared secret key (ssk) for each PKI management operation.\r\n\r\nIMO this should be given already in Section 5.1.3.4 because otherwise this can easily be overlooked by implementers focusing on the main body of the spec, so regarding KEM use on Section 5.1.3.4.",
+      "createdAt": "2023-06-29T10:34:24Z",
+      "updatedAt": "2023-07-10T08:51:03Z",
+      "closedAt": "2023-07-10T08:51:02Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Appendix E contains additional explanation, but no normative text. To have the base-specification in Section 5.1.3.4 not too large, this additional guidance was shifted on purpose to an appendix.\r\n\r\nRegarding Security Considerations: It is never a good idea to overlook the Security considerations section. See also [cms-kemri](https://datatracker.ietf.org/doc/draft-ietf-lamps-cms-kemri/) draft for similar examples for normative text in the Security Considerations section.",
+          "createdAt": "2023-07-10T08:51:02Z",
+          "updatedAt": "2023-07-10T08:51:02Z"
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "id": "I_kwDOInbtzM5qIQtI",
+      "title": "Point out that KEM-based message protection is limited to one hop",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/33",
+      "state": "CLOSED",
+      "author": "DDvO",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "When discussing our spec in section 5.1.3.4. etc. with our first implementer @Akretsch, he pointed out an interesting issue that at least I had not noticed before, as he meanwhile wrote in #30:\r\n\r\n> KEM protection can be used only between two PKI entities (hop to hop) and the protection cannot be validated by third PKI entities (end to end)? So always a reprotection is needed to keep integrity?\r\n\r\nI fear that the answer to all three questions is 'yes',\r\nand if so, we should point this out in our text.",
+      "createdAt": "2023-06-29T10:34:30Z",
+      "updatedAt": "2023-07-04T10:25:07Z",
+      "closedAt": "2023-07-04T10:25:07Z",
+      "comments": [
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "As discussed over lunch today, this is a general problem also with other forms of MAC-based protection.\r\nIt is not something we need to handle at 4210bis level, but should in any update to the LCMPP\r\nwhere so far we assume that (more or less) all PKI entities have/use keys that are capable of signing.",
+          "createdAt": "2023-07-04T10:23:50Z",
+          "updatedAt": "2023-07-04T10:23:50Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOInbtzM5Ft3B5",
+      "title": "KEM combiner reduction",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/1",
+      "state": "MERGED",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "HBrock"
+      ],
+      "labels": [],
+      "body": "I wrote a paragraph that does a security reduction of this KEM combiner to draft-ounsworth-cfrg-kem-combiner.",
+      "createdAt": "2022-12-18T00:43:13Z",
+      "updatedAt": "2022-12-20T09:40:28Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "22e82936eef53f15418d6c352411c90762b8451b",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "mike_kem_reduction",
+      "headRefOid": "261e10590b8119c52995aeb878c1c8f3c6869029",
+      "closedAt": "2022-12-20T09:40:28Z",
+      "mergedAt": "2022-12-20T09:40:28Z",
+      "mergedBy": "HBrock",
+      "mergeCommit": {
+        "oid": "2e484d625646636dc6de31991ee2a8397ffab542"
+      },
+      "comments": [
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@HBrock I wrote some text, but I am not very familiar with the XML I-D format. Are you willing to add the cross-references, and move some of that text into an appendix?",
+          "createdAt": "2022-12-18T00:44:40Z",
+          "updatedAt": "2022-12-18T00:44:40Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> @HBrock [...] move some of that text into an appendix?\r\n\r\nThank you for your proposal. I will merge it. Should I move the text to a new Section 8.8 or should I introduce a new Appendix C?",
+          "createdAt": "2022-12-19T07:02:52Z",
+          "updatedAt": "2022-12-19T07:02:52Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I will merge your changes.\r\nAfter the merge I will update the references and move the second paragraph to the Security Considerations section.",
+          "createdAt": "2022-12-20T09:40:08Z",
+          "updatedAt": "2022-12-20T09:40:08Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDOInbtzM5JVyxl",
+      "title": "Do not hypenate across EoL",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/12",
+      "state": "MERGED",
+      "author": "thomwiggers",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Otherwise, the HTML versions of the document will have spaces like ``proof-of- posession``.",
+      "createdAt": "2023-02-06T13:39:46Z",
+      "updatedAt": "2023-02-07T07:53:23Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "9b6f9a1b31603c8082e025ac0ae9637fa73a69f9",
+      "headRepository": "thomwiggers/cmp-updates",
+      "headRefName": "thomwiggers/no-hypenate-across-eol",
+      "headRefOid": "18892e3bb2d4814a155fe04d7a1cc747c0e7427e",
+      "closedAt": "2023-02-07T07:53:23Z",
+      "mergedAt": "2023-02-07T07:53:23Z",
+      "mergedBy": "HBrock",
+      "mergeCommit": {
+        "oid": "668e149df6066d5d40e1177a5017cd38b3192e9d"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 13,
+      "id": "PR_kwDOInbtzM5JV3Z6",
+      "title": "Fix a minor typo (the uses KDF  -> the used KDF)",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/13",
+      "state": "MERGED",
+      "author": "thomwiggers",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-02-06T13:54:29Z",
+      "updatedAt": "2023-02-07T07:50:31Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "9b6f9a1b31603c8082e025ac0ae9637fa73a69f9",
+      "headRepository": "thomwiggers/cmp-updates",
+      "headRefName": "thomwiggers/typos",
+      "headRefOid": "7b95ad4193d2885f69991ccd9279b39765ce375a",
+      "closedAt": "2023-02-07T07:50:31Z",
+      "mergedAt": "2023-02-07T07:50:31Z",
+      "mergedBy": "HBrock",
+      "mergeCommit": {
+        "oid": "793b5c214b3f0027e6a1f39060d817ea2f55ded6"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 19,
+      "id": "PR_kwDOInbtzM5PM8o_",
+      "title": "Fix a typo",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/19",
+      "state": "MERGED",
+      "author": "ralienpp",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-04-26T13:38:27Z",
+      "updatedAt": "2023-05-03T11:07:20Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "c6cdad8c160221899bfbd03a4f7a2b5cba5d1ca1",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "ralienpp-patch-typo",
+      "headRefOid": "dda68c274d73c668662947afb80614d00445c8e7",
+      "closedAt": "2023-05-03T11:07:20Z",
+      "mergedAt": "2023-05-03T11:07:20Z",
+      "mergedBy": "HBrock",
+      "mergeCommit": {
+        "oid": "344704786c66f836e22e909f30ecf9d7756e2db4"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 27,
+      "id": "PR_kwDOInbtzM5QdrRU",
+      "title": "Updated POP necessity references",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/27",
+      "state": "MERGED",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-05-15T00:54:50Z",
+      "updatedAt": "2023-05-17T14:34:50Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "74e9882608d1e227a70e232547592fad38c0b976",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "mike_edits",
+      "headRefOid": "316ca7c1cf09ba19619617f311bac1b4464b48f6",
+      "closedAt": "2023-05-17T14:34:49Z",
+      "mergedAt": "2023-05-17T14:34:49Z",
+      "mergedBy": "HBrock",
+      "mergeCommit": {
+        "oid": "7e9a99fa44e7d46cbbf01768e0eca9689cbb98ac"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 29,
+      "id": "PR_kwDOInbtzM5Tcziv",
+      "title": "Fix typo",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/29",
+      "state": "CLOSED",
+      "author": "thomwiggers",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-06-20T15:10:36Z",
+      "updatedAt": "2023-06-21T06:14:49Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "462037c223edc3816f371e08e0580348c032ca1e",
+      "headRepository": "thomwiggers/cmp-updates",
+      "headRefName": "patch-1",
+      "headRefOid": "aa1f21a0fff0cd92e1e636baf5dc73b3ab5862be",
+      "closedAt": "2023-06-21T06:14:49Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOInbtzM5YzRpy",
+          "commit": {
+            "abbreviatedOid": "aa1f21a"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thank you for reporting this.",
+          "createdAt": "2023-06-21T06:14:32Z",
+          "updatedAt": "2023-06-21T06:14:32Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
+}
