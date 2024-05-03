@@ -919,11 +919,13 @@ the second scheme listed below ({{sect-4.2.2.2}}).  Any entity MAY
 additionally support other schemes, if desired.
 
 <
+
 ToDo: PKIX-CMP was defined back in 1999. Since then, it has been profiled for different environments. Not all environments that use CMP for certificate management require an initial registration/certification scheme. Therefore, the authors propose to adapt the above requirements as follows:
 
 OLD: This specification mandates that conforming CA equipment, RA equipment, and EE equipment MUST support the second scheme listed below (Section 4.2.2.2).  Any entity MAY additionally support other schemes, if desired.
 
 NEW: Examples of possible initial registration/certification schemes can be found in the following subsections.  An entity may support other schemas specified in profiles of PKIX-CMP, such as Appendixes C and D or RFC 9483.
+
 >
 
 #### Centralized Scheme
@@ -962,7 +964,15 @@ In terms of the classification above, this scheme is where:
 
 * a confirmation message is REQUIRED.
 
-<  ToDo: If this scheme is mainly an option, the authors propose removing the normative language.  If the basic authentication scheme stays normative, at least the requirement for the confirmation message should be reduced from REQUIRED to RECOMMENDED or OPTIONAL, since some profiles of PKIX-CMP regard the confirmation roundtrip as optional, e.g., SZTP {{RFC8572}}.  >
+<
+
+ToDo: The authors know of environments where initialization using CMP is not needed, even though CMP us used for managing certificates. 
+
+For example, BRSKI {{RFC8995}} offers zero touch bootstrapping including enrollment of an initial certificate of the operational domain. If CMP is further used for managing this and further operational certificate, initialization is not needed. In such cases it does not make sense to require implementing initialization.  SZTP {{RFC8572}} uses only the certificate request message. Neither the respective certificate response message nor the certConf message are used. In {{RFC9483}} and {{draft-ietf-anima-brski-ae}} using the certConf message is optional.
+
+Therefore, the authors propose removing the normative language here.  If the working group thinks that the basic authentication scheme should stays normative, at least the requirement for the confirmation message should be reduced from REQUIRED to RECOMMENDED or OPTIONAL.
+
+>
 
 Note: An Initial Authentication Key (IAK) can be either a symmetric key or
 an asymmetric private key with a certificate issued by another PKI trusted
