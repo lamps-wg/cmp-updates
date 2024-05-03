@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 24 October 2024                                         Entrust
-                                                           22 April 2024
+Expires: 4 November 2024                                         Entrust
+                                                              3 May 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 October 2024.
+   This Internet-Draft will expire on 4 November 2024.
 
 Copyright Notice
 
@@ -512,8 +512,7 @@ Table of Contents
    authority may carry out will vary from case to case but MAY include
    personal authentication, token distribution, checking certificate
    requests and authentication of their origin, revocation reporting,
-   name assignment, key generation (KGA, see Section 3.1.1.4), archival
-   of key pairs, et cetera.
+   name assignment, archival of key pairs, et cetera.
 
    This document views the RA as an OPTIONAL component: when it is not
    present, the CA is assumed to be able to carry out the RA's functions
@@ -556,6 +555,9 @@ Table of Contents
    security of the system; in some case retention is good, for example
    for escrow reasons, but in other cases the server should clear its
    copy after delivery to the end entity.
+
+   Note: If the CA delegates key generation to a KGA, the KGA can be
+   collocated with the RA.
 
 3.1.2.  PKI Management Requirements
 
