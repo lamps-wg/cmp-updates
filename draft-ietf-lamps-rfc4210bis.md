@@ -918,7 +918,7 @@ conforming CA equipment, RA equipment, and EE equipment MUST support
 the second scheme listed below ({{sect-4.2.2.2}}).  Any entity MAY
 additionally support other schemes, if desired.
 
-<
+<--
 
 ToDo: PKIX-CMP was defined back in 1999. Since then, it has been profiled for different environments. Not all environments that use CMP for certificate management require an initial registration/certification scheme. Therefore, the authors propose to adapt the above requirements as follows:
 
@@ -926,7 +926,7 @@ OLD: This specification mandates that conforming CA equipment, RA equipment, and
 
 NEW: Examples of possible initial registration/certification schemes can be found in the following subsections.  An entity may support other schemas specified in profiles of PKIX-CMP, such as Appendixes C and D or RFC 9483.
 
->
+-->
 
 #### Centralized Scheme
 {: id="sect-4.2.2.1"}
@@ -964,7 +964,7 @@ In terms of the classification above, this scheme is where:
 
 * a confirmation message is REQUIRED.
 
-<
+<--
 
 ToDo: The authors know of environments where initialization using CMP is not needed, even though CMP us used for managing certificates.
 
@@ -972,7 +972,7 @@ For example, BRSKI {{RFC8995}} offers zero touch bootstrapping including enrollm
 
 Therefore, the authors propose removing the normative language here.  If the working group thinks that the basic authentication scheme should stays normative, at least the requirement for the confirmation message should be reduced from REQUIRED to RECOMMENDED or OPTIONAL.
 
->
+-->
 
 Note: An Initial Authentication Key (IAK) can be either a symmetric key or
 an asymmetric private key with a certificate issued by another PKI trusted
