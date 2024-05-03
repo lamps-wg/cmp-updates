@@ -950,7 +950,8 @@ Table of Contents
 
    NEW: Examples of possible initial registration/certification schemes
    can be found in the following subsections.  An entity may support
-   other schemas specified in profiles of PKIX-CMP, such as RFC 9483. >
+   other schemas specified in profiles of PKIX-CMP, such as Appendixes C
+   and D or RFC 9483. >
 
 4.2.2.1.  Centralized Scheme
 
