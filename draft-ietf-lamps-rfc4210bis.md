@@ -108,16 +108,15 @@ informative:
       ISO: Draft Standard 20543-2019
   AIS31:
     target: https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Zertifizierung/Interpretationen/AIS_31_Functionality_classes_for_random_number_generators_e.pdf
-    title: 'A proposal for: Functionality classes for random number generators, version
-      2.0'
+    title: 'A proposal for: Functionality classes for random number generators, version 2.0'
     author:
-    - org: Bundesamt fuer Sicherheit in der Informationstechnik (BSI)
+    - org: Federal Office for Information Security (BSI)
     - ins: W. Killmann
       name: Wolfgang Killmann
       org: T-Systems GEI GmbH
     - ins: W. Schindler
       name: Werner Schindler
-      org: Bundesamt fuer Sicherheit in der Informationstechnik (BSI)
+      org: Federal Office for Information Security (BSI)
     date: '2011-09-18'
   Gueneysu:
     target: https://eprint.iacr.org/2022/703
@@ -913,20 +912,11 @@ This gives two further possibilities: confirmed or not.
 {: id="sect-4.2.2"}
 
 The criteria above allow for a large number of initial
-registration/certification schemes.  This specification mandates that
-conforming CA equipment, RA equipment, and EE equipment MUST support
-the second scheme listed below ({{sect-4.2.2.2}}).  Any entity MAY
-additionally support other schemes, if desired.
+registration/certification schemes.  Examples of possible initial
+registration/certification schemes can be found in the following
+subsections.  An entity may support other schemes specified in
+profiles of PKIX-CMP, such as {{sect-d}} and {{sect-e}} or {{RFC9483}}.
 
-<--
-
-ToDo: PKIX-CMP was defined back in 1999. Since then, it has been profiled for different environments. Not all environments that use CMP for certificate management require an initial registration/certification scheme. Therefore, the authors propose to adapt the above requirements as follows:
-
-OLD: This specification mandates that conforming CA equipment, RA equipment, and EE equipment MUST support the second scheme listed below (Section 4.2.2.2).  Any entity MAY additionally support other schemes, if desired.
-
-NEW: Examples of possible initial registration/certification schemes can be found in the following subsections.  An entity may support other schemas specified in profiles of PKIX-CMP, such as Appendixes C and D or RFC 9483.
-
--->
 
 #### Centralized Scheme
 {: id="sect-4.2.2.1"}
@@ -958,21 +948,11 @@ In terms of the classification above, this scheme is where:
 
 * initiation occurs at the end entity;
 
-* message authentication is REQUIRED;
+* message authentication is required;
 
 * "key generation" occurs at the end entity (see {{sect-4.2.1.3}});
 
-* a confirmation message is REQUIRED.
-
-<--
-
-ToDo: The authors know of environments where initialization using CMP is not needed, even though CMP us used for managing certificates.
-
-For example, BRSKI {{RFC8995}} offers zero touch bootstrapping including enrollment of an initial certificate of the operational domain. If CMP is further used for managing this and further operational certificate, initialization is not needed. In such cases it does not make sense to require implementing initialization.  SZTP {{RFC8572}} uses only the certificate request message. Neither the respective certificate response message nor the certConf message are used. In {{RFC9483}} and {{I-D.ietf-anima-brski-ae}} using the certConf message is optional.
-
-Therefore, the authors propose removing the normative language here.  If the working group thinks that the basic authentication scheme should stays normative, at least the requirement for the confirmation message should be reduced from REQUIRED to RECOMMENDED or OPTIONAL.
-
--->
+* a confirmation message is recommended.
 
 Note: An Initial Authentication Key (IAK) can be either a symmetric key or
 an asymmetric private key with a certificate issued by another PKI trusted
@@ -5837,6 +5817,11 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+
+From version 10 -> 11:
+
+* Updated Section 4.2.2 addressing the comment from Tomas Gustavsson and as presented during IETF 119 (see thread "draft-ietf-lamps-rfc4210bis-v10 Section 4.2.2 - removing normative language")
 
 
 From version 09 -> 10:
