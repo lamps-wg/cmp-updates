@@ -935,7 +935,7 @@ Table of Contents
    certification schemes.  Examples of possible initial registration/
    certification schemes can be found in the following subsections.  An
    entity may support other schemes specified in profiles of PKIX-CMP,
-   such as Appendix C and Appendix E or [RFC9483].
+   such as Appendix D and Appendix E or [RFC9483].
 
 4.2.2.1.  Centralized Scheme
 
