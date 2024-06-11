@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 7 December 2024                                         J. Gray
+Expires: 13 December 2024                                        J. Gray
                                                                  Entrust
-                                                             5 June 2024
+                                                            11 June 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 December 2024.
+   This Internet-Draft will expire on 13 December 2024.
 
 Copyright Notice
 
@@ -455,9 +455,9 @@ Table of Contents
               Brockhaus, H., von Oheimb, D., Ounsworth, M., and J. Gray,
               "Internet X.509 Public Key Infrastructure -- Certificate
               Management Protocol (CMP)", Work in Progress, Internet-
-              Draft, draft-ietf-lamps-rfc4210bis-10, 6 May 2024,
+              Draft, draft-ietf-lamps-rfc4210bis-11, 5 June 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-lamps-
-              rfc4210bis-10>.
+              rfc4210bis-11>.
 
    [ITU.X690.1994]
               International Telecommunications Union, "Information
