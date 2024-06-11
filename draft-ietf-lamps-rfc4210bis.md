@@ -3949,6 +3949,8 @@ Tomi Kause, and Tero Mononen, the original authors of {{RFC4210}}, for their wor
 
 We also thank all reviewers of this document for their valuable feedback.
 
+Adding KEM support to this document was partly funded by the German Federal Ministry of Education and Research in the project Quoryptan through grant number 16KIS2033.
+
 
 --- back
 
