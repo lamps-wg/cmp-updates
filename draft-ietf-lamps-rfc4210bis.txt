@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 7 December 2024                                         Entrust
-                                                             5 June 2024
+Expires: 13 December 2024                                        Entrust
+                                                            11 June 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 December 2024.
+   This Internet-Draft will expire on 13 December 2024.
 
 Copyright Notice
 
@@ -3993,6 +3993,10 @@ Table of Contents
    We also thank all reviewers of this document for their valuable
    feedback.
 
+   Adding KEM support to this document was partly funded by the German
+   Federal Ministry of Education and Research in the project Quoryptan
+   through grant number 16KIS2033.
+
 11.  References
 
 11.1.  Normative References
@@ -4137,6 +4141,12 @@ Table of Contents
               Public Key Infrastructure Using X.509 (PKIX)", RFC 5912,
               DOI 10.17487/RFC5912, June 2010,
               <https://www.rfc-editor.org/rfc/rfc5912>.
+
+   [RFC6268]  Schaad, J. and S. Turner, "Additional New ASN.1 Modules
+              for the Cryptographic Message Syntax (CMS) and the Public
+              Key Infrastructure Using X.509 (PKIX)", RFC 6268,
+              DOI 10.17487/RFC6268, July 2011,
+              <https://www.rfc-editor.org/rfc/rfc6268>.
 
    [RFC6712]  Kause, T. and M. Peylo, "Internet X.509 Public Key
               Infrastructure -- HTTP Transfer for the Certificate
@@ -5380,11 +5390,11 @@ Appendix F.  Compilable ASN.1 Definitions
        -- [RFC9480]
 
    EnvelopedData, SignedData
-   FROM CryptographicMessageSyntax-2009
+   FROM CryptographicMessageSyntax-2010
        {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
-       smime(16) modules(0) id-mod-cms-2004-02(41)}
-       -- The import of EnvelopedData and SignedData is added due to
-       -- the updates made in CMP Updates [RFC9480]
+       smime(16) modules(0) id-mod-cms-2009(58)}
+       -- The import of EnvelopedData and SignedData from [RFC6268] is
+       -- added due to the updates made in CMP Updates [RFC9480]
 
    KEM-ALGORITHM
    FROM KEMAlgorithmInformation-2023  -- [RFCFFFF]
@@ -5555,7 +5565,7 @@ Appendix F.  Compilable ASN.1 Definitions
    -- id-KemBasedMac and KemBMParameter were added in [RFCXXXX]
 
    id-KemBasedMac OBJECT IDENTIFIER ::= { iso(1) member-body(2)
-       usa(840) nt(113533) nsn(7) algorithms(66) TBD4 }
+       usa(840) nt(113533) nsn(7) algorithms(66) 16 }
    KemBMParameter ::= SEQUENCE {
        kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
        -- AlgId of the Key Derivation Function algorithm
@@ -5693,7 +5703,7 @@ Appendix F.  Compilable ASN.1 Definitions
       -- the result of applying the one-way function (owf) to a
       -- randomly-generated INTEGER, A. (Note that a different
       -- INTEGER MUST be used for each Challenge.)
-      challenge           OCTET STRING
+      challenge           OCTET STRING,
       -- MUST be used for cmp2000(2) popdecc messages and MUST be
       -- the encryption of Rand (using a mechanism depending on the
       -- private key type).
@@ -5819,6 +5829,7 @@ Appendix F.  Compilable ASN.1 Definitions
    }
 
    CRLAnnContent ::= SEQUENCE OF CertificateList
+
    PKIConfirmContent ::= NULL
 
    NestedMessageContent ::= PKIMessages
@@ -6067,6 +6078,12 @@ Appendix G.  History of Changes
 
    Note: This appendix will be deleted in the final version of the
    document.
+
+   From version 11 -> 12:
+
+   *  Updated Appendix F addressing comments from Russ (see thread "WG
+      Last Call for draft-ietf-lamps-rfc4210bis and draft-ietf-lamps-
+      rfc6712bis")
 
    From version 10 -> 11:
 
