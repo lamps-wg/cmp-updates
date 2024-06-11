@@ -70,6 +70,7 @@ informative:
   RFC4212:
   RFC4511:
   RFC5912:
+  RFC6268:
   RFC6712:
   RFC7299:
   RFC8572:
@@ -5129,11 +5130,11 @@ FROM PKCS-9
     -- [RFC9480]
 
 EnvelopedData, SignedData
-FROM CryptographicMessageSyntax-2009
+FROM CryptographicMessageSyntax-2010
     {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
-    smime(16) modules(0) id-mod-cms-2004-02(41)}
-    -- The import of EnvelopedData and SignedData is added due to
-    -- the updates made in CMP Updates [RFC9480]
+    smime(16) modules(0) id-mod-cms-2009(58)}
+    -- The import of EnvelopedData and SignedData from [RFC6268] is
+    -- added due to the updates made in CMP Updates [RFC9480]
 
 KEM-ALGORITHM
 FROM KEMAlgorithmInformation-2023  -- [RFCFFFF]
@@ -5304,7 +5305,7 @@ DHBMParameter ::= SEQUENCE {
 -- id-KemBasedMac and KemBMParameter were added in [RFCXXXX]
 
 id-KemBasedMac OBJECT IDENTIFIER ::= { iso(1) member-body(2)
-    usa(840) nt(113533) nsn(7) algorithms(66) TBD4 }
+    usa(840) nt(113533) nsn(7) algorithms(66) 16 }
 KemBMParameter ::= SEQUENCE {
     kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},
     -- AlgId of the Key Derivation Function algorithm
@@ -5442,7 +5443,7 @@ Challenge ::= SEQUENCE {
    -- the result of applying the one-way function (owf) to a
    -- randomly-generated INTEGER, A. (Note that a different
    -- INTEGER MUST be used for each Challenge.)
-   challenge           OCTET STRING
+   challenge           OCTET STRING,
    -- MUST be used for cmp2000(2) popdecc messages and MUST be
    -- the encryption of Rand (using a mechanism depending on the
    -- private key type).
@@ -5568,6 +5569,7 @@ RevAnnContent ::= SEQUENCE {
 }
 
 CRLAnnContent ::= SEQUENCE OF CertificateList
+
 PKIConfirmContent ::= NULL
 
 NestedMessageContent ::= PKIMessages
@@ -5817,6 +5819,11 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+
+From version 11 -> 12:
+
+* Updated Appendix F addressing comments from Russ (see thread "WG Last Call for draft-ietf-lamps-rfc4210bis and draft-ietf-lamps-rfc6712bis")
 
 
 From version 10 -> 11:
