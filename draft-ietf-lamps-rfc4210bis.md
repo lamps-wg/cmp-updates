@@ -2339,6 +2339,8 @@ The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of
 
 The end entity proves knowledge of the private key to the CA by providing the correct CertHash for this certificate in the certConf message. This demonstrates POP because the EE can only compute the correct CertHash if it is able to recover the encrypted certificate, and it can only recover the certificate if it is able to obtain the symmetric key using the required private key. Clearly, for this to work, the CA MUST NOT publish the certificate until the certConf message arrives (when certHash is to be used to demonstrate POP). See {{sect-5.3.18}} for further details and see {{sect-8.11}} for security considerations regarding use of Certificate Transparency logs.
 
+The recipient SHOULD maintain a context of the PKI management operation, e.g., using transactionID and certReqId, to identify the private key to use when decrypting the EnvelopedData containing the newly issued certificate. The recipient may be unable to use the RecipientInfo structure as it refers to the certificate that is still encrypted. The sender MUST populate the rid field as specified by CMS and the client MAY ignore it.
+
 
 ##### Direct Method - Challenge-Response Protocol
 {: id="sect-5.2.8.3.3"}
@@ -5824,6 +5826,8 @@ Note: This appendix will be deleted in the final version of the document.
 
 
 From version 11 -> 12:
+
+* Adding a paragraph to Section 5.2.8.3.2 to clarify Indirect POP (see thread "Using cms-kemri this CMP Indirect POP")
 
 * Updated Appendix F addressing comments from Russ (see thread "WG Last Call for draft-ietf-lamps-rfc4210bis and draft-ietf-lamps-rfc6712bis")
 
