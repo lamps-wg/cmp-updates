@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 5 January 2025                                          Entrust
-                                                             4 July 2024
+Expires: 6 January 2025                                          Entrust
+                                                             5 July 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 January 2025.
+   This Internet-Draft will expire on 6 January 2025.
 
 Copyright Notice
 
@@ -2459,7 +2459,7 @@ Table of Contents
    newly issued certificate.  The recipient may be unable to use the
    RecipientInfo structure as it refers to the certificate that is still
    encrypted.  The sender MUST populate the rid field as specified by
-   CMS and the client MAY ignore it.
+   CMS and the client SHOULD ignore it.
 
 5.2.8.3.3.  Direct Method - Challenge-Response Protocol
 
