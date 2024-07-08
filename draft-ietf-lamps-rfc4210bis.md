@@ -5831,6 +5831,8 @@ From version 11 -> 12:
 
 * Updated Appendix F addressing comments from Russ (see thread "WG Last Call for draft-ietf-lamps-rfc4210bis and draft-ietf-lamps-rfc6712bis")
 
+* Extended the Acknowledgments section.
+
 
 From version 10 -> 11:
 
