@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 9 January 2025                                          Entrust
-                                                             8 July 2024
+Expires: 13 January 2025                                         Entrust
+                                                            12 July 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 January 2025.
+   This Internet-Draft will expire on 13 January 2025.
 
 Copyright Notice
 
@@ -1465,13 +1465,14 @@ Table of Contents
    This name (in conjunction with senderKID, if supplied) should be
    sufficient to indicate the key to use to verify the protection on the
    message.  If nothing about the sender is known to the sending entity
-   (e.g., in the init. req. message, where the end entity may not know
-   its own Distinguished Name (DN), e-mail name, IP address, etc.), then
-   the "sender" field MUST contain a "NULL" value; that is, the SEQUENCE
-   OF relative distinguished names is of zero length.  In such a case,
-   the senderKID field MUST hold an identifier (i.e., a reference
-   number) that indicates to the receiver the appropriate shared secret
-   information to use to verify the message.
+   (e.g., in the initial request message, where the end entity may not
+   know its own Distinguished Name (DN), e-mail name, IP address, etc.),
+   then the "sender" field MUST contain a "NULL-DN" value in the
+   directoryName choice.  A "NULL-DN" is a SEQUENCE OF relative
+   distinguished names of zero length.  In such a case, the senderKID
+   field MUST hold an identifier (i.e., a reference number) that
+   indicates to the receiver the appropriate shared secret information
+   to use to verify the message.
 
    The recipient field contains the name of the recipient of the
    PKIMessage.  This name (in conjunction with recipKID, if supplied)
@@ -2277,9 +2278,9 @@ Table of Contents
 
    *  The subject and issuer fields MUST be identical;
 
-   *  If the subject field is NULL, then both subjectAltNames and
-      issuerAltNames extensions MUST be present and have exactly the
-      same value;
+   *  If the subject field contains a "NULL-DN", then both
+      subjectAltNames and issuerAltNames extensions MUST be present and
+      have exactly the same value;
 
    *  The values of all other extensions must be suitable for a self-
       signed certificate (e.g., key identifiers for subject and issuer
@@ -2540,6 +2541,13 @@ Table of Contents
    encryptedRand field in a CMS EnvelopedData structure as defined in
    Section 5.2.2.  The challenge field MUST contain an empty OCTET
    STRING.
+
+   The recipient SHOULD maintain a context of the PKI management
+   operation, e.g., using transactionID and certReqId, to identify the
+   private key to use when decrypting encryptedRand.  The sender MUST
+   populate the rid field in the EnvelopedData sequence using the
+   issuerAndSerialNumber choice containing a NULL-DN as issuer and the
+   certReqId as serialNumber.  The client MAY ignore the rid field.
 
    Note: The challenge field has been deprecated in favor of
    encryptedRand.  When using cmp2000(2) in the popdecc message header
@@ -4456,10 +4464,9 @@ C.1.  General Rules for Interpretation of These Profiles.
        value is available (e.g., an end entity produces a request before
        knowing its name), then the GeneralName is to be an X.500 NULL-DN
        (i.e., the Name field of the CHOICE is to contain a NULL-DN).
-       This special value can be called a "NULL-GeneralName".
 
    6.  Where a profile omits to specify the value for a GeneralName,
-       then the NULL-GeneralName value is to be present in the relevant
+       then the NULL-DN value is to be present in the relevant
        PKIMessage field.  This occurs with the sender field of the
        PKIHeader for some messages.
 
@@ -6086,6 +6093,13 @@ Appendix G.  History of Changes
 
    Note: This appendix will be deleted in the final version of the
    document.
+
+   From version 12 -> 13:
+
+   *  Updated the definition of "NULL-DN" in Section 5.1.1 and
+      Appendix D.1 and added a specification of how the RA/CA shall
+      generate the rid content to Section 5.2.8.3.3 to clarify direct
+      POP (see thread "CMS RecipientInfo for EnvelopedData in CMC")
 
    From version 11 -> 12:
 
