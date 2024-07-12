@@ -3115,7 +3115,7 @@ message.  If nothing about the sender is known to the sending entity
 (e.g., in the initial request message, where the end entity may not know
 its own Distinguished Name (DN), e-mail name, IP address, etc.), then
 the "sender" field <span class="bcp14">MUST</span> contain a "NULL-DN" value in the directoryName choice.
-A "NULL-DN" is a SEQUENCE OF relative distinguished names of zero length.
+A "NULL-DN" is a SEQUENCE OF relative distinguished names of zero length and is encoded as 0x3000.
 In such a case, the senderKID field <span class="bcp14">MUST</span> hold an identifier (i.e., a reference
 number) that indicates to the receiver the appropriate shared secret
 information to use to verify the message.<a href="#section-5.1.1-5" class="pilcrow">¶</a></p>
