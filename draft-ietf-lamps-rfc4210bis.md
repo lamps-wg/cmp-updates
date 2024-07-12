@@ -1462,11 +1462,11 @@ The sender field contains the name of the sender of the PKIMessage.
 This name (in conjunction with senderKID, if supplied) should be
 sufficient to indicate the key to use to verify the protection on the
 message.  If nothing about the sender is known to the sending entity
-(e.g., in the init. req. message, where the end entity may not know
+(e.g., in the initial request message, where the end entity may not know
 its own Distinguished Name (DN), e-mail name, IP address, etc.), then
-the "sender" field MUST contain a "NULL" value; that is, the SEQUENCE
-OF relative distinguished names is of zero length.  In such a case,
-the senderKID field MUST hold an identifier (i.e., a reference
+the "sender" field MUST contain a "NULL-DN" value in the directoryName choice.
+A "NULL-DN" is a SEQUENCE OF relative distinguished names of zero length and is encoded as 0x3000.
+In such a case, the senderKID field MUST hold an identifier (i.e., a reference
 number) that indicates to the receiver the appropriate shared secret
 information to use to verify the message.
 
@@ -2200,7 +2200,7 @@ The fields within this certificate are restricted as follows:
 
 * The subject and issuer fields MUST be identical;
 
-* If the subject field is NULL, then both subjectAltNames and
+* If the subject field contains a "NULL-DN", then both subjectAltNames and
   issuerAltNames extensions MUST be present and have exactly the
   same value;
 
@@ -2402,6 +2402,8 @@ The challenge-response messages for proof-of-possession of a private key are spe
 More details on the fields in this syntax is available in {{sect-f}}.
 
 For a popdecc message indicating cmp2021(3) in the pvno field of the PKIHeader, the encryption of Rand MUST be transferred in the encryptedRand field in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.  The challenge field MUST contain an empty OCTET STRING.
+
+The recipient SHOULD maintain a context of the PKI management operation, e.g., using transactionID and certReqId, to identify the private key to use when decrypting encryptedRand. The sender MUST populate the rid field in the EnvelopedData sequence using the issuerAndSerialNumber choice containing a NULL-DN as issuer and the certReqId as serialNumber. The client MAY ignore the rid field.
 
 Note: The challenge field has been deprecated in favor of encryptedRand.  When using cmp2000(2) in the popdecc message header for backward compatibility, the challenge field MUST contain the encryption (involving the public key for which the certification request is being made) of Rand and encryptedRand MUST be omitted.  Using challenge (omitting the optional encryptedRand field) is bit-compatible with [RFC4210]. Note that the size of Rand, when used with challenge, needs to be appropriate for encryption, involving the public key of the requester. If, in some environment, names are so long that they cannot fit (e.g., very long DNs), then whatever portion will fit should be used (as long as it includes at least the common name, and as long as the receiver is able to deal meaningfully with the abbreviation).
 
@@ -4144,10 +4146,9 @@ operations are provided:
   value is available (e.g., an end entity produces a request before
   knowing its name), then the GeneralName is to be an X.500 NULL-DN
   (i.e., the Name field of the CHOICE is to contain a NULL-DN).
-  This special value can be called a "NULL-GeneralName".
 
 1. Where a profile omits to specify the value for a GeneralName,
-  then the NULL-GeneralName value is to be present in the relevant
+  then the NULL-DN value is to be present in the relevant
   PKIMessage field.  This occurs with the sender field of the
   PKIHeader for some messages.
 
@@ -5823,6 +5824,10 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 12 -> 13:
+
+* Updated the definition of "NULL-DN" in Section 5.1.1 and Appendix D.1 and added a specification of how the RA/CA shall generate the rid content to Section 5.2.8.3.3 to clarify direct POP (see thread "CMS RecipientInfo for EnvelopedData in CMC")
 
 
 From version 11 -> 12:
