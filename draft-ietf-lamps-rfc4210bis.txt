@@ -1469,10 +1469,10 @@ Table of Contents
    know its own Distinguished Name (DN), e-mail name, IP address, etc.),
    then the "sender" field MUST contain a "NULL-DN" value in the
    directoryName choice.  A "NULL-DN" is a SEQUENCE OF relative
-   distinguished names of zero length.  In such a case, the senderKID
-   field MUST hold an identifier (i.e., a reference number) that
-   indicates to the receiver the appropriate shared secret information
-   to use to verify the message.
+   distinguished names of zero length and is encoded as 0x3000.  In such
+   a case, the senderKID field MUST hold an identifier (i.e., a
+   reference number) that indicates to the receiver the appropriate
+   shared secret information to use to verify the message.
 
    The recipient field contains the name of the recipient of the
    PKIMessage.  This name (in conjunction with recipKID, if supplied)
