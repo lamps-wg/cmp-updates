@@ -437,6 +437,8 @@ The reference to {{RFC2510}} at https://www.iana.org/assignments/media-types/med
 
 The reference to {{RFC4210}} at https://www.iana.org/assignments/core-parameters/core-parameters.xhtml should be replaced with a reference to this document.
 
+The reference to {{RFC9480}} at https://www.iana.org/assignments/well-known-uris/well-known-uris.xhtml and https://www.iana.org/assignments/cmp/cmp.xhtmlshould should be replaced with a reference to this document.
+
 No further action by the IANA is necessary for this document or any anticipated
 updates.
 
@@ -454,6 +456,11 @@ We also thank all reviewers of this document for their valuable feedback.
 # History of Changes {#History}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 05 -> 06:
+
+
+* Updates IANA considerations addressing IANA early review (see thread "[IANA #1368693] Early review: draft-ietf-lamps-rfc4210bis-12 (IETF 120)").
 
 From version 04 -> 05:
 
