@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 13 January 2025                                         J. Gray
+Expires: 25 January 2025                                         J. Gray
                                                                  Entrust
-                                                            12 July 2024
+                                                            24 July 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 January 2025.
+   This Internet-Draft will expire on 25 January 2025.
 
 Copyright Notice
 
@@ -423,6 +423,11 @@ Table of Contents
    parameters/core-parameters.xhtml should be replaced with a reference
    to this document.
 
+   The reference to [RFC9480] at https://www.iana.org/assignments/well-
+   known-uris/well-known-uris.xhtml and
+   https://www.iana.org/assignments/cmp/cmp.xhtmlshould should be
+   replaced with a reference to this document.
+
    No further action by the IANA is necessary for this document or any
    anticipated updates.
 
@@ -526,6 +531,12 @@ Appendix A.  History of Changes
 
    Note: This appendix will be deleted in the final version of the
    document.
+
+   From version 05 -> 06:
+
+   *  Updates IANA considerations addressing IANA early review (see
+      thread "[IANA #1368693] Early review: draft-ietf-lamps-
+      rfc4210bis-12 (IETF 120)").
 
    From version 04 -> 05:
 
