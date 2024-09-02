@@ -5143,7 +5143,7 @@ FROM KEMAlgorithmInformation-2023  -- [RFCFFFF]
     security(5) mechanisms(5) pkix(7) id-mod(0)
     id-mod-kemAlgorithmInformation-2023(109) }
     -- The import of KEM-ALGORITHM was added due to the updates made
-    -- in [RFC9629]
+    -- in [RFCXXXX]
 ;
 
 -- History of the PKIXCMP ASN.1 modules
@@ -5824,8 +5824,6 @@ From version 12 -> 13:
 * Updated the definition of "NULL-DN" in Section 5.1.1 and Appendix D.1 and added a specification of how the RA/CA shall generate the rid content to Section 5.2.8.3.3 to clarify direct POP (see thread "CMS RecipientInfo for EnvelopedData in CMC")
 
 * Updated reference from draft-ietf-lamps-cms-kemri to RFC 9629
-
-* Addressed IANA early review comments (see thread "[IANA #1368693] Early review: draft-ietf-lamps-rfc4210bis-12")
 
 
 From version 11 -> 12:
