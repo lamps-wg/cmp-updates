@@ -5408,7 +5408,7 @@ Appendix F.  Compilable ASN.1 Definitions
        security(5) mechanisms(5) pkix(7) id-mod(0)
        id-mod-kemAlgorithmInformation-2023(109) }
        -- The import of KEM-ALGORITHM was added due to the updates made
-       -- in [RFC9629]
+       -- in [RFCXXXX]
    ;
 
    -- History of the PKIXCMP ASN.1 modules
@@ -6091,9 +6091,6 @@ Appendix G.  History of Changes
       POP (see thread "CMS RecipientInfo for EnvelopedData in CMC")
 
    *  Updated reference from draft-ietf-lamps-cms-kemri to RFC 9629
-
-   *  Addressed IANA early review comments (see thread "[IANA #1368693]
-      Early review: draft-ietf-lamps-rfc4210bis-12")
 
    From version 11 -> 12:
 
