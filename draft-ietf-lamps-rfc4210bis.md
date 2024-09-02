@@ -162,7 +162,7 @@ normative:
   RFC8933:
   RFC9045:
   RFC9481:
-  I-D.ietf-lamps-cms-kemri:
+  RFC9629:
   MvOV97:
     title: Handbook of Applied Cryptography
     author:
@@ -231,8 +231,6 @@ Please perform the following substitution.
 * RFCXXXX --> the assigned numerical RFC value for this draft
 
 * RFCDDDD --> the assigned numerical RFC value for {{I-D.ietf-lamps-rfc6712bis}}
-
-* RFCFFFF --> the assigned numerical RFC value for {{I-D.ietf-lamps-cms-kemri}}
 ]
 
 This document describes the Internet X.509 Public Key Infrastructure
@@ -1088,7 +1086,7 @@ the CA/RA (e.g., for archiving), see {{sect-5.2.8.3.1}}, or can be required to d
 a value in order to prove possession of the private key.
 Decrypting a value can be achieved either directly (see {{sect-5.2.8.3.3}}) or indirectly (see {{sect-5.2.8.3.2}}).
 
-Note: A definition of key encapsulation mechanisms can be found in {{I-D.ietf-lamps-cms-kemri, Section 1}}.
+Note: A definition of key encapsulation mechanisms can be found in {{RFC9629, Section 1}}.
 
 The direct method is for the RA/CA to issue a random challenge to which an
 immediate response by the EE is required.
@@ -1817,7 +1815,7 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 
 In case the sender of a message has a Key Encapsulation Mechanism (KEM) key pair, it can be used to establish a shared secret key for MAC-based message protection. This can be used for message authentication.
 
-This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{I-D.ietf-lamps-cms-kemri, Section 1}} which is copied here for completeness.
+This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{RFC9629, Section 1}} which is copied here for completeness.
 
 A KEM algorithm provides three functions:
 
@@ -1856,7 +1854,7 @@ Note: The OID for id-KemBasedMac was assigned on the private-use arc { iso(1) me
 
 kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to derive the shared secret key.
 
-kemContext MAY be used to transfer additional algorithm specific context information, see also the definition of ukm in {{I-D.ietf-lamps-cms-kemri}}, Section 3.
+kemContext MAY be used to transfer additional algorithm specific context information, see also the definition of ukm in {{RFC9629}}, Section 3.
 
 len is the output length of the KDF and MUST be the desired size of the key to be used for MAC-based message protection.
 
@@ -1923,7 +1921,7 @@ Step# Alice                                Bob
 
 This shared secret key ssk can be reused by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.
 
-This approach employs the notation of KDF(IKM, L, info) as described in {{I-D.ietf-lamps-cms-kemri, Section 5}} with the following changes:
+This approach employs the notation of KDF(IKM, L, info) as described in {{RFC9629, Section 5}} with the following changes:
 
 * IKM is the input key material. It is the symmetric secret called ss resulting from the key encapsulation mechanism.
 
@@ -2097,7 +2095,7 @@ The content-encryption key will be protected using the key agreement key managem
   using the password-based key management technique, as specified in
   Section 6.2.4 of {{RFC5652}}.
 
-* recipient's certificate with an algorithm identifier and a public key that supports key encapsulation mechanism and where any given key usage extension allows keyEncipherment: The content-encryption key will be protected using the key management technique for KEM keys, as specified in {{I-D.ietf-lamps-cms-kemri}}.
+* recipient's certificate with an algorithm identifier and a public key that supports key encapsulation mechanism and where any given key usage extension allows keyEncipherment: The content-encryption key will be protected using the key management technique for KEM keys, as specified in {{RFC9629}}.
 
 Note: There are cases where the algorithm identifier, the type of the public key,
 and the key usage extension will not be sufficient to decide on the key management
@@ -3944,8 +3942,6 @@ The new OID 1.2.840.113533.7.66.16 was registered by Entrust for id-KemBasedMac 
 
 All existing references to {{RFC2510}}, {{RFC4210}}, and {{RFC9480}} at https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml except those in the "SMI Security for PKIX Module Identifier" registry should be replaced with references to this document.
 
-< ToDo: The new OID TBD3 for the ASN.1 module KEMAlgorithmInformation-2023 will be defined in draft-ietf-lamps-cms-kemri. >
-
 # Acknowledgements {#Acknowledgements}
 
 The authors of this document wish to thank Carlisle Adams, Stephen Farrell,
@@ -5145,11 +5141,9 @@ KEM-ALGORITHM
 FROM KEMAlgorithmInformation-2023  -- [RFCFFFF]
     { iso(1) identified-organization(3) dod(6) internet(1)
     security(5) mechanisms(5) pkix(7) id-mod(0)
-    id-mod-kemAlgorithmInformation-2023(TBD3) }
+    id-mod-kemAlgorithmInformation-2023(109) }
     -- The import of KEM-ALGORITHM was added due to the updates made
-    -- in [RFCXXXX]
--- RFC-Editor: Please set the new OID defined in
--- draft-ietf-lamps-cms-kemri as TBD3.
+    -- in [RFC9629]
 ;
 
 -- History of the PKIXCMP ASN.1 modules
@@ -5828,6 +5822,8 @@ Note: This appendix will be deleted in the final version of the document.
 From version 12 -> 13:
 
 * Updated the definition of "NULL-DN" in Section 5.1.1 and Appendix D.1 and added a specification of how the RA/CA shall generate the rid content to Section 5.2.8.3.3 to clarify direct POP (see thread "CMS RecipientInfo for EnvelopedData in CMC")
+
+* Updated reference from draft-ietf-lamps-cms-kemri to RFC 9629
 
 
 From version 11 -> 12:
