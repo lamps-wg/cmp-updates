@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 25 January 2025                                         Entrust
-                                                            24 July 2024
+Expires: 6 March 2025                                            Entrust
+                                                        2 September 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 January 2025.
+   This Internet-Draft will expire on 6 March 2025.
 
 Copyright Notice
 
@@ -279,10 +279,7 @@ Table of Contents
    *  RFCXXXX --> the assigned numerical RFC value for this draft
 
    *  RFCDDDD --> the assigned numerical RFC value for
-      [I-D.ietf-lamps-rfc6712bis]
-
-   *  RFCFFFF --> the assigned numerical RFC value for
-      [I-D.ietf-lamps-cms-kemri] ]
+      [I-D.ietf-lamps-rfc6712bis] ]
 
    This document describes the Internet X.509 Public Key Infrastructure
    (PKI) Certificate Management Protocol (CMP).  Protocol messages are
@@ -1094,7 +1091,7 @@ Table of Contents
    Section 5.2.8.3.2).
 
    Note: A definition of key encapsulation mechanisms can be found in
-   [I-D.ietf-lamps-cms-kemri], Section 1.
+   [RFC9629], Section 1.
 
    The direct method is for the RA/CA to issue a random challenge to
    which an immediate response by the EE is required.
@@ -1820,8 +1817,8 @@ Table of Contents
    authentication.
 
    This approach uses the definition of Key Encapsulation Mechanism
-   (KEM) algorithm functions in [I-D.ietf-lamps-cms-kemri], Section 1
-   which is copied here for completeness.
+   (KEM) algorithm functions in [RFC9629], Section 1 which is copied
+   here for completeness.
 
    A KEM algorithm provides three functions:
 
@@ -1882,8 +1879,8 @@ Table of Contents
    parameters, used to derive the shared secret key.
 
    kemContext MAY be used to transfer additional algorithm specific
-   context information, see also the definition of ukm in
-   [I-D.ietf-lamps-cms-kemri], Section 3.
+   context information, see also the definition of ukm in [RFC9629],
+   Section 3.
 
    len is the output length of the KDF and MUST be the desired size of
    the key to be used for MAC-based message protection.
@@ -1979,7 +1976,7 @@ Table of Contents
    management operation.
 
    This approach employs the notation of KDF(IKM, L, info) as described
-   in [I-D.ietf-lamps-cms-kemri], Section 5 with the following changes:
+   in [RFC9629], Section 5 with the following changes:
 
    *  IKM is the input key material.  It is the symmetric secret called
       ss resulting from the key encapsulation mechanism.
@@ -2182,7 +2179,7 @@ Table of Contents
       key that supports key encapsulation mechanism and where any given
       key usage extension allows keyEncipherment: The content-encryption
       key will be protected using the key management technique for KEM
-      keys, as specified in [I-D.ietf-lamps-cms-kemri].
+      keys, as specified in [RFC9629].
 
    Note: There are cases where the algorithm identifier, the type of the
    public key, and the key usage extension will not be sufficient to
@@ -3996,10 +3993,6 @@ Table of Contents
    those in the "SMI Security for PKIX Module Identifier" registry
    should be replaced with references to this document.
 
-   < ToDo: The new OID TBD3 for the ASN.1 module
-   KEMAlgorithmInformation-2023 will be defined in draft-ietf-lamps-cms-
-   kemri. >
-
 10.  Acknowledgements
 
    The authors of this document wish to thank Carlisle Adams, Stephen
@@ -4075,13 +4068,11 @@ Table of Contents
               RFC 9481, DOI 10.17487/RFC9481, November 2023,
               <https://www.rfc-editor.org/rfc/rfc9481>.
 
-   [I-D.ietf-lamps-cms-kemri]
-              Housley, R., Gray, J., and T. Okubo, "Using Key
+   [RFC9629]  Housley, R., Gray, J., and T. Okubo, "Using Key
               Encapsulation Mechanism (KEM) Algorithms in the
-              Cryptographic Message Syntax (CMS)", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-cms-kemri-08, 6 February
-              2024, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              lamps-cms-kemri-08>.
+              Cryptographic Message Syntax (CMS)", RFC 9629,
+              DOI 10.17487/RFC9629, August 2024,
+              <https://www.rfc-editor.org/rfc/rfc9629>.
 
    [MvOV97]   Menezes, A., van Oorschot, P., and S. Vanstone, "Handbook
               of Applied Cryptography", CRC Press ISBN 0-8493-8523-7,
@@ -4256,8 +4247,8 @@ Table of Contents
 
    [Hofheinz] Hofheinz, D., Hövelmanns, K., and E. Kiltz, "A Modular
               Analysis of the Fujisaki-Okamoto Transformation", Springer
-              International Publishing, Theory of Cryptography pp.
-              341-371, DOI 10.1007/978-3-319-70500-2_12,
+              International Publishing, Lecture Notes in Computer
+              Science pp. 341-371, DOI 10.1007/978-3-319-70500-2_12,
               ISBN ["9783319704999", "9783319705002"], 2017,
               <https://doi.org/10.1007/978-3-319-70500-2_12>.
 
@@ -5415,11 +5406,9 @@ Appendix F.  Compilable ASN.1 Definitions
    FROM KEMAlgorithmInformation-2023  -- [RFCFFFF]
        { iso(1) identified-organization(3) dod(6) internet(1)
        security(5) mechanisms(5) pkix(7) id-mod(0)
-       id-mod-kemAlgorithmInformation-2023(TBD3) }
+       id-mod-kemAlgorithmInformation-2023(109) }
        -- The import of KEM-ALGORITHM was added due to the updates made
-       -- in [RFCXXXX]
-   -- RFC-Editor: Please set the new OID defined in
-   -- draft-ietf-lamps-cms-kemri as TBD3.
+       -- in [RFC9629]
    ;
 
    -- History of the PKIXCMP ASN.1 modules
@@ -6100,6 +6089,8 @@ Appendix G.  History of Changes
       Appendix D.1 and added a specification of how the RA/CA shall
       generate the rid content to Section 5.2.8.3.3 to clarify direct
       POP (see thread "CMS RecipientInfo for EnvelopedData in CMC")
+
+   *  Updated reference from draft-ietf-lamps-cms-kemri to RFC 9629
 
    From version 11 -> 12:
 

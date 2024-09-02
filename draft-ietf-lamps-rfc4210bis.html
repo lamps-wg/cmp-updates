@@ -28,10 +28,10 @@ certConf messages, and RootCaKeyUpdateContent in ckuann messages.
 adds support for management of KEM certificates. 
        Appendix F of this document updates the 2002 ASN.1 module in RFC 5912 Section 9. 
     " name="description">
-<meta content="xml2rfc 3.22.0" name="generator">
+<meta content="xml2rfc 3.23.0" name="generator">
 <meta content="draft-ietf-lamps-rfc4210bis-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.22.0
+  xml2rfc 3.23.0
     Python 3.12.3
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
@@ -42,7 +42,7 @@ adds support for management of KEM certificates.
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.32.3
-    setuptools 69.5.1
+    setuptools 70.3.0
     wcwidth 0.2.13
 -->
 <link href="draft-ietf-lamps-rfc4210bis.xml" rel="alternate" type="application/rfc+xml">
@@ -1042,11 +1042,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">RFC4210bis</td>
-<td class="right">July 2024</td>
+<td class="right">September 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 25 January 2025</td>
+<td class="center">Expires 6 March 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-07-24" class="published">24 July 2024</time>
+<time datetime="2024-09-02" class="published">2 September 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-01-25">25 January 2025</time></dd>
+<dd class="expires"><time datetime="2025-03-06">6 March 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1143,7 +1143,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1744,11 +1744,8 @@ as co-authors.<a href="#section-1-4" class="pilcrow">¶</a></p>
           <p id="section-1-8.1.1">RFCXXXX --&gt; the assigned numerical RFC value for this draft<a href="#section-1-8.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-8.2">
-          <p id="section-1-8.2.1">RFCDDDD --&gt; the assigned numerical RFC value for <span>[<a href="#I-D.ietf-lamps-rfc6712bis" class="cite xref">I-D.ietf-lamps-rfc6712bis</a>]</span><a href="#section-1-8.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-1-8.3">
-          <p id="section-1-8.3.1">RFCFFFF --&gt; the assigned numerical RFC value for <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>]</span>
-]<a href="#section-1-8.3.1" class="pilcrow">¶</a></p>
+          <p id="section-1-8.2.1">RFCDDDD --&gt; the assigned numerical RFC value for <span>[<a href="#I-D.ietf-lamps-rfc6712bis" class="cite xref">I-D.ietf-lamps-rfc6712bis</a>]</span>
+]<a href="#section-1-8.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-1-9">This document describes the Internet X.509 Public Key Infrastructure
@@ -2703,7 +2700,7 @@ appropriate parameters when necessary.<a href="#section-4.3.3-2" class="pilcrow"
 the CA/RA (e.g., for archiving), see <a href="#sect-5.2.8.3.1" class="auto internal xref">Section 5.2.8.3.1</a>, or can be required to decrypt
 a value in order to prove possession of the private key.
 Decrypting a value can be achieved either directly (see <a href="#sect-5.2.8.3.3" class="auto internal xref">Section 5.2.8.3.3</a>) or indirectly (see <a href="#sect-5.2.8.3.2" class="auto internal xref">Section 5.2.8.3.2</a>).<a href="#section-4.3.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.3.4-2">Note: A definition of key encapsulation mechanisms can be found in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08#section-1" class="relref">Section 1</a></span>.<a href="#section-4.3.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.3.4-2">Note: A definition of key encapsulation mechanisms can be found in <span>[<a href="#RFC9629" class="cite xref">RFC9629</a>], <a href="https://rfc-editor.org/rfc/rfc9629#section-1" class="relref">Section 1</a></span>.<a href="#section-4.3.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.3.4-3">The direct method is for the RA/CA to issue a random challenge to which an
 immediate response by the EE is required.<a href="#section-4.3.4-3" class="pilcrow">¶</a></p>
 <p id="section-4.3.4-4">The indirect method is to issue a certificate that is encrypted for the end entity using a shared secret key derived from a key encapsulated using the public key (and have the end entity demonstrate its ability to use its private key for decapsulation of the KEM ciphertext, derive the shared secret key, decrypt this certificate, and provide a hash of the certificate in the confirmation message).  This allows a CA to issue a certificate in a form that can only be used by the intended end entity.<a href="#section-4.3.4-4" class="pilcrow">¶</a></p>
@@ -3471,7 +3468,7 @@ digital signature <span class="bcp14">MAY</span> be one of the options described
 <a href="#section-5.1.3.4" class="section-number selfRef">5.1.3.4. </a><a href="#name-key-encapsulation" class="section-name selfRef">Key Encapsulation</a>
             </h5>
 <p id="section-5.1.3.4-1">In case the sender of a message has a Key Encapsulation Mechanism (KEM) key pair, it can be used to establish a shared secret key for MAC-based message protection. This can be used for message authentication.<a href="#section-5.1.3.4-1" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-2">This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08#section-1" class="relref">Section 1</a></span> which is copied here for completeness.<a href="#section-5.1.3.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-2">This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in <span>[<a href="#RFC9629" class="cite xref">RFC9629</a>], <a href="https://rfc-editor.org/rfc/rfc9629#section-1" class="relref">Section 1</a></span> which is copied here for completeness.<a href="#section-5.1.3.4-2" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-3">A KEM algorithm provides three functions:<a href="#section-5.1.3.4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.1.3.4-4.1">
@@ -3522,7 +3519,7 @@ shared secret (ss) for the recipient.<a href="#section-5.1.3.4-9.1.1" class="pil
 </div>
 <p id="section-5.1.3.4-14">Note: The OID for id-KemBasedMac was assigned on the private-use arc { iso(1) member-body(2) us(840) nortelnetworks(113533) entrust(7) }, and not assigned on an IANA-owned arc because the authors wished to placed it on the same branch as the existing OIDs for id-PasswordBasedMac and id-DHBasedMac.<a href="#section-5.1.3.4-14" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-15">kdf is the algorithm identifier of the chosen KDF, and any associated parameters, used to derive the shared secret key.<a href="#section-5.1.3.4-15" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-16">kemContext <span class="bcp14">MAY</span> be used to transfer additional algorithm specific context information, see also the definition of ukm in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>]</span>, Section 3.<a href="#section-5.1.3.4-16" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-16">kemContext <span class="bcp14">MAY</span> be used to transfer additional algorithm specific context information, see also the definition of ukm in <span>[<a href="#RFC9629" class="cite xref">RFC9629</a>]</span>, Section 3.<a href="#section-5.1.3.4-16" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-17">len is the output length of the KDF and <span class="bcp14">MUST</span> be the desired size of the key to be used for MAC-based message protection.<a href="#section-5.1.3.4-17" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-18">mac is the algorithm identifier of the chosen MAC algorithm, and any associated parameters, used to calculate the MAC value.<a href="#section-5.1.3.4-18" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-19">The KDF and MAC algorithms <span class="bcp14">MAY</span> be chosen from the options in CMP Algorithms <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span>.<a href="#section-5.1.3.4-19" class="pilcrow">¶</a></p>
@@ -3594,7 +3591,7 @@ Bob uses the shared secret key ssk for verifying the MAC-based protection of the
 </li>
             </ol>
 <p id="section-5.1.3.4-26">This shared secret key ssk can be reused by Alice for MAC-based protection of further messages sent to Bob within the current PKI management operation.<a href="#section-5.1.3.4-26" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-27">This approach employs the notation of KDF(IKM, L, info) as described in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08#section-5" class="relref">Section 5</a></span> with the following changes:<a href="#section-5.1.3.4-27" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-27">This approach employs the notation of KDF(IKM, L, info) as described in <span>[<a href="#RFC9629" class="cite xref">RFC9629</a>], <a href="https://rfc-editor.org/rfc/rfc9629#section-5" class="relref">Section 5</a></span> with the following changes:<a href="#section-5.1.3.4-27" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.1.3.4-28.1">
                 <p id="section-5.1.3.4-28.1.1">IKM is the input key material. It is the symmetric secret called ss resulting from the key encapsulation mechanism.<a href="#section-5.1.3.4-28.1.1" class="pilcrow">¶</a></p>
@@ -3783,7 +3780,7 @@ using the password-based key management technique, as specified in
 Section 6.2.4 of <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span>.<a href="#section-5.2.2-11.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-5.2.2-11.4">
-              <p id="section-5.2.2-11.4.1">recipient's certificate with an algorithm identifier and a public key that supports key encapsulation mechanism and where any given key usage extension allows keyEncipherment: The content-encryption key will be protected using the key management technique for KEM keys, as specified in <span>[<a href="#I-D.ietf-lamps-cms-kemri" class="cite xref">I-D.ietf-lamps-cms-kemri</a>]</span>.<a href="#section-5.2.2-11.4.1" class="pilcrow">¶</a></p>
+              <p id="section-5.2.2-11.4.1">recipient's certificate with an algorithm identifier and a public key that supports key encapsulation mechanism and where any given key usage extension allows keyEncipherment: The content-encryption key will be protected using the key management technique for KEM keys, as specified in <span>[<a href="#RFC9629" class="cite xref">RFC9629</a>]</span>.<a href="#section-5.2.2-11.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-5.2.2-12">Note: There are cases where the algorithm identifier, the type of the public key,
@@ -5772,7 +5769,6 @@ such an EKU.<a href="#section-8.10-1" class="pilcrow">¶</a></p>
 <p id="section-9-6">Reference: [RFCXXXX]<a href="#section-9-6" class="pilcrow">¶</a></p>
 <p id="section-9-7">The new OID 1.2.840.113533.7.66.16 was registered by Entrust for id-KemBasedMac in the arch 1.2.840.113533.7.66. Entrust registered also the OIDs for id-PasswordBasedMac and id-DHBasedMac there.<a href="#section-9-7" class="pilcrow">¶</a></p>
 <p id="section-9-8">All existing references to <span>[<a href="#RFC2510" class="cite xref">RFC2510</a>]</span>, <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span>, and <span>[<a href="#RFC9480" class="cite xref">RFC9480</a>]</span> at https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml except those in the "SMI Security for PKIX Module Identifier" registry should be replaced with references to this document.<a href="#section-9-8" class="pilcrow">¶</a></p>
-<p id="section-9-9">&lt; ToDo: The new OID TBD3 for the ASN.1 module KEMAlgorithmInformation-2023 will be defined in draft-ietf-lamps-cms-kemri. &gt;<a href="#section-9-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="Acknowledgements">
@@ -5845,9 +5841,9 @@ Tomi Kause, and Tero Mononen, the original authors of <span>[<a href="#RFC4210" 
         <dd>
 <span class="refAuthor">Brockhaus, H.</span>, <span class="refAuthor">Aschauer, H.</span>, <span class="refAuthor">Ounsworth, M.</span>, and <span class="refAuthor">J. Gray</span>, <span class="refTitle">"Certificate Management Protocol (CMP) Algorithms"</span>, <span class="seriesInfo">RFC 9481</span>, <span class="seriesInfo">DOI 10.17487/RFC9481</span>, <time datetime="2023-11" class="refDate">November 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9481">https://www.rfc-editor.org/rfc/rfc9481</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="I-D.ietf-lamps-cms-kemri">[I-D.ietf-lamps-cms-kemri]</dt>
+<dt id="RFC9629">[RFC9629]</dt>
         <dd>
-<span class="refAuthor">Housley, R.</span>, <span class="refAuthor">Gray, J.</span>, and <span class="refAuthor">T. Okubo</span>, <span class="refTitle">"Using Key Encapsulation Mechanism (KEM) Algorithms in the Cryptographic Message Syntax (CMS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-cms-kemri-08</span>, <time datetime="2024-02-06" class="refDate">6 February 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08</a>&gt;</span>. </dd>
+<span class="refAuthor">Housley, R.</span>, <span class="refAuthor">Gray, J.</span>, and <span class="refAuthor">T. Okubo</span>, <span class="refTitle">"Using Key Encapsulation Mechanism (KEM) Algorithms in the Cryptographic Message Syntax (CMS)"</span>, <span class="seriesInfo">RFC 9629</span>, <span class="seriesInfo">DOI 10.17487/RFC9629</span>, <time datetime="2024-08" class="refDate">August 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9629">https://www.rfc-editor.org/rfc/rfc9629</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="MvOV97">[MvOV97]</dt>
         <dd>
@@ -5980,7 +5976,7 @@ Tomi Kause, and Tero Mononen, the original authors of <span>[<a href="#RFC4210" 
 <dd class="break"></dd>
 <dt id="Hofheinz">[Hofheinz]</dt>
         <dd>
-<span class="refAuthor">Hofheinz, D.</span>, <span class="refAuthor">Hövelmanns, K.</span>, and <span class="refAuthor">E. Kiltz</span>, <span class="refTitle">"A Modular Analysis of the Fujisaki-Okamoto Transformation"</span>, <span class="refContent">Springer International Publishing</span>, <span class="seriesInfo">Theory of Cryptography pp. 341-371</span>, <span class="seriesInfo">DOI 10.1007/978-3-319-70500-2_12</span>, <span class="seriesInfo">ISBN ["9783319704999", "9783319705002"]</span>, <time datetime="2017" class="refDate">2017</time>, <span>&lt;<a href="https://doi.org/10.1007/978-3-319-70500-2_12">https://doi.org/10.1007/978-3-319-70500-2_12</a>&gt;</span>. </dd>
+<span class="refAuthor">Hofheinz, D.</span>, <span class="refAuthor">Hövelmanns, K.</span>, and <span class="refAuthor">E. Kiltz</span>, <span class="refTitle">"A Modular Analysis of the Fujisaki-Okamoto Transformation"</span>, <span class="refContent">Springer International Publishing</span>, <span class="seriesInfo">Lecture Notes in Computer Science pp. 341-371</span>, <span class="seriesInfo">DOI 10.1007/978-3-319-70500-2_12</span>, <span class="seriesInfo">ISBN ["9783319704999", "9783319705002"]</span>, <time datetime="2017" class="refDate">2017</time>, <span>&lt;<a href="https://doi.org/10.1007/978-3-319-70500-2_12">https://doi.org/10.1007/978-3-319-70500-2_12</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ETSI-3GPP.33.310">[ETSI-3GPP.33.310]</dt>
         <dd>
@@ -7280,11 +7276,9 @@ KEM-ALGORITHM
 FROM KEMAlgorithmInformation-2023  -- [RFCFFFF]
     { iso(1) identified-organization(3) dod(6) internet(1)
     security(5) mechanisms(5) pkix(7) id-mod(0)
-    id-mod-kemAlgorithmInformation-2023(TBD3) }
+    id-mod-kemAlgorithmInformation-2023(109) }
     -- The import of KEM-ALGORITHM was added due to the updates made
-    -- in [RFCXXXX]
--- RFC-Editor: Please set the new OID defined in
--- draft-ietf-lamps-cms-kemri as TBD3.
+    -- in [RFC9629]
 ;
 
 -- History of the PKIXCMP ASN.1 modules
@@ -7967,6 +7961,9 @@ END
 <ul class="normal">
 <li class="normal" id="appendix-G-3.1">
           <p id="appendix-G-3.1.1">Updated the definition of "NULL-DN" in Section 5.1.1 and Appendix D.1 and added a specification of how the RA/CA shall generate the rid content to Section 5.2.8.3.3 to clarify direct POP (see thread "CMS RecipientInfo for EnvelopedData in CMC")<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-3.2">
+          <p id="appendix-G-3.2.1">Updated reference from draft-ietf-lamps-cms-kemri to RFC 9629<a href="#appendix-G-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-G-4">From version 11 -&gt; 12:<a href="#appendix-G-4" class="pilcrow">¶</a></p>
