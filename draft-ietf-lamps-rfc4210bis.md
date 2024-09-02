@@ -5825,6 +5825,8 @@ From version 12 -> 13:
 
 * Updated reference from draft-ietf-lamps-cms-kemri to RFC 9629
 
+* Addressed IANA early review comments (see thread "[IANA #1368693] Early review: draft-ietf-lamps-rfc4210bis-12")
+
 
 From version 11 -> 12:
 
