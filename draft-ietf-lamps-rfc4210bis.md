@@ -5138,7 +5138,7 @@ FROM CryptographicMessageSyntax-2010
     -- added due to the updates made in CMP Updates [RFC9480]
 
 KEM-ALGORITHM
-FROM KEMAlgorithmInformation-2023  -- [RFCFFFF]
+FROM KEMAlgorithmInformation-2023  -- [RFC9629]
     { iso(1) identified-organization(3) dod(6) internet(1)
     security(5) mechanisms(5) pkix(7) id-mod(0)
     id-mod-kemAlgorithmInformation-2023(109) }
@@ -5818,6 +5818,11 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 13 -> 14:
+
+* Fixed one reference to RFC 9629 in the ASN.1 Module
+
 
 From version 12 -> 13:
 
