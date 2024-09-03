@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 6 March 2025                                            Entrust
-                                                        2 September 2024
+Expires: 7 March 2025                                            Entrust
+                                                        3 September 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 March 2025.
+   This Internet-Draft will expire on 7 March 2025.
 
 Copyright Notice
 
@@ -4108,9 +4108,9 @@ Table of Contents
               Brockhaus, H., von Oheimb, D., Ounsworth, M., and J. Gray,
               "Internet X.509 Public Key Infrastructure -- HTTP Transfer
               for the Certificate Management Protocol (CMP)", Work in
-              Progress, Internet-Draft, draft-ietf-lamps-rfc6712bis-05,
-              20 March 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lamps-rfc6712bis-05>.
+              Progress, Internet-Draft, draft-ietf-lamps-rfc6712bis-06,
+              2 September 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lamps-rfc6712bis-06>.
 
    [RFC1847]  Galvin, J., Murphy, S., Crocker, S., and N. Freed,
               "Security Multiparts for MIME: Multipart/Signed and
@@ -5403,7 +5403,7 @@ Appendix F.  Compilable ASN.1 Definitions
        -- added due to the updates made in CMP Updates [RFC9480]
 
    KEM-ALGORITHM
-   FROM KEMAlgorithmInformation-2023  -- [RFCFFFF]
+   FROM KEMAlgorithmInformation-2023  -- [RFC9629]
        { iso(1) identified-organization(3) dod(6) internet(1)
        security(5) mechanisms(5) pkix(7) id-mod(0)
        id-mod-kemAlgorithmInformation-2023(109) }
@@ -6082,6 +6082,10 @@ Appendix G.  History of Changes
 
    Note: This appendix will be deleted in the final version of the
    document.
+
+   From version 13 -> 14:
+
+   *  Fixed one reference to RFC 9629 in the ASN.1 Module
 
    From version 12 -> 13:
 
