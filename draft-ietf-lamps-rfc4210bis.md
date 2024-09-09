@@ -2036,7 +2036,7 @@ See also {{RFC4212}} for more details on how to manage certificates in alternati
 ### Encrypted Values
 {: id="sect-5.2.2"}
 
-Where encrypted data (in this specification, private keys, certificates,
+Where encrypted data (in this specification, private keys, certificates, POP challenges,
 or revocation passphrase) is sent in PKI messages, the EncryptedKey data
 structure is used.
 
@@ -2061,7 +2061,7 @@ To indicate support for EnvelopedData, the pvno cmp2021 has been introduced.
 Details on the usage of the protocol version number (pvno) are described in {{sect-7}}.
 
 The EncryptedKey data structure is used in CMP to transport a private key,
-certificate, or revocation passphrase in encrypted form.
+certificate, POP challenge, or revocation passphrase in encrypted form.
 
 EnvelopedData is used as follows:
 
@@ -2073,13 +2073,13 @@ EnvelopedData is used as follows:
   in {{RFC5958}}, that is wrapped in a SignedData structure, as specified in
   Section 5 of {{RFC5652}} and {{RFC8933}}, signed by the Key Generation Authority.
 
-* It may contain a certificate or revocation passphrase directly in the encryptedContent
+* It may contain a certificate, POP challenge, or revocation passphrase directly in the encryptedContent
   field.
 
 The content of the EnvelopedData structure, as specified in Section 6 of {{RFC5652}},
 MUST be encrypted using a newly generated symmetric content-encryption
 key. This content-encryption key MUST be securely provided to the recipient
-using one of three key management techniques.
+using one of four key management techniques.
 
 The choice of the key management technique to be used by the sender depends
 on the credential available at the recipient:
@@ -5820,6 +5820,8 @@ END
 Note: This appendix will be deleted in the final version of the document.
 
 From version 13 -> 14:
+
+* Fixed some nits in Section 5.2.2
 
 * Fixed one reference to RFC 9629 in the ASN.1 Module
 
