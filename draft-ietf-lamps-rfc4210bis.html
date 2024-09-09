@@ -1046,7 +1046,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 7 March 2025</td>
+<td class="center">Expires 13 March 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-09-03" class="published">3 September 2024</time>
+<time datetime="2024-09-09" class="published">9 September 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-03-07">7 March 2025</time></dd>
+<dd class="expires"><time datetime="2025-03-13">13 March 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1143,7 +1143,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 13 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3720,7 +3720,7 @@ The new control is defined as follows:<a href="#section-5.2.1-5" class="pilcrow"
           <h4 id="name-encrypted-values">
 <a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-encrypted-values" class="section-name selfRef">Encrypted Values</a>
           </h4>
-<p id="section-5.2.2-1">Where encrypted data (in this specification, private keys, certificates,
+<p id="section-5.2.2-1">Where encrypted data (in this specification, private keys, certificates, POP challenges,
 or revocation passphrase) is sent in PKI messages, the EncryptedKey data
 structure is used.<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.2.2-2">
@@ -3742,7 +3742,7 @@ with the old syntax.<a href="#section-5.2.2-4" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-5">To indicate support for EnvelopedData, the pvno cmp2021 has been introduced.
 Details on the usage of the protocol version number (pvno) are described in <a href="#sect-7" class="auto internal xref">Section 7</a>.<a href="#section-5.2.2-5" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-6">The EncryptedKey data structure is used in CMP to transport a private key,
-certificate, or revocation passphrase in encrypted form.<a href="#section-5.2.2-6" class="pilcrow">¶</a></p>
+certificate, POP challenge, or revocation passphrase in encrypted form.<a href="#section-5.2.2-6" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-7">EnvelopedData is used as follows:<a href="#section-5.2.2-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.2.2-8.1">
@@ -3755,14 +3755,14 @@ in <span>[<a href="#RFC5958" class="cite xref">RFC5958</a>]</span>, that is wrap
 Section 5 of <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> and <span>[<a href="#RFC8933" class="cite xref">RFC8933</a>]</span>, signed by the Key Generation Authority.<a href="#section-5.2.2-8.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-5.2.2-8.3">
-              <p id="section-5.2.2-8.3.1">It may contain a certificate or revocation passphrase directly in the encryptedContent
+              <p id="section-5.2.2-8.3.1">It may contain a certificate, POP challenge, or revocation passphrase directly in the encryptedContent
 field.<a href="#section-5.2.2-8.3.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-5.2.2-9">The content of the EnvelopedData structure, as specified in Section 6 of <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span>,
 <span class="bcp14">MUST</span> be encrypted using a newly generated symmetric content-encryption
 key. This content-encryption key <span class="bcp14">MUST</span> be securely provided to the recipient
-using one of three key management techniques.<a href="#section-5.2.2-9" class="pilcrow">¶</a></p>
+using one of four key management techniques.<a href="#section-5.2.2-9" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-10">The choice of the key management technique to be used by the sender depends
 on the credential available at the recipient:<a href="#section-5.2.2-10" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -7960,7 +7960,10 @@ END
 <p id="appendix-G-2">From version 13 -&gt; 14:<a href="#appendix-G-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-3.1">
-          <p id="appendix-G-3.1.1">Fixed one reference to RFC 9629 in the ASN.1 Module<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.1.1">Fixed some nits in Section 5.2.2<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-3.2">
+          <p id="appendix-G-3.2.1">Fixed one reference to RFC 9629 in the ASN.1 Module<a href="#appendix-G-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-G-4">From version 12 -&gt; 13:<a href="#appendix-G-4" class="pilcrow">¶</a></p>

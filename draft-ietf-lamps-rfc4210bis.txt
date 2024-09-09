@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 7 March 2025                                            Entrust
-                                                        3 September 2024
+Expires: 13 March 2025                                           Entrust
+                                                        9 September 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 March 2025.
+   This Internet-Draft will expire on 13 March 2025.
 
 Copyright Notice
 
@@ -2109,8 +2109,8 @@ Table of Contents
 5.2.2.  Encrypted Values
 
    Where encrypted data (in this specification, private keys,
-   certificates, or revocation passphrase) is sent in PKI messages, the
-   EncryptedKey data structure is used.
+   certificates, POP challenges, or revocation passphrase) is sent in
+   PKI messages, the EncryptedKey data structure is used.
 
      EncryptedKey ::= CHOICE {
         encryptedValue       EncryptedValue, -- deprecated
@@ -2135,7 +2135,8 @@ Table of Contents
    (pvno) are described in Section 7.
 
    The EncryptedKey data structure is used in CMP to transport a private
-   key, certificate, or revocation passphrase in encrypted form.
+   key, certificate, POP challenge, or revocation passphrase in
+   encrypted form.
 
    EnvelopedData is used as follows:
 
@@ -2147,13 +2148,13 @@ Table of Contents
       SignedData structure, as specified in Section 5 of [RFC5652] and
       [RFC8933], signed by the Key Generation Authority.
 
-   *  It may contain a certificate or revocation passphrase directly in
-      the encryptedContent field.
+   *  It may contain a certificate, POP challenge, or revocation
+      passphrase directly in the encryptedContent field.
 
    The content of the EnvelopedData structure, as specified in Section 6
    of [RFC5652], MUST be encrypted using a newly generated symmetric
    content-encryption key.  This content-encryption key MUST be securely
-   provided to the recipient using one of three key management
+   provided to the recipient using one of four key management
    techniques.
 
    The choice of the key management technique to be used by the sender
@@ -6084,6 +6085,8 @@ Appendix G.  History of Changes
    document.
 
    From version 13 -> 14:
+
+   *  Fixed some nits in Section 5.2.2
 
    *  Fixed one reference to RFC 9629 in the ASN.1 Module
 
