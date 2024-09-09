@@ -15,8 +15,15 @@ pi:
   sortrefs: 'false'
 title: Internet X.509 Public Key Infrastructure --
   Certificate Management Protocol (CMP)
-abbrev: RFC4210bis
+abbrev: CMP
+area: sec
 wg: LAMPS Working Group
+keyword:
+- CMP
+- Certificate Management
+- PKI
+github: "lamps-wg/cmp-updates"
+latest: "https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html"
 date: 2024
 author:
 - name: Hendrik Brockhaus

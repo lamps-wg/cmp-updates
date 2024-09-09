@@ -15,8 +15,16 @@ pi:
 title: >
   Internet X.509 Public Key Infrastructure --
   HTTP Transfer for the Certificate Management Protocol (CMP)
-abbrev: RFC6712bis
+abbrev: HTTP Transfer for CMP
+area: sec
 wg: LAMPS Working Group
+keyword:
+- CMP
+- HTTP
+- Certificate management
+- PKI
+github: "lamps-wg/cmp-updates"
+latest: "https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc6712bis.html"
 date: 2024
 author:
 - name: Hendrik Brockhaus
