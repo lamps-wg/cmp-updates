@@ -2,7 +2,7 @@
 
 
 
-Network Working Group                                       H. Brockhaus
+LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
