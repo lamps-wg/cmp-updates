@@ -2,7 +2,7 @@
 
 
 
-LAMPS Working Group                                         H. Brockhaus
+Network Working Group                                       H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
