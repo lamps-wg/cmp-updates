@@ -111,18 +111,7 @@ volunteers, to join the -bis activity as co-authors.
 
 ]
 
-[RFC Editor:
-
-Please perform the following substitution.
-
-
-* RFCXXXX ---> the assigned numerical RFC value for this draft
-
-* RFCCCCC ---> the assigned numerical RFC value for {{I-D.ietf-lamps-rfc4210bis}}
-
-]
-
-The Certificate Management Protocol (CMP) [RFCCCCC] requires a well-defined
+The Certificate Management Protocol (CMP) {{I-D.ietf-lamps-rfc4210bis}} requires a well-defined
 transfer mechanism to enable End Entities (EEs), Registration
 Authorities (RAs), and Certification Authorities (CAs) to pass
 PKIMessage sequences between them.
@@ -134,7 +123,7 @@ poll for outstanding PKI messages.  Additionally, it was mentioned
 that PKI messages could also be conveyed using file-, E-mail-, and
 HTTP-based transfer, but those were not specified in detail.
 
-The second version of the CMP specification {{RFC4210}} incorporated
+Since the second version of the CMP specification {{RFC4210}} incorporated
 its own polling mechanism and thus the need for a transfer protocol
 providing this functionality vanished.  The remaining features CMP
 requires from its transfer protocols are connection and error
@@ -169,7 +158,7 @@ over more than just a single request/response pair, the statelessness
 of HTTP is not blocking its usage as the transfer protocol for CMP
 messages.
 
-## Changes Since RFC 6712
+## Changes Made by RFC 9480
 {: id="sect-1.1"}
 
 CMP Updates {{RFC9480}} updated {{RFC6712}}, supporting the PKI
@@ -188,7 +177,8 @@ Profile {{RFC9483}}, in the following areas:
 
 This document obsoletes [RFC 6712](#RFC6712).
 It includes the changes specified by CMP Updates {{RFC9480}} Section 3 as
-described in {{sect-1.1}}.
+described in {{sect-1.1}} and added the requirement on providing the
+Content-Length header field in {{sect-3.4}}.
 
 
 
@@ -229,7 +219,7 @@ in isolation.
 ## General Form
 {: id="sect-3.3"}
 
-A DER-encoded {{ITU.X690.1994}} PKIMessage [RFCCCCC] is sent as the
+A DER-encoded {{ITU.X690.1994}} PKIMessage {{I-D.ietf-lamps-rfc4210bis}} is sent as the
 entity-body of an HTTP POST request.  If this HTTP request is
 successful, the server returns the CMP response in the body of the
 HTTP response.  The HTTP response status code in this case MUST be
@@ -322,7 +312,7 @@ only be pushed to the recipient.
 
 If an EE wants to poll for a potential CA Key Update Announcement or
 the current CRL, a PKI Information Request using a General Message as
-described in Appendix E.5 of [RFCCCCC] can be used.
+described in Appendix D.5 of {{I-D.ietf-lamps-rfc4210bis}} can be used.
 
 When pushing Announcement messages, PKIMessage structures are sent as
 the entity-body of an HTTP POST request.
@@ -464,6 +454,15 @@ We also thank all reviewers of this document for their valuable feedback.
 # History of Changes {#History}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 06 -> 07:
+
+
+* Updated the the page header to 'HTTP Transfer for CMP'
+
+* Removed one instruction to RFC Editors
+
+* Fixed some nits in Section 1
 
 From version 05 -> 06:
 

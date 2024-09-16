@@ -236,8 +236,6 @@ Please perform the following substitution.
 
 
 * RFCXXXX --> the assigned numerical RFC value for this draft
-
-* RFCDDDD --> the assigned numerical RFC value for {{I-D.ietf-lamps-rfc6712bis}}
 ]
 
 This document describes the Internet X.509 Public Key Infrastructure
@@ -5827,6 +5825,10 @@ END
 Note: This appendix will be deleted in the final version of the document.
 
 From version 13 -> 14:
+
+* Updated the the page header to 'CMP'
+
+* Removed one instruction to RFC Editors
 
 * Fixed some nits in Section 5.2.2
 
