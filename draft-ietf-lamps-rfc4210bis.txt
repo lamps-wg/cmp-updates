@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 13 March 2025                                           Entrust
-                                                        9 September 2024
+Expires: 20 March 2025                                           Entrust
+                                                       16 September 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 March 2025.
+   This Internet-Draft will expire on 20 March 2025.
 
 Copyright Notice
 
@@ -276,10 +276,7 @@ Table of Contents
 
    Please perform the following substitution.
 
-   *  RFCXXXX --> the assigned numerical RFC value for this draft
-
-   *  RFCDDDD --> the assigned numerical RFC value for
-      [I-D.ietf-lamps-rfc6712bis] ]
+   *  RFCXXXX --> the assigned numerical RFC value for this draft ]
 
    This document describes the Internet X.509 Public Key Infrastructure
    (PKI) Certificate Management Protocol (CMP).  Protocol messages are
@@ -6085,6 +6082,10 @@ Appendix G.  History of Changes
    document.
 
    From version 13 -> 14:
+
+   *  Updated the the page header to 'CMP'
+
+   *  Removed one instruction to RFC Editors
 
    *  Fixed some nits in Section 5.2.2
 

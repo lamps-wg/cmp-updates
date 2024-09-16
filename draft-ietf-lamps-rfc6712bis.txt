@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 13 March 2025                                           J. Gray
+Expires: 20 March 2025                                           J. Gray
                                                                  Entrust
-                                                        9 September 2024
+                                                       16 September 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 March 2025.
+   This Internet-Draft will expire on 20 March 2025.
 
 Copyright Notice
 
@@ -70,7 +70,7 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
-     1.1.  Changes Since RFC 6712
+     1.1.  Changes Made by RFC 9480
      1.2.  Changes Made by This Document
    2.  Conventions Used in This Document
    3.  HTTP-Based Protocol
@@ -110,21 +110,10 @@ Table of Contents
 
    ]
 
-   [RFC Editor:
-
-   Please perform the following substitution.
-
-   *  RFCXXXX ---> the assigned numerical RFC value for this draft
-
-   *  RFCCCCC ---> the assigned numerical RFC value for
-      [I-D.ietf-lamps-rfc4210bis]
-
-   ]
-
-   The Certificate Management Protocol (CMP) [RFCCCCC] requires a well-
-   defined transfer mechanism to enable End Entities (EEs), Registration
-   Authorities (RAs), and Certification Authorities (CAs) to pass
-   PKIMessage sequences between them.
+   The Certificate Management Protocol (CMP) [I-D.ietf-lamps-rfc4210bis]
+   requires a well-defined transfer mechanism to enable End Entities
+   (EEs), Registration Authorities (RAs), and Certification Authorities
+   (CAs) to pass PKIMessage sequences between them.
 
    The first version of the CMP specification [RFC2510] included a brief
    description of a simple transfer protocol layer on top of TCP.  Its
@@ -133,11 +122,11 @@ Table of Contents
    that PKI messages could also be conveyed using file-, E-mail-, and
    HTTP-based transfer, but those were not specified in detail.
 
-   The second version of the CMP specification [RFC4210] incorporated
-   its own polling mechanism and thus the need for a transfer protocol
-   providing this functionality vanished.  The remaining features CMP
-   requires from its transfer protocols are connection and error
-   handling.
+   Since the second version of the CMP specification [RFC4210]
+   incorporated its own polling mechanism and thus the need for a
+   transfer protocol providing this functionality vanished.  The
+   remaining features CMP requires from its transfer protocols are
+   connection and error handling.
 
    CMP can benefit from utilizing a reliable transport and it requires
    connection and error handling from the transfer protocol, which is
@@ -169,7 +158,7 @@ Table of Contents
    of HTTP is not blocking its usage as the transfer protocol for CMP
    messages.
 
-1.1.  Changes Since RFC 6712
+1.1.  Changes Made by RFC 9480
 
    CMP Updates [RFC9480] updated [RFC6712], supporting the PKI
    management operations specified in the Lightweight CMP Profile
@@ -184,7 +173,8 @@ Table of Contents
 
    This document obsoletes RFC 6712 [RFC6712].  It includes the changes
    specified by CMP Updates [RFC9480] Section 3 as described in
-   Section 1.1.
+   Section 1.1 and added the requirement on providing the Content-Length
+   header field in Section 3.4.
 
 2.  Conventions Used in This Document
 
@@ -222,16 +212,16 @@ Table of Contents
 
 3.3.  General Form
 
-   A DER-encoded [ITU.X690.1994] PKIMessage [RFCCCCC] is sent as the
-   entity-body of an HTTP POST request.  If this HTTP request is
-   successful, the server returns the CMP response in the body of the
-   HTTP response.  The HTTP response status code in this case MUST be
-   200; other "Successful 2xx" codes MUST NOT be used for this purpose.
-   HTTP responses to pushed CMP Announcement messages (i.e., CA
-   Certificate Announcement, Certificate Announcement, Revocation
-   Announcement, and Certificate Revocation List (CRL) Announcement)
-   utilize the status codes 201 and 202 to identify whether the received
-   information was processed.
+   A DER-encoded [ITU.X690.1994] PKIMessage [I-D.ietf-lamps-rfc4210bis]
+   is sent as the entity-body of an HTTP POST request.  If this HTTP
+   request is successful, the server returns the CMP response in the
+   body of the HTTP response.  The HTTP response status code in this
+   case MUST be 200; other "Successful 2xx" codes MUST NOT be used for
+   this purpose.  HTTP responses to pushed CMP Announcement messages
+   (i.e., CA Certificate Announcement, Certificate Announcement,
+   Revocation Announcement, and Certificate Revocation List (CRL)
+   Announcement) utilize the status codes 201 and 202 to identify
+   whether the received information was processed.
 
    While "Redirection 3xx" status codes MAY be supported by
    implementations, clients should only be enabled to automatically
@@ -304,7 +294,7 @@ Table of Contents
 
    If an EE wants to poll for a potential CA Key Update Announcement or
    the current CRL, a PKI Information Request using a General Message as
-   described in Appendix E.5 of [RFCCCCC] can be used.
+   described in Appendix D.5 of [I-D.ietf-lamps-rfc4210bis] can be used.
 
    When pushing Announcement messages, PKIMessage structures are sent as
    the entity-body of an HTTP POST request.
@@ -531,6 +521,14 @@ Appendix A.  History of Changes
 
    Note: This appendix will be deleted in the final version of the
    document.
+
+   From version 06 -> 07:
+
+   *  Updated the the page header to 'HTTP Transfer for CMP'
+
+   *  Removed one instruction to RFC Editors
+
+   *  Fixed some nits in Section 1
 
    From version 05 -> 06:
 

@@ -1038,7 +1038,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 13 March 2025</td>
+<td class="center">Expires 20 March 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1054,12 +1054,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc6712%209480" class="eref">6712 9480</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-09-09" class="published">9 September 2024</time>
+<time datetime="2024-09-16" class="published">16 September 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-03-13">13 March 2025</time></dd>
+<dd class="expires"><time datetime="2025-03-20">20 March 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1120,7 +1120,7 @@ Well-known prefix.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 20 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1153,7 +1153,7 @@ Well-known prefix.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
-                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-changes-since-rfc-6712" class="internal xref">Changes Since RFC 6712</a></p>
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-changes-made-by-rfc-9480" class="internal xref">Changes Made by RFC 9480</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
                 <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-changes-made-by-this-docume" class="internal xref">Changes Made by This Document</a></p>
@@ -1240,40 +1240,29 @@ in CMP Updates Section 3.<a href="#section-1-2" class="pilcrow">¶</a></p>
 original authors of RFC 6712, for their work and invite them, next to further
 volunteers, to join the -bis activity as co-authors.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">]<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">[RFC Editor:<a href="#section-1-6" class="pilcrow">¶</a></p>
-<p id="section-1-7">Please perform the following substitution.<a href="#section-1-7" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-1-8.1">
-          <p id="section-1-8.1.1">RFCXXXX ---&gt; the assigned numerical RFC value for this draft<a href="#section-1-8.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-1-8.2">
-          <p id="section-1-8.2.1">RFCCCCC ---&gt; the assigned numerical RFC value for <span>[<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span><a href="#section-1-8.2.1" class="pilcrow">¶</a></p>
-</li>
-      </ul>
-<p id="section-1-9">]<a href="#section-1-9" class="pilcrow">¶</a></p>
-<p id="section-1-10">The Certificate Management Protocol (CMP) [RFCCCCC] requires a well-defined
+<p id="section-1-6">The Certificate Management Protocol (CMP) <span>[<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span> requires a well-defined
 transfer mechanism to enable End Entities (EEs), Registration
 Authorities (RAs), and Certification Authorities (CAs) to pass
-PKIMessage sequences between them.<a href="#section-1-10" class="pilcrow">¶</a></p>
-<p id="section-1-11">The first version of the CMP specification <span>[<a href="#RFC2510" class="cite xref">RFC2510</a>]</span> included a brief
+PKIMessage sequences between them.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-7">The first version of the CMP specification <span>[<a href="#RFC2510" class="cite xref">RFC2510</a>]</span> included a brief
 description of a simple transfer protocol layer on top of TCP.  Its
 features were simple transfer-level error handling and a mechanism to
 poll for outstanding PKI messages.  Additionally, it was mentioned
 that PKI messages could also be conveyed using file-, E-mail-, and
-HTTP-based transfer, but those were not specified in detail.<a href="#section-1-11" class="pilcrow">¶</a></p>
-<p id="section-1-12">The second version of the CMP specification <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span> incorporated
+HTTP-based transfer, but those were not specified in detail.<a href="#section-1-7" class="pilcrow">¶</a></p>
+<p id="section-1-8">Since the second version of the CMP specification <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span> incorporated
 its own polling mechanism and thus the need for a transfer protocol
 providing this functionality vanished.  The remaining features CMP
 requires from its transfer protocols are connection and error
-handling.<a href="#section-1-12" class="pilcrow">¶</a></p>
-<p id="section-1-13">CMP can benefit from utilizing a reliable transport and it requires connection and error handling
+handling.<a href="#section-1-8" class="pilcrow">¶</a></p>
+<p id="section-1-9">CMP can benefit from utilizing a reliable transport and it requires connection and error handling
 from the transfer protocol, which is all covered by HTTP.  Additionally,
 delayed delivery of CMP response messages may be handled at transfer level,
 regardless of the message contents.  Since <span>[<a href="#RFC9480" class="cite xref">RFC9480</a>]</span> extends the polling
 mechanism specified in the second version of <span><a href="#RFC4210" class="internal xref">CMP</a> [<a href="#RFC4210" class="cite xref">RFC4210</a>]</span> to cover
 all types of PKI management transactions, delays detected at application
-level may also be handled within CMP, using pollReq and pollRep messages.<a href="#section-1-13" class="pilcrow">¶</a></p>
-<p id="section-1-14">The usage of HTTP for transferring CMP messages exclusively uses the
+level may also be handled within CMP, using pollReq and pollRep messages.<a href="#section-1-9" class="pilcrow">¶</a></p>
+<p id="section-1-10">The usage of HTTP for transferring CMP messages exclusively uses the
 POST method for requests, effectively tunneling CMP over HTTP.  While
 this is generally considered bad practice and should not be emulated,
 there are good reasons to do so for transferring CMP.  HTTP is used
@@ -1282,19 +1271,19 @@ network borders utilizing ubiquitous proxies.  Most importantly, HTTP
 is already commonly used in existing CMP implementations.  Other HTTP
 request methods, such as GET, are not used because PKI management
 operations can only be triggered using CMP's PKI messages, which need
-to be transferred using a POST request.<a href="#section-1-14" class="pilcrow">¶</a></p>
-<p id="section-1-15">With its status codes, HTTP provides needed error reporting
+to be transferred using a POST request.<a href="#section-1-10" class="pilcrow">¶</a></p>
+<p id="section-1-11">With its status codes, HTTP provides needed error reporting
 capabilities.  General problems on the server side, as well as those
 directly caused by the respective request, can be reported to the
-client.<a href="#section-1-15" class="pilcrow">¶</a></p>
-<p id="section-1-16">As CMP implements a transaction ID, identifying transactions spanning
+client.<a href="#section-1-11" class="pilcrow">¶</a></p>
+<p id="section-1-12">As CMP implements a transaction ID, identifying transactions spanning
 over more than just a single request/response pair, the statelessness
 of HTTP is not blocking its usage as the transfer protocol for CMP
-messages.<a href="#section-1-16" class="pilcrow">¶</a></p>
+messages.<a href="#section-1-12" class="pilcrow">¶</a></p>
 <div id="sect-1.1">
 <section id="section-1.1">
-        <h3 id="name-changes-since-rfc-6712">
-<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-changes-since-rfc-6712" class="section-name selfRef">Changes Since RFC 6712</a>
+        <h3 id="name-changes-made-by-rfc-9480">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-changes-made-by-rfc-9480" class="section-name selfRef">Changes Made by RFC 9480</a>
         </h3>
 <p id="section-1.1-1">CMP Updates <span>[<a href="#RFC9480" class="cite xref">RFC9480</a>]</span> updated <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</span>, supporting the PKI
 management operations specified in the Lightweight CMP
@@ -1317,7 +1306,8 @@ this end define a new protocol registry group.<a href="#section-1.1-2.2.1" class
         </h3>
 <p id="section-1.2-1">This document obsoletes <span><a href="#RFC6712" class="internal xref">RFC 6712</a> [<a href="#RFC6712" class="cite xref">RFC6712</a>]</span>.
 It includes the changes specified by CMP Updates <span>[<a href="#RFC9480" class="cite xref">RFC9480</a>]</span> Section 3 as
-described in <a href="#sect-1.1" class="auto internal xref">Section 1.1</a>.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+described in <a href="#sect-1.1" class="auto internal xref">Section 1.1</a> and added the requirement on providing the
+Content-Length header field in <a href="#sect-3.4" class="auto internal xref">Section 3.4</a>.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1374,7 +1364,7 @@ in isolation.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
         <h3 id="name-general-form">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-general-form" class="section-name selfRef">General Form</a>
         </h3>
-<p id="section-3.3-1">A DER-encoded <span>[<a href="#ITU.X690.1994" class="cite xref">ITU.X690.1994</a>]</span> PKIMessage [RFCCCCC] is sent as the
+<p id="section-3.3-1">A DER-encoded <span>[<a href="#ITU.X690.1994" class="cite xref">ITU.X690.1994</a>]</span> PKIMessage <span>[<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span> is sent as the
 entity-body of an HTTP POST request.  If this HTTP request is
 successful, the server returns the CMP response in the body of the
 HTTP response.  The HTTP response status code in this case <span class="bcp14">MUST</span> be
@@ -1475,7 +1465,7 @@ no request messages are specified for those announcements, they can
 only be pushed to the recipient.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
 <p id="section-3.7-2">If an EE wants to poll for a potential CA Key Update Announcement or
 the current CRL, a PKI Information Request using a General Message as
-described in Appendix E.5 of [RFCCCCC] can be used.<a href="#section-3.7-2" class="pilcrow">¶</a></p>
+described in Appendix D.5 of <span>[<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span> can be used.<a href="#section-3.7-2" class="pilcrow">¶</a></p>
 <p id="section-3.7-3">When pushing Announcement messages, PKIMessage structures are sent as
 the entity-body of an HTTP POST request.<a href="#section-3.7-3" class="pilcrow">¶</a></p>
 <p id="section-3.7-4">Suitable recipients for CMP announcements might, for example, be
@@ -1718,62 +1708,74 @@ original authors of <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</sp
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-history-of-changes" class="section-name selfRef">History of Changes</a>
       </h2>
 <p id="appendix-A-1">Note: This appendix will be deleted in the final version of the document.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<p id="appendix-A-2">From version 05 -&gt; 06:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">From version 06 -&gt; 07:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-3.1">
-          <p id="appendix-A-3.1.1">Updates IANA considerations addressing IANA early review (see thread "[IANA #1368693] Early review: draft-ietf-lamps-rfc4210bis-12 (IETF 120)").<a href="#appendix-A-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-3.1.1">Updated the the page header to 'HTTP Transfer for CMP'<a href="#appendix-A-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-3.2">
+          <p id="appendix-A-3.2.1">Removed one instruction to RFC Editors<a href="#appendix-A-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-3.3">
+          <p id="appendix-A-3.3.1">Fixed some nits in Section 1<a href="#appendix-A-3.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-A-4">From version 04 -&gt; 05:<a href="#appendix-A-4" class="pilcrow">¶</a></p>
+<p id="appendix-A-4">From version 05 -&gt; 06:<a href="#appendix-A-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-5.1">
-          <p id="appendix-A-5.1.1">Added IANA considerations addressing IANA early review.<a href="#appendix-A-5.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-5.1.1">Updates IANA considerations addressing IANA early review (see thread "[IANA #1368693] Early review: draft-ietf-lamps-rfc4210bis-12 (IETF 120)").<a href="#appendix-A-5.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-A-6">From version 03 -&gt; 04:<a href="#appendix-A-6" class="pilcrow">¶</a></p>
+<p id="appendix-A-6">From version 04 -&gt; 05:<a href="#appendix-A-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-7.1">
-          <p id="appendix-A-7.1.1">Aligned with released RFC 9480 - RFC 9483.<a href="#appendix-A-7.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-7.1.1">Added IANA considerations addressing IANA early review.<a href="#appendix-A-7.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-A-8">From version 02 -&gt; 03:<a href="#appendix-A-8" class="pilcrow">¶</a></p>
+<p id="appendix-A-8">From version 03 -&gt; 04:<a href="#appendix-A-8" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-9.1">
-          <p id="appendix-A-9.1.1">Fixing one formatting nit.<a href="#appendix-A-9.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-9.1.1">Aligned with released RFC 9480 - RFC 9483.<a href="#appendix-A-9.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-A-10">From version 01 -&gt; 02:<a href="#appendix-A-10" class="pilcrow">¶</a></p>
+<p id="appendix-A-10">From version 02 -&gt; 03:<a href="#appendix-A-10" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-11.1">
-          <p id="appendix-A-11.1.1">Updated Section 3.4 including the requirement to add the content-length filed
-into the HTTP header.<a href="#appendix-A-11.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-A-11.2">
-          <p id="appendix-A-11.2.1">Added a reference to TLS 1.3.<a href="#appendix-A-11.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-A-11.3">
-          <p id="appendix-A-11.3.1">Addressed idnits feedback, specifically changing the following RFC references:
-RFC2616 -&gt; RFC9112; RFC2818 -&gt; RFC9110, and RFC5246 -&gt; RFC8446<a href="#appendix-A-11.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-11.1.1">Fixing one formatting nit.<a href="#appendix-A-11.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-A-12">From version 00 -&gt; 01:<a href="#appendix-A-12" class="pilcrow">¶</a></p>
+<p id="appendix-A-12">From version 01 -&gt; 02:<a href="#appendix-A-12" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-13.1">
-          <p id="appendix-A-13.1.1">Performed all updates specified in CMP Updates Section 3.<a href="#appendix-A-13.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-13.1.1">Updated Section 3.4 including the requirement to add the content-length filed
+into the HTTP header.<a href="#appendix-A-13.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-13.2">
+          <p id="appendix-A-13.2.1">Added a reference to TLS 1.3.<a href="#appendix-A-13.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-13.3">
+          <p id="appendix-A-13.3.1">Addressed idnits feedback, specifically changing the following RFC references:
+RFC2616 -&gt; RFC9112; RFC2818 -&gt; RFC9110, and RFC5246 -&gt; RFC8446<a href="#appendix-A-13.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-A-14">Version 00:<a href="#appendix-A-14" class="pilcrow">¶</a></p>
-<p id="appendix-A-15">This version consists of the text of RFC6712 with the following changes:<a href="#appendix-A-15" class="pilcrow">¶</a></p>
+<p id="appendix-A-14">From version 00 -&gt; 01:<a href="#appendix-A-14" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-A-16.1">
-          <p id="appendix-A-16.1.1">Introduced the authors of this document and thanked the authors of RFC6712
-for their work.<a href="#appendix-A-16.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-A-15.1">
+          <p id="appendix-A-15.1.1">Performed all updates specified in CMP Updates Section 3.<a href="#appendix-A-15.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-A-16.2">
-          <p id="appendix-A-16.2.1">Added a paragraph to the introduction explaining the background of this document.<a href="#appendix-A-16.2.1" class="pilcrow">¶</a></p>
+      </ul>
+<p id="appendix-A-16">Version 00:<a href="#appendix-A-16" class="pilcrow">¶</a></p>
+<p id="appendix-A-17">This version consists of the text of RFC6712 with the following changes:<a href="#appendix-A-17" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A-18.1">
+          <p id="appendix-A-18.1.1">Introduced the authors of this document and thanked the authors of RFC6712
+for their work.<a href="#appendix-A-18.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-A-16.3">
-          <p id="appendix-A-16.3.1">Added the change history to this appendix.<a href="#appendix-A-16.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-A-18.2">
+          <p id="appendix-A-18.2.1">Added a paragraph to the introduction explaining the background of this document.<a href="#appendix-A-18.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-18.3">
+          <p id="appendix-A-18.3.1">Added the change history to this appendix.<a href="#appendix-A-18.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
