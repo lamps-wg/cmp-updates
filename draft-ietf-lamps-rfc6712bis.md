@@ -278,7 +278,7 @@ in a multi-vendor environment.
 The CMP client needs to be configured with sufficient information to form
 the CMP server URI.  This is at least the authority portion of the URI, e.g.,
 'www.example.com:80', or the full operation path segment of the PKI management
-entity. Additionally, OPTIONAL path segments MAY be added after the registered
+entity. Additionally, path segments MAY be added after the registered
 application name as part of the full operation path to provide further distinction.
 The path segment 'p' followed by an arbitraryLabel \<name> could, for example,
 support the differentiation of specific CAs or certificate profiles. Further
@@ -393,7 +393,7 @@ users:
   consumption by opening many connections to an HTTP server.
   Therefore, idle connections should be terminated after an
   appropriate timeout; this may also depend on the available free
-  resources.  After sending a CMP Error Message, the server should
+  resources.  After sending a CMP Error Message with PKIStatus other that "waiting", the server should
   close the connection, even if the CMP transaction is not yet
   fully completed.
 
@@ -421,12 +421,10 @@ users:
   when intercepted.  However, it might be possible for an
   eavesdropper to utilize the available information to gather
   confidential technical or business critical information.
-  Therefore, users of the HTTP transfer for CMP might want to
+  Therefore, users of the HTTP transfer for CMP messages might want to
   consider using HTTP over TLS according to {{RFC9110}} or virtual
   private networks created, for example, by utilizing Internet
-  Protocol Security according to {{RFC4301}}.  Compliant
-  implementations MUST support TLS with the option to authenticate
-  both server and client.
+  Protocol Security according to {{RFC4301}}.
 
 
 # IANA Considerations {#sect-6}
@@ -463,6 +461,8 @@ From version 06 -> 07:
 * Removed one instruction to RFC Editors
 
 * Fixed some nits in Section 1
+
+* Aligned Section 3.6 and Section 5 with RFC 9483 and draft-ietf-anima-brski-ae
 
 From version 05 -> 06:
 
