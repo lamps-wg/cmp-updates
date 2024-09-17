@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 20 March 2025                                           J. Gray
+Expires: 21 March 2025                                           J. Gray
                                                                  Entrust
-                                                       16 September 2024
+                                                       17 September 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 March 2025.
+   This Internet-Draft will expire on 21 March 2025.
 
 Copyright Notice
 
@@ -265,13 +265,13 @@ Table of Contents
    The CMP client needs to be configured with sufficient information to
    form the CMP server URI.  This is at least the authority portion of
    the URI, e.g., 'www.example.com:80', or the full operation path
-   segment of the PKI management entity.  Additionally, OPTIONAL path
-   segments MAY be added after the registered application name as part
-   of the full operation path to provide further distinction.  The path
-   segment 'p' followed by an arbitraryLabel <name> could, for example,
-   support the differentiation of specific CAs or certificate profiles.
-   Further path segments, e.g., as specified in the Lightweight CMP
-   Profile [RFC9483], could indicate PKI management operations using an
+   segment of the PKI management entity.  Additionally, path segments
+   MAY be added after the registered application name as part of the
+   full operation path to provide further distinction.  The path segment
+   'p' followed by an arbitraryLabel <name> could, for example, support
+   the differentiation of specific CAs or certificate profiles.  Further
+   path segments, e.g., as specified in the Lightweight CMP Profile
+   [RFC9483], could indicate PKI management operations using an
    operationLabel <operation>.  A valid, full CMP URI can look like
    this:
 
@@ -368,9 +368,9 @@ Table of Contents
        consumption by opening many connections to an HTTP server.
        Therefore, idle connections should be terminated after an
        appropriate timeout; this may also depend on the available free
-       resources.  After sending a CMP Error Message, the server should
-       close the connection, even if the CMP transaction is not yet
-       fully completed.
+       resources.  After sending a CMP Error Message with PKIStatus
+       other that "waiting", the server should close the connection,
+       even if the CMP transaction is not yet fully completed.
 
    2.  Without being encapsulated in effective security protocols, such
        as Transport Layer Security (TLS) [RFC5246] or [RFC8446], there
@@ -396,12 +396,10 @@ Table of Contents
        when intercepted.  However, it might be possible for an
        eavesdropper to utilize the available information to gather
        confidential technical or business critical information.
-       Therefore, users of the HTTP transfer for CMP might want to
-       consider using HTTP over TLS according to [RFC9110] or virtual
+       Therefore, users of the HTTP transfer for CMP messages might want
+       to consider using HTTP over TLS according to [RFC9110] or virtual
        private networks created, for example, by utilizing Internet
-       Protocol Security according to [RFC4301].  Compliant
-       implementations MUST support TLS with the option to authenticate
-       both server and client.
+       Protocol Security according to [RFC4301].
 
 6.  IANA Considerations
 
@@ -528,7 +526,7 @@ Appendix A.  History of Changes
 
    *  Removed one instruction to RFC Editors
 
-   *  Fixed some nits in Section 1
+   *  Fixed some nits in Section 1, Section 3.6 and Section 5
 
    From version 05 -> 06:
 
