@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 21 March 2025                                           Entrust
-                                                       17 September 2024
+Expires: 22 March 2025                                           Entrust
+                                                       18 September 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 March 2025.
+   This Internet-Draft will expire on 22 March 2025.
 
 Copyright Notice
 
@@ -4180,9 +4180,9 @@ Table of Contents
    [I-D.ietf-anima-brski-ae]
               von Oheimb, D., Fries, S., and H. Brockhaus, "BRSKI-AE:
               Alternative Enrollment Protocols in BRSKI", Work in
-              Progress, Internet-Draft, draft-ietf-anima-brski-ae-12, 5
-              July 2024, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-anima-brski-ae-12>.
+              Progress, Internet-Draft, draft-ietf-anima-brski-ae-13, 17
+              September 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-anima-brski-ae-13>.
 
    [RFC9162]  Laurie, B., Messeri, E., and R. Stradling, "Certificate
               Transparency Version 2.0", RFC 9162, DOI 10.17487/RFC9162,
