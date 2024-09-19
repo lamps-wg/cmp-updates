@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 22 March 2025                                           J. Gray
+Expires: 23 March 2025                                           J. Gray
                                                                  Entrust
-                                                       18 September 2024
+                                                       19 September 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 March 2025.
+   This Internet-Draft will expire on 23 March 2025.
 
 Copyright Notice
 
@@ -369,7 +369,7 @@ Table of Contents
        Therefore, idle connections should be terminated after an
        appropriate timeout; this may also depend on the available free
        resources.  After sending a CMP Error Message with PKIStatus
-       other that "waiting", the server should close the connection,
+       other than "waiting", the server should close the connection,
        even if the CMP transaction is not yet fully completed.
 
    2.  Without being encapsulated in effective security protocols, such
