@@ -393,7 +393,7 @@ users:
   consumption by opening many connections to an HTTP server.
   Therefore, idle connections should be terminated after an
   appropriate timeout; this may also depend on the available free
-  resources.  After sending a CMP Error Message with PKIStatus other that "waiting", the server should
+  resources.  After sending a CMP Error Message with PKIStatus other than "waiting", the server should
   close the connection, even if the CMP transaction is not yet
   fully completed.
 

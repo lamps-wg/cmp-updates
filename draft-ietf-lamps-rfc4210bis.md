@@ -2074,7 +2074,7 @@ EnvelopedData is used as follows:
 * It contains only one RecipientInfo structure because the content is encrypted
   only for one recipient.
 
-* It may contain a private key in the AsymmetricKeyPackage structure, as defined
+* It may contain in the encryptedContent field a private key in the AsymmetricKeyPackage structure, as defined
   in {{RFC5958}}, that is wrapped in a SignedData structure, as specified in
   Section 5 of {{RFC5652}} and {{RFC8933}}, signed by the Key Generation Authority.
 
@@ -5838,6 +5838,8 @@ From version 13 -> 14:
 From version 12 -> 13:
 
 * Updated the definition of "NULL-DN" in Section 5.1.1 and Appendix D.1 and added a specification of how the RA/CA shall generate the rid content to Section 5.2.8.3.3 to clarify direct POP (see thread "CMS RecipientInfo for EnvelopedData in CMC")
+
+* Added one minor clarification in Section 5.2.2
 
 * Updated reference from draft-ietf-lamps-cms-kemri to RFC 9629
 
