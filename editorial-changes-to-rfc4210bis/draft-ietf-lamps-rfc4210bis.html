@@ -2240,7 +2240,7 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
    "steps", possibly including an initialization of the end
    entity's equipment.  For example, the end entity's equipment
    must be securely initialized with the public key of a CA, e.g.,
-   using zero-touch methods like BRSKI <span>[<a href="#RFC8995" class="cite xref">RFC8995</a>]</span> or SCTP <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>, to
+   using zero-touch methods like BRSKI <span>[<a href="#RFC8995" class="cite xref">RFC8995</a>]</span> or SZTP <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>, to
    be used in validating certificate paths.  Furthermore, an end
    entity typically needs to be initialized with its own key
    pair(s).<a href="#section-3.1.3-4.3.2.1.1" class="pilcrow">¶</a></p>
@@ -2272,26 +2272,18 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
    cross-certificate is called an "inter-domain cross-certificate" if the subject
    and issuer CAs belong to
    different administrative domains; it is called an "intra-domain cross-certificate"
-   otherwise.<a href="#section-3.1.3-4.3.2.5.1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3.1.3-4.3.2.5.2">
-<li id="section-3.1.3-4.3.2.5.2.1">
-                      <p id="section-3.1.3-4.3.2.5.2.1.1">Note 1.  The above definition of "cross-certificate"
+   otherwise.
+ Note 1.  The above definition of "cross-certificate"
    aligns with the defined term "CA-certificate" in X.509.
    Note that this term is not to be confused with the X.500
-   "cACertificate" attribute type, which is unrelated.<a href="#section-3.1.3-4.3.2.5.2.1.1" class="pilcrow">¶</a></p>
-</li>
-                    <li id="section-3.1.3-4.3.2.5.2.2">
-                      <p id="section-3.1.3-4.3.2.5.2.2.1">Note 2.  In many environments, the term "cross-certificate", unless further
+   "cACertificate" attribute type, which is unrelated.
+ Note 2.  In many environments, the term "cross-certificate", unless further
    qualified, will be
    understood to be synonymous with "inter-domain cross-certificate" as defined
-   above.<a href="#section-3.1.3-4.3.2.5.2.2.1" class="pilcrow">¶</a></p>
-</li>
-                    <li id="section-3.1.3-4.3.2.5.2.3">
-                      <p id="section-3.1.3-4.3.2.5.2.3.1">Note 3.  Issuance of cross-certificates may be, but is
+   above.
+ Note 3.  Issuance of cross-certificates may be, but is
    not necessarily, mutual; that is, two CAs may issue
-   cross-certificates for each other.<a href="#section-3.1.3-4.3.2.5.2.3.1" class="pilcrow">¶</a></p>
-</li>
-                  </ol>
+   cross-certificates for each other.<a href="#section-3.1.3-4.3.2.5.1" class="pilcrow">¶</a></p>
 </li>
                 <li id="section-3.1.3-4.3.2.6">
                   <p id="section-3.1.3-4.3.2.6.1">cross-certificate update: Similar to a normal certificate
@@ -2308,7 +2300,7 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
    producing a certificate, some means for publishing may be
    needed.  The "means" defined in PKIX <span class="bcp14">MAY</span> involve the messages
    specified in Sections <a href="#sect-5.3.13" class="auto internal xref">5.3.13</a> to <a href="#sect-5.3.16" class="auto internal xref">5.3.16</a>, or <span class="bcp14">MAY</span> involve other
-   methods (LDAP, for example) as described in <span>[<a href="#RFC4511" class="cite xref">RFC4511</a>]</span>, <span>[<a href="#RFC2585" class="cite xref">RFC2585</a>]</span>
+   methods (LDAP, for example) as described in <span>[<a href="#RFC4511" class="cite xref">RFC4511</a>]</span> or <span>[<a href="#RFC2585" class="cite xref">RFC2585</a>]</span>
    (the "Operational Protocols" documents of the PKIX
    series of specifications).<a href="#section-3.1.3-4.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -2397,7 +2389,7 @@ schemes that are supported by this specification.  Note that the word
 the end entity in question has had no previous contact with the PKI,
 except having received the root CA certificate of that PKI by some
 zero-touch method like BRSKI <span>[<a href="#RFC8995" class="cite xref">RFC8995</a>]</span> and
-<span>[<a href="#I-D.ietf-anima-brski-ae" class="cite xref">I-D.ietf-anima-brski-ae</a>]</span> or SCTP <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>.  In case the end
+<span>[<a href="#I-D.ietf-anima-brski-ae" class="cite xref">I-D.ietf-anima-brski-ae</a>]</span> or SZTP <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>.  In case the end
 entity already possesses certified keys, then some
 simplifications/alternatives are possible.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3">Having classified the schemes that are supported by this
@@ -2433,7 +2425,7 @@ occurring wherever the first PKI message relating to the end entity
 is produced.  Note that the real-world initiation of the
 registration/certification procedure may occur elsewhere (e.g., a
 personnel department may telephone an RA operator or using zero touch
-methods like BRSKI <span>[<a href="#RFC8995" class="cite xref">RFC8995</a>]</span> or SCTP <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>).<a href="#section-4.2.1.1-1" class="pilcrow">¶</a></p>
+methods like BRSKI <span>[<a href="#RFC8995" class="cite xref">RFC8995</a>]</span> or SZTP <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>).<a href="#section-4.2.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.1.1-2">The possible locations are at the end entity, an RA, or a CA.<a href="#section-4.2.1.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
