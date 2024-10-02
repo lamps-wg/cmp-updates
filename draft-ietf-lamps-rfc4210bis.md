@@ -670,7 +670,7 @@ messages are defined can be grouped as follows.
       "steps", possibly including an initialization of the end
       entity's equipment.  For example, the end entity's equipment
       must be securely initialized with the public key of a CA, e.g.,
-      using zero-touch methods like BRSKI {{RFC8995}} or SCTP {{RFC8572}}, to
+      using zero-touch methods like BRSKI {{RFC8995}} or SZTP {{RFC8572}}, to
       be used in validating certificate paths.  Furthermore, an end
       entity typically needs to be initialized with its own key
       pair(s).
@@ -698,21 +698,23 @@ messages are defined can be grouped as follows.
       cross-certificate is called an "inter-domain cross-certificate" if the subject
       and issuer CAs belong to
       different administrative domains; it is called an "intra-domain cross-certificate"
-      otherwise.
+      otherwise. \
 
 
 
-        1. Note 1.  The above definition of "cross-certificate"
+          [ RFC Editor: Please remove the backslashes and keep the indentation of the notes. ] \
+
+          Note 1:  The above definition of "cross-certificate"
           aligns with the defined term "CA-certificate" in X.509.
           Note that this term is not to be confused with the X.500
-          "cACertificate" attribute type, which is unrelated.
+          "cACertificate" attribute type, which is unrelated. \
 
-        1. Note 2.  In many environments, the term "cross-certificate", unless further
+          Note 2:  In many environments, the term "cross-certificate", unless further
           qualified, will be
           understood to be synonymous with "inter-domain cross-certificate" as defined
-          above.
+          above. \
 
-        1. Note 3.  Issuance of cross-certificates may be, but is
+          Note 3:  Issuance of cross-certificates may be, but is
           not necessarily, mutual; that is, two CAs may issue
           cross-certificates for each other.
 
@@ -730,7 +732,7 @@ messages are defined can be grouped as follows.
       producing a certificate, some means for publishing may be
       needed.  The "means" defined in PKIX MAY involve the messages
       specified in Sections {{<sect-5.3.13}} to {{<sect-5.3.16}}, or MAY involve other
-      methods (LDAP, for example) as described in {{RFC4511}}, {{RFC2585}}
+      methods (LDAP, for example) as described in {{RFC4511}} or {{RFC2585}}
       (the "Operational Protocols" documents of the PKIX
       series of specifications).
 
@@ -806,7 +808,7 @@ schemes that are supported by this specification.  Note that the word
 the end entity in question has had no previous contact with the PKI,
 except having received the root CA certificate of that PKI by some
 zero-touch method like BRSKI {{RFC8995}} and
-{{I-D.ietf-anima-brski-ae}} or SCTP {{RFC8572}}.  In case the end
+{{I-D.ietf-anima-brski-ae}} or SZTP {{RFC8572}}.  In case the end
 entity already possesses certified keys, then some
 simplifications/alternatives are possible.
 
@@ -842,7 +844,7 @@ occurring wherever the first PKI message relating to the end entity
 is produced.  Note that the real-world initiation of the
 registration/certification procedure may occur elsewhere (e.g., a
 personnel department may telephone an RA operator or using zero touch
-methods like BRSKI {{RFC8995}} or SCTP {{RFC8572}}).
+methods like BRSKI {{RFC8995}} or SZTP {{RFC8572}}).
 
 The possible locations are at the end entity, an RA, or a CA.
 
