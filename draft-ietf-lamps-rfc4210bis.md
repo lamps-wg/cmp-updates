@@ -244,7 +244,7 @@ defined for certificate creation and management.  The term
 "certificate" in this document refers to an X.509v3 Certificate as
 defined in {{RFC5280}}.
 
-## Changes Since RFC 2510
+## Changes Made by RFC 4210
 {: id="sect-1.1"}
 
 {{RFC4210}} differs from {{RFC2510}} in the following areas:
@@ -315,7 +315,7 @@ Profile {{RFC9483}}, in the following areas:
 * Added security considerations Sections {{<sect-8.6}}, {{<sect-8.7}}, {{<sect-8.9}}, and {{<sect-8.10}}.
 
 
-## Changes Since RFC 9480
+## Changes Made by This Document
 {: id="sect-1.3"}
 
 This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes specified by Section 2 and Appendix C.2 of {{RFC9480}} as described in {{sect-1.2}}. Additionally this document updates the content of {{RFC4210}} in the following areas:
@@ -5833,6 +5833,7 @@ From version 13 -> 14:
 * Fixed some nits in Section 5.2.2
 
 * Fixed one reference to RFC 9629 in the ASN.1 Module
+
 
 
 From version 12 -> 13:
