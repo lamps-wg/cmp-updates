@@ -740,6 +740,9 @@ Table of Contents
            different administrative domains; it is called an "intra-
            domain cross-certificate" otherwise. \
 
+           [ RFC Editor: Please remove the backslashes and keep the
+           indentation of the notes. ] \
+
            Note 1: The above definition of "cross-certificate" aligns
            with the defined term "CA-certificate" in X.509.  Note that
            this term is not to be confused with the X.500
