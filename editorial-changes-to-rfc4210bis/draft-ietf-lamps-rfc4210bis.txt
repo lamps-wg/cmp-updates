@@ -688,104 +688,101 @@ Table of Contents
    At a high level, the set of operations for which management messages
    are defined can be grouped as follows.
 
-   1.  CA establishment: When establishing a new CA, certain steps are
-       required (e.g., production of initial CRLs, export of CA public
-       key).
+1.  CA establishment: When establishing a new CA, certain steps are
+    required (e.g., production of initial CRLs, export of CA public
+    key).
 
-   2.  End entity initialization: This includes importing a root CA
-       public key and requesting information about the options supported
-       by a PKI management entity.
+2.  End entity initialization: This includes importing a root CA
+    public key and requesting information about the options supported
+    by a PKI management entity.
 
-   3.  Certification: Various operations result in the creation of new
-       certificates:
+3.  Certification: Various operations result in the creation of new
+    certificates:
 
-       1.  initial registration/certification: This is the process
-           whereby an end entity first makes itself known to a CA or RA,
-           prior to the CA issuing a certificate or certificates for
-           that end entity.  The end result of this process (when it is
-           successful) is that a CA issues a certificate for an end
-           entity's public key, and returns that certificate to the end
-           entity and/or posts that certificate in a repository.  This
-           process may, and typically will, involve multiple "steps",
-           possibly including an initialization of the end entity's
-           equipment.  For example, the end entity's equipment must be
-           securely initialized with the public key of a CA, e.g., using
-           zero-touch methods like BRSKI [RFC8995] or SZTP [RFC8572], to
-           be used in validating certificate paths.  Furthermore, an end
-           entity typically needs to be initialized with its own key
-           pair(s).
+1.  initial registration/certification: This is the process
+    whereby an end entity first makes itself known to a CA or RA,
+    prior to the CA issuing a certificate or certificates for
+    that end entity.  The end result of this process (when it is
+    successful) is that a CA issues a certificate for an end
+    entity's public key, and returns that certificate to the end
+    entity and/or posts that certificate in a repository.  This
+    process may, and typically will, involve multiple "steps",
+    possibly including an initialization of the end entity's
+    equipment.  For example, the end entity's equipment must be
+    securely initialized with the public key of a CA, e.g., using
+    zero-touch methods like BRSKI [RFC8995] or SZTP [RFC8572], to
+    be used in validating certificate paths.  Furthermore, an end
+    entity typically needs to be initialized with its own key
+    pair(s).
 
-       2.  key pair update: Every key pair needs to be updated regularly
-           (i.e., replaced with a new key pair), and a new certificate
-           needs to be issued.
+2.  key pair update: Every key pair needs to be updated regularly
+    (i.e., replaced with a new key pair), and a new certificate
+    needs to be issued.
 
-       3.  certificate update: As certificates expire, they may be
-           "refreshed" if nothing relevant in the environment has
-           changed.
+3.  certificate update: As certificates expire, they may be
+    "refreshed" if nothing relevant in the environment has
+    changed.
 
-       4.  CA key pair update: As with end entities, CA key pairs need
-           to be updated regularly; however, different mechanisms are
-           required.
+4.  CA key pair update: As with end entities, CA key pairs need
+    to be updated regularly; however, different mechanisms are
+    required.
 
-       5.  cross-certification request: One CA requests issuance of a
-           cross-certificate from another CA.  For the purposes of this
-           standard, the following terms are defined.  A "cross-
-           certificate" is a certificate in which the subject CA and the
-           issuer CA are distinct and SubjectPublicKeyInfo contains a
-           verification key (i.e., the certificate has been issued for
-           the subject CA's signing key pair).  When it is necessary to
-           distinguish more finely, the following terms may be used: a
-           cross-certificate is called an "inter-domain cross-
-           certificate" if the subject and issuer CAs belong to
-           different administrative domains; it is called an "intra-
-           domain cross-certificate" otherwise.// Note 1.  The above
-           definition of "cross-certificate" aligns with the defined
-           term "CA-certificate" in X.509.  Note that this term is not
-           to be confused with the X.500 "cACertificate" attribute type,
-           which is unrelated.// Note 2.  In many environments, the term
-           "cross-certificate", unless further qualified, will be
-           understood to be synonymous with "inter-domain cross-
-           certificate" as defined above.// Note 3.  Issuance of cross-
-           certificates may be, but is not necessarily, mutual; that is,
-           two CAs may issue cross-certificates for each other.
+5.  cross-certification request: One CA requests issuance of a
+    cross-certificate from another CA.  For the purposes of this
+    standard, the following terms are defined.  A "cross-
+    certificate" is a certificate in which the subject CA and the
+    issuer CA are distinct and SubjectPublicKeyInfo contains a
+    verification key (i.e., the certificate has been issued for
+    the subject CA's signing key pair).  When it is necessary to
+    distinguish more finely, the following terms may be used: a
+    cross-certificate is called an "inter-domain cross-
+    certificate" if the subject and issuer CAs belong to
+    different administrative domains; it is called an "intra-
+    domain cross-certificate" otherwise.
 
-       6.  cross-certificate update: Similar to a normal certificate
-           update, but involving a cross-certificate.
+       1. Note: The above definition of "cross-certificate"    aligns with the defined term "CA-certificate" in X.509.    Note that this term is not to be confused with the X.500    "cACertificate" attribute type, which is unrelated.
 
-   4.  Certificate/CRL discovery operations: Some PKI management
-       operations result in the publication of certificates or CRLs:
+       1. Note: In many environments, the term "cross-certificate", unless further    qualified, will be    understood to be synonymous with "inter-domain cross-certificate" as defined    above.
 
-       1.  certificate publication: Having gone to the trouble of
-           producing a certificate, some means for publishing may be
-           needed.  The "means" defined in PKIX MAY involve the messages
-           specified in Sections 5.3.13 to 5.3.16, or MAY involve other
-           methods (LDAP, for example) as described in [RFC4511] or
-           [RFC2585] (the "Operational Protocols" documents of the PKIX
-           series of specifications).
+       1. Note:  Issuance of cross-certificates may be, but is    not necessarily, mutual; that is, two CAs may issue    cross-certificates for each other.
 
-       2.  CRL publication: As for certificate publication.
+6.  cross-certificate update: Similar to a normal certificate
+    update, but involving a cross-certificate.
 
-   5.  Recovery operations: Some PKI management operations are used when
-       an end entity has "lost" its PSE:
+4.  Certificate/CRL discovery operations: Some PKI management
+    operations result in the publication of certificates or CRLs:
 
-       1.  key pair recovery: As an option, user client key materials
-           (e.g., a user's private key used for decryption purposes) MAY
-           be backed up by a CA, an RA, or a key backup system
-           associated with a CA or RA.  If an entity needs to recover
-           these backed up key materials (e.g., as a result of a
-           forgotten password or a lost key chain file), a protocol
-           exchange may be needed to support such recovery.
+    1.  certificate publication: Having gone to the trouble of
+        producing a certificate, some means for publishing may be
+        needed.  The "means" defined in PKIX MAY involve the messages
+        specified in Sections 5.3.13 to 5.3.16, or MAY involve other
+        methods (LDAP, for example) as described in [RFC4511] or
+        [RFC2585] (the "Operational Protocols" documents of the PKIX
+        series of specifications).
 
-   6.  Revocation operations: Some PKI management operations result in
-       the creation of new CRL entries and/or new CRLs:
+    2.  CRL publication: As for certificate publication.
 
-       1.  revocation request: An authorized person advises a CA of an
-           abnormal situation requiring certificate revocation.
+5.  Recovery operations: Some PKI management operations are used when
+    an end entity has "lost" its PSE:
 
-   7.  PSE operations: Whilst the definition of PSE operations (e.g.,
-       moving a PSE, changing a PIN, etc.) are beyond the scope of this
-       specification, we do define a PKIMessage (CertRepMessage) that
-       can form the basis of such operations.
+    1.  key pair recovery: As an option, user client key materials
+        (e.g., a user's private key used for decryption purposes) MAY
+        be backed up by a CA, an RA, or a key backup system
+        associated with a CA or RA.  If an entity needs to recover
+        these backed up key materials (e.g., as a result of a
+        forgotten password or a lost key chain file), a protocol
+        exchange may be needed to support such recovery.
+
+6.  Revocation operations: Some PKI management operations result in
+    the creation of new CRL entries and/or new CRLs:
+
+    1.  revocation request: An authorized person advises a CA of an
+        abnormal situation requiring certificate revocation.
+
+7.  PSE operations: Whilst the definition of PSE operations (e.g.,
+    moving a PSE, changing a PIN, etc.) are beyond the scope of this
+    specification, we do define a PKIMessage (CertRepMessage) that
+    can form the basis of such operations.
 
    Note that on-line protocols are not the only way of implementing the
    above operations.  For all operations, there are off-line methods of
