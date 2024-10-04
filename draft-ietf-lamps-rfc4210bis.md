@@ -2042,7 +2042,7 @@ See also {{RFC4212}} for more details on how to manage certificates in alternati
 ### Encrypted Values
 {: id="sect-5.2.2"}
 
-Where encrypted data like, private keys, certificates, POP challenges, or revocation passphrase is sent in PKI messages it is RECOMMENDED to use EnvelopedData structure.  In some cases this is accomplished by using the EncryptedKey data structure instead of EncryptedValue.
+When encrypted data like private keys, certificates, POP challenges or revocation passphrase is sent in PKI messages it is RECOMMENDED to use the EnvelopedData structure.  In some cases this is accomplished by using the EncryptedKey data structure instead of EncryptedValue.
 
 ~~~~ asn.1
   EncryptedKey ::= CHOICE {
@@ -2071,7 +2071,7 @@ certificate, POP challenge, or revocation passphrase in encrypted form as follow
 * It contains only one RecipientInfo structure because the content is encrypted
   only for one recipient.
 
-* It may contain in the encryptedContent field a private key in the AsymmetricKeyPackage structure, as defined
+* It may contain a private key in the AsymmetricKeyPackage structure (which is stored in the encryptedContentInfo field), as defined
   in {{RFC5958}}, that is wrapped in a SignedData structure, as specified in
   Section 5 of {{RFC5652}} and {{RFC8933}}, signed by the Key Generation Authority or CA.
 
@@ -5143,7 +5143,7 @@ FROM KEMAlgorithmInformation-2023  -- [RFC9629]
     security(5) mechanisms(5) pkix(7) id-mod(0)
     id-mod-kemAlgorithmInformation-2023(109) }
     -- The import of KEM-ALGORITHM was added due to the updates made
-    -- in [RFCXXXX]
+    -- in [RFC9629]
 ;
 
 -- History of the PKIXCMP ASN.1 modules
