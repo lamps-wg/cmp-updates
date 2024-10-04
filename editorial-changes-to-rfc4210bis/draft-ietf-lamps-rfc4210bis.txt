@@ -6103,6 +6103,8 @@ Appendix G.  History of Changes
 
    From version 13 -> 14:
 
+   *  Implemented some editorial changes throughout the document
+
    *  Updated the the page header to 'CMP'
 
    *  Removed one instruction to RFC Editors
