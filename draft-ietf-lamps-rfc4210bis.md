@@ -84,6 +84,7 @@ informative:
   RFC8649:
   RFC8995:
   I-D.ietf-anima-brski-ae:
+  I-D.ietf-lamps-kyber-certificates:
   RFC9162:
   NIST.SP.800_90Ar1:
   IEEE.802.1AR-2018: DOI.10.1109/IEEESTD.2018.8423794
@@ -1822,29 +1823,29 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 
 In case the sender of a message has a Key Encapsulation Mechanism (KEM) key pair, it can be used to establish a shared secret key for MAC-based message protection. This can be used for message authentication.
 
-This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{RFC9629, Section 1}} which is copied here for completeness.
+This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in Section 1 of {{RFC9629}} as follows:
 
 A KEM algorithm provides three functions:
 
 * KeyGen() -> (pk, sk):
 
-> Generate the public key (pk) and a private (secret) key (sk).
+> Generate the public key (pk) and the private (secret) key (sk).
 
 * Encapsulate(pk) -> (ct, ss):
 
-> Given the recipient's public key (pk), produce a ciphertext (ct) to be
-passed to the recipient and shared secret (ss) for the originator.
+> Given the public key (pk), produce a ciphertext (ct) and a
+shared secret (ss).
 
 * Decapsulate(sk, ct) -> ss:
 
 > Given the private key (sk) and the ciphertext (ct), produce the
-shared secret (ss) for the recipient.
+shared secret (ss).
 
-To support a particular KEM algorithm, the CMP originator MUST support the KEM Encapsulate() function. To support a particular KEM algorithm, the CMP recipient MUST support the KEM KeyGen() function and the KEM Decapsulate() function. The recipient's public key is usually carried in a certificate {{RFC5280}}.
+To support a particular KEM algorithm, the PKI entity that possesses a KEM key pair and that wishes to use it for MAC-based message protection MUST support the KEM Decapsulate() function. The PKI entity that wishes to verify the MAC-based message protection MUST support the KEM Encapsulate() function. The respective public KEM key is usually carried in a certificate [I-D.ietf-lamps-kyber-certificates].¶
 
-Note: In this section both entities in the communication need to send and receive messages. Either side of the communication may independently wish to protect messages using a MAC key derived from the KEM output. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to provide MAC-based message protection, and "Bob" to denote the entity who needs to verify it.
+Note: Both PKI entities send and receive messages in a PKI management operation. Both PKI entities may independently wish to protect messages using their KEM key pairs. For ease of explanation we use the term "Alice" to denote the PKI entity possessing the KEM key pair and who wishes to provide MAC-based message protection, and "Bob" to denote the PKI entity holding Alice’s authentic public KEM key and who needs to verify the MAC-based protection provided by Alice.¶
 
-Assuming Bob possesses Alice's KEM public key, he generates the ciphertext using KEM encapsulation and transfers it to Alice in an InfoTypeAndValue structure. Alice then retrieves the KEM shared secret from the ciphertext using KEM decapsulation and the associated KEM private key. Using a key derivation function (KDF), she derives a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
+Assuming Bob holds Alice's KEM public key, he generates the ciphertext using KEM encapsulation and transfers it to Alice in an InfoTypeAndValue structure. Alice then retrieves the KEM shared secret from the ciphertext using KEM decapsulation and the associated KEM private key. Using a key derivation function (KDF), she derives a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
 
 ~~~~ asn.1
   id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 16}
