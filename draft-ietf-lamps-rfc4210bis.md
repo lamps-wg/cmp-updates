@@ -5821,6 +5821,8 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 13 -> 14:
 
+* Implemented some editorial changes throughout the document, specifically in Sections 5.1.1, 5.1.1.3, 5.1.3.4, 5.2.2, 5.2.8.3, 5.3.18, 5.3.19.2, 5.2.22, 7, C.1, and C.4
+
 * Updated the the page header to 'CMP'
 
 * Removed one instruction to RFC Editors
