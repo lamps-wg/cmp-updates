@@ -903,7 +903,7 @@ the end entity, a KGA, or a CA.
 #### Confirmation of Successful Certification
 {: id="sect-4.2.1.4"}
 
-Following the creation of an initial certificate for an end entity,
+Following the creation of a certificate for an end entity,
 additional assurance can be gained by having the end entity
 explicitly confirm successful receipt of the message containing (or
 indicating the creation of) the certificate.  Naturally, this
@@ -921,7 +921,7 @@ The criteria above allow for a large number of initial
 registration/certification schemes.  Examples of possible initial
 registration/certification schemes can be found in the following
 subsections.  An entity may support other schemes specified in
-profiles of PKIX-CMP, such as {{sect-d}} and {{sect-e}} or {{RFC9483}}.
+profiles of PKIX-CMP, such as {{sect-c}} and {{sect-d}} or {{RFC9483}}.
 
 
 #### Centralized Scheme
