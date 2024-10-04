@@ -3400,8 +3400,8 @@ and the response is delayed by the server.
 
 # Mandatory PKI Management Functions {#sect-6}
 
-Some of the PKI management functions outlined in {{sect-3.1}} above
-are described in this section.
+Some of the PKI management functions outlined in {{sect-3.1}} are
+described in this section.
 
 This section deals with functions that are "mandatory" in the sense
 that all end entity and CA/RA implementations MUST be able to provide
@@ -3410,7 +3410,8 @@ the PKI management functionality that MUST be supported.  Note,
 however, that the management functions described in this section do
 not need to be accomplished using the PKI messages defined in {{sect-5}}
 if alternate means are suitable for a given environment (see
-{{RFC9483}} Section 7 and {{sect-c}} for profiles of the PKIMessages that MUST be supported).
+{{RFC9483}} Section 7 and {{sect-c}} for profiles of the PKIMessages
+that MUST be supported for different use cases).
 
 ## Root CA Initialization
 {: id="sect-6.1"}
@@ -3427,7 +3428,7 @@ that acquire this fingerprint securely via some "out-of-band" means
 can then verify the CA's self-certificate and, hence, the other
 attributes contained therein.
 
-The data structure used to carry the fingerprint is the OOBCertHash, see {{sect-5.2.5}}.
+The data structure used to carry the fingerprint may be the OOBCertHash, see {{sect-5.2.5}}.
 
 
 ## Root CA Key Update
@@ -3478,8 +3479,7 @@ then the request MUST be the GenMsg message, the response MUST be the
 GenRep message, and the error MUST be the Error message.  These
 messages are protected using a MAC based on shared secret information
 (i.e., password-based MAC, see CMP Algorithms {{RFC9481}} Section 6.1) or a
-signature(if
-the end entity has an existing certificate).
+signature (if the end entity has an existing certificate).
 
 
 ## Cross Certification
@@ -3674,8 +3674,8 @@ is needed for the request being sent or for the expected response.
 
 Note: Using cmp2000 as the default pvno is done to avoid extra message exchanges
 for version negotiation and to foster compatibility with cmp2000 implementations.
-Version cmp2021 syntax is only needed if a message exchange uses hashAlg
-(in CertStatus), EnvelopedData, or ckuann with RootCaKeyUpdateContent.
+Version cmp2021 syntax is only needed if a message exchange uses EnvelopedData,
+hashAlg (in CertStatus), POPOPrivKey with agreeMAC, or ckuann with RootCaKeyUpdateContent.
 
 If a server receives a message with a version that it supports, then
 the version of the response message MUST be the same as the received
@@ -3784,7 +3784,7 @@ appropriately).  Implementers are advised to:
 
 A small subgroup attack during a Diffie-Hellman key exchange may be
 carried out as follows.  A malicious end entity may deliberately
-choose D-H parameters that enable him/her to derive (a significant
+choose D-H parameters that enable it to derive (a significant
 number of bits of) the D-H private key of the CA during a key
 archival or key recovery operation.  Armed with this knowledge, the
 EE would then be able to retrieve the decryption private key of
