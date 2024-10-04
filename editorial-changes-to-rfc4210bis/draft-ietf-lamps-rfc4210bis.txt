@@ -753,8 +753,9 @@ Table of Contents
           necessarily, mutual; that is, two CAs may issue cross-
           certificates for each other.
 
-       1.  cross-certificate update: Similar to a normal certificate
-           update, but involving a cross-certificate.
+       1.  [RFC-Editor: Please fix the enumeration and continue with
+           '6'.] cross-certificate update: Similar to a normal
+           certificate update, but involving a cross-certificate.
 
    4.  Certificate/CRL discovery operations: Some PKI management
        operations result in the publication of certificates or CRLs:
