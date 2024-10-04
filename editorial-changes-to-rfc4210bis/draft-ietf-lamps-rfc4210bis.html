@@ -3726,7 +3726,7 @@ The new control is defined as follows:<a href="#section-5.2.1-5" class="pilcrow"
           <h4 id="name-encrypted-values">
 <a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-encrypted-values" class="section-name selfRef">Encrypted Values</a>
           </h4>
-<p id="section-5.2.2-1">Where encrypted data like, private keys, certificates, POP challenges, or revocation passphrase is sent in PKI messages it is <span class="bcp14">RECOMMENDED</span> to use EnvelopedData structure.  In some cases this is accomplished by using the EncryptedKey data structure instead of EncryptedValue.<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-1">When encrypted data like private keys, certificates, POP challenges or revocation passphrase is sent in PKI messages it is <span class="bcp14">RECOMMENDED</span> to use the EnvelopedData structure.  In some cases this is accomplished by using the EncryptedKey data structure instead of EncryptedValue.<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.2.2-2">
 <pre>
   EncryptedKey ::= CHOICE {
@@ -3753,7 +3753,7 @@ certificate, POP challenge, or revocation passphrase in encrypted form as follow
 only for one recipient.<a href="#section-5.2.2-7.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-5.2.2-7.2">
-              <p id="section-5.2.2-7.2.1">It may contain in the encryptedContent field a private key in the AsymmetricKeyPackage structure, as defined
+              <p id="section-5.2.2-7.2.1">It may contain a private key in the AsymmetricKeyPackage structure (which is stored in the encryptedContentInfo field), as defined
 in <span>[<a href="#RFC5958" class="cite xref">RFC5958</a>]</span>, that is wrapped in a SignedData structure, as specified in
 Section 5 of <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> and <span>[<a href="#RFC8933" class="cite xref">RFC8933</a>]</span>, signed by the Key Generation Authority or CA.<a href="#section-5.2.2-7.2.1" class="pilcrow">¶</a></p>
 </li>
@@ -7284,7 +7284,7 @@ FROM KEMAlgorithmInformation-2023  -- [RFC9629]
     security(5) mechanisms(5) pkix(7) id-mod(0)
     id-mod-kemAlgorithmInformation-2023(109) }
     -- The import of KEM-ALGORITHM was added due to the updates made
-    -- in [RFCXXXX]
+    -- in [RFC9629]
 ;
 
 -- History of the PKIXCMP ASN.1 modules
