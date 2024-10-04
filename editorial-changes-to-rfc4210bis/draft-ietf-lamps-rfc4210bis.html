@@ -3485,7 +3485,7 @@ digital signature <span class="bcp14">MAY</span> be one of the options described
             </ul>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-5.1.3.4-5.1">
-                <p id="section-5.1.3.4-5.1.1">Generate the public key (pk) and a private (secret) key (sk).<a href="#section-5.1.3.4-5.1.1" class="pilcrow">¶</a></p>
+                <p id="section-5.1.3.4-5.1.1">Generate the public key (pk) and the private (secret) key (sk).<a href="#section-5.1.3.4-5.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <ul class="normal">
@@ -3511,7 +3511,7 @@ shared secret (ss).<a href="#section-5.1.3.4-9.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-5.1.3.4-10">To support a particular KEM algorithm, the PKI entity that possesses a KEM key pair and that wishes to use it for MAC-based message protection <span class="bcp14">MUST</span> support the KEM Decapsulate() function. The PKI entity that wishes to verify the MAC-based message protection <span class="bcp14">MUST</span> support the KEM Encapsulate() function. The respective public KEM key is usually carried in a certificate <span>[<a href="#I-D.ietf-lamps-kyber-certificates" class="cite xref">I-D.ietf-lamps-kyber-certificates</a>]</span>.¶<a href="#section-5.1.3.4-10" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-11">Note: Both PKI entities send and receive messages in a PKI management operation. Both PKI entities may independently wish to protect messages using their KEM key pair. For ease of explanation we use the term "Alice" to denote the PKI entity possessing the KEM key pair and who wishes to provide MAC-based message protection, and "Bob" to denote the PKI entity holding Alice’s public KEM key and who needs to verify the MAC-based protection provided by Alice.¶<a href="#section-5.1.3.4-11" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-11">Note: Both PKI entities send and receive messages in a PKI management operation. Both PKI entities may independently wish to protect messages using their KEM key pairs. For ease of explanation we use the term "Alice" to denote the PKI entity possessing the KEM key pair and who wishes to provide MAC-based message protection, and "Bob" to denote the PKI entity holding Alice’s authentic public KEM key and who needs to verify the MAC-based protection provided by Alice.¶<a href="#section-5.1.3.4-11" class="pilcrow">¶</a></p>
 <p id="section-5.1.3.4-12">Assuming Bob holds Alice's KEM public key, he generates the ciphertext using KEM encapsulation and transfers it to Alice in an InfoTypeAndValue structure. Alice then retrieves the KEM shared secret from the ciphertext using KEM decapsulation and the associated KEM private key. Using a key derivation function (KDF), she derives a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:<a href="#section-5.1.3.4-12" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.1.3.4-13">
 <pre>

@@ -1825,7 +1825,7 @@ Table of Contents
 
    *  KeyGen() -> (pk, sk):
 
-      Generate the public key (pk) and a private (secret) key (sk).
+      Generate the public key (pk) and the private (secret) key (sk).
 
    *  Encapsulate(pk) -> (ct, ss):
 
@@ -1847,11 +1847,11 @@ Table of Contents
 
    Note: Both PKI entities send and receive messages in a PKI management
    operation.  Both PKI entities may independently wish to protect
-   messages using their KEM key pair.  For ease of explanation we use
+   messages using their KEM key pairs.  For ease of explanation we use
    the term "Alice" to denote the PKI entity possessing the KEM key pair
    and who wishes to provide MAC-based message protection, and "Bob" to
-   denote the PKI entity holding Alice’s public KEM key and who needs to
-   verify the MAC-based protection provided by Alice.¶
+   denote the PKI entity holding Alice’s authentic public KEM key and
+   who needs to verify the MAC-based protection provided by Alice.¶
 
    Assuming Bob holds Alice's KEM public key, he generates the
    ciphertext using KEM encapsulation and transfers it to Alice in an
