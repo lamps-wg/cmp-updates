@@ -3461,8 +3461,8 @@ Table of Contents
 
 6.  Mandatory PKI Management Functions
 
-   Some of the PKI management functions outlined in Section 3.1 above
-   are described in this section.
+   Some of the PKI management functions outlined in Section 3.1 are
+   described in this section.
 
    This section deals with functions that are "mandatory" in the sense
    that all end entity and CA/RA implementations MUST be able to provide
@@ -3472,7 +3472,7 @@ Table of Contents
    not need to be accomplished using the PKI messages defined in
    Section 5 if alternate means are suitable for a given environment
    (see [RFC9483] Section 7 and Appendix C for profiles of the
-   PKIMessages that MUST be supported).
+   PKIMessages that MUST be supported for different use cases).
 
 6.1.  Root CA Initialization
 
@@ -3489,8 +3489,8 @@ Table of Contents
    can then verify the CA's self-certificate and, hence, the other
    attributes contained therein.
 
-   The data structure used to carry the fingerprint is the OOBCertHash,
-   see Section 5.2.5.
+   The data structure used to carry the fingerprint may be the
+   OOBCertHash, see Section 5.2.5.
 
 6.2.  Root CA Key Update
 
@@ -3534,7 +3534,7 @@ Table of Contents
    GenRep message, and the error MUST be the Error message.  These
    messages are protected using a MAC based on shared secret information
    (i.e., password-based MAC, see CMP Algorithms [RFC9481] Section 6.1)
-   or a signature(if the end entity has an existing certificate).
+   or a signature (if the end entity has an existing certificate).
 
 6.6.  Cross Certification
 
@@ -3712,8 +3712,8 @@ Table of Contents
    Note: Using cmp2000 as the default pvno is done to avoid extra
    message exchanges for version negotiation and to foster compatibility
    with cmp2000 implementations.  Version cmp2021 syntax is only needed
-   if a message exchange uses hashAlg (in CertStatus), EnvelopedData, or
-   ckuann with RootCaKeyUpdateContent.
+   if a message exchange uses EnvelopedData, hashAlg (in CertStatus),
+   POPOPrivKey with agreeMAC, or ckuann with RootCaKeyUpdateContent.
 
    If a server receives a message with a version that it supports, then
    the version of the response message MUST be the same as the received
@@ -3813,20 +3813,20 @@ Table of Contents
 
    A small subgroup attack during a Diffie-Hellman key exchange may be
    carried out as follows.  A malicious end entity may deliberately
-   choose D-H parameters that enable him/her to derive (a significant
-   number of bits of) the D-H private key of the CA during a key
-   archival or key recovery operation.  Armed with this knowledge, the
-   EE would then be able to retrieve the decryption private key of
-   another unsuspecting end entity, EE2, during EE2's legitimate key
-   archival or key recovery operation with that CA.  In order to avoid
-   the possibility of such an attack, two courses of action are
-   available.  (1) The CA may generate a fresh D-H key pair to be used
-   as a protocol encryption key pair for each EE with which it
-   interacts.  (2) The CA may enter into a key validation protocol (not
-   specified in this document) with each requesting end entity to ensure
-   that the EE's protocol encryption key pair will not facilitate this
-   attack.  Option (1) is clearly simpler (requiring no extra protocol
-   exchanges from either party) and is therefore RECOMMENDED.
+   choose D-H parameters that enable it to derive (a significant number
+   of bits of) the D-H private key of the CA during a key archival or
+   key recovery operation.  Armed with this knowledge, the EE would then
+   be able to retrieve the decryption private key of another
+   unsuspecting end entity, EE2, during EE2's legitimate key archival or
+   key recovery operation with that CA.  In order to avoid the
+   possibility of such an attack, two courses of action are available.
+   (1) The CA may generate a fresh D-H key pair to be used as a protocol
+   encryption key pair for each EE with which it interacts.  (2) The CA
+   may enter into a key validation protocol (not specified in this
+   document) with each requesting end entity to ensure that the EE's
+   protocol encryption key pair will not facilitate this attack.  Option
+   (1) is clearly simpler (requiring no extra protocol exchanges from
+   either party) and is therefore RECOMMENDED.
 
 8.5.  Perfect Forward Secrecy
 

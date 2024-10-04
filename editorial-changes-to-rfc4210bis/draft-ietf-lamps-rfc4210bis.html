@@ -5184,8 +5184,8 @@ and the response is delayed by the server.<a href="#section-5.3.22-11" class="pi
       <h2 id="name-mandatory-pki-management-fu">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-mandatory-pki-management-fu" class="section-name selfRef">Mandatory PKI Management Functions</a>
       </h2>
-<p id="section-6-1">Some of the PKI management functions outlined in <a href="#sect-3.1" class="auto internal xref">Section 3.1</a> above
-are described in this section.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">Some of the PKI management functions outlined in <a href="#sect-3.1" class="auto internal xref">Section 3.1</a> are
+described in this section.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <p id="section-6-2">This section deals with functions that are "mandatory" in the sense
 that all end entity and CA/RA implementations <span class="bcp14">MUST</span> be able to provide
 the functionality described.  This part is effectively the profile of
@@ -5193,7 +5193,8 @@ the PKI management functionality that <span class="bcp14">MUST</span> be support
 however, that the management functions described in this section do
 not need to be accomplished using the PKI messages defined in <a href="#sect-5" class="auto internal xref">Section 5</a>
 if alternate means are suitable for a given environment (see
-<span>[<a href="#RFC9483" class="cite xref">RFC9483</a>]</span> Section 7 and <a href="#sect-c" class="auto internal xref">Appendix C</a> for profiles of the PKIMessages that <span class="bcp14">MUST</span> be supported).<a href="#section-6-2" class="pilcrow">¶</a></p>
+<span>[<a href="#RFC9483" class="cite xref">RFC9483</a>]</span> Section 7 and <a href="#sect-c" class="auto internal xref">Appendix C</a> for profiles of the PKIMessages
+that <span class="bcp14">MUST</span> be supported for different use cases).<a href="#section-6-2" class="pilcrow">¶</a></p>
 <div id="sect-6.1">
 <section id="section-6.1">
         <h3 id="name-root-ca-initialization">
@@ -5209,7 +5210,7 @@ CA must also produce a fingerprint for its certificate.  End entities
 that acquire this fingerprint securely via some "out-of-band" means
 can then verify the CA's self-certificate and, hence, the other
 attributes contained therein.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
-<p id="section-6.1-4">The data structure used to carry the fingerprint is the OOBCertHash, see <a href="#sect-5.2.5" class="auto internal xref">Section 5.2.5</a>.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
+<p id="section-6.1-4">The data structure used to carry the fingerprint may be the OOBCertHash, see <a href="#sect-5.2.5" class="auto internal xref">Section 5.2.5</a>.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-6.2">
@@ -5265,8 +5266,7 @@ then the request <span class="bcp14">MUST</span> be the GenMsg message, the resp
 GenRep message, and the error <span class="bcp14">MUST</span> be the Error message.  These
 messages are protected using a MAC based on shared secret information
 (i.e., password-based MAC, see CMP Algorithms <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span> Section 6.1) or a
-signature(if
-the end entity has an existing certificate).<a href="#section-6.5-3" class="pilcrow">¶</a></p>
+signature (if the end entity has an existing certificate).<a href="#section-6.5-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-6.6">
@@ -5472,8 +5472,8 @@ the following exception. Version cmp2021 <span class="bcp14">SHOULD</span> only 
 is needed for the request being sent or for the expected response.<a href="#section-7-2" class="pilcrow">¶</a></p>
 <p id="section-7-3">Note: Using cmp2000 as the default pvno is done to avoid extra message exchanges
 for version negotiation and to foster compatibility with cmp2000 implementations.
-Version cmp2021 syntax is only needed if a message exchange uses hashAlg
-(in CertStatus), EnvelopedData, or ckuann with RootCaKeyUpdateContent.<a href="#section-7-3" class="pilcrow">¶</a></p>
+Version cmp2021 syntax is only needed if a message exchange uses EnvelopedData,
+hashAlg (in CertStatus), POPOPrivKey with agreeMAC, or ckuann with RootCaKeyUpdateContent.<a href="#section-7-3" class="pilcrow">¶</a></p>
 <p id="section-7-4">If a server receives a message with a version that it supports, then
 the version of the response message <span class="bcp14">MUST</span> be the same as the received
 version.  If a server receives a message with a version higher or
@@ -5600,7 +5600,7 @@ their private key before proceeding to reveal the private key.<a href="#section-
         </h3>
 <p id="section-8.4-1">A small subgroup attack during a Diffie-Hellman key exchange may be
 carried out as follows.  A malicious end entity may deliberately
-choose D-H parameters that enable him/her to derive (a significant
+choose D-H parameters that enable it to derive (a significant
 number of bits of) the D-H private key of the CA during a key
 archival or key recovery operation.  Armed with this knowledge, the
 EE would then be able to retrieve the decryption private key of
