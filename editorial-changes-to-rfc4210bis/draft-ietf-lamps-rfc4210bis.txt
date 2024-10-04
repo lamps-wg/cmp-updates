@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 5 April 2025                                            Entrust
-                                                          2 October 2024
+Expires: 7 April 2025                                            Entrust
+                                                          4 October 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 April 2025.
+   This Internet-Draft will expire on 7 April 2025.
 
 Copyright Notice
 
@@ -916,12 +916,12 @@ Table of Contents
 
 4.2.1.4.  Confirmation of Successful Certification
 
-   Following the creation of an initial certificate for an end entity,
-   additional assurance can be gained by having the end entity
-   explicitly confirm successful receipt of the message containing (or
-   indicating the creation of) the certificate.  Naturally, this
-   confirmation message must be protected (based on the initial
-   symmetric or asymmetric authentication key or other means).
+   Following the creation of a certificate for an end entity, additional
+   assurance can be gained by having the end entity explicitly confirm
+   successful receipt of the message containing (or indicating the
+   creation of) the certificate.  Naturally, this confirmation message
+   must be protected (based on the initial symmetric or asymmetric
+   authentication key or other means).
 
    This gives two further possibilities: confirmed or not.
 
@@ -931,7 +931,7 @@ Table of Contents
    certification schemes.  Examples of possible initial registration/
    certification schemes can be found in the following subsections.  An
    entity may support other schemes specified in profiles of PKIX-CMP,
-   such as Appendix D and Appendix E or [RFC9483].
+   such as Appendix C and Appendix D or [RFC9483].
 
 4.2.2.1.  Centralized Scheme
 
