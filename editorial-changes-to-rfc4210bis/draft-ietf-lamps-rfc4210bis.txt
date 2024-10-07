@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 7 April 2025                                            Entrust
-                                                          4 October 2024
+Expires: 10 April 2025                                           Entrust
+                                                          7 October 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 April 2025.
+   This Internet-Draft will expire on 10 April 2025.
 
 Copyright Notice
 
@@ -5425,7 +5425,7 @@ Appendix F.  Compilable ASN.1 Definitions
        security(5) mechanisms(5) pkix(7) id-mod(0)
        id-mod-kemAlgorithmInformation-2023(109) }
        -- The import of KEM-ALGORITHM was added due to the updates made
-       -- in [RFC9629]
+       -- in [RFCXXXX]
    ;
 
    -- History of the PKIXCMP ASN.1 modules
