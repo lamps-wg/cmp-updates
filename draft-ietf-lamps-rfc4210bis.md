@@ -5143,7 +5143,7 @@ FROM KEMAlgorithmInformation-2023  -- [RFC9629]
     security(5) mechanisms(5) pkix(7) id-mod(0)
     id-mod-kemAlgorithmInformation-2023(109) }
     -- The import of KEM-ALGORITHM was added due to the updates made
-    -- in [RFC9629]
+    -- in [RFCXXXX]
 ;
 
 -- History of the PKIXCMP ASN.1 modules
