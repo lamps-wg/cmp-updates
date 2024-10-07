@@ -526,6 +526,9 @@ Appendix A.  History of Changes
 
    *  Removed one instruction to RFC Editors
 
+   *  Deprecated PKIMessages as plural of PKIMessage to prevent
+      confusion with ASN.1 type PKIMessages
+
    *  Fixed some nits in Section 1
 
    *  Aligned Section 3.6 and Section 5 with RFC 9483 and draft-ietf-
