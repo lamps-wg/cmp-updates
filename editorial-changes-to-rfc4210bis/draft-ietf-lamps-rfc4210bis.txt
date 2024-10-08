@@ -1508,29 +1508,29 @@ Table of Contents
    For transactions that consist of more than just a single request/
    response pair, the rules are as follows.  If the message contains an
    infoValue of type KemCiphertextInfothe, the client MUST generate a
-   transactionIDClients, otherwise the client SHOULD generate a
-   transactionID for the first request.  If a server receives such a
-   request that has the transactionID field set, then it MUST set the
-   transactionID field of the response to the same value.  If a server
-   receives such request with a missing transactionID field, then it
-   MUST populate the transactionID field of the response with a server-
-   generated ID.  Subsequent requests and responses MUST all set the
-   transactionID field to the thus established value.  In all cases
-   where a transactionID is being used, a given client MUST NOT have
-   more than one transaction with the same transactionID in progress at
-   any time (to a given server).  Servers are free to require uniqueness
-   of the transactionID or not, as long as they are able to correctly
-   associate messages with the corresponding transaction.  Typically,
-   this means that a server will require the {client, transactionID}
-   tuple to be unique, or even the transactionID alone to be unique, if
-   it cannot distinguish clients based on transport-level information.
-   A server receiving the first message of a transaction (which requires
-   more than a single request/response pair) that contains a
-   transactionID that does not allow it to meet the above constraints
-   (typically because the transactionID is already in use) MUST send
-   back an ErrorMsgContent with a PKIFailureInfo of transactionIdInUse.
-   It is RECOMMENDED that the clients fill the transactionID field with
-   128 bits of (pseudo-) random data for the start of a transaction to
+   transactionID, otherwise the client SHOULD generate a transactionID
+   for the first request.  If a server receives such a request that has
+   the transactionID field set, then it MUST set the transactionID field
+   of the response to the same value.  If a server receives such request
+   with a missing transactionID field, then it MUST populate the
+   transactionID field of the response with a server-generated ID.
+   Subsequent requests and responses MUST all set the transactionID
+   field to the thus established value.  In all cases where a
+   transactionID is being used, a given client MUST NOT have more than
+   one transaction with the same transactionID in progress at any time
+   (to a given server).  Servers are free to require uniqueness of the
+   transactionID or not, as long as they are able to correctly associate
+   messages with the corresponding transaction.  Typically, this means
+   that a server will require the {client, transactionID} tuple to be
+   unique, or even the transactionID alone to be unique, if it cannot
+   distinguish clients based on transport-level information.  A server
+   receiving the first message of a transaction (which requires more
+   than a single request/response pair) that contains a transactionID
+   that does not allow it to meet the above constraints (typically
+   because the transactionID is already in use) MUST send back an
+   ErrorMsgContent with a PKIFailureInfo of transactionIdInUse.  It is
+   RECOMMENDED that the clients fill the transactionID field with 128
+   bits of (pseudo-) random data for the start of a transaction to
    reduce the probability of having the transactionID in use at the
    server.
 
@@ -1825,7 +1825,7 @@ Table of Contents
 
    *  KeyGen() -> (pk, sk):
 
-      Generate the public key (pk) and the private (secret) key (sk).
+      Generate a public key (pk) and a private (secret) key (sk).
 
    *  Encapsulate(pk) -> (ct, ss):
 
@@ -1838,23 +1838,22 @@ Table of Contents
       shared secret (ss).
 
    To support a particular KEM algorithm, the PKI entity that possesses
-   a KEM key pair and that wishes to use it for MAC-based message
-   protection MUST support the KEM Decapsulate() function.  The PKI
-   entity that wishes to verify the MAC-based message protection MUST
-   support the KEM Encapsulate() function.  The respective public KEM
-   key is usually carried in a certificate
-   [I-D.ietf-lamps-kyber-certificates].¶
+   a KEM key pair and wishes to use it for MAC-based message protection
+   MUST support the KEM Decapsulate() function.  The PKI entity that
+   wishes to verify the MAC-based message protection MUST support the
+   KEM Encapsulate() function.  The respective public KEM key is usually
+   carried in a certificate [I-D.ietf-lamps-kyber-certificates].
 
    Note: Both PKI entities send and receive messages in a PKI management
    operation.  Both PKI entities may independently wish to protect
    messages using their KEM key pairs.  For ease of explanation we use
    the term "Alice" to denote the PKI entity possessing the KEM key pair
    and who wishes to provide MAC-based message protection, and "Bob" to
-   denote the PKI entity holding Alice’s authentic public KEM key and
-   who needs to verify the MAC-based protection provided by Alice.¶
+   denote the PKI entity having Alice’s authentic public KEM key and who
+   needs to verify the MAC-based protection provided by Alice.
 
-   Assuming Bob holds Alice's KEM public key, he generates the
-   ciphertext using KEM encapsulation and transfers it to Alice in an
+   Assuming Bob has Alice's KEM public key, he generates the ciphertext
+   using KEM encapsulation and transfers it to Alice in an
    InfoTypeAndValue structure.  Alice then retrieves the KEM shared
    secret from the ciphertext using KEM decapsulation and the associated
    KEM private key.  Using a key derivation function (KDF), she derives
@@ -2108,7 +2107,7 @@ Table of Contents
 
 5.2.2.  Encrypted Values
 
-   When encrypted data like private keys, certificates, POP challenges
+   When encrypted data like a private key, certificate, POP challenge,
    or revocation passphrase is sent in PKI messages it is RECOMMENDED to
    use the EnvelopedData structure.  In some cases this is accomplished
    by using the EncryptedKey data structure instead of EncryptedValue.
@@ -2135,7 +2134,7 @@ Table of Contents
    introduced.  Details on the usage of the protocol version number
    (pvno) are described in Section 7.
 
-   The EncryptedData structure is RECOMMENDED to use in CMP to transport
+   The EnvelopedData structure is RECOMMENDED to use in CMP to transport
    a private key, certificate, POP challenge, or revocation passphrase
    in encrypted form as follows:
 
@@ -2143,7 +2142,7 @@ Table of Contents
       is encrypted only for one recipient.
 
    *  It may contain a private key in the AsymmetricKeyPackage structure
-      (which is stored in the encryptedContentInfo field), as defined in
+      (which is placed in the encryptedContentInfo field), as defined in
       [RFC5958], that is wrapped in a SignedData structure, as specified
       in Section 5 of [RFC5652] and [RFC8933], signed by the Key
       Generation Authority or CA.
@@ -2403,7 +2402,7 @@ Table of Contents
          challengeResp (1)
       }
 
-   To indicate usage of the agreeMAC or encryptedKey choices, the pvno
+   To indicate support for agreeMAC or encryptedKey choices, the pvno
    cmp2021(3) MUST be used.  Details on the usage of the protocol
    version number (pvno) are described in Section 7.
 
@@ -2942,12 +2941,13 @@ Table of Contents
    signatureAlgorithm of the certificate to be confirmed does not
    specify a hash algorithm in the OID or in the parameters or no hash
    algorithm is specified for hashing certificates signed using the
-   signatureAlgorithm, e.g., for EdDSA in Section 3.3 of [RFC9481].
-   Otherwise, the certHash value SHALL be computed using the same hash
-   algorithm as used to create and verify the certificate signature or
-   as explicitly specified for hashing certificates signed using the
-   signatureAlgorithm.  If hashAlg is used, the CMP version indicated by
-   the certConf message header must be cmp2021(3).
+   signatureAlgorithm.  Note that for EdDSA a hash algorithm is
+   specified in Section 3.3 of [RFC9481], such that the hashAlg field is
+   not needed for EdDSA.  Otherwise, the certHash value SHALL be
+   computed using the same hash algorithm as used to create and verify
+   the certificate signature or as specified for hashing certificates
+   signed using the signatureAlgorithm.  If hashAlg is used, the CMP
+   version indicated by the certConf message header must be cmp2021(3).
 
    For any particular CertStatus, omission of the statusInfo field
    indicates acceptance of the specified certificate.  Alternatively,
@@ -3295,26 +3295,28 @@ Table of Contents
         checkAfter   INTEGER,  -- time in seconds
         reason       PKIFreeText OPTIONAL }
 
-   In response to an ir, cr, p10cr, kur, or ccr request message, polling
-   is initiated with an ip, cp, kup, or ccp response message containing
-   status "waiting".  For any type of request message, polling can be
-   initiated with an error response messages with status "waiting".  The
-   following clauses describe how polling messages are used.  It is
-   assumed that multiple certConf messages can be sent during
-   transactions.  There will be one sent in response to each ip, cp,
-   kup, or ccp that contains a CertStatus for an issued certificate.
+   Unless implicit confirmation has been requested and granted, in
+   response to an ir, cr, p10cr, kur, krr, or ccr request message,
+   polling is initiated with an ip, cp, kup, krp, or ccp response
+   message containing status "waiting".  For any type of request
+   message, polling can be initiated with an error response messages
+   with status "waiting".  The following clauses describe how polling
+   messages are used.  It is assumed that multiple certConf messages can
+   be sent during transactions.  There will be one sent in response to
+   each ip, cp, kup, krp, or ccp that contains a CertStatus for an
+   issued certificate.
 
-   1  In response to an ip, cp, kup, or ccp message, an EE will send a
-      certConf for all issued certificates and expect a PKIconf for each
-      certConf.  An EE will send a pollReq message in response to each
-      CertResponse element of an ip, cp, or kup message with status
-      "waiting" and in response to an error message with status
+   1  In response to an ip, cp, kup, krp, or ccp message, an EE will
+      send a certConf for all issued certificates and expect a PKIconf
+      for each certConf.  An EE will send a pollReq message in response
+      to each CertResponse element of an ip, cp, or kup message with
+      status "waiting" and in response to an error message with status
       "waiting".  Its certReqId MUST be either the index of a
       CertResponse data structure with status "waiting" or -1 referring
       to the complete response.
 
-   2  In response to a pollReq, a CA/RA will return an ip, cp, kup, or
-      ccp if one or more of still pending requested certificates are
+   2  In response to a pollReq, a CA/RA will return an ip, cp, kup, krp,
+      or ccp if one or more of still pending requested certificates are
       ready or the final response to some other type of request is
       available; otherwise, it will return a pollRep.
 
@@ -3322,10 +3324,10 @@ Table of Contents
       of seconds given in the checkAfter field before sending another
       pollReq.
 
-   4  If the EE receives an ip, cp, kup, or ccp, then it will be treated
-      in the same way as the initial response; if it receives any other
-      response, then this will be treated as the final response to the
-      original request.
+   4  If the EE receives an ip, cp, kup, krp, or ccp, then it will be
+      treated in the same way as the initial response; if it receives
+      any other response, then this will be treated as the final
+      response to the original request.
 
    The following client-side state machine describes polling for
    individual CertResponse elements at the example of an ir request
@@ -3411,7 +3413,7 @@ Table of Contents
                                      |
                 +----------- Receive response ------------+
                 |                                         |
-                | ip/cp/kup/ccp/error with                | other
+                | ip/cp/kup/krp/ccp/error with            | other
                 | status "waiting"                        | response
                 |                                         |
                 v                                         |
@@ -3470,7 +3472,8 @@ Table of Contents
    not need to be accomplished using the PKI messages defined in
    Section 5 if alternate means are suitable for a given environment
    (see [RFC9483] Section 7 and Appendix C for profiles of the
-   PKIMessages that MUST be supported for different use cases).
+   PKIMessage structures that MUST be supported for different use
+   cases).
 
 6.1.  Root CA Initialization
 
@@ -3531,8 +3534,9 @@ Table of Contents
    then the request MUST be the GenMsg message, the response MUST be the
    GenRep message, and the error MUST be the Error message.  These
    messages are protected using a MAC based on shared secret information
-   (i.e., password-based MAC, see CMP Algorithms [RFC9481] Section 6.1)
-   or a signature (if the end entity has an existing certificate).
+   (e.g., password-based MAC, see CMP Algorithms [RFC9481] Section 6.1)
+   or using any asymmetric authentication means such as a signature (if
+   the end entity has an existing certificate).
 
 6.6.  Cross Certification
 
@@ -4667,7 +4671,7 @@ C.4.  Initial Registration/Certification (Basic Authenticated Scheme)
                                     PROT_ENC_ALG]
 
          controls.protocolEncrKey
-        -- if centralized key generation is supported by this CA,
+        -- if centralized key generation is supported by this CA
         -- and EncryptedValue is used, this short-term asymmetric
         -- encryption key (generated by the end entity) will be used
         -- by the CA to encrypt (a symmetric key used to encrypt) a

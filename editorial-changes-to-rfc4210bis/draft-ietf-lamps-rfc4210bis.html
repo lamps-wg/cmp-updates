@@ -3155,7 +3155,7 @@ the server <span class="bcp14">MAY</span> set transactionID field of the respons
 <p id="section-5.1.1-11">For transactions that consist of more than just a single
 request/response pair, the rules are as follows.  If the message
 contains an infoValue of type KemCiphertextInfothe, the client
-<span class="bcp14">MUST</span> generate a transactionIDClients, otherwise the client <span class="bcp14">SHOULD</span>
+<span class="bcp14">MUST</span> generate a transactionID, otherwise the client <span class="bcp14">SHOULD</span>
 generate a transactionID for the first request.  If a server receives
 such a request that has the transactionID field set, then it <span class="bcp14">MUST</span> set
 the transactionID field of the response to the same value.  If a
@@ -3485,7 +3485,7 @@ digital signature <span class="bcp14">MAY</span> be one of the options described
             </ul>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-5.1.3.4-5.1">
-                <p id="section-5.1.3.4-5.1.1">Generate the public key (pk) and the private (secret) key (sk).<a href="#section-5.1.3.4-5.1.1" class="pilcrow">¶</a></p>
+                <p id="section-5.1.3.4-5.1.1">Generate a public key (pk) and a private (secret) key (sk).<a href="#section-5.1.3.4-5.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <ul class="normal">
@@ -3510,9 +3510,9 @@ shared secret (ss).<a href="#section-5.1.3.4-7.1.1" class="pilcrow">¶</a></p>
 shared secret (ss).<a href="#section-5.1.3.4-9.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-5.1.3.4-10">To support a particular KEM algorithm, the PKI entity that possesses a KEM key pair and that wishes to use it for MAC-based message protection <span class="bcp14">MUST</span> support the KEM Decapsulate() function. The PKI entity that wishes to verify the MAC-based message protection <span class="bcp14">MUST</span> support the KEM Encapsulate() function. The respective public KEM key is usually carried in a certificate <span>[<a href="#I-D.ietf-lamps-kyber-certificates" class="cite xref">I-D.ietf-lamps-kyber-certificates</a>]</span>.¶<a href="#section-5.1.3.4-10" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-11">Note: Both PKI entities send and receive messages in a PKI management operation. Both PKI entities may independently wish to protect messages using their KEM key pairs. For ease of explanation we use the term "Alice" to denote the PKI entity possessing the KEM key pair and who wishes to provide MAC-based message protection, and "Bob" to denote the PKI entity holding Alice’s authentic public KEM key and who needs to verify the MAC-based protection provided by Alice.¶<a href="#section-5.1.3.4-11" class="pilcrow">¶</a></p>
-<p id="section-5.1.3.4-12">Assuming Bob holds Alice's KEM public key, he generates the ciphertext using KEM encapsulation and transfers it to Alice in an InfoTypeAndValue structure. Alice then retrieves the KEM shared secret from the ciphertext using KEM decapsulation and the associated KEM private key. Using a key derivation function (KDF), she derives a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:<a href="#section-5.1.3.4-12" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-10">To support a particular KEM algorithm, the PKI entity that possesses a KEM key pair and wishes to use it for MAC-based message protection <span class="bcp14">MUST</span> support the KEM Decapsulate() function. The PKI entity that wishes to verify the MAC-based message protection <span class="bcp14">MUST</span> support the KEM Encapsulate() function. The respective public KEM key is usually carried in a certificate <span>[<a href="#I-D.ietf-lamps-kyber-certificates" class="cite xref">I-D.ietf-lamps-kyber-certificates</a>]</span>.<a href="#section-5.1.3.4-10" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-11">Note: Both PKI entities send and receive messages in a PKI management operation. Both PKI entities may independently wish to protect messages using their KEM key pairs. For ease of explanation we use the term "Alice" to denote the PKI entity possessing the KEM key pair and who wishes to provide MAC-based message protection, and "Bob" to denote the PKI entity having Alice’s authentic public KEM key and who needs to verify the MAC-based protection provided by Alice.<a href="#section-5.1.3.4-11" class="pilcrow">¶</a></p>
+<p id="section-5.1.3.4-12">Assuming Bob has Alice's KEM public key, he generates the ciphertext using KEM encapsulation and transfers it to Alice in an InfoTypeAndValue structure. Alice then retrieves the KEM shared secret from the ciphertext using KEM decapsulation and the associated KEM private key. Using a key derivation function (KDF), she derives a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:<a href="#section-5.1.3.4-12" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.1.3.4-13">
 <pre>
   id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 16}
@@ -3726,7 +3726,7 @@ The new control is defined as follows:<a href="#section-5.2.1-5" class="pilcrow"
           <h4 id="name-encrypted-values">
 <a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-encrypted-values" class="section-name selfRef">Encrypted Values</a>
           </h4>
-<p id="section-5.2.2-1">When encrypted data like private keys, certificates, POP challenges or revocation passphrase is sent in PKI messages it is <span class="bcp14">RECOMMENDED</span> to use the EnvelopedData structure.  In some cases this is accomplished by using the EncryptedKey data structure instead of EncryptedValue.<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.2-1">When encrypted data like a private key, certificate, POP challenge, or revocation passphrase is sent in PKI messages it is <span class="bcp14">RECOMMENDED</span> to use the EnvelopedData structure.  In some cases this is accomplished by using the EncryptedKey data structure instead of EncryptedValue.<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.2.2-2">
 <pre>
   EncryptedKey ::= CHOICE {
@@ -3745,7 +3745,7 @@ with the untagged default choice EncryptedValue is bits-on-the-wire compatible
 with the old syntax.<a href="#section-5.2.2-4" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-5">To indicate support for EnvelopedData, the pvno cmp2021 has been introduced.
 Details on the usage of the protocol version number (pvno) are described in <a href="#sect-7" class="auto internal xref">Section 7</a>.<a href="#section-5.2.2-5" class="pilcrow">¶</a></p>
-<p id="section-5.2.2-6">The EncryptedData structure is <span class="bcp14">RECOMMENDED</span> to use in CMP to transport a private key,
+<p id="section-5.2.2-6">The EnvelopedData structure is <span class="bcp14">RECOMMENDED</span> to use in CMP to transport a private key,
 certificate, POP challenge, or revocation passphrase in encrypted form as follows:<a href="#section-5.2.2-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.2.2-7.1">
@@ -3753,7 +3753,7 @@ certificate, POP challenge, or revocation passphrase in encrypted form as follow
 only for one recipient.<a href="#section-5.2.2-7.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-5.2.2-7.2">
-              <p id="section-5.2.2-7.2.1">It may contain a private key in the AsymmetricKeyPackage structure (which is stored in the encryptedContentInfo field), as defined
+              <p id="section-5.2.2-7.2.1">It may contain a private key in the AsymmetricKeyPackage structure (which is placed in the encryptedContentInfo field), as defined
 in <span>[<a href="#RFC5958" class="cite xref">RFC5958</a>]</span>, that is wrapped in a SignedData structure, as specified in
 Section 5 of <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> and <span>[<a href="#RFC8933" class="cite xref">RFC8933</a>]</span>, signed by the Key Generation Authority or CA.<a href="#section-5.2.2-7.2.1" class="pilcrow">¶</a></p>
 </li>
@@ -4019,7 +4019,7 @@ of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of <span>[<a
    }
 </pre><a href="#section-5.2.8.3-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2.8.3-3">To indicate usage of the agreeMAC or encryptedKey choices, the pvno cmp2021(3) <span class="bcp14">MUST</span> be used. Details on the usage of the protocol version number (pvno) are described in <a href="#sect-7" class="auto internal xref">Section 7</a>.<a href="#section-5.2.8.3-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3-3">To indicate support for agreeMAC or encryptedKey choices, the pvno cmp2021(3) <span class="bcp14">MUST</span> be used. Details on the usage of the protocol version number (pvno) are described in <a href="#sect-7" class="auto internal xref">Section 7</a>.<a href="#section-5.2.8.3-3" class="pilcrow">¶</a></p>
 <div id="sect-5.2.8.3.1">
 <section id="section-5.2.8.3.1">
               <h6 id="name-inclusion-of-the-private-ke">
@@ -4545,9 +4545,9 @@ the CA/RA to accept or reject certificates.<a href="#section-5.3.18-1" class="pi
 </div>
 <p id="section-5.3.18-3">The hashAlg field <span class="bcp14">SHOULD</span> be used only in exceptional cases where the signatureAlgorithm
 of the certificate to be confirmed does not specify a hash algorithm in the
-OID or in the parameters or no hash algorithm is specified for hashing certificates signed using the signatureAlgorithm, e.g., for EdDSA in Section 3.3 of <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span>. Otherwise, the certHash value
+OID or in the parameters or no hash algorithm is specified for hashing certificates signed using the signatureAlgorithm. Note that for EdDSA a hash algorithm is specified in Section 3.3 of <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span>, such that the hashAlg field is not needed for EdDSA. Otherwise, the certHash value
 <span class="bcp14">SHALL</span> be computed using the same hash algorithm as used to create and verify
-the certificate signature or as explicitly specified for hashing certificates signed using the signatureAlgorithm. If hashAlg is used, the CMP version indicated
+the certificate signature or as specified for hashing certificates signed using the signatureAlgorithm. If hashAlg is used, the CMP version indicated
 by the certConf message header must be cmp2021(3).<a href="#section-5.3.18-3" class="pilcrow">¶</a></p>
 <p id="section-5.3.18-4">For any particular CertStatus, omission of the statusInfo field
 indicates acceptance of the specified certificate.  Alternatively,
@@ -5006,17 +5006,17 @@ needs to poll the server to determine the status of an outstanding response
      reason       PKIFreeText OPTIONAL }
 </pre><a href="#section-5.3.22-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.3.22-3">In response to an ir, cr, p10cr, kur, or ccr request message, polling is initiated
-with an ip, cp, kup, or ccp response message containing status "waiting". For
+<p id="section-5.3.22-3">Unless implicit confirmation has been requested and granted, in response to an ir, cr, p10cr, kur, krr, or ccr request message, polling is initiated
+with an ip, cp, kup, krp, or ccp response message containing status "waiting". For
 any type of request message, polling can be initiated with an error response
 messages with status "waiting". The following clauses describe how polling
 messages are used.  It is assumed that multiple certConf messages can be
 sent during transactions.  There will be one sent in response to each ip,
-cp, kup, or ccp that contains a CertStatus for an issued certificate.<a href="#section-5.3.22-3" class="pilcrow">¶</a></p>
+cp, kup, krp, or ccp that contains a CertStatus for an issued certificate.<a href="#section-5.3.22-3" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="olPercent" id="section-5.3.22-4">
 <dt>1</dt>
 <dd id="section-5.3.22-4.1">
-              <p id="section-5.3.22-4.1.1">In response to an ip, cp, kup, or ccp message, an EE will send a certConf for
+              <p id="section-5.3.22-4.1.1">In response to an ip, cp, kup, krp, or ccp message, an EE will send a certConf for
   all issued certificates and expect a PKIconf for each certConf.  An EE will
   send a pollReq message in response to each CertResponse element of an ip,
   cp, or kup message with status "waiting" and in response to an error message
@@ -5026,7 +5026,7 @@ cp, kup, or ccp that contains a CertStatus for an issued certificate.<a href="#s
             <dd class="break"></dd>
 <dt>2</dt>
 <dd id="section-5.3.22-4.2">
-              <p id="section-5.3.22-4.2.1">In response to a pollReq, a CA/RA will return an ip, cp, kup, or ccp if one or
+              <p id="section-5.3.22-4.2.1">In response to a pollReq, a CA/RA will return an ip, cp, kup, krp, or ccp if one or
   more of still pending requested certificates are ready or the final response
   to some other type of request is available; otherwise, it will return a pollRep.<a href="#section-5.3.22-4.2.1" class="pilcrow">¶</a></p>
 </dd>
@@ -5039,7 +5039,7 @@ cp, kup, or ccp that contains a CertStatus for an issued certificate.<a href="#s
             <dd class="break"></dd>
 <dt>4</dt>
 <dd id="section-5.3.22-4.4">
-              <p id="section-5.3.22-4.4.1">If the EE receives an ip, cp, kup, or ccp, then it will be treated in the same
+              <p id="section-5.3.22-4.4.1">If the EE receives an ip, cp, kup, krp, or ccp, then it will be treated in the same
   way as the initial response; if it receives any other response, then this
   will be treated as the final response to the original request.<a href="#section-5.3.22-4.4.1" class="pilcrow">¶</a></p>
 </dd>
@@ -5133,7 +5133,7 @@ response message.<a href="#section-5.3.22-9" class="pilcrow">¶</a></p>
                                   |
              +----------- Receive response ------------+
              |                                         |
-             | ip/cp/kup/ccp/error with                | other
+             | ip/cp/kup/krp/ccp/error with            | other
              | status "waiting"                        | response
              |                                         |
              v                                         |
@@ -5202,7 +5202,7 @@ the PKI management functionality that <span class="bcp14">MUST</span> be support
 however, that the management functions described in this section do
 not need to be accomplished using the PKI messages defined in <a href="#sect-5" class="auto internal xref">Section 5</a>
 if alternate means are suitable for a given environment (see
-<span>[<a href="#RFC9483" class="cite xref">RFC9483</a>]</span> Section 7 and <a href="#sect-c" class="auto internal xref">Appendix C</a> for profiles of the PKIMessages
+<span>[<a href="#RFC9483" class="cite xref">RFC9483</a>]</span> Section 7 and <a href="#sect-c" class="auto internal xref">Appendix C</a> for profiles of the PKIMessage structures
 that <span class="bcp14">MUST</span> be supported for different use cases).<a href="#section-6-2" class="pilcrow">¶</a></p>
 <div id="sect-6.1">
 <section id="section-6.1">
@@ -5274,7 +5274,7 @@ cannot be provided, then an error must be conveyed to the requester.<a href="#se
 then the request <span class="bcp14">MUST</span> be the GenMsg message, the response <span class="bcp14">MUST</span> be the
 GenRep message, and the error <span class="bcp14">MUST</span> be the Error message.  These
 messages are protected using a MAC based on shared secret information
-(i.e., password-based MAC, see CMP Algorithms <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span> Section 6.1) or a
+(e.g., password-based MAC, see CMP Algorithms <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span> Section 6.1) or using any asymmetric authentication means such as a
 signature (if the end entity has an existing certificate).<a href="#section-6.5-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -6414,7 +6414,7 @@ crm[1].certReq       fixed value of one
                                  PROT_ENC_ALG]
 
       controls.protocolEncrKey
-     -- if centralized key generation is supported by this CA,
+     -- if centralized key generation is supported by this CA
      -- and EncryptedValue is used, this short-term asymmetric
      -- encryption key (generated by the end entity) will be used
      -- by the CA to encrypt (a symmetric key used to encrypt) a
