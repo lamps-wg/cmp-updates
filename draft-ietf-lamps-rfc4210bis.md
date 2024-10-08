@@ -454,7 +454,7 @@ In addition to end-entities and CAs, many environments call for the
 existence of a Registration Authority (RA) separate from the
 Certification Authority.  The functions that the registration
 authority may carry out will vary from case to case but MAY include
-personal authentication, token distribution, checking certificate requests
+identity checking, token distribution, checking certificate requests
 and authentication of their origin, revocation reporting,
 name assignment, archival of key pairs, et cetera.
 
@@ -1027,8 +1027,8 @@ POP is accomplished in different ways depending upon the type of key
 for which a certificate is requested.  If a key can be used for
 multiple purposes (e.g., an RSA key) then any appropriate method MAY
 be used (e.g., a key that may be used for signing, as well as other
-purposes, SHOULD NOT be sent to the CA/RA in order to prove
-possession).
+purposes, MUST NOT be sent to the CA/RA in order to prove
+possession unless archival of the private key is explicitly desired).
 
 This specification explicitly allows for cases where an end entity
 supplies the relevant proof to an RA and the RA subsequently attests
@@ -2318,7 +2318,8 @@ To indicate usage of the agreeMAC or encryptedKey choices, the pvno cmp2021(3) M
 ##### Inclusion of the Private Key
 {: id="sect-5.2.8.3.1"}
 
-This method demonstrates proof-of-possession of the private key by including the encrypted private key in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.
+This method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by including the encrypted private key in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure. This method SHALL only be used if archival of the private key is desired.
+
 
 For a certification request message indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted private key MUST be transferred in the encryptedKey choice of POPOPrivKey (or within the PKIArchiveOptions control) in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.
 
@@ -2328,7 +2329,7 @@ Note: The thisMessage choice has been deprecated in favor of encryptedKey.  When
 ##### Indirect Method - Encrypted Certificate
 {: id="sect-5.2.8.3.2"}
 
-The "indirect" method demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form, see {{sect-5.2.2}}.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage choice of POPOPrivKey.
+The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form, see {{sect-5.2.2}}.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage choice of POPOPrivKey.
 
 ~~~~
                 EE                         RA/CA
@@ -2346,7 +2347,7 @@ The recipient SHOULD maintain a context of the PKI management operation, e.g., u
 ##### Direct Method - Challenge-Response Protocol
 {: id="sect-5.2.8.3.3"}
 
-The "direct" method demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages popdecc of type POPODecKeyChall and popdecr of type POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage choice of POPOPrivKey.
+The "direct" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages popdecc of type POPODecKeyChall and popdecr of type POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage choice of POPOPrivKey.
 
 Note: This method would typically be used in an environment in which an RA verifies POP and then makes a certification request to the CA on behalf of the end entity. In such a scenario, the CA trusts the RA to have done POP correctly before the RA requests a certificate for the end entity.
 
@@ -3731,10 +3732,7 @@ described above in {{sect-7}}.
 
 It is well established that the role of a Certification Authority is to
 verify that the name and public key belong to the end entity prior to
-issuing a certificate. On a deeper inspection however, it is not
-entirely clear what security guarantees are lost if an end entity is
-able to obtain a certificate containing a public key that they do not
-possess the corresponding private key for. There are some scenarios,
+issuing a certificate. If an entity holding a private key obtains a certificate containing the corresponding public key issued for a different entity, can authenticate as the entity named in the certificate. This facilitates masquerading. It is not entirely clear what security guarantees are lost if an end entity is able to obtain a certificate containing a public key that they do not possess the corresponding private key for. There are some scenarios,
 described as "forwarding attacks" in Appendix A of [Gueneysu], in
 which this can lead to protocol attacks against a naively-implemented
 sign-then-encrypt protocol, but in general it merely results in the
@@ -3771,7 +3769,9 @@ upon whether or not the CA/RA can be trusted to handle such material
 appropriately).  Implementers are advised to:
 
 * Exercise caution in selecting and using this particular POP
-  mechanism
+  mechanism.
+
+* Only use this POP mechanism if archival of the private key is desired.
 
 * When appropriate, have the user of the application explicitly
   state that they are willing to trust the CA/RA to have a copy of
