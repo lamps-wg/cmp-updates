@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 10 April 2025                                           Entrust
-                                                          7 October 2024
+Expires: 11 April 2025                                           Entrust
+                                                          8 October 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 April 2025.
+   This Internet-Draft will expire on 11 April 2025.
 
 Copyright Notice
 
@@ -504,9 +504,9 @@ Table of Contents
    existence of a Registration Authority (RA) separate from the
    Certification Authority.  The functions that the registration
    authority may carry out will vary from case to case but MAY include
-   personal authentication, token distribution, checking certificate
-   requests and authentication of their origin, revocation reporting,
-   name assignment, archival of key pairs, et cetera.
+   identity checking, token distribution, checking certificate requests
+   and authentication of their origin, revocation reporting, name
+   assignment, archival of key pairs, et cetera.
 
    This document views the RA as an OPTIONAL component: when it is not
    present, the CA is assumed to be able to carry out the RA's functions
@@ -1026,8 +1026,8 @@ Table of Contents
    for which a certificate is requested.  If a key can be used for
    multiple purposes (e.g., an RSA key) then any appropriate method MAY
    be used (e.g., a key that may be used for signing, as well as other
-   purposes, SHOULD NOT be sent to the CA/RA in order to prove
-   possession).
+   purposes, MUST NOT be sent to the CA/RA in order to prove possession
+   unless archival of the private key is explicitly desired).
 
    This specification explicitly allows for cases where an end entity
    supplies the relevant proof to an RA and the RA subsequently attests
@@ -2409,11 +2409,11 @@ Table of Contents
 
 5.2.8.3.1.  Inclusion of the Private Key
 
-   This method demonstrates proof-of-possession of the private key by
-   including the encrypted private key in the CertRequest in the
-   POPOPrivKey structure or in the PKIArchiveOptions control structure,
-   depending upon whether or not archival of the private key is also
-   desired.
+   This method mentioned previously in Section 4.3 demonstrates proof-
+   of-possession of the private key by including the encrypted private
+   key in the CertRequest in the POPOPrivKey structure or in the
+   PKIArchiveOptions control structure.  This method SHALL only be used
+   if archival of the private key is desired.
 
    For a certification request message indicating cmp2021(3) in the pvno
    field of the PKIHeader, the encrypted private key MUST be transferred
@@ -2431,10 +2431,11 @@ Table of Contents
 
 5.2.8.3.2.  Indirect Method - Encrypted Certificate
 
-   The "indirect" method demonstrates proof-of-possession of the private
-   key by having the CA return the requested certificate in encrypted
-   form, see Section 5.2.2.  This method is indicated in the CertRequest
-   by requesting the encrCert option in the subsequentMessage choice of
+   The "indirect" method mentioned previously in Section 4.3
+   demonstrates proof-of-possession of the private key by having the CA
+   return the requested certificate in encrypted form, see
+   Section 5.2.2.  This method is indicated in the CertRequest by
+   requesting the encrCert option in the subsequentMessage choice of
    POPOPrivKey.
 
                    EE                         RA/CA
@@ -2465,13 +2466,13 @@ Table of Contents
 
 5.2.8.3.3.  Direct Method - Challenge-Response Protocol
 
-   The "direct" method demonstrates proof-of-possession of the private
-   key by having the end entity engage in a challenge-response protocol
-   (using the messages popdecc of type POPODecKeyChall and popdecr of
-   type POPODecKeyResp; see below) between CertReqMessages and
-   CertRepMessage.  This method is indicated in the CertRequest by
-   requesting the challengeResp option in the subsequentMessage choice
-   of POPOPrivKey.
+   The "direct" method mentioned previously in Section 4.3 demonstrates
+   proof-of-possession of the private key by having the end entity
+   engage in a challenge-response protocol (using the messages popdecc
+   of type POPODecKeyChall and popdecr of type POPODecKeyResp; see
+   below) between CertReqMessages and CertRepMessage.  This method is
+   indicated in the CertRequest by requesting the challengeResp option
+   in the subsequentMessage choice of POPOPrivKey.
 
    Note: This method would typically be used in an environment in which
    an RA verifies POP and then makes a certification request to the CA
@@ -3760,10 +3761,13 @@ Table of Contents
 
    It is well established that the role of a Certification Authority is
    to verify that the name and public key belong to the end entity prior
-   to issuing a certificate.  On a deeper inspection however, it is not
-   entirely clear what security guarantees are lost if an end entity is
-   able to obtain a certificate containing a public key that they do not
-   possess the corresponding private key for.  There are some scenarios,
+   to issuing a certificate.  If an entity holding a private key obtains
+   a certificate containing the corresponding public key issued for a
+   different entity, can authenticate as the entity named in the
+   certificate.  This facilitates masquerading.  It is not entirely
+   clear what security guarantees are lost if an end entity is able to
+   obtain a certificate containing a public key that they do not possess
+   the corresponding private key for.  There are some scenarios,
    described as "forwarding attacks" in Appendix A of [Gueneysu], in
    which this can lead to protocol attacks against a naively-implemented
    sign-then-encrypt protocol, but in general it merely results in the
@@ -3800,7 +3804,10 @@ Table of Contents
    appropriately).  Implementers are advised to:
 
    *  Exercise caution in selecting and using this particular POP
-      mechanism
+      mechanism.
+
+   *  Only use this POP mechanism if archival of the private key is
+      desired.
 
    *  When appropriate, have the user of the application explicitly
       state that they are willing to trust the CA/RA to have a copy of

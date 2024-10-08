@@ -1049,7 +1049,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 10 April 2025</td>
+<td class="center">Expires 11 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-10-07" class="published">7 October 2024</time>
+<time datetime="2024-10-08" class="published">8 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-04-10">10 April 2025</time></dd>
+<dd class="expires"><time datetime="2025-04-11">11 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1146,7 +1146,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2004,7 +2004,7 @@ entity, but this is not mandatory.<a href="#section-3.1.1.2-5" class="pilcrow">�
 existence of a Registration Authority (RA) separate from the
 Certification Authority.  The functions that the registration
 authority may carry out will vary from case to case but <span class="bcp14">MAY</span> include
-personal authentication, token distribution, checking certificate requests
+identity checking, token distribution, checking certificate requests
 and authentication of their origin, revocation reporting,
 name assignment, archival of key pairs, et cetera.<a href="#section-3.1.1.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.1.1.3-2">This document views the RA as an <span class="bcp14">OPTIONAL</span> component: when it is not
@@ -2640,8 +2640,8 @@ Infrastructure end up being somewhat less meaningful.<a href="#section-4.3-2" cl
 for which a certificate is requested.  If a key can be used for
 multiple purposes (e.g., an RSA key) then any appropriate method <span class="bcp14">MAY</span>
 be used (e.g., a key that may be used for signing, as well as other
-purposes, <span class="bcp14">SHOULD NOT</span> be sent to the CA/RA in order to prove
-possession).<a href="#section-4.3-3" class="pilcrow">¶</a></p>
+purposes, <span class="bcp14">MUST NOT</span> be sent to the CA/RA in order to prove
+possession unless archival of the private key is explicitly desired).<a href="#section-4.3-3" class="pilcrow">¶</a></p>
 <p id="section-4.3-4">This specification explicitly allows for cases where an end entity
 supplies the relevant proof to an RA and the RA subsequently attests
 to the CA that the required proof has been received (and validated!).
@@ -4025,7 +4025,7 @@ of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of <span>[<a
               <h6 id="name-inclusion-of-the-private-ke">
 <a href="#section-5.2.8.3.1" class="section-number selfRef">5.2.8.3.1. </a><a href="#name-inclusion-of-the-private-ke" class="section-name selfRef">Inclusion of the Private Key</a>
               </h6>
-<p id="section-5.2.8.3.1-1">This method demonstrates proof-of-possession of the private key by including the encrypted private key in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.<a href="#section-5.2.8.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3.1-1">This method mentioned previously in <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> demonstrates proof-of-possession of the private key by including the encrypted private key in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure. This method <span class="bcp14">SHALL</span> only be used if archival of the private key is desired.<a href="#section-5.2.8.3.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.8.3.1-2">For a certification request message indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted private key <span class="bcp14">MUST</span> be transferred in the encryptedKey choice of POPOPrivKey (or within the PKIArchiveOptions control) in a CMS EnvelopedData structure as defined in <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.<a href="#section-5.2.8.3.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.2.8.3.1-3">Note: The thisMessage choice has been deprecated in favor of encryptedKey.  When using cmp2000(2) in the certification request message header for backward compatibility, the thisMessage choice of POPOPrivKey is used containing the encrypted private key in an EncryptedValue structure wrapped in a BIT STRING.  This allows the necessary conveyance and protection of the private key while maintaining bits-on-the-wire compatibility with <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>.<a href="#section-5.2.8.3.1-3" class="pilcrow">¶</a></p>
 </section>
@@ -4035,7 +4035,7 @@ of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of <span>[<a
               <h6 id="name-indirect-method-encrypted-c">
 <a href="#section-5.2.8.3.2" class="section-number selfRef">5.2.8.3.2. </a><a href="#name-indirect-method-encrypted-c" class="section-name selfRef">Indirect Method - Encrypted Certificate</a>
               </h6>
-<p id="section-5.2.8.3.2-1">The "indirect" method demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form, see <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage choice of POPOPrivKey.<a href="#section-5.2.8.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3.2-1">The "indirect" method mentioned previously in <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form, see <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage choice of POPOPrivKey.<a href="#section-5.2.8.3.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.2.8.3.2-2">
 <pre>
                 EE                         RA/CA
@@ -4054,7 +4054,7 @@ of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of <span>[<a
               <h6 id="name-direct-method-challenge-res">
 <a href="#section-5.2.8.3.3" class="section-number selfRef">5.2.8.3.3. </a><a href="#name-direct-method-challenge-res" class="section-name selfRef">Direct Method - Challenge-Response Protocol</a>
               </h6>
-<p id="section-5.2.8.3.3-1">The "direct" method demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages popdecc of type POPODecKeyChall and popdecr of type POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage choice of POPOPrivKey.<a href="#section-5.2.8.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3.3-1">The "direct" method mentioned previously in <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages popdecc of type POPODecKeyChall and popdecr of type POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage choice of POPOPrivKey.<a href="#section-5.2.8.3.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.8.3.3-2">Note: This method would typically be used in an environment in which an RA verifies POP and then makes a certification request to the CA on behalf of the end entity. In such a scenario, the CA trusts the RA to have done POP correctly before the RA requests a certificate for the end entity.<a href="#section-5.2.8.3.3-2" class="pilcrow">¶</a></p>
 <p id="section-5.2.8.3.3-3">The complete protocol then looks as follows (note that req' does not necessarily encapsulate req as a nested message):<a href="#section-5.2.8.3.3-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.2.8.3.3-4">
@@ -5547,10 +5547,7 @@ described above in <a href="#sect-7" class="auto internal xref">Section 7</a>.<a
         </h3>
 <p id="section-8.1-1">It is well established that the role of a Certification Authority is to
 verify that the name and public key belong to the end entity prior to
-issuing a certificate. On a deeper inspection however, it is not
-entirely clear what security guarantees are lost if an end entity is
-able to obtain a certificate containing a public key that they do not
-possess the corresponding private key for. There are some scenarios,
+issuing a certificate. If an entity holding a private key obtains a certificate containing the corresponding public key issued for a different entity, can authenticate as the entity named in the certificate. This facilitates masquerading. It is not entirely clear what security guarantees are lost if an end entity is able to obtain a certificate containing a public key that they do not possess the corresponding private key for. There are some scenarios,
 described as "forwarding attacks" in Appendix A of <span>[<a href="#Gueneysu" class="cite xref">Gueneysu</a>]</span>, in
 which this can lead to protocol attacks against a naively-implemented
 sign-then-encrypt protocol, but in general it merely results in the
@@ -5592,12 +5589,15 @@ appropriately).  Implementers are advised to:<a href="#section-8.3-1" class="pil
 <ul class="normal">
 <li class="normal" id="section-8.3-2.1">
             <p id="section-8.3-2.1.1">Exercise caution in selecting and using this particular POP
-mechanism<a href="#section-8.3-2.1.1" class="pilcrow">¶</a></p>
+mechanism.<a href="#section-8.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-8.3-2.2">
-            <p id="section-8.3-2.2.1">When appropriate, have the user of the application explicitly
+            <p id="section-8.3-2.2.1">Only use this POP mechanism if archival of the private key is desired.<a href="#section-8.3-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.3-2.3">
+            <p id="section-8.3-2.3.1">When appropriate, have the user of the application explicitly
 state that they are willing to trust the CA/RA to have a copy of
-their private key before proceeding to reveal the private key.<a href="#section-8.3-2.2.1" class="pilcrow">¶</a></p>
+their private key before proceeding to reveal the private key.<a href="#section-8.3-2.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
