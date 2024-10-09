@@ -1883,14 +1883,14 @@ Generic Message Flow:
 Step# Alice                                Bob
 ---------------------------------------------------------------------
   1                                        perform KEM Encapsulate
-  2                    <- KEM Ciphertext <-
-  3   perform KEM Decapsulate
-  4   perform key derivation
-  5   format message with
+                       <- KEM Ciphertext <-
+  2   perform KEM Decapsulate,
+        perform key derivation,
+        format message with
         MAC-based protection
-  6                    ->    message     ->
-  7                                        perform key derivation
-  8                                        verify MAC-based
+                       ->    message     ->
+  3                                        perform key derivation,
+                                             verify MAC-based
                                              protection
 -------------------  Alice authenticated by Bob  --------------------
 ~~~~
