@@ -1511,7 +1511,7 @@ the server MAY set transactionID field of the response.
 
 For transactions that consist of more than just a single
 request/response pair, the rules are as follows.  If the message
-contains an infoValue of type KemCiphertextInfothe, the client
+contains an infoValue of type KemCiphertextInfo, the client
 MUST generate a transactionID, otherwise the client SHOULD
 generate a transactionID for the first request.  If a server receives
 such a request that has the transactionID field set, then it MUST set
