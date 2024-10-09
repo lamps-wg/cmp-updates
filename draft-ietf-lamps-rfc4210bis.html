@@ -3542,14 +3542,14 @@ shared secret (ss).<a href="#section-5.1.3.4-9.1.1" class="pilcrow">¶</a></p>
 Step# Alice                                Bob
 ---------------------------------------------------------------------
   1                                        perform KEM Encapsulate
-  2                    &lt;- KEM Ciphertext &lt;-
-  3   perform KEM Decapsulate
-  4   perform key derivation
-  5   format message with
+                       &lt;- KEM Ciphertext &lt;-
+  2   perform KEM Decapsulate,
+        perform key derivation,
+        format message with
         MAC-based protection
-  6                    -&gt;    message     -&gt;
-  7                                        perform key derivation
-  8                                        verify MAC-based
+                       -&gt;    message     -&gt;
+  3                                        perform key derivation,
+                                             verify MAC-based
                                              protection
 -------------------  Alice authenticated by Bob  --------------------
 </pre>
