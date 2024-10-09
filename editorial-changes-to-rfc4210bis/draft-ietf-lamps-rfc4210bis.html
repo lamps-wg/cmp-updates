@@ -35,7 +35,7 @@ adds support for management of KEM certificates.
 <meta content="draft-ietf-lamps-rfc4210bis-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.23.2
-    Python 3.12.6
+    Python 3.12.7
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
@@ -1049,7 +1049,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 11 April 2025</td>
+<td class="center">Expires 12 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-10-08" class="published">8 October 2024</time>
+<time datetime="2024-10-09" class="published">9 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-04-11">11 April 2025</time></dd>
+<dd class="expires"><time datetime="2025-04-12">12 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1146,7 +1146,7 @@ adds support for management of KEM certificates.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3501,7 +3501,7 @@ shared secret (ss).<a href="#section-5.1.3.4-7.1.1" class="pilcrow">¶</a></p>
             </ul>
 <ul class="normal">
 <li class="normal" id="section-5.1.3.4-8.1">
-                <p id="section-5.1.3.4-8.1.1">Decapsulate(sk, ct) -&gt; ss:<a href="#section-5.1.3.4-8.1.1" class="pilcrow">¶</a></p>
+                <p id="section-5.1.3.4-8.1.1">Decapsulate(sk, ct) -&gt; (ss):<a href="#section-5.1.3.4-8.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <ul class="normal ulEmpty">
@@ -3540,15 +3540,16 @@ shared secret (ss).<a href="#section-5.1.3.4-9.1.1" class="pilcrow">¶</a></p>
               <div class="alignLeft art-text artwork" id="section-5.1.3.4-24.1">
 <pre>
 Step# Alice                                Bob
+---------------------------------------------------------------------
   1                                        perform KEM Encapsulate
-                       &lt;- KEM Ciphertext &lt;-
-  2   perform KEM Decapsulate
-      perform key derivation
-      format message with
+  2                    &lt;- KEM Ciphertext &lt;-
+  3   perform KEM Decapsulate
+  4   perform key derivation
+  5   format message with
         MAC-based protection
-                       -&gt;    message     -&gt;
-  3                                        perform key derivation
-                                           verify MAC-based
+  6                    -&gt;    message     -&gt;
+  7                                        perform key derivation
+  8                                        verify MAC-based
                                              protection
 -------------------  Alice authenticated by Bob  --------------------
 </pre>
@@ -4019,7 +4020,7 @@ of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of <span>[<a
    }
 </pre><a href="#section-5.2.8.3-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2.8.3-3">To indicate support for agreeMAC or encryptedKey choices, the pvno cmp2021(3) <span class="bcp14">MUST</span> be used. Details on the usage of the protocol version number (pvno) are described in <a href="#sect-7" class="auto internal xref">Section 7</a>.<a href="#section-5.2.8.3-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3-3">When using agreeMAC or encryptedKey choices, the pvno cmp2021(3) <span class="bcp14">MUST</span> be used. Details on the usage of the protocol version number (pvno) are described in <a href="#sect-7" class="auto internal xref">Section 7</a>.<a href="#section-5.2.8.3-3" class="pilcrow">¶</a></p>
 <div id="sect-5.2.8.3.1">
 <section id="section-5.2.8.3.1">
               <h6 id="name-inclusion-of-the-private-ke">
@@ -4035,7 +4036,7 @@ of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of <span>[<a
               <h6 id="name-indirect-method-encrypted-c">
 <a href="#section-5.2.8.3.2" class="section-number selfRef">5.2.8.3.2. </a><a href="#name-indirect-method-encrypted-c" class="section-name selfRef">Indirect Method - Encrypted Certificate</a>
               </h6>
-<p id="section-5.2.8.3.2-1">The "indirect" method mentioned previously in <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form, see <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage choice of POPOPrivKey.<a href="#section-5.2.8.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3.2-1">The indirect method mentioned previously in <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form, see <a href="#sect-5.2.2" class="auto internal xref">Section 5.2.2</a>.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage choice of POPOPrivKey.<a href="#section-5.2.8.3.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.2.8.3.2-2">
 <pre>
                 EE                         RA/CA
@@ -4054,7 +4055,7 @@ of type ProofOfPossession in the CertReqMsg sequence, see Section 4 of <span>[<a
               <h6 id="name-direct-method-challenge-res">
 <a href="#section-5.2.8.3.3" class="section-number selfRef">5.2.8.3.3. </a><a href="#name-direct-method-challenge-res" class="section-name selfRef">Direct Method - Challenge-Response Protocol</a>
               </h6>
-<p id="section-5.2.8.3.3-1">The "direct" method mentioned previously in <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages popdecc of type POPODecKeyChall and popdecr of type POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage choice of POPOPrivKey.<a href="#section-5.2.8.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.8.3.3-1">The direct method mentioned previously in <a href="#sect-4.3" class="auto internal xref">Section 4.3</a> demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages popdecc of type POPODecKeyChall and popdecr of type POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage choice of POPOPrivKey.<a href="#section-5.2.8.3.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.8.3.3-2">Note: This method would typically be used in an environment in which an RA verifies POP and then makes a certification request to the CA on behalf of the end entity. In such a scenario, the CA trusts the RA to have done POP correctly before the RA requests a certificate for the end entity.<a href="#section-5.2.8.3.3-2" class="pilcrow">¶</a></p>
 <p id="section-5.2.8.3.3-3">The complete protocol then looks as follows (note that req' does not necessarily encapsulate req as a nested message):<a href="#section-5.2.8.3.3-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.2.8.3.3-4">
@@ -4441,7 +4442,7 @@ CAKeyUpdContent ::= CHOICE {
 }
 </pre><a href="#section-5.3.13-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.3.13-3">To indicate support for RootCaKeyUpdateContent in the ckuann message, the pvno cmp2021 <span class="bcp14">MUST</span> be used. Details on the usage of the protocol version number (pvno) are described in Section 7.<a href="#section-5.3.13-3" class="pilcrow">¶</a></p>
+<p id="section-5.3.13-3">When using RootCaKeyUpdateContent in the ckuann message, the pvno cmp2021 <span class="bcp14">MUST</span> be used. Details on the usage of the protocol version number (pvno) are described in Section 7.<a href="#section-5.3.13-3" class="pilcrow">¶</a></p>
 <p id="section-5.3.13-4">In contrast to CAKeyUpdAnnContent as supported with cmp2000, RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew, depending on the needs of the EE.<a href="#section-5.3.13-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -5081,46 +5082,46 @@ CertResponse elements at the example of an ir request message.<a href="#section-
 in one request.<a href="#section-5.3.22-7" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.3.22-8">
 <pre>
- Step  End Entity                       PKI
- --------------------------------------------------------------------
- 1   Format ir
- 2                    -&gt; ir      -&gt;
- 3                                    Handle ir
- 4                                    Manual intervention is
-                                        required for both certs
- 5                    &lt;- ip      &lt;-
- 6   Process ip
- 7   Format pollReq
- 8                    -&gt; pollReq  -&gt;
- 9                                    Check status of cert requests
- 10                                   Certificates not ready
- 11                                   Format pollRep
- 12                   &lt;- pollRep  &lt;-
- 13  Wait
- 14  Format pollReq
- 15                   -&gt; pollReq  -&gt;
- 16                                   Check status of cert requests
- 17                                   One certificate is ready
- 18                                   Format ip
- 19                   &lt;- ip       &lt;-
- 20  Handle ip
- 21  Format certConf
- 22                   -&gt; certConf -&gt;
- 23                                   Handle certConf
- 24                                   Format ack
- 25                   &lt;- pkiConf   &lt;-
- 26  Format pollReq
- 27                   -&gt; pollReq  -&gt;
- 28                                   Check status of certificate
- 29                                   Certificate is ready
- 30                                   Format ip
- 31                   &lt;- ip       &lt;-
- 31  Handle ip
- 32  Format certConf
- 33                   -&gt; certConf -&gt;
- 34                                   Handle certConf
- 35                                   Format ack
- 36                   &lt;- pkiConf  &lt;-
+Step# End Entity                       PKI
+---------------------------------------------------------------------
+  1   format ir
+  2                    -&gt; ir      -&gt;
+  3                                    handle ir
+  4                                    manual intervention is
+                                         required for both certs
+  5                    &lt;- ip      &lt;-
+  6   process ip
+  7   format pollReq
+  8                    -&gt; pollReq  -&gt;
+  9                                    check status of cert requests,
+                                         certificates not ready
+ 10                                    format pollRep
+ 11                    &lt;- pollRep  &lt;-
+ 12   wait
+ 13   format pollReq
+ 14                    -&gt; pollReq  -&gt;
+ 15                                    check status of cert requests,
+                                         one certificate is ready
+ 16                                    format ip
+ 17                    &lt;- ip       &lt;-
+ 18   handle ip
+ 19   format certConf
+ 20                    -&gt; certConf -&gt;
+ 21                                    handle certConf
+ 22                                    format ack
+ 23                    &lt;- pkiConf   &lt;-
+ 24   format pollReq
+ 25                    -&gt; pollReq  -&gt;
+ 26                                    check status of certificate,
+                                         certificate is ready
+ 27                                    format ip
+ 28                    &lt;- ip       &lt;-
+ 29   handle ip
+ 30   format certConf
+ 31                    -&gt; certConf -&gt;
+ 32                                    handle certConf
+ 33                                    format ack
+ 34                    &lt;- pkiConf  &lt;-
 </pre><a href="#section-5.3.22-8" class="pilcrow">¶</a>
 </div>
 <p id="section-5.3.22-9">The following client-side state machine describes polling for a complete
@@ -5156,30 +5157,30 @@ response message.<a href="#section-5.3.22-9" class="pilcrow">¶</a></p>
 and the response is delayed by the server.<a href="#section-5.3.22-11" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.3.22-12">
 <pre>
- Step  End Entity                       PKI
- --------------------------------------------------------------------
- 1   Format genm
- 2                  -&gt; genm     -&gt;
- 3                                 Handle genm
- 4                                 delay in response is necessary
- 5                                 Format error message "waiting"
-                                     with certReqId set to -1
- 6                   &lt;- error   &lt;-
- 7   Process error
- 8   Format pollReq
- 9                   -&gt; pollReq -&gt;
- 10                                Check status of original request
-                                     general message response not ready
- 11                                Format pollRep
- 12                  &lt;- pollRep &lt;-
- 13  Wait
- 14  Format pollReq
- 15                  -&gt; pollReq -&gt;
- 16                                Check status of original request
-                                     general message response is ready
- 17                                Format genp
- 18                  &lt;- genp    &lt;-
- 19  Handle genp
+Step# End Entity                       PKI
+---------------------------------------------------------------------
+  1   format genm
+  2                  -&gt; genm     -&gt;
+  3                                 handle genm
+  4                                 delay in response is necessary
+  5                                 format error message "waiting"
+                                      with certReqId set to -1
+  6                   &lt;- error   &lt;-
+  7   process error
+  8   format pollReq
+  9                   -&gt; pollReq -&gt;
+ 10                                 check status of original request,
+                                      general message response not ready
+ 11                                 format pollRep
+ 12                   &lt;- pollRep &lt;-
+ 13   wait
+ 14   format pollReq
+ 15                   -&gt; pollReq -&gt;
+ 16                                 check status of original request,
+                                      general message response is ready
+ 17                                 format genp
+ 18                   &lt;- genp    &lt;-
+ 19   handle genp
 </pre><a href="#section-5.3.22-12" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5201,9 +5202,9 @@ the functionality described.  This part is effectively the profile of
 the PKI management functionality that <span class="bcp14">MUST</span> be supported.  Note,
 however, that the management functions described in this section do
 not need to be accomplished using the PKI messages defined in <a href="#sect-5" class="auto internal xref">Section 5</a>
-if alternate means are suitable for a given environment (see
+if alternate means are suitable for a given environment. See
 <span>[<a href="#RFC9483" class="cite xref">RFC9483</a>]</span> Section 7 and <a href="#sect-c" class="auto internal xref">Appendix C</a> for profiles of the PKIMessage structures
-that <span class="bcp14">MUST</span> be supported for different use cases).<a href="#section-6-2" class="pilcrow">¶</a></p>
+that <span class="bcp14">MUST</span> be supported for specific use cases.<a href="#section-6-2" class="pilcrow">¶</a></p>
 <div id="sect-6.1">
 <section id="section-6.1">
         <h3 id="name-root-ca-initialization">
@@ -6190,8 +6191,7 @@ operations are provided:<a href="#appendix-C-3" class="pilcrow">¶</a></p>
   profiles, they <span class="bcp14">SHOULD</span> be absent from the relevant message (i.e.,
   a receiver can validly reject a message containing such fields as
   being syntactically incorrect).  Mandatory fields are not
-  mentioned if they have an obvious value (e.g., if not explicitly stated,
-  pvno is cmp2000(2) or cmp2021(3) if required as specified in <a href="#sect-7" class="auto internal xref">Section 7</a>).<a href="#appendix-C.1-1.1.1" class="pilcrow">¶</a></p>
+  mentioned if they have an obvious value. The pvno <span class="bcp14">MUST</span> be set as specified in <a href="#sect-7" class="auto internal xref">Section 7</a>).<a href="#appendix-C.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li id="appendix-C.1-1.2">
             <p id="appendix-C.1-1.2.1">Where structures occur in more than one message, they are
@@ -6317,19 +6317,20 @@ out-of-band means<a href="#appendix-C.4-6.1.1" class="pilcrow">¶</a></p>
 <p id="appendix-C.4-7">Message flow:<a href="#appendix-C.4-7" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-C.4-8">
 <pre>
- Step# End entity                           PKI
-   1   format ir
-   2                      -&gt;   ir      -&gt;
-   3                                        handle ir
-   4                                        format ip
-   5                      &lt;-   ip      &lt;-
-   6   handle ip
-   7   format certConf
-   8                      -&gt;   certConf -&gt;
-   9                                        handle certConf
-  10                                        format PKIConf
-  11                      &lt;-   PKIConf  &lt;-
-  12   handle PKIConf
+Step# End entity                           PKI
+---------------------------------------------------------------------
+  1   format ir
+  2                      -&gt;   ir      -&gt;
+  3                                        handle ir
+  4                                        format ip
+  5                      &lt;-   ip      &lt;-
+  6   handle ip
+  7   format certConf
+  8                      -&gt;   certConf -&gt;
+  9                                        handle certConf
+ 10                                        format PKIConf
+ 11                      &lt;-   PKIConf  &lt;-
+ 12   handle PKIConf
 </pre><a href="#appendix-C.4-8" class="pilcrow">¶</a>
 </div>
 <p id="appendix-C.4-9">For this profile, we mandate that the end entity <span class="bcp14">MUST</span> include all
@@ -6414,11 +6415,11 @@ crm[1].certReq       fixed value of one
                                  PROT_ENC_ALG]
 
       controls.protocolEncrKey
-     -- if centralized key generation is supported by this CA
-     -- and EncryptedValue is used, this short-term asymmetric
-     -- encryption key (generated by the end entity) will be used
-     -- by the CA to encrypt (a symmetric key used to encrypt) a
-     -- private key generated by the CA on behalf of the end entity
+     -- if centralized key generation is supported by this CA,
+     -- this short-term asymmetric encryption key (generated by
+     -- the end entity) will be used by the CA to encrypt (a
+     -- symmetric key used to encrypt) a private key generated by
+     -- the CA on behalf of the end entity
 
 crm[1].certReq.      optionally present
    controls.archiveOptions
@@ -6782,13 +6783,13 @@ not required from the end entity.<a href="#appendix-D.5-1" class="pilcrow">¶</a
 <div class="alignLeft art-text artwork" id="appendix-D.5-3">
 <pre>
 Step# End entity                        PKI
-
-   1  format genm
-   2                -&gt;   genm   -&gt;
-   3                                    handle genm
-   4                                    produce genp
-   5                &lt;-   genp   &lt;-
-   6  handle genp
+---------------------------------------------------------------------
+  1   format genm
+  2                 -&gt;   genm   -&gt;
+  3                                     handle genm
+  4                                     produce genp
+  5                 &lt;-   genp   &lt;-
+  6   handle genp
 </pre><a href="#appendix-D.5-3" class="pilcrow">¶</a>
 </div>
 <p id="appendix-D.5-4">genM:<a href="#appendix-D.5-4" class="pilcrow">¶</a></p>
@@ -6890,6 +6891,7 @@ for either confirmation.<a href="#appendix-D.6-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-D.6-6">
 <pre>
 Step# Requesting CA                       Responding CA
+---------------------------------------------------------------------
   1   format ccr
   2                   -&gt;    ccr    -&gt;
   3                                       handle ccr
@@ -7089,42 +7091,43 @@ field.<a href="#appendix-D.7-4.7.1" class="pilcrow">¶</a></p>
 <pre>
 Step# PKI entity                           PKI management entity
       (Alice)                              (Bob)
+---------------------------------------------------------------------
   1   format unprotected genm
         of type
         KemCiphertextInfo
         without value, and
         KEM certificate in
         extraCerts
-                         -&gt;   genm    -&gt;
-  2                                        validate KEM certificate
-                                           perform KEM Encapsulate
-                                           format unprotected genp
+  2                      -&gt;   genm    -&gt;
+  3                                        validate KEM certificate
+  4                                        perform KEM Encapsulate
+  5                                        format unprotected genp
                                              of type
                                              KemCiphertextInfo
                                              providing KEM ciphertext
-                         &lt;-   genp    &lt;-
-  3   perform KEM Decapsulate
-      perform key derivation
+  6                      &lt;-   genp    &lt;-
+  7   perform KEM Decapsulate
+  8   perform key derivation
         to get ssk
-      format request with
+  9   format request with
         MAC-based protection
-                         -&gt;  request  -&gt;
-  4                                        perform key derivation
+ 10                      -&gt;  request  -&gt;
+ 11                                        perform key derivation
                                              to get ssk
-                                           verify MAC-based
+ 12                                        verify MAC-based
                                              protection
 
 --------  PKI entity authenticated by PKI management entity  --------
 
-                                           format response with
+ 13                                        format response with
                                              protection depending on
                                              available key material
-                         &lt;-  response &lt;-
-  5   verify protection
+ 14                      &lt;-  response &lt;-
+ 15   verify protection
         provided by the
         PKI management entity
 
-          Further messages of this PKI management operation
+ 16       Further messages of this PKI management operation
         can be exchanged with MAC-based protection by the PKI
          entity using the established shared secret key (ssk)
 </pre>
@@ -7140,29 +7143,30 @@ Step# PKI entity                           PKI management entity
 <pre>
 Step# PKI entity                           PKI management entity
       (Bob)                                (Alice)
+---------------------------------------------------------------------
   1   perform KEM Encapsulate
-      format request providing
+  2   format request providing
         KEM ciphertext in
         generalInfo of type
         KemCiphertextInfo,
         and with protection
         depending on available
         key material
-                         -&gt;  request  -&gt;
-  2                                        perform KEM Decapsulate
-                                           perform key derivation
+  3                      -&gt;  request  -&gt;
+  4                                        perform KEM Decapsulate
+  5                                        perform key derivation
                                              to get ssk
-                                           format response with
+  6                                        format response with
                                              MAC-based protection
-                         &lt;-  response &lt;-
-  3   perform key derivation
+  7                      &lt;-  response &lt;-
+  8   perform key derivation
         to get ssk
-      verify MAC-based
+  9   verify MAC-based
         protection
 
 --------  PKI management entity authenticated by PKI entity  --------
 
-          Further messages of this PKI management operation
+ 10       Further messages of this PKI management operation
           can be exchanged with MAC-based protection by the
              PKI management entity using the established
                         shared secret key (ssk)
@@ -7180,21 +7184,22 @@ Step# PKI entity                           PKI management entity
 <pre>
 Step# PKI entity                           PKI management entity
       (Bob)                                (Alice)
+---------------------------------------------------------------------
   1   format request with
         protection depending
         on available key
         material
-                         -&gt;  request  -&gt;
-  2                                        format unprotected error
+  2                      -&gt;  request  -&gt;
+  3                                        format unprotected error
                                              with status "rejection"
                                              and failInfo
                                              "wrongIntegrity" and KEM
                                              certificate in
                                              extraCerts
-                         &lt;-   error   &lt;-
-  3   validate KEM certificate
+  4                      &lt;-   error   &lt;-
+  5   validate KEM certificate
 
-                 proceed as shown in the Figure before
+  6              proceed as shown in the Figure before
 </pre>
 </div>
 <figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
@@ -7969,16 +7974,19 @@ END
           <p id="appendix-G-3.1.1">Implemented some editorial changes throughout the document, specifically in Sections 5.1.1, 5.1.1.3, 5.1.3.4, 5.2.2, 5.2.8.3, 5.3.18, 5.3.19.2, 5.2.22, 7, C.1, and C.4<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.2">
-          <p id="appendix-G-3.2.1">Updated the the page header to 'CMP'<a href="#appendix-G-3.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.2.1">Aligned formatting of message flow diagrams<a href="#appendix-G-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.3">
-          <p id="appendix-G-3.3.1">Removed one instruction to RFC Editors<a href="#appendix-G-3.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.3.1">Updated the the page header to 'CMP'<a href="#appendix-G-3.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.4">
-          <p id="appendix-G-3.4.1">Fixed some nits in Section 5.2.2<a href="#appendix-G-3.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.4.1">Removed one instruction to RFC Editors<a href="#appendix-G-3.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-3.5">
-          <p id="appendix-G-3.5.1">Fixed one reference to RFC 9629 in the ASN.1 Module<a href="#appendix-G-3.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.5.1">Fixed some nits in Section 5.2.2<a href="#appendix-G-3.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-3.6">
+          <p id="appendix-G-3.6.1">Fixed one reference to RFC 9629 in the ASN.1 Module<a href="#appendix-G-3.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-G-4">From version 12 -&gt; 13:<a href="#appendix-G-4" class="pilcrow">¶</a></p>
