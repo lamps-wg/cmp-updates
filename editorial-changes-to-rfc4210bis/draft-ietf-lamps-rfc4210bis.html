@@ -5170,14 +5170,16 @@ Step# End Entity                       PKI
   8   format pollReq
   9                   -&gt; pollReq -&gt;
  10                                 check status of original request,
-                                      general message response not ready
+                                      general message response not
+                                      ready
  11                                 format pollRep
  12                   &lt;- pollRep &lt;-
  13   wait
  14   format pollReq
  15                   -&gt; pollReq -&gt;
  16                                 check status of original request,
-                                      general message response is ready
+                                      general message response is
+                                      ready
  17                                 format genp
  18                   &lt;- genp    &lt;-
  19   handle genp

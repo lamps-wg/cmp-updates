@@ -3434,30 +3434,32 @@ Table of Contents
    In the following exchange, the end entity is sending a general
    message request, and the response is delayed by the server.
 
-Step# End Entity                       PKI
----------------------------------------------------------------------
-  1   format genm
-  2                  -> genm     ->
-  3                                 handle genm
-  4                                 delay in response is necessary
-  5                                 format error message "waiting"
-                                      with certReqId set to -1
-  6                   <- error   <-
-  7   process error
-  8   format pollReq
-  9                   -> pollReq ->
- 10                                 check status of original request,
-                                      general message response not ready
- 11                                 format pollRep
- 12                   <- pollRep <-
- 13   wait
- 14   format pollReq
- 15                   -> pollReq ->
- 16                                 check status of original request,
-                                      general message response is ready
- 17                                 format genp
- 18                   <- genp    <-
- 19   handle genp
+   Step# End Entity                       PKI
+   ---------------------------------------------------------------------
+     1   format genm
+     2                  -> genm     ->
+     3                                 handle genm
+     4                                 delay in response is necessary
+     5                                 format error message "waiting"
+                                         with certReqId set to -1
+     6                   <- error   <-
+     7   process error
+     8   format pollReq
+     9                   -> pollReq ->
+    10                                 check status of original request,
+                                         general message response not
+                                         ready
+    11                                 format pollRep
+    12                   <- pollRep <-
+    13   wait
+    14   format pollReq
+    15                   -> pollReq ->
+    16                                 check status of original request,
+                                         general message response is
+                                         ready
+    17                                 format genp
+    18                   <- genp    <-
+    19   handle genp
 
 6.  Mandatory PKI Management Functions
 
