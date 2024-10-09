@@ -114,7 +114,7 @@ volunteers, to join the -bis activity as co-authors.
 The Certificate Management Protocol (CMP) {{I-D.ietf-lamps-rfc4210bis}} requires a well-defined
 transfer mechanism to enable End Entities (EEs), Registration
 Authorities (RAs), and Certification Authorities (CAs) to pass
-PKIMessage sequences between them.
+PKIMessage structures between them.
 
 The first version of the CMP specification {{RFC2510}} included a brief
 description of a simple transfer protocol layer on top of TCP.  Its
@@ -247,7 +247,7 @@ The Internet Media Type "application/pkixcmp" MUST be set in the HTTP
 Content-Type header field when conveying a PKIMessage.
 
 The Content-Length header field SHOULD be provided, giving the length of
-the ASN.1-encoded PKIMessages.
+the ASN.1-encoded PKIMessage.
 
 
 ## Communication Workflow
@@ -322,7 +322,7 @@ repositories storing the announced information, such as directory
 services.  Those services listen for incoming messages, utilizing the
 same HTTP Request-URI scheme as defined in {{sect-3.6}}.
 
-The following PKIMessages are announcements that may be pushed by a
+The following types of PKIMessage are announcements that may be pushed by a
 CA.  The prefixed numbers reflect ASN.1 numbering of the respective
 element.
 
@@ -459,6 +459,8 @@ From version 06 -> 07:
 * Updated the the page header to 'HTTP Transfer for CMP'
 
 * Removed one instruction to RFC Editors
+
+* Deprecated PKIMessages as plural of PKIMessage to prevent confusion with ASN.1 type PKIMessages
 
 * Fixed some nits in Section 1
 

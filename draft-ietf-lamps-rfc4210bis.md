@@ -84,6 +84,7 @@ informative:
   RFC8649:
   RFC8995:
   I-D.ietf-anima-brski-ae:
+  I-D.ietf-lamps-kyber-certificates:
   RFC9162:
   NIST.SP.800_90Ar1:
   IEEE.802.1AR-2018: DOI.10.1109/IEEESTD.2018.8423794
@@ -244,7 +245,7 @@ defined for certificate creation and management.  The term
 "certificate" in this document refers to an X.509v3 Certificate as
 defined in {{RFC5280}}.
 
-## Changes Since RFC 2510
+## Changes Made by RFC 4210
 {: id="sect-1.1"}
 
 {{RFC4210}} differs from {{RFC2510}} in the following areas:
@@ -315,7 +316,7 @@ Profile {{RFC9483}}, in the following areas:
 * Added security considerations Sections {{<sect-8.6}}, {{<sect-8.7}}, {{<sect-8.9}}, and {{<sect-8.10}}.
 
 
-## Changes Since RFC 9480
+## Changes Made by This Document
 {: id="sect-1.3"}
 
 This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes specified by Section 2 and Appendix C.2 of {{RFC9480}} as described in {{sect-1.2}}. Additionally this document updates the content of {{RFC4210}} in the following areas:
@@ -453,7 +454,7 @@ In addition to end-entities and CAs, many environments call for the
 existence of a Registration Authority (RA) separate from the
 Certification Authority.  The functions that the registration
 authority may carry out will vary from case to case but MAY include
-personal authentication, token distribution, checking certificate requests
+identity checking, token distribution, checking certificate requests
 and authentication of their origin, revocation reporting,
 name assignment, archival of key pairs, et cetera.
 
@@ -670,7 +671,7 @@ messages are defined can be grouped as follows.
       "steps", possibly including an initialization of the end
       entity's equipment.  For example, the end entity's equipment
       must be securely initialized with the public key of a CA, e.g.,
-      using zero-touch methods like BRSKI {{RFC8995}} or SCTP {{RFC8572}}, to
+      using zero-touch methods like BRSKI {{RFC8995}} or SZTP {{RFC8572}}, to
       be used in validating certificate paths.  Furthermore, an end
       entity typically needs to be initialized with its own key
       pair(s).
@@ -702,22 +703,22 @@ messages are defined can be grouped as follows.
 
 
 
-        1. Note 1.  The above definition of "cross-certificate"
-          aligns with the defined term "CA-certificate" in X.509.
-          Note that this term is not to be confused with the X.500
-          "cACertificate" attribute type, which is unrelated.
+      > Note 1:  The above definition of "cross-certificate"
+      aligns with the defined term "CA-certificate" in X.509.
+      Note that this term is not to be confused with the X.500
+      "cACertificate" attribute type, which is unrelated.
 
-        1. Note 2.  In many environments, the term "cross-certificate", unless further
-          qualified, will be
-          understood to be synonymous with "inter-domain cross-certificate" as defined
-          above.
+      > Note 2:  In many environments, the term "cross-certificate", unless further
+      qualified, will be
+      understood to be synonymous with "inter-domain cross-certificate" as defined
+      above.
 
-        1. Note 3.  Issuance of cross-certificates may be, but is
-          not necessarily, mutual; that is, two CAs may issue
-          cross-certificates for each other.
+      > Note 3:  Issuance of cross-certificates may be, but is
+      not necessarily, mutual; that is, two CAs may issue
+      cross-certificates for each other.
 
 
-    1. cross-certificate update: Similar to a normal certificate
+    1. [RFC-Editor: Please fix the enumeration and continue with '6'.] cross-certificate update: Similar to a normal certificate
       update, but involving a cross-certificate.
 
 
@@ -730,7 +731,7 @@ messages are defined can be grouped as follows.
       producing a certificate, some means for publishing may be
       needed.  The "means" defined in PKIX MAY involve the messages
       specified in Sections {{<sect-5.3.13}} to {{<sect-5.3.16}}, or MAY involve other
-      methods (LDAP, for example) as described in {{RFC4511}}, {{RFC2585}}
+      methods (LDAP, for example) as described in {{RFC4511}} or {{RFC2585}}
       (the "Operational Protocols" documents of the PKIX
       series of specifications).
 
@@ -806,7 +807,7 @@ schemes that are supported by this specification.  Note that the word
 the end entity in question has had no previous contact with the PKI,
 except having received the root CA certificate of that PKI by some
 zero-touch method like BRSKI {{RFC8995}} and
-{{I-D.ietf-anima-brski-ae}} or SCTP {{RFC8572}}.  In case the end
+{{I-D.ietf-anima-brski-ae}} or SZTP {{RFC8572}}.  In case the end
 entity already possesses certified keys, then some
 simplifications/alternatives are possible.
 
@@ -842,7 +843,7 @@ occurring wherever the first PKI message relating to the end entity
 is produced.  Note that the real-world initiation of the
 registration/certification procedure may occur elsewhere (e.g., a
 personnel department may telephone an RA operator or using zero touch
-methods like BRSKI {{RFC8995}} or SCTP {{RFC8572}}).
+methods like BRSKI {{RFC8995}} or SZTP {{RFC8572}}).
 
 The possible locations are at the end entity, an RA, or a CA.
 
@@ -901,7 +902,7 @@ the end entity, a KGA, or a CA.
 #### Confirmation of Successful Certification
 {: id="sect-4.2.1.4"}
 
-Following the creation of an initial certificate for an end entity,
+Following the creation of a certificate for an end entity,
 additional assurance can be gained by having the end entity
 explicitly confirm successful receipt of the message containing (or
 indicating the creation of) the certificate.  Naturally, this
@@ -919,7 +920,7 @@ The criteria above allow for a large number of initial
 registration/certification schemes.  Examples of possible initial
 registration/certification schemes can be found in the following
 subsections.  An entity may support other schemes specified in
-profiles of PKIX-CMP, such as {{sect-d}} and {{sect-e}} or {{RFC9483}}.
+profiles of PKIX-CMP, such as {{sect-c}} and {{sect-d}} or {{RFC9483}}.
 
 
 #### Centralized Scheme
@@ -1026,8 +1027,8 @@ POP is accomplished in different ways depending upon the type of key
 for which a certificate is requested.  If a key can be used for
 multiple purposes (e.g., an RSA key) then any appropriate method MAY
 be used (e.g., a key that may be used for signing, as well as other
-purposes, SHOULD NOT be sent to the CA/RA in order to prove
-possession).
+purposes, MUST NOT be sent to the CA/RA in order to prove
+possession unless archival of the private key is explicitly desired).
 
 This specification explicitly allows for cases where an end entity
 supplies the relevant proof to an RA and the RA subsequently attests
@@ -1509,7 +1510,9 @@ the message contains a KemCiphertextInfo field. In all other cases
 the server MAY set transactionID field of the response.
 
 For transactions that consist of more than just a single
-request/response pair, the rules are as follows.  Clients SHOULD
+request/response pair, the rules are as follows.  If the message
+contains an infoValue of type KemCiphertextInfothe, the client
+MUST generate a transactionID, otherwise the client SHOULD
 generate a transactionID for the first request.  If a server receives
 such a request that has the transactionID field set, then it MUST set
 the transactionID field of the response to the same value.  If a
@@ -1538,7 +1541,7 @@ server.
 The senderNonce and recipNonce fields protect the PKIMessage against
 replay attacks.  The senderNonce will typically be 128 bits of
 (pseudo-) random data generated by the sender, whereas the recipNonce
-is copied from the senderNonce of the previous message in the
+is copied from the senderNonce field of the previous message in the
 transaction.
 
 The messageTime field contains the time at which the sender created
@@ -1557,7 +1560,7 @@ extensions are defined and MAY be supported.
 #### ImplicitConfirm
 {: id="sect-5.1.1.1"}
 
-This is used by the EE to inform the CA that it does not wish to send
+This is used by the EE to inform the CA or RA that it does not wish to send
 a certificate confirmation for issued certificates.
 
 ~~~~ asn.1
@@ -1574,7 +1577,7 @@ confirmation.
 #### ConfirmWaitTime
 {: id="sect-5.1.1.2"}
 
-This is used by the CA to inform the EE how long it intends to wait
+This is used by the CA or RA to inform the EE how long it intends to wait
 for the certificate confirmation before revoking the certificate and
 deleting the transaction.
 
@@ -1592,14 +1595,14 @@ field of the PKIHeader of a PKIMessage.  This is used by the RA to inform
 the CA of the original PKIMessage that it received from the EE and modified
 in some way (e.g., added or modified particular field values or added new
 extensions) before forwarding the new PKIMessage.  This
-accommodates, for example, cases in which the CA wishes to check POP or other
+accommodates, for example, cases in which the CA wishes to check the message origin, the POP, or other
 information on the original EE message.
 
 Note: If the changes made by
 the RA to the original PKIMessage break the POP of a certificate request,
-the RA can set the popo field to raVerified, see {{sect-5.2.8.4}}.
+the RA can set the popo field of the new PKIMessage to raVerified, see {{sect-5.2.8.4}}.
 
-Although the infoValue is PKIMessages, it MUST contain exactly one PKIMessage.
+Unless the OrigPKIMessage infoValue is in the header of a nested message, it MUST contain exactly one PKIMessage. The contents of OrigPKIMessage infoValue in the header of a nested message MAY contain multiple PKIMessage structures, which MUST be in the same order as the PKIMessage structures in PKIBody.
 
 ~~~~ asn.1
   id-it-origPKIMessage OBJECT IDENTIFIER ::= {id-it 15}
@@ -1745,7 +1748,7 @@ The algorithm identifier id-PasswordBasedMac is defined in Section 4.4 of {{RFC4
 
 The following text gives a method of key expansion to be used when the MAC-algorithm requires an input length that is larger than the size of the one-way-function.
 
-Note: Section 4.4 of {{RFC4211}} and {{RFC9045}} do not mention this key expansion method and gives an example using HMAC algorithms where key expansion is not needed. It is recognized that this omission in {{RFC4211}} can lead to confusion and possible incompatibility if {{RFC4210}} key expansion is not used when needed. Therefore, when key expansion is required (when K > H) the key expansion defined in in the following text MUST be used.
+Note: Section 4.4 of {{RFC4211}} and {{RFC9045}} do not mention this key expansion method and gives an example using HMAC algorithms where key expansion is not needed. It is recognized that this omission in {{RFC4211}} can lead to confusion and possible incompatibility if {{RFC4210}} key expansion is not used when needed. Therefore, when key expansion is required (when K > H) the key expansion defined in the following text MUST be used.
 
 In the above protectionAlg, the salt value is appended to the shared
 secret input. The OWF is then applied iterationCount times, where the
@@ -1820,29 +1823,29 @@ digital signature MAY be one of the options described in CMP Algorithms Section
 
 In case the sender of a message has a Key Encapsulation Mechanism (KEM) key pair, it can be used to establish a shared secret key for MAC-based message protection. This can be used for message authentication.
 
-This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in {{RFC9629, Section 1}} which is copied here for completeness.
+This approach uses the definition of Key Encapsulation Mechanism (KEM) algorithm functions in Section 1 of {{RFC9629}} as follows:
 
 A KEM algorithm provides three functions:
 
 * KeyGen() -> (pk, sk):
 
-> Generate the public key (pk) and a private (secret) key (sk).
+> Generate a public key (pk) and a private (secret) key (sk).
 
 * Encapsulate(pk) -> (ct, ss):
 
-> Given the recipient's public key (pk), produce a ciphertext (ct) to be
-passed to the recipient and shared secret (ss) for the originator.
+> Given the public key (pk), produce a ciphertext (ct) and a
+shared secret (ss).
 
-* Decapsulate(sk, ct) -> ss:
+* Decapsulate(sk, ct) -> (ss):
 
 > Given the private key (sk) and the ciphertext (ct), produce the
-shared secret (ss) for the recipient.
+shared secret (ss).
 
-To support a particular KEM algorithm, the CMP originator MUST support the KEM Encapsulate() function. To support a particular KEM algorithm, the CMP recipient MUST support the KEM KeyGen() function and the KEM Decapsulate() function. The recipient's public key is usually carried in a certificate {{RFC5280}}.
+To support a particular KEM algorithm, the PKI entity that possesses a KEM key pair and wishes to use it for MAC-based message protection MUST support the KEM Decapsulate() function. The PKI entity that wishes to verify the MAC-based message protection MUST support the KEM Encapsulate() function. The respective public KEM key is usually carried in a certificate [I-D.ietf-lamps-kyber-certificates].
 
-Note: In this section both entities in the communication need to send and receive messages. Either side of the communication may independently wish to protect messages using a MAC key derived from the KEM output. For ease of explanation we use the term "Alice" to denote the entity possessing the KEM key pair and who wishes to provide MAC-based message protection, and "Bob" to denote the entity who needs to verify it.
+Note: Both PKI entities send and receive messages in a PKI management operation. Both PKI entities may independently wish to protect messages using their KEM key pairs. For ease of explanation we use the term "Alice" to denote the PKI entity possessing the KEM key pair and who wishes to provide MAC-based message protection, and "Bob" to denote the PKI entity having Alice’s authentic public KEM key and who needs to verify the MAC-based protection provided by Alice.
 
-Assuming Bob possesses Alice's KEM public key, he generates the ciphertext using KEM encapsulation and transfers it to Alice in an InfoTypeAndValue structure. Alice then retrieves the KEM shared secret from the ciphertext using KEM decapsulation and the associated KEM private key. Using a key derivation function (KDF), she derives a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
+Assuming Bob has Alice's KEM public key, he generates the ciphertext using KEM encapsulation and transfers it to Alice in an InfoTypeAndValue structure. Alice then retrieves the KEM shared secret from the ciphertext using KEM decapsulation and the associated KEM private key. Using a key derivation function (KDF), she derives a shared secret key from the KEM shared secret and other data sent by Bob. PKIProtection will contain a MAC value calculated using that shared secret key, and the protectionAlg will be the following:
 
 ~~~~ asn.1
   id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 16}
@@ -1878,15 +1881,16 @@ Generic Message Flow:
 
 ~~~~
 Step# Alice                                Bob
+---------------------------------------------------------------------
   1                                        perform KEM Encapsulate
-                       <- KEM Ciphertext <-
-  2   perform KEM Decapsulate
-      perform key derivation
-      format message with
+  2                    <- KEM Ciphertext <-
+  3   perform KEM Decapsulate
+  4   perform key derivation
+  5   format message with
         MAC-based protection
-                       ->    message     ->
-  3                                        perform key derivation
-                                           verify MAC-based
+  6                    ->    message     ->
+  7                                        perform key derivation
+  8                                        verify MAC-based
                                              protection
 -------------------  Alice authenticated by Bob  --------------------
 ~~~~
@@ -1961,10 +1965,8 @@ If both the initiator and responder in a PKI management operation have KEM key p
 {: id="sect-5.1.3.5"}
 
 When receiving a protected PKI message, a PKI management entity, such as an
-RA, MAY forward that message adding its own protection (which is a MAC or
-a signature, depending on the information and certificates shared between
-the RA and the CA).  Additionally, multiple PKI messages MAY be aggregated.
-There are several use cases for such messages.
+RA, MAY forward that message adding its own protection.  Additionally, multiple
+PKI messages MAY be aggregated.  There are several use cases for such messages.
 
 
 * The RA confirms having validated and authorized a message and forwards the
@@ -2041,9 +2043,7 @@ See also {{RFC4212}} for more details on how to manage certificates in alternati
 ### Encrypted Values
 {: id="sect-5.2.2"}
 
-Where encrypted data (in this specification, private keys, certificates, POP challenges,
-or revocation passphrase) is sent in PKI messages, the EncryptedKey data
-structure is used.
+When encrypted data like a private key, certificate, POP challenge, or revocation passphrase is sent in PKI messages it is RECOMMENDED to use the EnvelopedData structure.  In some cases this is accomplished by using the EncryptedKey data structure instead of EncryptedValue.
 
 ~~~~ asn.1
   EncryptedKey ::= CHOICE {
@@ -2065,18 +2065,16 @@ with the old syntax.
 To indicate support for EnvelopedData, the pvno cmp2021 has been introduced.
 Details on the usage of the protocol version number (pvno) are described in {{sect-7}}.
 
-The EncryptedKey data structure is used in CMP to transport a private key,
-certificate, POP challenge, or revocation passphrase in encrypted form.
-
-EnvelopedData is used as follows:
+The EnvelopedData structure is RECOMMENDED to use in CMP to transport a private key,
+certificate, POP challenge, or revocation passphrase in encrypted form as follows:
 
 
 * It contains only one RecipientInfo structure because the content is encrypted
   only for one recipient.
 
-* It may contain in the encryptedContent field a private key in the AsymmetricKeyPackage structure, as defined
+* It may contain a private key in the AsymmetricKeyPackage structure (which is placed in the encryptedContentInfo field), as defined
   in {{RFC5958}}, that is wrapped in a SignedData structure, as specified in
-  Section 5 of {{RFC5652}} and {{RFC8933}}, signed by the Key Generation Authority.
+  Section 5 of {{RFC5652}} and {{RFC8933}}, signed by the Key Generation Authority or CA.
 
 * It may contain a certificate, POP challenge, or revocation passphrase directly in the encryptedContent
   field.
@@ -2107,7 +2105,7 @@ and the key usage extension will not be sufficient to decide on the key manageme
 technique to use, e.g., when rsaEncryption is the algorithm identifier. In
 such cases it is a matter of local policy to decide.
 
-### Status codes and Failure Information for PKI Messages
+### Status Codes and Failure Information for PKI Messages
 {: id="sect-5.2.3"}
 
 All response messages will include some status information.  The
@@ -2189,7 +2187,7 @@ publishes its self-signed certificate, or this information is
 available via the directory (or equivalent) and the CA publishes a
 hash of this value to allow verification of its integrity before use.
 
-Note: As an alternative to out-of-band distribution of root CA public keys, the CA can provide the self-signed certificate together with link certificates, e.g., using using RootCaKeyUpdateContent ({{sect-5.3.19.15}}).
+Note: As an alternative to out-of-band distribution of root CA public keys, the CA can provide the self-signed certificate together with link certificates, e.g., using RootCaKeyUpdateContent ({{sect-5.3.19.15}}).
 
 ~~~~ asn.1
   OOBCert ::= Certificate
@@ -2299,7 +2297,7 @@ In the special case that the CA/RA has a DH certificate that is known to the EE 
 #### POPOPrivKey Structure
 {: id="sect-5.2.8.3"}
 
-If the certification request is for a key pair that does not support signing (i.e., a request for an encryption or key agreement certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOPrivKey structure in one of following three ways, for details see Section 4.2 and 4.3 of {{RFC4211}}.
+If the certification request is for a key pair that does not support signing (i.e., a request for an encryption or key agreement certificate), then the proof-of-possession of the private key is demonstrated through use of the POPOPrivKey structure in one of the following three ways, for details see Section 4.2 and 4.3 of {{RFC4211}}.
 
 ~~~~ asn.1
    POPOPrivKey ::= CHOICE {
@@ -2316,11 +2314,13 @@ If the certification request is for a key pair that does not support signing (i.
    }
 ~~~~
 
+When using agreeMAC or encryptedKey choices, the pvno cmp2021(3) MUST be used. Details on the usage of the protocol version number (pvno) are described in {{sect-7}}.
 
 ##### Inclusion of the Private Key
 {: id="sect-5.2.8.3.1"}
 
-This method demonstrates proof-of-possession of the private key by including the encrypted private key in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure, depending upon whether or not archival of the private key is also desired.
+This method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by including the encrypted private key in the CertRequest in the POPOPrivKey structure or in the PKIArchiveOptions control structure. This method SHALL only be used if archival of the private key is desired.
+
 
 For a certification request message indicating cmp2021(3) in the pvno field of the PKIHeader, the encrypted private key MUST be transferred in the encryptedKey choice of POPOPrivKey (or within the PKIArchiveOptions control) in a CMS EnvelopedData structure as defined in {{sect-5.2.2}}.
 
@@ -2330,7 +2330,7 @@ Note: The thisMessage choice has been deprecated in favor of encryptedKey.  When
 ##### Indirect Method - Encrypted Certificate
 {: id="sect-5.2.8.3.2"}
 
-The "indirect" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form, see {{sect-5.2.2}}.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage choice of POPOPrivKey.
+The indirect method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form, see {{sect-5.2.2}}.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage choice of POPOPrivKey.
 
 ~~~~
                 EE                         RA/CA
@@ -2348,7 +2348,7 @@ The recipient SHOULD maintain a context of the PKI management operation, e.g., u
 ##### Direct Method - Challenge-Response Protocol
 {: id="sect-5.2.8.3.3"}
 
-The "direct" method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages popdecc of type POPODecKeyChall and popdecr of type POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage choice of POPOPrivKey.
+The direct method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the end entity engage in a challenge-response protocol (using the messages popdecc of type POPODecKeyChall and popdecr of type POPODecKeyResp; see below) between CertReqMessages and CertRepMessage. This method is indicated in the CertRequest by requesting the challengeResp option in the subsequentMessage choice of POPOPrivKey.
 
 Note: This method would typically be used in an environment in which an RA verifies POP and then makes a certification request to the CA on behalf of the end entity. In such a scenario, the CA trusts the RA to have done POP correctly before the RA requests a certificate for the end entity.
 
@@ -2488,7 +2488,7 @@ a private key (normally encrypted using EnvelopedData, see {{RFC9483}} Section
 4.1.6 for further information).
 
 See {{sect-5.3.4}} for CertRepMessage syntax.  Note that if the PKI
-Message Protection is "shared secret information" (see {{sect-5.1.3}}),
+Message Protection is "shared secret information" (see {{sect-5.1.3.1}}),
 then any certificate transported in the caPubs field may be
 directly trusted as a root CA certificate by the initiator.
 
@@ -2552,7 +2552,7 @@ information, a subject certificate, and an encrypted private key.
 ~~~~
 
 A p10cr message contains exactly one CertificationRequestInfo data structure,
-as specified in PKCSNBS#10 {{RFC2986}}, but no certReqId.
+as specified in PKCS#10 {{RFC2986}}, but no certReqId.
 Therefore, the certReqId in the corresponding Certification
 Response (cp) message MUST be set to -1.
 
@@ -2614,7 +2614,7 @@ For key recovery requests the syntax used is identical to the
 initialization request CertReqMessages.  Typically,
 SubjectPublicKeyInfo and KeyId are the template fields that may be
 used to supply a signature public key for which a certificate is
-required (see {{sect-c}} profiles for further information).
+required.
 
 See {{sect-5.2.1}} and {{RFC4211}} for CertReqMessages syntax.  Note that if a
 key history is required, the requester must supply a Protocol
@@ -2718,7 +2718,7 @@ CAKeyUpdContent ::= CHOICE {
 }
 ~~~~
 
-To indicate support for RootCaKeyUpdateContent in the ckuann message, the pvno cmp2021 MUST be used. Details on the usage of the protocol version number (pvno) are described in Section 7.
+When using RootCaKeyUpdateContent in the ckuann message, the pvno cmp2021 MUST be used. Details on the usage of the protocol version number (pvno) are described in Section 7.
 
 In contrast to CAKeyUpdAnnContent as supported with cmp2000, RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew, depending on the needs of the EE.
 
@@ -2812,21 +2812,20 @@ the CA/RA to accept or reject certificates.
 
 The hashAlg field SHOULD be used only in exceptional cases where the signatureAlgorithm
 of the certificate to be confirmed does not specify a hash algorithm in the
-OID or in the parameters or does not define a hash algorithm to use with
-CMP, e.g., for EdDSA in {{RFC9481}} Section 3.3). Otherwise, the certHash value
+OID or in the parameters or no hash algorithm is specified for hashing certificates signed using the signatureAlgorithm. Note that for EdDSA a hash algorithm is specified in Section 3.3 of {{RFC9481}}, such that the hashAlg field is not needed for EdDSA. Otherwise, the certHash value
 SHALL be computed using the same hash algorithm as used to create and verify
-the certificate signature. If hashAlg is used, the CMP version indicated
+the certificate signature or as specified for hashing certificates signed using the signatureAlgorithm. If hashAlg is used, the CMP version indicated
 by the certConf message header must be cmp2021(3).
 
 For any particular CertStatus, omission of the statusInfo field
-indicates ACCEPTANCE of the specified certificate.  Alternatively,
+indicates acceptance of the specified certificate.  Alternatively,
 explicit status details (with respect to acceptance or rejection) MAY
 be provided in the statusInfo field, perhaps for auditing purposes at
 the CA/RA.
 
 Within CertConfirmContent, omission of a CertStatus structure
 corresponding to a certificate supplied in the previous response
-message indicates REJECTION of the certificate.  Thus, an empty
+message indicates rejection of the certificate.  Thus, an empty
 CertConfirmContent (a zero-length SEQUENCE) MAY be used to indicate
 rejection of all supplied certificates.  See {{sect-5.2.8.3.2}},
 for a discussion of the certHash field with respect to
@@ -2874,7 +2873,7 @@ certify.
                           AlgorithmIdentifier
 ~~~~
 
-Note: For the purposes of this exchange, rsaEncryption and rsaWithSHA1, for
+Note: For the purposes of this exchange, rsaEncryption and sha256WithRSAEncryption, for
 example, are considered to be equivalent; the question being asked is, "Is
 the CA willing to certify an RSA public key?"
 
@@ -3232,36 +3231,36 @@ needs to poll the server to determine the status of an outstanding response
      reason       PKIFreeText OPTIONAL }
 ~~~~
 
-In response to an ir, cr, p10cr, or kur request message, polling is initiated
-with an ip, cp, or kup response message containing status "waiting". For
+Unless implicit confirmation has been requested and granted, in response to an ir, cr, p10cr, kur, krr, or ccr request message, polling is initiated
+with an ip, cp, kup, krp, or ccp response message containing status "waiting". For
 any type of request message, polling can be initiated with an error response
 messages with status "waiting". The following clauses describe how polling
 messages are used.  It is assumed that multiple certConf messages can be
 sent during transactions.  There will be one sent in response to each ip,
-cp, or kup that contains a CertStatus for an issued certificate.
+cp, kup, krp, or ccp that contains a CertStatus for an issued certificate.
 
 
 {: type="%d"}
-1. In response to an ip, cp, or kup message, an EE will send a certConf for
+1. In response to an ip, cp, kup, krp, or ccp message, an EE will send a certConf for
   all issued certificates and expect a PKIconf for each certConf.  An EE will
   send a pollReq message in response to each CertResponse element of an ip,
   cp, or kup message with status "waiting" and in response to an error message
   with status "waiting".  Its certReqId MUST be either the index of a CertResponse
   data structure with status "waiting" or -1 referring to the complete response.
 
-1. In response to a pollReq, a CA/RA will return an ip, cp, or kup if one or
+1. In response to a pollReq, a CA/RA will return an ip, cp, kup, krp, or ccp if one or
   more of still pending requested certificates are ready or the final response
   to some other type of request is available; otherwise, it will return a pollRep.
 
 1. If the EE receives a pollRep, it will wait for at least the number of seconds
   given in the checkAfter field before sending another pollReq.
 
-1. If the EE receives an ip, cp, or kup, then it will be treated in the same
+1. If the EE receives an ip, cp, kup, krp, or ccp, then it will be treated in the same
   way as the initial response; if it receives any other response, then this
   will be treated as the final response to the original request.
 
 The following client-side state machine describes polling for individual
-CertResponse elements.
+CertResponse elements at the example of an ir request message.
 
 ~~~~
                             START
@@ -3279,12 +3278,12 @@ CertResponse elements.
     |        (issued)         v       (waiting)   |           |
   Add to <----------- Check CertResponse ------> Add to       |
  conf list           for each certificate      pending list   |
-                              /                               |
-                             /                                |
-                (conf list) /     (empty conf list)           |
-                           /                     ip           |
-                          /                 +-----------------+
-   (empty pending list)  /                  |    pollRep
+                             / \                              |
+                            /   \                             |
+               (conf list) /     \ (empty conf list)          |
+                          /       \              ip           |
+                         /         \        +-----------------+
+   (empty pending list) /           \       |    pollRep
      END <---- Send certConf        Send pollReq---------->Wait
                       |                 ^   ^               |
                       |                 |   |               |
@@ -3296,46 +3295,46 @@ In the following exchange, the end entity is enrolling for two certificates
 in one request.
 
 ~~~~
- Step  End Entity                       PKI
- --------------------------------------------------------------------
- 1   Format ir
- 2                    -> ir      ->
- 3                                    Handle ir
- 4                                    Manual intervention is
-                                      required for both certs
- 5                    <- ip      <-
- 6   Process ip
- 7   Format pollReq
- 8                    -> pollReq  ->
- 9                                    Check status of cert requests
- 10                                   Certificates not ready
- 11                                   Format pollRep
- 12                   <- pollRep  <-
- 13  Wait
- 14  Format pollReq
- 15                   -> pollReq  ->
- 16                                   Check status of cert requests
- 17                                   One certificate is ready
- 18                                   Format ip
- 19                   <- ip       <-
- 20  Handle ip
- 21  Format certConf
- 22                   -> certConf ->
- 23                                   Handle certConf
- 24                                   Format ack
- 25                   <- pkiConf   <-
- 26  Format pollReq
- 27                   -> pollReq  ->
- 28                                   Check status of certificate
- 29                                   Certificate is ready
- 30                                   Format ip
- 31                   <- ip       <-
- 31  Handle ip
- 32  Format certConf
- 33                   -> certConf ->
- 34                                   Handle certConf
- 35                                   Format ack
- 36                   <- pkiConf  <-
+Step# End Entity                       PKI
+---------------------------------------------------------------------
+  1   format ir
+  2                    -> ir      ->
+  3                                    handle ir
+  4                                    manual intervention is
+                                         required for both certs
+  5                    <- ip      <-
+  6   process ip
+  7   format pollReq
+  8                    -> pollReq  ->
+  9                                    check status of cert requests,
+                                         certificates not ready
+ 10                                    format pollRep
+ 11                    <- pollRep  <-
+ 12   wait
+ 13   format pollReq
+ 14                    -> pollReq  ->
+ 15                                    check status of cert requests,
+                                         one certificate is ready
+ 16                                    format ip
+ 17                    <- ip       <-
+ 18   handle ip
+ 19   format certConf
+ 20                    -> certConf ->
+ 21                                    handle certConf
+ 22                                    format ack
+ 23                    <- pkiConf   <-
+ 24   format pollReq
+ 25                    -> pollReq  ->
+ 26                                    check status of certificate,
+                                         certificate is ready
+ 27                                    format ip
+ 28                    <- ip       <-
+ 29   handle ip
+ 30   format certConf
+ 31                    -> certConf ->
+ 32                                    handle certConf
+ 33                                    format ack
+ 34                    <- pkiConf  <-
 ~~~~
 
 The following client-side state machine describes polling for a complete
@@ -3348,7 +3347,7 @@ response message.
                                   |
              +----------- Receive response ------------+
              |                                         |
-             | ip/cp/kup/error with                    | other
+             | ip/cp/kup/krp/ccp/error with            | other
              | status "waiting"                        | response
              |                                         |
              v                                         |
@@ -3371,30 +3370,32 @@ In the following exchange, the end entity is sending a general message request,
 and the response is delayed by the server.
 
 ~~~~
- Step  End Entity                       PKI
- --------------------------------------------------------------------
- 1   Format genm
- 2                  -> genm     ->
- 3                                 Handle genm
- 4                                 delay in response is necessary
- 5                                 Format error message "waiting"
-                                     with certReqId set to -1
- 6                   <- error   <-
- 7   Process error
- 8   Format pollReq
- 9                   -> pollReq ->
- 10                                Check status of original request
-                                   general message response not ready
- 11                                Format pollRep
- 12                  <- pollRep <-
- 13  Wait
- 14  Format pollReq
- 15                  -> pollReq ->
- 16                                Check status of original request
-                                   general message response is ready
- 17                                Format genp
- 18                  <- genp    <-
- 19  Handle genp
+Step# End Entity                       PKI
+---------------------------------------------------------------------
+  1   format genm
+  2                  -> genm     ->
+  3                                 handle genm
+  4                                 delay in response is necessary
+  5                                 format error message "waiting"
+                                      with certReqId set to -1
+  6                   <- error   <-
+  7   process error
+  8   format pollReq
+  9                   -> pollReq ->
+ 10                                 check status of original request,
+                                      general message response not
+                                      ready
+ 11                                 format pollRep
+ 12                   <- pollRep <-
+ 13   wait
+ 14   format pollReq
+ 15                   -> pollReq ->
+ 16                                 check status of original request,
+                                      general message response is
+                                      ready
+ 17                                 format genp
+ 18                   <- genp    <-
+ 19   handle genp
 ~~~~
 
 
@@ -3402,8 +3403,8 @@ and the response is delayed by the server.
 
 # Mandatory PKI Management Functions {#sect-6}
 
-Some of the PKI management functions outlined in {{sect-3.1}} above
-are described in this section.
+Some of the PKI management functions outlined in {{sect-3.1}} are
+described in this section.
 
 This section deals with functions that are "mandatory" in the sense
 that all end entity and CA/RA implementations MUST be able to provide
@@ -3411,8 +3412,9 @@ the functionality described.  This part is effectively the profile of
 the PKI management functionality that MUST be supported.  Note,
 however, that the management functions described in this section do
 not need to be accomplished using the PKI messages defined in {{sect-5}}
-if alternate means are suitable for a given environment (see
-{{RFC9483}} Section 7 and {{sect-c}} for profiles of the PKIMessages that MUST be supported).
+if alternate means are suitable for a given environment. See
+{{RFC9483}} Section 7 and {{sect-c}} for profiles of the PKIMessage structures
+that MUST be supported for specific use cases.
 
 ## Root CA Initialization
 {: id="sect-6.1"}
@@ -3429,7 +3431,7 @@ that acquire this fingerprint securely via some "out-of-band" means
 can then verify the CA's self-certificate and, hence, the other
 attributes contained therein.
 
-The data structure used to carry the fingerprint is the OOBCertHash, see {{sect-5.2.5}}.
+The data structure used to carry the fingerprint may be the OOBCertHash, see {{sect-5.2.5}}.
 
 
 ## Root CA Key Update
@@ -3479,9 +3481,8 @@ If PKIMessages are used to request and supply this PKI information,
 then the request MUST be the GenMsg message, the response MUST be the
 GenRep message, and the error MUST be the Error message.  These
 messages are protected using a MAC based on shared secret information
-(i.e., password-based MAC, see CMP Algorithms {{RFC9481}} Section 6.1) or a
-signature(if
-the end entity has an existing certificate).
+(e.g., password-based MAC, see CMP Algorithms {{RFC9481}} Section 6.1) or using any asymmetric authentication means such as a
+signature (if the end entity has an existing certificate).
 
 
 ## Cross Certification
@@ -3676,8 +3677,8 @@ is needed for the request being sent or for the expected response.
 
 Note: Using cmp2000 as the default pvno is done to avoid extra message exchanges
 for version negotiation and to foster compatibility with cmp2000 implementations.
-Version cmp2021 syntax is only needed if a message exchange uses hashAlg
-(in CertStatus), EnvelopedData, or ckuann with RootCaKeyUpdateContent.
+Version cmp2021 syntax is only needed if a message exchange uses EnvelopedData,
+hashAlg (in CertStatus), POPOPrivKey with agreeMAC, or ckuann with RootCaKeyUpdateContent.
 
 If a server receives a message with a version that it supports, then
 the version of the response message MUST be the same as the received
@@ -3734,10 +3735,7 @@ described above in {{sect-7}}.
 
 It is well established that the role of a Certification Authority is to
 verify that the name and public key belong to the end entity prior to
-issuing a certificate. On a deeper inspection however, it is not
-entirely clear what security guarantees are lost if an end entity is
-able to obtain a certificate containing a public key that they do not
-possess the corresponding private key for. There are some scenarios,
+issuing a certificate. If an entity holding a private key obtains a certificate containing the corresponding public key issued for a different entity, can authenticate as the entity named in the certificate. This facilitates masquerading. It is not entirely clear what security guarantees are lost if an end entity is able to obtain a certificate containing a public key that they do not possess the corresponding private key for. There are some scenarios,
 described as "forwarding attacks" in Appendix A of [Gueneysu], in
 which this can lead to protocol attacks against a naively-implemented
 sign-then-encrypt protocol, but in general it merely results in the
@@ -3774,7 +3772,9 @@ upon whether or not the CA/RA can be trusted to handle such material
 appropriately).  Implementers are advised to:
 
 * Exercise caution in selecting and using this particular POP
-  mechanism
+  mechanism.
+
+* Only use this POP mechanism if archival of the private key is desired.
 
 * When appropriate, have the user of the application explicitly
   state that they are willing to trust the CA/RA to have a copy of
@@ -3786,7 +3786,7 @@ appropriately).  Implementers are advised to:
 
 A small subgroup attack during a Diffie-Hellman key exchange may be
 carried out as follows.  A malicious end entity may deliberately
-choose D-H parameters that enable him/her to derive (a significant
+choose D-H parameters that enable it to derive (a significant
 number of bits of) the D-H private key of the CA during a key
 archival or key recovery operation.  Armed with this knowledge, the
 EE would then be able to retrieve the decryption private key of
@@ -4122,7 +4122,7 @@ operations are provided:
 
 * key update
 
-## General Rules for Interpretation of These Profiles.
+## General Rules for Interpretation of These Profiles
 {: id="sect-c.1"}
 
 
@@ -4130,8 +4130,7 @@ operations are provided:
   profiles, they SHOULD be absent from the relevant message (i.e.,
   a receiver can validly reject a message containing such fields as
   being syntactically incorrect).  Mandatory fields are not
-  mentioned if they have an obvious value (e.g., if not explicitly stated,
-  pvno is cmp2000(2)).
+  mentioned if they have an obvious value. The pvno MUST be set as specified in {{sect-7}}).
 
 1. Where structures occur in more than one message, they are
   separately profiled as appropriate.
@@ -4245,19 +4244,20 @@ Preconditions:
 Message flow:
 
 ~~~~
- Step# End entity                           PKI
-   1   format ir
-   2                      ->   ir      ->
-   3                                        handle ir
-   4                                        format ip
-   5                      <-   ip      <-
-   6   handle ip
-   7   format certConf
-   8                      ->   certConf ->
-   9                                        handle certConf
-  10                                        format PKIConf
-  11                      <-   PKIConf  <-
-  12   handle PKIConf
+Step# End entity                           PKI
+---------------------------------------------------------------------
+  1   format ir
+  2                      ->   ir      ->
+  3                                        handle ir
+  4                                        format ip
+  5                      <-   ip      <-
+  6   handle ip
+  7   format certConf
+  8                      ->   certConf ->
+  9                                        handle certConf
+ 10                                        format PKIConf
+ 11                      <-   PKIConf  <-
+ 12   handle PKIConf
 ~~~~
 
 For this profile, we mandate that the end entity MUST include all
@@ -4541,7 +4541,7 @@ certificate, the end entity replies with a certificate confirmation.
 The CA replies with a PKIConfirm, to close the transaction.  All
 messages are authenticated.
 
-The profile for this exchange is identical to that given in{{sect-c.4}},
+The profile for this exchange is identical to that given in {{sect-c.4}},
 with the following exceptions:
 
 
@@ -4675,13 +4675,13 @@ Message Flows:
 
 ~~~~
 Step# End entity                        PKI
-
-   1  format genm
-   2                ->   genm   ->
-   3                                    handle genm
-   4                                    produce genp
-   5                <-   genp   <-
-   6  handle genp
+---------------------------------------------------------------------
+  1   format genm
+  2                 ->   genm   ->
+  3                                     handle genm
+  4                                     produce genp
+  5                 <-   genp   <-
+  6   handle genp
 ~~~~
 
 genM:
@@ -4780,6 +4780,7 @@ Message Flows:
 
 ~~~~
 Step# Requesting CA                       Responding CA
+---------------------------------------------------------------------
   1   format ccr
   2                   ->    ccr    ->
   3                                       handle ccr
@@ -4928,9 +4929,7 @@ with a PKIConfirm to close the transaction.  All messages are signed
 (the EE messages are signed using the private key that corresponds to
 the public key in its external identity certificate; the CA-1
 messages are signed using the private key that corresponds to the
-public key in a
-
-certificate that can be chained to a trust anchor in the EE's PSE).
+public key in a certificate that can be chained to a trust anchor in the EE's PSE).
 
 The profile for this exchange is identical to that given in {{sect-c.4}},
 with the following exceptions:
@@ -4968,42 +4967,43 @@ Message Flow when the PKI entity has a KEM key pair and certificate:
 ~~~
 Step# PKI entity                           PKI management entity
       (Alice)                              (Bob)
+---------------------------------------------------------------------
   1   format unprotected genm
         of type
         KemCiphertextInfo
         without value, and
         KEM certificate in
         extraCerts
-                         ->   genm    ->
-  2                                        validate KEM certificate
-                                           perform KEM Encapsulate
-                                           format unprotected genp
+  2                      ->   genm    ->
+  3                                        validate KEM certificate
+  4                                        perform KEM Encapsulate
+  5                                        format unprotected genp
                                              of type
                                              KemCiphertextInfo
                                              providing KEM ciphertext
-                         <-   genp    <-
-  3   perform KEM Decapsulate
-      perform key derivation
+  6                      <-   genp    <-
+  7   perform KEM Decapsulate
+  8   perform key derivation
         to get ssk
-      format request with
+  9   format request with
         MAC-based protection
-                         ->  request  ->
-  4                                        perform key derivation
+ 10                      ->  request  ->
+ 11                                        perform key derivation
                                              to get ssk
-                                           verify MAC-based
+ 12                                        verify MAC-based
                                              protection
 
 --------  PKI entity authenticated by PKI management entity  --------
 
-                                           format response with
+ 13                                        format response with
                                              protection depending on
                                              available key material
-                         <-  response <-
-  5   verify protection
+ 14                      <-  response <-
+ 15   verify protection
         provided by the
         PKI management entity
 
-          Further messages of this PKI management operation
+ 16       Further messages of this PKI management operation
         can be exchanged with MAC-based protection by the PKI
          entity using the established shared secret key (ssk)
 ~~~
@@ -5014,29 +5014,30 @@ Message Flow when the PKI entity knows that the PKI management entity uses a KEM
 ~~~
 Step# PKI entity                           PKI management entity
       (Bob)                                (Alice)
+---------------------------------------------------------------------
   1   perform KEM Encapsulate
-      format request providing
+  2   format request providing
         KEM ciphertext in
         generalInfo of type
         KemCiphertextInfo,
         and with protection
         depending on available
         key material
-                         ->  request  ->
-  2                                        perform KEM Decapsulate
-                                           perform key derivation
+  3                      ->  request  ->
+  4                                        perform KEM Decapsulate
+  5                                        perform key derivation
                                              to get ssk
-                                           format response with
+  6                                        format response with
                                              MAC-based protection
-                         <-  response <-
-  3   perform key derivation
+  7                      <-  response <-
+  8   perform key derivation
         to get ssk
-      verify MAC-based
+  9   verify MAC-based
         protection
 
 --------  PKI management entity authenticated by PKI entity  --------
 
-          Further messages of this PKI management operation
+ 10       Further messages of this PKI management operation
           can be exchanged with MAC-based protection by the
              PKI management entity using the established
                         shared secret key (ssk)
@@ -5051,21 +5052,22 @@ Message Flow when the PKI entity does not know that the PKI management entity us
 ~~~
 Step# PKI entity                           PKI management entity
       (Bob)                                (Alice)
+---------------------------------------------------------------------
   1   format request with
         protection depending
         on available key
         material
-                         ->  request  ->
-  2                                        format unprotected error
+  2                      ->  request  ->
+  3                                        format unprotected error
                                              with status "rejection"
                                              and failInfo
                                              "wrongIntegrity" and KEM
                                              certificate in
                                              extraCerts
-                         <-   error   <-
-  3   validate KEM certificate
+  4                      <-   error   <-
+  5   validate KEM certificate
 
-                 proceed as shown in the Figure before
+  6              proceed as shown in the Figure before
 ~~~
 {: #KEM-Flow3 title='Message Flow when the PKI entity does not know that the PKI management entity uses a KEM key pair' artwork-align="left"}
 
@@ -5826,6 +5828,10 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 13 -> 14:
 
+* Implemented some editorial changes throughout the document, specifically in Sections 5.1.1, 5.1.1.3, 5.1.3.4, 5.2.2, 5.2.8.3, 5.3.18, 5.3.19.2, 5.2.22, 7, C.1, and C.4
+
+* Aligned formatting of message flow diagrams
+
 * Updated the the page header to 'CMP'
 
 * Removed one instruction to RFC Editors
@@ -5833,6 +5839,7 @@ From version 13 -> 14:
 * Fixed some nits in Section 5.2.2
 
 * Fixed one reference to RFC 9629 in the ASN.1 Module
+
 
 
 From version 12 -> 13:
