@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 12 April 2025                                           J. Gray
+Expires: 25 April 2025                                           J. Gray
                                                                  Entrust
-                                                          9 October 2024
+                                                         22 October 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -20,9 +20,10 @@ Abstract
    This document describes how to layer the Certificate Management
    Protocol (CMP) over HTTP.
 
-   It includes the updates on RFC 6712 specified in CMP Updates RFC 9480
-   Section 3 and obsoleted both documents.  These updates introduce CMP
-   URIs using a Well-known prefix.
+   It includes the updates to RFC 6712 specified in RFC 9480 Section 3.
+   These updates introduce CMP URIs using a Well-known prefix.  It
+   obsoletes RFC 6712 and together with I-D.ietf-lamps-rfc4210bis and it
+   also obsoletes RFC 9480.
 
 Discussion Venues
 
@@ -51,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 April 2025.
+   This Internet-Draft will expire on 25 April 2025.
 
 Copyright Notice
 
@@ -139,14 +140,16 @@ Table of Contents
 
    The usage of HTTP for transferring CMP messages exclusively uses the
    POST method for requests, effectively tunneling CMP over HTTP.  While
-   this is generally considered bad practice and should not be emulated,
-   there are good reasons to do so for transferring CMP.  HTTP is used
-   as it is generally easy to implement and it is able to traverse
-   network borders utilizing ubiquitous proxies.  Most importantly, HTTP
-   is already commonly used in existing CMP implementations.  Other HTTP
-   request methods, such as GET, are not used because PKI management
-   operations can only be triggered using CMP's PKI messages, which need
-   to be transferred using a POST request.
+   this is generally considered bad practice (see BCP 56 [RFC9205] for
+   best current practice on building protocols with HTTP) and should not
+   be emulated, there are good reasons to do so for transferring CMP.
+   HTTP is used as it is generally easy to implement and it is able to
+   traverse network borders utilizing ubiquitous proxies.  Most
+   importantly, HTTP is already commonly used in existing CMP
+   implementations.  Other HTTP request methods, such as GET, are not
+   used because PKI management operations can only be triggered using
+   CMP's PKI messages, which need to be transferred using a POST
+   request.
 
    With its status codes, HTTP provides needed error reporting
    capabilities.  General problems on the server side, as well as those
@@ -192,8 +195,14 @@ Table of Contents
 
 3.1.  HTTP Versions
 
-   Implementations MUST support HTTP/1.0 [RFC1945] and SHOULD support
-   HTTP/1.1 [RFC9112].
+   Implementations MUST support at least HTTP/1.0 [RFC1945].  This is
+   because the POST method and the Content-Type header field are
+   available since version 1.0.
+
+   Implementations SHOULD support HTTP/1.1 [RFC9112].  This is because
+   the Keep-Alive feature is used since version 1.1 by default, which
+   helps transferring messages in transactions with more than one
+   request/response pair more efficiently.
 
 3.2.  Persistent Connections
 
@@ -213,9 +222,9 @@ Table of Contents
 3.3.  General Form
 
    A DER-encoded [ITU.X690.1994] PKIMessage [I-D.ietf-lamps-rfc4210bis]
-   is sent as the entity-body of an HTTP POST request.  If this HTTP
-   request is successful, the server returns the CMP response in the
-   body of the HTTP response.  The HTTP response status code in this
+   MUST be sent as the entity-body of an HTTP POST request.  If this
+   HTTP request is successful, the server returns the CMP response in
+   the body of the HTTP response.  The HTTP response status code in this
    case MUST be 200; other "Successful 2xx" codes MUST NOT be used for
    this purpose.  HTTP responses to pushed CMP Announcement messages
    (i.e., CA Certificate Announcement, Certificate Announcement,
@@ -237,8 +246,12 @@ Table of Contents
    The Internet Media Type "application/pkixcmp" MUST be set in the HTTP
    Content-Type header field when conveying a PKIMessage.
 
-   The Content-Length header field SHOULD be provided, giving the length
-   of the ASN.1-encoded PKIMessage.
+   Note that the PKIMessage type is used also when sending an
+   Announcement message.
+
+   In line with Section 8.6 of [RFC9110], the "Content-Length" header
+   field should be provided whenever a PKIMessage is sent, giving the
+   length of the ASN.1-encoded PKIMessage.
 
 3.5.  Communication Workflow
 
@@ -296,8 +309,8 @@ Table of Contents
    the current CRL, a PKI Information Request using a General Message as
    described in Appendix D.5 of [I-D.ietf-lamps-rfc4210bis] can be used.
 
-   When pushing Announcement messages, PKIMessage structures are sent as
-   the entity-body of an HTTP POST request.
+   When pushing Announcement messages, PKIMessage structures MUST be
+   sent as the entity-body of an HTTP POST request.
 
    Suitable recipients for CMP announcements might, for example, be
    repositories storing the announced information, such as directory
@@ -338,15 +351,15 @@ Table of Contents
 3.8.  HTTP Considerations
 
    While all defined features of the HTTP protocol are available to
-   implementations, they SHOULD keep the protocol utilization as simple
+   implementations, they should keep the protocol utilization as simple
    as possible.  For example, there is no benefit in using chunked
    Transfer-Encoding, as the length of an ASN.1 sequence is known when
    starting to send it.
 
    There is no need for the clients to send an "Expect" request-header
    field with the "100-continue" expectation and wait for a "100
-   Continue" status as described in Section 8.2.3 of [RFC9112].  The CMP
-   payload sent by a client is relatively small, so having extra
+   Continue" status as described in Section 10.1.1 of [RFC9112].  The
+   CMP payload sent by a client is relatively small, so having extra
    messages exchanged is inefficient, as the server will only seldom
    reject a message without evaluating the body.
 
@@ -448,9 +461,9 @@ Table of Contents
               Brockhaus, H., von Oheimb, D., Ounsworth, M., and J. Gray,
               "Internet X.509 Public Key Infrastructure -- Certificate
               Management Protocol (CMP)", Work in Progress, Internet-
-              Draft, draft-ietf-lamps-rfc4210bis-13, 2 September 2024,
+              Draft, draft-ietf-lamps-rfc4210bis-14, 9 October 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-lamps-
-              rfc4210bis-13>.
+              rfc4210bis-14>.
 
    [ITU.X690.1994]
               International Telecommunications Union, "Information
@@ -515,10 +528,20 @@ Table of Contents
               DOI 10.17487/RFC9110, June 2022,
               <https://www.rfc-editor.org/rfc/rfc9110>.
 
+   [RFC9205]  Nottingham, M., "Building Protocols with HTTP", BCP 56,
+              RFC 9205, DOI 10.17487/RFC9205, June 2022,
+              <https://www.rfc-editor.org/rfc/rfc9205>.
+
 Appendix A.  History of Changes
 
    Note: This appendix will be deleted in the final version of the
    document.
+
+   From version 07 -> 08:
+
+   *  Addressed OPSDIR and ARTART review comments
+
+   *  Added normative language in Sections 3.3 and 3.7 for clarity
 
    From version 06 -> 07:
 

@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 12 April 2025                                           Entrust
-                                                          9 October 2024
+Expires: 25 April 2025                                           Entrust
+                                                         22 October 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 April 2025.
+   This Internet-Draft will expire on 25 April 2025.
 
 Copyright Notice
 
@@ -4128,9 +4128,9 @@ Table of Contents
               Brockhaus, H., von Oheimb, D., Ounsworth, M., and J. Gray,
               "Internet X.509 Public Key Infrastructure -- HTTP Transfer
               for the Certificate Management Protocol (CMP)", Work in
-              Progress, Internet-Draft, draft-ietf-lamps-rfc6712bis-06,
-              2 September 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lamps-rfc6712bis-06>.
+              Progress, Internet-Draft, draft-ietf-lamps-rfc6712bis-07,
+              9 October 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lamps-rfc6712bis-07>.
 
    [RFC1847]  Galvin, J., Murphy, S., Crocker, S., and N. Freed,
               "Security Multiparts for MIME: Multipart/Signed and
