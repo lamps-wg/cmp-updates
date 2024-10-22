@@ -75,6 +75,7 @@ informative:
   RFC6712:
   RFC8446:
   RFC9110:
+  RFC9205:
 normative:
   RFC1945:
   RFC8615:
@@ -88,9 +89,10 @@ normative:
 This document describes how to layer the Certificate Management Protocol
 (CMP) over HTTP.
 
-It includes the updates on RFC 6712 specified in CMP Updates RFC 9480 Section
-3 and obsoleted both documents.  These updates introduce CMP URIs using a
-Well-known prefix.
+It includes the updates to RFC 6712 specified in RFC 9480 Section 3. These
+updates introduce CMP URIs using a Well-known prefix. It obsoletes
+RFC 6712 and together with I-D.ietf-lamps-rfc4210bis and it also obsoletes
+RFC 9480.
 
 --- middle
 
@@ -137,10 +139,11 @@ mechanism specified in the second version of [CMP](#RFC4210) to cover
 all types of PKI management transactions, delays detected at application
 level may also be handled within CMP, using pollReq and pollRep messages.
 
-The usage of HTTP for transferring CMP messages exclusively uses the
-POST method for requests, effectively tunneling CMP over HTTP.  While
-this is generally considered bad practice and should not be emulated,
-there are good reasons to do so for transferring CMP.  HTTP is used
+The usage of HTTP for transferring CMP messages exclusively uses the POST
+method for requests, effectively tunneling CMP over HTTP. While this is
+generally considered bad practice (see [BCP 56](#RFC9205) for best current
+practice on building protocols with HTTP) and should not be emulated, there
+are good reasons to do so for transferring CMP.  HTTP is used
 as it is generally easy to implement and it is able to traverse
 network borders utilizing ubiquitous proxies.  Most importantly, HTTP
 is already commonly used in existing CMP implementations.  Other HTTP
@@ -195,8 +198,14 @@ conveying CMP messages.
 ## HTTP Versions
 {: id="sect-3.1"}
 
-Implementations MUST support HTTP/1.0 {{RFC1945}} and SHOULD support
-HTTP/1.1 {{RFC9112}}.
+Implementations MUST support at least [HTTP/1.0](#RFC1945). This is because
+the POST method and the Content-Type header field are available since
+version 1.0.
+
+Implementations SHOULD support [HTTP/1.1](#RFC9112). This is because the
+Keep-Alive feature is used since version 1.1 by default, which helps
+transferring messages in transactions with more than one request/response
+pair more efficiently.
 
 
 ## Persistent Connections
@@ -219,7 +228,7 @@ in isolation.
 ## General Form
 {: id="sect-3.3"}
 
-A DER-encoded {{ITU.X690.1994}} PKIMessage {{I-D.ietf-lamps-rfc4210bis}} is sent as the
+A DER-encoded {{ITU.X690.1994}} PKIMessage {{I-D.ietf-lamps-rfc4210bis}} MUST be sent as the
 entity-body of an HTTP POST request.  If this HTTP request is
 successful, the server returns the CMP response in the body of the
 HTTP response.  The HTTP response status code in this case MUST be
@@ -246,8 +255,12 @@ MAY be used to inform the client about errors.
 The Internet Media Type "application/pkixcmp" MUST be set in the HTTP
 Content-Type header field when conveying a PKIMessage.
 
-The Content-Length header field SHOULD be provided, giving the length of
-the ASN.1-encoded PKIMessage.
+Note that the PKIMessage type is used also when sending an Announcement
+message.
+
+In line with {{Section 8.6 of RFC9110}}, the "Content-Length" header
+field should be provided whenever a PKIMessage is sent, giving the
+length of the ASN.1-encoded PKIMessage.
 
 
 ## Communication Workflow
@@ -314,7 +327,7 @@ If an EE wants to poll for a potential CA Key Update Announcement or
 the current CRL, a PKI Information Request using a General Message as
 described in Appendix D.5 of {{I-D.ietf-lamps-rfc4210bis}} can be used.
 
-When pushing Announcement messages, PKIMessage structures are sent as
+When pushing Announcement messages, PKIMessage structures MUST be sent as
 the entity-body of an HTTP POST request.
 
 Suitable recipients for CMP announcements might, for example, be
@@ -360,14 +373,14 @@ when a problem occurs.
 {: id="sect-3.8"}
 
 While all defined features of the HTTP protocol are available to
-implementations, they SHOULD keep the protocol utilization as simple
+implementations, they should keep the protocol utilization as simple
 as possible.  For example, there is no benefit in using chunked
 Transfer-Encoding, as the length of an ASN.1 sequence is known when
 starting to send it.
 
 There is no need for the clients to send an "Expect" request-header
 field with the "100-continue" expectation and wait for a "100 Continue" status
-as described in Section 8.2.3 of {{RFC9112}}.  The CMP
+as described in {{Section 10.1.1 of RFC9112}}.  The CMP
 payload sent by a client is relatively small, so having extra
 messages exchanged is inefficient, as the server will only seldom
 reject a message without evaluating the body.
@@ -452,6 +465,13 @@ We also thank all reviewers of this document for their valuable feedback.
 # History of Changes {#History}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 07 -> 08:
+
+
+* Addressed OPSDIR and ARTART review comments
+
+* Added normative language in Sections 3.3 and 3.7 for clarity
 
 From version 06 -> 07:
 
