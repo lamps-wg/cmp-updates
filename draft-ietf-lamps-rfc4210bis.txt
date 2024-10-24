@@ -3335,6 +3335,7 @@ Table of Contents
       of seconds given in the checkAfter field before sending another
       pollReq.
 
+      [RFC-Editor: Please fix the indentation.  This note belongs to 3.]
       Note that the checkAfter value heavily depends on the certificate
       management environment.  There are different reasons for a delayed
       delivery of response messages possible, e.g., high load on the
@@ -3343,7 +3344,8 @@ Table of Contents
       the checkAfter time can vary greatly.  This should also be
       considered by the transfer protocol.
 
-   1.  If the EE receives an ip, cp, kup, krp, or ccp, then it will be
+   1.  [RFC-Editor: Please fix the enumeration and continue with '4'.]
+       If the EE receives an ip, cp, kup, krp, or ccp, then it will be
        treated in the same way as the initial response; if it receives
        any other response, then this will be treated as the final
        response to the original request.
