@@ -75,6 +75,7 @@ informative:
   RFC2585:
   RFC4210:
   RFC4212:
+  RFC4301:
   RFC4511:
   RFC5912:
   RFC6268:
@@ -83,9 +84,11 @@ informative:
   RFC8572:
   RFC8649:
   RFC8995:
+  RFC9110:
+  RFC9147:
+  RFC9162:
   I-D.ietf-anima-brski-ae:
   I-D.ietf-lamps-kyber-certificates:
-  RFC9162:
   NIST.SP.800_90Ar1:
   IEEE.802.1AR-2018: DOI.10.1109/IEEESTD.2018.8423794
   CVE-2008-0166:
@@ -196,20 +199,21 @@ X.509v3 certificate creation and management. CMP provides interactions between
 client systems and PKI components such as a Registration Authority (RA) and
 a Certification Authority (CA).
 
-This document obsoletes RFC 4210 by including the updates specified by CMP
-Updates RFC 9480 Section 2 and Appendix A.2 maintaining backward compatibility
-with CMP version 2 wherever possible and obsoletes both documents.  Updates
-to CMP version 2 are: improving crypto agility, extending the polling mechanism,
-adding new general message types, and adding extended key usages to identify
-special CMP server authorizations.  Introducing CMP version 3 to be used only
-for changes to the ASN.1 syntax, which are: support of EnvelopedData instead
-of EncryptedValue, hashAlg for indicating a hash AlgorithmIdentifier in
-certConf messages, and RootCaKeyUpdateContent in ckuann messages.
+This document adds support for management of KEM certificates and use
+EnvelopedData instead of EncryptedValue. This document also includes the
+updates specified in Section 2 and Appendix A.2 of RFC 9480.
 
-In addition to the changes specified in CMP Updates RFC 9480 this document
-adds support for management of KEM certificates.
+The updates maintain backward compatibility with CMP version 2 wherever
+possible. Updates to CMP version 2 are improving crypto agility, extending the
+polling mechanism, adding new general message types, and adding extended
+key usages to identify special CMP server authorizations. CMP version 3 is
+introduced for changes to the ASN.1 syntax, which are support of
+EnvelopedData, certConf with hashAlg, POPOPrivKey with agreeMAC, and
+RootCaKeyUpdateContent in ckuann messages.
 
-Appendix F of this document updates the 2002 ASN.1 module in RFC 5912 Section 9.
+This document obsoletes RFC 4210 and together with I-D.ietf-lamps-rfc6712bis
+and it also obsoletes RFC 9480. Appendix F of this document updates the
+Section 9 of RFC 5912.
 
 --- middle
 
@@ -285,7 +289,7 @@ Profile {{RFC9483}}, in the following areas:
 * Extended the description of multiple protection to cover additional use cases,
   e.g., batch processing of messages.
 
-* Use the CMS {{RFC5652}} type EnvelopedData as the preferred choice instead of
+* Use the Cryptographic Message Syntax (CMS) {{RFC5652}} type EnvelopedData as the preferred choice instead of
   EncryptedValue to better support crypto agility in CMP.
 
   For reasons of completeness and consistency, the type EncryptedValue has been
@@ -778,6 +782,17 @@ operations.  Transfer protocols for conveying these exchanges in
 various environments (e.g., off-line: file-based, on-line: mail,
 HTTP {{I-D.ietf-lamps-rfc6712bis}}, MQTT, and CoAP {{RFC9482}}) are
 beyond the scope of this document and must be specified separately.
+Appropriate transfer protocols MUST be capable of delivering the CMP
+messages reliably.
+
+CMP provides inbuilt integrity protection and authentication. The information
+communicated unencrypted in CMP messages does not contain sensitive
+information endangering the security of the PKI when intercepted. However,
+it might be possible for an eavesdropper to utilize the available information to
+gather confidential technical or business critical information. Therefore, users
+should consider protection of confidentiality on lower levels of the protocol
+stack, e.g., by using TLS {{RFC9110}}, DTLS {{RFC9147}}, or IPSEC {{RFC4301}}.
+
 
 
 
@@ -1191,7 +1206,7 @@ To change the key of the CA, the CA operator does the following:
   it, e.g., using a repository or RootCaKeyUpdateContent.
 
 The old CA private key is then no longer required when the validity
-of the the "old with old" certificate ended. However, the old
+of the "old with old" certificate ended. However, the old
 CA public key will remain in use for validating the "new with old"
 link certificate until the new CA public key is loaded into the
 trusted store. The old CA public key is no longer required (other
@@ -3255,7 +3270,15 @@ cp, kup, krp, or ccp that contains a CertStatus for an issued certificate.
 1. If the EE receives a pollRep, it will wait for at least the number of seconds
   given in the checkAfter field before sending another pollReq.
 
-1. If the EE receives an ip, cp, kup, krp, or ccp, then it will be treated in the same
+> [RFC-Editor: Please fix the indentation. This note belongs to 3.] Note that the checkAfter value heavily depends on the certificate management
+environment. There are different reasons for a delayed delivery of response
+messages possible, e.g., high load on the server's backend, offline transfer of
+messages between two PKI management entities, or required RA operator
+approval. Therefore, the checkAfter time can vary greatly. This should also be
+considered by the transfer protocol.
+
+
+1. [RFC-Editor: Please fix the enumeration and continue with '4'.] If the EE receives an ip, cp, kup, krp, or ccp, then it will be treated in the same
   way as the initial response; if it receives any other response, then this
   will be treated as the final response to the original request.
 
@@ -5826,13 +5849,18 @@ END
 
 Note: This appendix will be deleted in the final version of the document.
 
+From version 14 -> 15:
+
+* Addressed OPSDIR and TSVART review comments
+
+
 From version 13 -> 14:
 
 * Implemented some editorial changes throughout the document, specifically in Sections 5.1.1, 5.1.1.3, 5.1.3.4, 5.2.2, 5.2.8.3, 5.3.18, 5.3.19.2, 5.2.22, 7, C.1, and C.4
 
 * Aligned formatting of message flow diagrams
 
-* Updated the the page header to 'CMP'
+* Updated the page header to 'CMP'
 
 * Removed one instruction to RFC Editors
 
