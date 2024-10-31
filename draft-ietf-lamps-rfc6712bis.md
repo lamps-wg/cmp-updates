@@ -311,6 +311,7 @@ A valid, full CMP URI can look like this:
 > http://www.example.com/.well-known/cmp/p/\<name>/\<operation>
 
 
+Note that https can also be used instead of http, see [item 5 in the Security Considerations](#sect-5).
 
 
 ## Pushing of Announcements
@@ -389,11 +390,10 @@ reject a message without evaluating the body.
 
 # Implementation Considerations {#sect-4}
 
-Implementors should be aware that implementations might exist that
-use a different approach for transferring CMP over HTTP, because
-[RFC 6712](#RFC6712) has been under development for more than a decade.
+Implementers should be aware that implementations might exist that
+use a different approach for transferring CMP over HTTP.
 Further, implementations based on earlier drafts of
-[RFC 6712](#RFC6712) might use an unregistered
+[RFC 6712](#RFC6712) might use an unregistered
 "application/pkixcmp-poll" MIME type.
 
 # Security Considerations {#sect-5}
