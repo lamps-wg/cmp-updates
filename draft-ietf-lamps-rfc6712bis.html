@@ -1392,10 +1392,10 @@ conveying CMP messages.<a href="#section-3-1" class="pilcrow">¶</a></p>
         <h3 id="name-http-versions">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-http-versions" class="section-name selfRef">HTTP Versions</a>
         </h3>
-<p id="section-3.1-1">Implementations <span class="bcp14">MUST</span> support at least <span><a href="#RFC1945" class="internal xref">HTTP/1.0</a> [<a href="#RFC1945" class="cite xref">RFC1945</a>]</span>. This is because
+<p id="section-3.1-1">Implementations <span class="bcp14">MUST</span> support at least HTTP/1.0 <span>[<a href="#RFC1945" class="cite xref">RFC1945</a>]</span>. This is because
 the POST method and the Content-Type header field are available since
 version 1.0.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">Implementations <span class="bcp14">SHOULD</span> support <span><a href="#RFC9112" class="internal xref">HTTP/1.1</a> [<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>. This is because the
+<p id="section-3.1-2">Implementations <span class="bcp14">SHOULD</span> support HTTP/1.1 <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>. This is because the
 Keep-Alive feature is used since version 1.1 by default, which helps
 transferring messages in transactions with more than one request/response
 pair more efficiently.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
@@ -1426,8 +1426,8 @@ in isolation.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-general-form" class="section-name selfRef">General Form</a>
         </h3>
 <p id="section-3.3-1">A DER-encoded <span>[<a href="#ITU.X690.1994" class="cite xref">ITU.X690.1994</a>]</span> PKIMessage <span>[<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span> <span class="bcp14">MUST</span> be sent as the
-entity-body of an HTTP POST request.  If this HTTP request is
-successful, the server returns the CMP response in the body of the
+content of an HTTP POST request.  If this HTTP request is
+successful, the server returns the CMP response in the content of the
 HTTP response.  The HTTP response status code in this case <span class="bcp14">MUST</span> be
 200; other "Successful 2xx" codes <span class="bcp14">MUST NOT</span> be used for this purpose.
 HTTP responses to pushed CMP Announcement messages (i.e., CA
@@ -1455,7 +1455,7 @@ Content-Type header field when conveying a PKIMessage.<a href="#section-3.4-1" c
 message.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
 <p id="section-3.4-3">In line with <span><a href="https://rfc-editor.org/rfc/rfc9110#section-8.6" class="relref">Section 8.6</a> of [<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, the "Content-Length" header
 field should be provided whenever a PKIMessage is sent, giving the
-length of the ASN.1-encoded PKIMessage.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+length of the ASN.1 DER-encoded PKIMessage.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-3.5">
@@ -1532,7 +1532,7 @@ only be pushed to the recipient.<a href="#section-3.7-1" class="pilcrow">¶</a><
 the current CRL, a PKI Information Request using a General Message as
 described in Appendix D.5 of <span>[<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span> can be used.<a href="#section-3.7-2" class="pilcrow">¶</a></p>
 <p id="section-3.7-3">When pushing Announcement messages, PKIMessage structures <span class="bcp14">MUST</span> be sent as
-the entity-body of an HTTP POST request.<a href="#section-3.7-3" class="pilcrow">¶</a></p>
+the content of an HTTP POST request.<a href="#section-3.7-3" class="pilcrow">¶</a></p>
 <p id="section-3.7-4">Suitable recipients for CMP announcements might, for example, be
 repositories storing the announced information, such as directory
 services.  Those services listen for incoming messages, utilizing the
@@ -1550,13 +1550,13 @@ element.<a href="#section-3.7-5" class="pilcrow">¶</a></p>
 </div>
 <p id="section-3.7-7">CMP Announcement messages do not require any CMP response.  However,
 the recipient <span class="bcp14">MUST</span> acknowledge receipt with an HTTP response having
-an appropriate status code and an empty body.  When not receiving
+an appropriate status code and an empty content.  When not receiving
 such a response, it <span class="bcp14">MUST</span> be assumed that the delivery was not
 successful.  If applicable, the sending side <span class="bcp14">MAY</span> try sending the
 Announcement again after waiting for an appropriate time span.<a href="#section-3.7-7" class="pilcrow">¶</a></p>
 <p id="section-3.7-8">If the announced issue was successfully stored in a database or was
 already present, the answer <span class="bcp14">MUST</span> be an HTTP response with a "201 Created"
-status code and an empty message body.<a href="#section-3.7-8" class="pilcrow">¶</a></p>
+status code and an empty content.<a href="#section-3.7-8" class="pilcrow">¶</a></p>
 <p id="section-3.7-9">In case the announced information was only accepted for further
 processing, the status code of the returned HTTP response <span class="bcp14">MAY</span> also be
 "202 Accepted".  After an appropriate delay, the sender may then try
@@ -1583,7 +1583,7 @@ field with the "100-continue" expectation and wait for a "100 Continue" status
 as described in <span><a href="https://rfc-editor.org/rfc/rfc9112#section-10.1.1" class="relref">Section 10.1.1</a> of [<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>.  The CMP
 payload sent by a client is relatively small, so having extra
 messages exchanged is inefficient, as the server will only seldom
-reject a message without evaluating the body.<a href="#section-3.8-2" class="pilcrow">¶</a></p>
+reject a message without evaluating the content.<a href="#section-3.8-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1619,10 +1619,13 @@ users:<a href="#section-5-1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-5-2.2">
           <p id="section-5-2.2.1">Without being encapsulated in effective security protocols, such
-  as Transport Layer Security (TLS) <span>[<a href="#RFC5246" class="cite xref">RFC5246</a>]</span> or <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, there is no
+  as Transport Layer Security (TLS) <span>[<a href="#RFC5246" class="cite xref">RFC5246</a>]</span> or <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, or
+  without using HTTP digest <span>[<a href="#RFC9530" class="cite xref">RFC9530</a>]</span> there is no
   integrity protection at the HTTP protocol level.  Therefore,
   information from the HTTP protocol should not be used to change
-  state of the transaction.<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
+  state of the transaction, regardless of whether any mechanism was
+  used to ensure the authenticity or integrity of HTTP messages
+  (e.g., TLS or HTTP digests).<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-5-2.3">
           <p id="section-5-2.3.1">Client users should be aware that storing the target location of
@@ -1649,7 +1652,7 @@ users:<a href="#section-5-1" class="pilcrow">¶</a></p>
   an initial authentication of the RA/CA before the first CMP message
   is transmitted ensures the privacy of the End Entities requesting
   certificates. Therefore, users of the HTTP transfer for CMP messages
-  <span class="bcp14">SHOULD</span> consider using HTTP over TLS according to o <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or virtual
+  should consider using HTTP over TLS according to <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or using virtual
   private networks created, for example, by utilizing Internet
   Protocol Security according to <span>[<a href="#RFC4301" class="cite xref">RFC4301</a>]</span>.<a href="#section-5-2.5.1" class="pilcrow">¶</a></p>
 </li>
@@ -1697,9 +1700,9 @@ original authors of <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</sp
         <dd>
 <span class="refAuthor">Nottingham, M.</span>, <span class="refTitle">"Well-Known Uniform Resource Identifiers (URIs)"</span>, <span class="seriesInfo">RFC 8615</span>, <span class="seriesInfo">DOI 10.17487/RFC8615</span>, <time datetime="2019-05" class="refDate">May 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8615">https://www.rfc-editor.org/rfc/rfc8615</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC9112">[RFC9112]</dt>
+<dt id="RFC9530">[RFC9530]</dt>
         <dd>
-<span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP/1.1"</span>, <span class="seriesInfo">STD 99</span>, <span class="seriesInfo">RFC 9112</span>, <span class="seriesInfo">DOI 10.17487/RFC9112</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9112">https://www.rfc-editor.org/rfc/rfc9112</a>&gt;</span>. </dd>
+<span class="refAuthor">Polli, R.</span> and <span class="refAuthor">L. Pardue</span>, <span class="refTitle">"Digest Fields"</span>, <span class="seriesInfo">RFC 9530</span>, <span class="seriesInfo">DOI 10.17487/RFC9530</span>, <time datetime="2024-02" class="refDate">February 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9530">https://www.rfc-editor.org/rfc/rfc9530</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-lamps-rfc4210bis">[I-D.ietf-lamps-rfc4210bis]</dt>
         <dd>
@@ -1762,6 +1765,10 @@ original authors of <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</sp
         <dd>
 <span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="seriesInfo">STD 97</span>, <span class="seriesInfo">RFC 9110</span>, <span class="seriesInfo">DOI 10.17487/RFC9110</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9110">https://www.rfc-editor.org/rfc/rfc9110</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC9112">[RFC9112]</dt>
+        <dd>
+<span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP/1.1"</span>, <span class="seriesInfo">STD 99</span>, <span class="seriesInfo">RFC 9112</span>, <span class="seriesInfo">DOI 10.17487/RFC9112</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9112">https://www.rfc-editor.org/rfc/rfc9112</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC9205">[RFC9205]</dt>
       <dd>
 <span class="refAuthor">Nottingham, M.</span>, <span class="refTitle">"Building Protocols with HTTP"</span>, <span class="seriesInfo">BCP 56</span>, <span class="seriesInfo">RFC 9205</span>, <span class="seriesInfo">DOI 10.17487/RFC9205</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9205">https://www.rfc-editor.org/rfc/rfc9205</a>&gt;</span>. </dd>
@@ -1780,7 +1787,7 @@ original authors of <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</sp
 <p id="appendix-A-2">From version 07 -&gt; 08:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-3.1">
-          <p id="appendix-A-3.1.1">Addressed SECDIR, OPSDIR and ARTART review comments<a href="#appendix-A-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-3.1.1">Addressed SECDIR, OPSDIR and ARTART review comments and also at least partly the HTTPDIR comments<a href="#appendix-A-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-3.2">
           <p id="appendix-A-3.2.1">Added normative language in Sections 3.3 and 3.7 for clarity<a href="#appendix-A-3.2.1" class="pilcrow">¶</a></p>
