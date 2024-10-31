@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 27 April 2025                                           J. Gray
+Expires: 4 May 2025                                              J. Gray
                                                                  Entrust
-                                                         24 October 2024
+                                                         31 October 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 April 2025.
+   This Internet-Draft will expire on 4 May 2025.
 
 Copyright Notice
 
@@ -296,6 +296,9 @@ Table of Contents
 
       http://www.example.com/.well-known/cmp/p/<name>/<operation>
 
+   Note that https can also be used instead of http, see item 5 in the
+   Security Considerations (Section 5).
+
 3.7.  Pushing of Announcements
 
    A CMP server may create event-triggered announcements or generate
@@ -365,12 +368,10 @@ Table of Contents
 
 4.  Implementation Considerations
 
-   Implementors should be aware that implementations might exist that
-   use a different approach for transferring CMP over HTTP, because
-   RFC 6712 [RFC6712] has been under development for more than a decade.
-   Further, implementations based on earlier drafts of RFC 6712
-   [RFC6712] might use an unregistered "application/pkixcmp-poll" MIME
-   type.
+   Implementers should be aware that implementations might exist that
+   use a different approach for transferring CMP over HTTP.  Further,
+   implementations based on earlier drafts of RFC 6712 [RFC6712] might
+   use an unregistered "application/pkixcmp-poll" MIME type.
 
 5.  Security Considerations
 
