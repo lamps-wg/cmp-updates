@@ -74,11 +74,12 @@ informative:
   RFC5246:
   RFC6712:
   RFC8446:
-  RFC9110:
+  RFC9530:
   RFC9205:
 normative:
   RFC1945:
   RFC8615:
+  RFC9110:
   RFC9112:
   I-D.ietf-lamps-rfc4210bis:
   ITU.X690.1994:
@@ -198,11 +199,11 @@ conveying CMP messages.
 ## HTTP Versions
 {: id="sect-3.1"}
 
-Implementations MUST support at least [HTTP/1.0](#RFC1945). This is because
+Implementations MUST support at least HTTP/1.0 {{RFC1945}}. This is because
 the POST method and the Content-Type header field are available since
 version 1.0.
 
-Implementations SHOULD support [HTTP/1.1](#RFC9112). This is because the
+Implementations SHOULD support HTTP/1.1 {{RFC9110}} and {{RFC9112}}. This is because the
 Keep-Alive feature is used since version 1.1 by default, which helps
 transferring messages in transactions with more than one request/response
 pair more efficiently.
@@ -229,8 +230,8 @@ in isolation.
 {: id="sect-3.3"}
 
 A DER-encoded {{ITU.X690.1994}} PKIMessage {{I-D.ietf-lamps-rfc4210bis}} MUST be sent as the
-entity-body of an HTTP POST request.  If this HTTP request is
-successful, the server returns the CMP response in the body of the
+content of an HTTP POST request.  If this HTTP request is
+successful, the server returns the CMP response in the content of the
 HTTP response.  The HTTP response status code in this case MUST be
 200; other "Successful 2xx" codes MUST NOT be used for this purpose.
 HTTP responses to pushed CMP Announcement messages (i.e., CA
@@ -260,7 +261,7 @@ message.
 
 In line with {{Section 8.6 of RFC9110}}, the "Content-Length" header
 field should be provided whenever a PKIMessage is sent, giving the
-length of the ASN.1-encoded PKIMessage.
+length of the ASN.1 DER-encoded PKIMessage.
 
 
 ## Communication Workflow
@@ -329,7 +330,7 @@ the current CRL, a PKI Information Request using a General Message as
 described in Appendix D.5 of {{I-D.ietf-lamps-rfc4210bis}} can be used.
 
 When pushing Announcement messages, PKIMessage structures MUST be sent as
-the entity-body of an HTTP POST request.
+the content of an HTTP POST request.
 
 Suitable recipients for CMP announcements might, for example, be
 repositories storing the announced information, such as directory
@@ -349,14 +350,14 @@ element.
 
 CMP Announcement messages do not require any CMP response.  However,
 the recipient MUST acknowledge receipt with an HTTP response having
-an appropriate status code and an empty body.  When not receiving
+an appropriate status code and an empty content.  When not receiving
 such a response, it MUST be assumed that the delivery was not
 successful.  If applicable, the sending side MAY try sending the
 Announcement again after waiting for an appropriate time span.
 
 If the announced issue was successfully stored in a database or was
 already present, the answer MUST be an HTTP response with a "201 Created"
-status code and an empty message body.
+status code and an empty content.
 
 In case the announced information was only accepted for further
 processing, the status code of the returned HTTP response MAY also be
@@ -384,7 +385,7 @@ field with the "100-continue" expectation and wait for a "100 Continue" status
 as described in {{Section 10.1.1 of RFC9112}}.  The CMP
 payload sent by a client is relatively small, so having extra
 messages exchanged is inefficient, as the server will only seldom
-reject a message without evaluating the body.
+reject a message without evaluating the content.
 
 
 
@@ -411,10 +412,13 @@ users:
   fully completed.
 
 1. Without being encapsulated in effective security protocols, such
-  as Transport Layer Security (TLS) {{RFC5246}} or {{RFC8446}}, there is no
+  as Transport Layer Security (TLS) {{RFC5246}} or {{RFC8446}}, or
+  without using HTTP digest {{RFC9530}} there is no
   integrity protection at the HTTP protocol level.  Therefore,
   information from the HTTP protocol should not be used to change
-  state of the transaction.
+  state of the transaction, regardless of whether any mechanism was
+  used to ensure the authenticity or integrity of HTTP messages
+  (e.g., TLS or HTTP digests).
 
 1. Client users should be aware that storing the target location of
   an HTTP response with the "301 Moved Permanently" status code
@@ -438,7 +442,7 @@ users:
   an initial authentication of the RA/CA before the first CMP message
   is transmitted ensures the privacy of the End Entities requesting
   certificates. Therefore, users of the HTTP transfer for CMP messages
-  SHOULD consider using HTTP over TLS according to o {{RFC9110}} or virtual
+  should consider using HTTP over TLS according to {{RFC9110}} and {{RFC9110}} or using virtual
   private networks created, for example, by utilizing Internet
   Protocol Security according to {{RFC4301}}.
 
@@ -472,7 +476,7 @@ Note: This appendix will be deleted in the final version of the document.
 From version 07 -> 08:
 
 
-* Addressed SECDIR, OPSDIR and ARTART review comments
+* Addressed SECDIR, OPSDIR and ARTART review comments and also at least partly the HTTPDIR comments
 
 * Added normative language in Sections 3.3 and 3.7 for clarity
 
