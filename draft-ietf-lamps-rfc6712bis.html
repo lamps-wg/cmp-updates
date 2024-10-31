@@ -1645,8 +1645,11 @@ users:<a href="#section-5-1" class="pilcrow">¶</a></p>
   when intercepted.  However, it might be possible for an
   eavesdropper to utilize the available information to gather
   confidential technical or business critical information.
-  Therefore, users of the HTTP transfer for CMP messages might want to
-  consider using HTTP over TLS according to <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or virtual
+  The protection of the confidentiality of CMP messages together with
+  an initial authentication of the RA/CA before the first CMP message
+  is transmitted ensures the privacy of the End Entities requesting
+  certificates. Therefore, users of the HTTP transfer for CMP messages
+  <span class="bcp14">SHOULD</span> consider using HTTP over TLS according to o <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or virtual
   private networks created, for example, by utilizing Internet
   Protocol Security according to <span>[<a href="#RFC4301" class="cite xref">RFC4301</a>]</span>.<a href="#section-5-2.5.1" class="pilcrow">¶</a></p>
 </li>
@@ -1777,7 +1780,7 @@ original authors of <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</sp
 <p id="appendix-A-2">From version 07 -&gt; 08:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-3.1">
-          <p id="appendix-A-3.1.1">Addressed OPSDIR and ARTART review comments<a href="#appendix-A-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-3.1.1">Addressed SECDIR, OPSDIR and ARTART review comments<a href="#appendix-A-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-3.2">
           <p id="appendix-A-3.2.1">Added normative language in Sections 3.3 and 3.7 for clarity<a href="#appendix-A-3.2.1" class="pilcrow">¶</a></p>
