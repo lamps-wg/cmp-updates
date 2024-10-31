@@ -434,8 +434,11 @@ users:
   when intercepted.  However, it might be possible for an
   eavesdropper to utilize the available information to gather
   confidential technical or business critical information.
-  Therefore, users of the HTTP transfer for CMP messages might want to
-  consider using HTTP over TLS according to {{RFC9110}} or virtual
+  The protection of the confidentiality of CMP messages together with
+  an initial authentication of the RA/CA before the first CMP message
+  is transmitted ensures the privacy of the End Entities requesting
+  certificates. Therefore, users of the HTTP transfer for CMP messages
+  SHOULD consider using HTTP over TLS according to o {{RFC9110}} or virtual
   private networks created, for example, by utilizing Internet
   Protocol Security according to {{RFC4301}}.
 
@@ -469,7 +472,7 @@ Note: This appendix will be deleted in the final version of the document.
 From version 07 -> 08:
 
 
-* Addressed OPSDIR and ARTART review comments
+* Addressed SECDIR, OPSDIR and ARTART review comments
 
 * Added normative language in Sections 3.3 and 3.7 for clarity
 
