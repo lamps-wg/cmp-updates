@@ -814,7 +814,7 @@ Table of Contents
    utilize the available information to gather confidential technical or
    business critical information.  Therefore, users should consider
    protection of confidentiality on lower levels of the protocol stack,
-   e.g., by using TLS [RFC9110], DTLS [RFC9147], or IPSEC [RFC4301].
+   e.g., by using TLS [RFC8446], DTLS [RFC9147], or IPSEC [RFC4301].
 
 4.  Assumptions and Restrictions
 
@@ -4210,6 +4210,10 @@ Table of Contents
               Working Group", RFC 7299, DOI 10.17487/RFC7299, July 2014,
               <https://www.rfc-editor.org/rfc/rfc7299>.
 
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/rfc/rfc8446>.
+
    [RFC8572]  Watsen, K., Farrer, I., and M. Abrahamsson, "Secure Zero
               Touch Provisioning (SZTP)", RFC 8572,
               DOI 10.17487/RFC8572, April 2019,
@@ -4223,11 +4227,6 @@ Table of Contents
               and K. Watsen, "Bootstrapping Remote Secure Key
               Infrastructure (BRSKI)", RFC 8995, DOI 10.17487/RFC8995,
               May 2021, <https://www.rfc-editor.org/rfc/rfc8995>.
-
-   [RFC9110]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
-              Ed., "HTTP Semantics", STD 97, RFC 9110,
-              DOI 10.17487/RFC9110, June 2022,
-              <https://www.rfc-editor.org/rfc/rfc9110>.
 
    [RFC9147]  Rescorla, E., Tschofenig, H., and N. Modadugu, "The
               Datagram Transport Layer Security (DTLS) Protocol Version
