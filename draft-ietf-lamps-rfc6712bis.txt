@@ -365,7 +365,7 @@ Table of Contents
    There is no need for the clients to send an "Expect" request header
    field with the "100-continue" expectation and wait for a 100
    (Continue) status code as described in Section 10.1.1 of [RFC9112].
-   The CMP payload sent by a client is relatively small, so having extra
+   The CMP content sent by a client is relatively small, so having extra
    messages exchanged is inefficient, as the server will only seldom
    reject a message without evaluating the content.
 
