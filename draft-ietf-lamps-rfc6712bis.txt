@@ -420,7 +420,7 @@ Table of Contents
        for CMP messages should consider using HTTP over TLS according to
        [RFC9110] and [RFC9110] or using virtual private networks
        created, for example, by utilizing Internet Protocol Security
-       according to [RFC4301].
+       according to [RFC7296].
 
 6.  IANA Considerations
 
@@ -517,10 +517,6 @@ Table of Contents
               DOI 10.17487/RFC4210, September 2005,
               <https://www.rfc-editor.org/rfc/rfc4210>.
 
-   [RFC4301]  Kent, S. and K. Seo, "Security Architecture for the
-              Internet Protocol", RFC 4301, DOI 10.17487/RFC4301,
-              December 2005, <https://www.rfc-editor.org/rfc/rfc4301>.
-
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246,
               DOI 10.17487/RFC5246, August 2008,
@@ -531,6 +527,11 @@ Table of Contents
               Management Protocol (CMP)", RFC 6712,
               DOI 10.17487/RFC6712, September 2012,
               <https://www.rfc-editor.org/rfc/rfc6712>.
+
+   [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
+              Kivinen, "Internet Key Exchange Protocol Version 2
+              (IKEv2)", STD 79, RFC 7296, DOI 10.17487/RFC7296, October
+              2014, <https://www.rfc-editor.org/rfc/rfc7296>.
 
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
