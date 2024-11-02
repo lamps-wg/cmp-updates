@@ -814,7 +814,7 @@ Table of Contents
    utilize the available information to gather confidential technical or
    business critical information.  Therefore, users should consider
    protection of confidentiality on lower levels of the protocol stack,
-   e.g., by using TLS [RFC8446], DTLS [RFC9147], or IPSEC [RFC4301].
+   e.g., by using TLS [RFC8446], DTLS [RFC9147], or IPSEC [RFC7296].
 
 4.  Assumptions and Restrictions
 
@@ -4180,10 +4180,6 @@ Table of Contents
               DOI 10.17487/RFC4212, October 2005,
               <https://www.rfc-editor.org/rfc/rfc4212>.
 
-   [RFC4301]  Kent, S. and K. Seo, "Security Architecture for the
-              Internet Protocol", RFC 4301, DOI 10.17487/RFC4301,
-              December 2005, <https://www.rfc-editor.org/rfc/rfc4301>.
-
    [RFC4511]  Sermersheim, J., Ed., "Lightweight Directory Access
               Protocol (LDAP): The Protocol", RFC 4511,
               DOI 10.17487/RFC4511, June 2006,
@@ -4205,6 +4201,11 @@ Table of Contents
               Management Protocol (CMP)", RFC 6712,
               DOI 10.17487/RFC6712, September 2012,
               <https://www.rfc-editor.org/rfc/rfc6712>.
+
+   [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
+              Kivinen, "Internet Key Exchange Protocol Version 2
+              (IKEv2)", STD 79, RFC 7296, DOI 10.17487/RFC7296, October
+              2014, <https://www.rfc-editor.org/rfc/rfc7296>.
 
    [RFC7299]  Housley, R., "Object Identifier Registry for the PKIX
               Working Group", RFC 7299, DOI 10.17487/RFC7299, July 2014,
