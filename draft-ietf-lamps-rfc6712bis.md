@@ -200,25 +200,25 @@ conveying CMP messages.
 {: id="sect-3.1"}
 
 Implementations MUST support at least HTTP/1.0 {{RFC1945}}. This is because
-the POST method and the Content-Type header field are available since
+the POST method and the "Content-Type" and "Connection: keep-alive" header fields are available since
 version 1.0.
 
 Implementations SHOULD support HTTP/1.1 as specified in {{RFC9110}} and {{RFC9112}}. This is because the
-Keep-Alive feature is used since version 1.1 by default, which helps
+persistent connection was improved with HTTP/1.1 which helps
 transferring messages in transactions with more than one request/response
-pair more efficiently.
+pair more efficiently, see {{Section 9.3 of RFC9112}} for persistent connections and {{Appendix C.2.2 of RFC9112}} for interoperability with the Keep-Alive feature in HTTP/1.0.
 
 
 ## Persistent Connections
 {: id="sect-3.2"}
 
-HTTP persistent connections {{RFC9112}} allow multiple interactions to
+HTTP persistent connections {{Section 9.3 of RFC9112}} allow multiple interactions to
 take place on the same HTTP connection.  However, neither HTTP nor
 the protocol specified in this document are designed to correlate
 messages on the same connection in any meaningful way; persistent
 connections are only a performance optimization.  In particular,
 intermediaries can do things like mix connections from different
-clients into one "upstream" connection, terminate persistent
+clients into one upstream connection, terminate persistent
 connections, and forward requests as non-persistent requests, etc.
 As such, implementations MUST NOT infer that requests on the same
 connection come from the same client (e.g., for correlating PKI
@@ -233,20 +233,20 @@ A DER-encoded {{ITU.X690.1994}} PKIMessage {{I-D.ietf-lamps-rfc4210bis}} MUST be
 content of an HTTP POST request.  If this HTTP request is
 successful, the server returns the CMP response in the content of the
 HTTP response.  The HTTP response status code in this case MUST be
-200; other "Successful 2xx" codes MUST NOT be used for this purpose.
-HTTP responses to pushed CMP Announcement messages (i.e., CA
+200 (OK) status code; other Successful 2xx status codes MUST NOT be used for this purpose.
+HTTP responses to pushed CMP announcement messages (i.e., CA
 Certificate Announcement, Certificate Announcement, Revocation
 Announcement, and Certificate Revocation List (CRL) Announcement)
 utilize the status codes 201 and 202 to identify whether the received
 information was processed.
 
-While "Redirection 3xx" status codes MAY be supported by
+While Redirection 3xx status codes MAY be supported by
 implementations, clients should only be enabled to automatically
 follow them after careful consideration of possible security
-implications.  As described in {{sect-5}}, "301 Moved Permanently"
+implications.  As described in {{sect-5}}, 301 (Moved Permanently) status code
 could be misused for permanent denial of service.
 
-All applicable "Client Error 4xx" or "Server Error 5xx" status codes
+All applicable Client Error 4xx or Server Error 5xx status codes
 MAY be used to inform the client about errors.
 
 
@@ -254,9 +254,9 @@ MAY be used to inform the client about errors.
 {: id="sect-3.4"}
 
 The Internet Media Type "application/pkixcmp" MUST be set in the HTTP
-Content-Type header field when conveying a PKIMessage.
+"Content-Type" header field when conveying a PKIMessage.
 
-Note that the PKIMessage type is used also when sending an Announcement
+Note that the PKIMessage type is used also when sending an announcement
 message.
 
 In line with {{Section 8.6 of RFC9110}}, the "Content-Length" header
@@ -270,9 +270,9 @@ length of the ASN.1 DER-encoded PKIMessage.
 In CMP, most communication is initiated by the EEs where every CMP
 request triggers a CMP response message from the CA or RA.
 
-The CMP Announcement messages described in {{sect-3.7}} are an
+The CMP announcement messages described in {{sect-3.7}} are an
 exception.  Their creation may be triggered by certain events or done
-on a regular basis by a CA.  The recipient of the Announcement only
+on a regular basis by a CA.  The recipient of the announcement only
 replies with an HTTP status code acknowledging the receipt or
 indicating an error, but not with a CMP response.
 
@@ -327,9 +327,9 @@ only be pushed to the recipient.
 
 If an EE wants to poll for a potential CA Key Update Announcement or
 the current CRL, a PKI Information Request using a General Message as
-described in Appendix D.5 of {{I-D.ietf-lamps-rfc4210bis}} can be used.
+described in {{Appendix D.5 of I-D.ietf-lamps-rfc4210bis}} can be used.
 
-When pushing Announcement messages, PKIMessage structures MUST be sent as
+When pushing announcement messages, PKIMessage structures MUST be sent as
 the content of an HTTP POST request.
 
 Suitable recipients for CMP announcements might, for example, be
@@ -348,26 +348,26 @@ element.
    [18] CRL Announcement
 ~~~~
 
-CMP Announcement messages do not require any CMP response.  However,
+CMP announcement messages do not require any CMP response.  However,
 the recipient MUST acknowledge receipt with an HTTP response having
 an appropriate status code and an empty content.  When not receiving
 such a response, it MUST be assumed that the delivery was not
 successful.  If applicable, the sending side MAY try sending the
-Announcement again after waiting for an appropriate time span.
+announcement again after waiting for an appropriate time span.
 
 If the announced issue was successfully stored in a database or was
-already present, the answer MUST be an HTTP response with a "201 Created"
+already present, the answer MUST be an HTTP response with a 201 (Created)
 status code and an empty content.
 
 In case the announced information was only accepted for further
 processing, the status code of the returned HTTP response MAY also be
-"202 Accepted".  After an appropriate delay, the sender may then try
-to send the Announcement again and may repeat this until it receives
+202 (Accepted).  After an appropriate delay, the sender may then try
+to send the announcement again and may repeat this until it receives
 a confirmation that it has been successfully processed.  The
 appropriate duration of the delay and the option to increase it
 between consecutive attempts should be carefully considered.
 
-A receiver MUST answer with a suitable 4xx or 5xx HTTP error code
+A receiver MUST answer with a suitable 4xx or 5xx error code
 when a problem occurs.
 
 
@@ -380,10 +380,10 @@ as possible.  For example, there is no benefit in using chunked
 Transfer-Encoding, as the length of an ASN.1 sequence is known when
 starting to send it.
 
-There is no need for the clients to send an "Expect" request-header
-field with the "100-continue" expectation and wait for a "100 Continue" status
+There is no need for the clients to send an "Expect" request header
+field with the "100-continue" expectation and wait for a 100 (Continue) status code
 as described in {{Section 10.1.1 of RFC9112}}.  The CMP
-payload sent by a client is relatively small, so having extra
+content sent by a client is relatively small, so having extra
 messages exchanged is inefficient, as the server will only seldom
 reject a message without evaluating the content.
 
@@ -407,7 +407,7 @@ users:
   consumption by opening many connections to an HTTP server.
   Therefore, idle connections should be terminated after an
   appropriate timeout; this may also depend on the available free
-  resources.  After sending a CMP Error Message with PKIStatus other than "waiting", the server should
+  resources.  After sending a CMP error message with PKIStatus other than "waiting", the server should
   close the connection, even if the CMP transaction is not yet
   fully completed.
 
@@ -421,15 +421,15 @@ users:
   (e.g., TLS or HTTP digests).
 
 1. Client users should be aware that storing the target location of
-  an HTTP response with the "301 Moved Permanently" status code
+  an HTTP response with the 301 (Moved Permanently) status code
   could be exploited by a man-in-the-middle attacker trying to
   block them permanently from contacting the correct server.
 
 1. If no measures to authenticate and protect the HTTP responses to
-  pushed Announcement messages are in place, their information
-  regarding the Announcement's processing state may not be trusted.
+  pushed announcement messages are in place, their information
+  regarding the announcement's processing state may not be trusted.
   In that case, the overall design of the PKI system must not
-  depend on the Announcements being reliably received and processed
+  depend on the announcements being reliably received and processed
   by their destination.
 
 1. CMP provides inbuilt integrity protection and authentication.
@@ -437,10 +437,10 @@ users:
   contain sensitive information endangering the security of the PKI
   when intercepted.  However, it might be possible for an
   eavesdropper to utilize the available information to gather
-  confidential technical or business critical information.
+  confidential personal, technical, or business critical information.
   The protection of the confidentiality of CMP messages together with
   an initial authentication of the RA/CA before the first CMP message
-  is transmitted ensures the privacy of the End Entities requesting
+  is transmitted ensures the privacy of the EE requesting
   certificates. Therefore, users of the HTTP transfer for CMP messages
   should consider using HTTP over TLS according to {{RFC9110}} and {{RFC9112}} or using virtual
   private networks created, for example, by utilizing Internet
@@ -476,7 +476,9 @@ Note: This appendix will be deleted in the final version of the document.
 From version 07 -> 08:
 
 
-* Addressed SECDIR, OPSDIR and ARTART review comments and also at least partly the HTTPDIR comments
+* Addressed HTTPDIR, SECDIR, OPSDIR and ARTART review comments
+
+* Aligned the terminology with https://httpwg.org/admin/editors/style-guide
 
 * Added normative language in Sections 3.3 and 3.7 for clarity
 
