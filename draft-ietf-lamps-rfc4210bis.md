@@ -75,16 +75,16 @@ informative:
   RFC2585:
   RFC4210:
   RFC4212:
-  RFC4301:
   RFC4511:
   RFC5912:
   RFC6268:
   RFC6712:
+  RFC7296:
   RFC7299:
+  RFC8446:
   RFC8572:
   RFC8649:
   RFC8995:
-  RFC9110:
   RFC9147:
   RFC9162:
   I-D.ietf-anima-brski-ae:
@@ -791,7 +791,7 @@ information endangering the security of the PKI when intercepted. However,
 it might be possible for an eavesdropper to utilize the available information to
 gather confidential technical or business critical information. Therefore, users
 should consider protection of confidentiality on lower levels of the protocol
-stack, e.g., by using TLS {{RFC9110}}, DTLS {{RFC9147}}, or IPSEC {{RFC4301}}.
+stack, e.g., by using TLS {{RFC8446}}, DTLS {{RFC9147}}, or IPSEC {{RFC7296}}.
 
 
 

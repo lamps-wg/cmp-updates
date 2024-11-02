@@ -70,9 +70,9 @@ informative:
   RFC9483:
   RFC2510:
   RFC4210:
-  RFC4301:
   RFC5246:
   RFC6712:
+  RFC7296:
   RFC8446:
   RFC9530:
   RFC9205:
@@ -444,7 +444,7 @@ users:
   certificates. Therefore, users of the HTTP transfer for CMP messages
   should consider using HTTP over TLS according to {{RFC9110}} and {{RFC9110}} or using virtual
   private networks created, for example, by utilizing Internet
-  Protocol Security according to {{RFC4301}}.
+  Protocol Security according to {{RFC7296}}.
 
 
 # IANA Considerations {#sect-6}
