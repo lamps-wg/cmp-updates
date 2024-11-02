@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 4 May 2025                                              Entrust
-                                                         31 October 2024
+Expires: 6 May 2025                                              Entrust
+                                                         2 November 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 May 2025.
+   This Internet-Draft will expire on 6 May 2025.
 
 Copyright Notice
 
@@ -3789,7 +3789,7 @@ Table of Contents
    to verify that the name and public key belong to the end entity prior
    to issuing a certificate.  If an entity holding a private key obtains
    a certificate containing the corresponding public key issued for a
-   different entity, can authenticate as the entity named in the
+   different entity, it can authenticate as the entity named in the
    certificate.  This facilitates masquerading.  It is not entirely
    clear what security guarantees are lost if an end entity is able to
    obtain a certificate containing a public key that they do not possess
@@ -6153,7 +6153,7 @@ Appendix G.  History of Changes
 
    From version 14 -> 15:
 
-   *  Addressed OPSDIR and TSVART review comments
+   *  Addressed SECDIR, OPSDIR, and TSVART review comments
 
    From version 13 -> 14:
 
