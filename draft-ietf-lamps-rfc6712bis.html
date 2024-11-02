@@ -1362,8 +1362,8 @@ this end define a new protocol registry group.<a href="#section-1.1-2.2.1" class
         </h3>
 <p id="section-1.2-1">This document obsoletes <span><a href="#RFC6712" class="internal xref">RFC 6712</a> [<a href="#RFC6712" class="cite xref">RFC6712</a>]</span>.
 It includes the changes specified by CMP Updates <span>[<a href="#RFC9480" class="cite xref">RFC9480</a>]</span> Section 3 as
-described in <a href="#sect-1.1" class="auto internal xref">Section 1.1</a> and added the requirement on providing the
-Content-Length header field in <a href="#sect-3.4" class="auto internal xref">Section 3.4</a>.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+described in <a href="#sect-1.1" class="auto internal xref">Section 1.1</a> and added detail on providing the
+"Content-Length" header field in <a href="#sect-3.4" class="auto internal xref">Section 3.4</a>.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1395,7 +1395,7 @@ conveying CMP messages.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-1">Implementations <span class="bcp14">MUST</span> support at least HTTP/1.0 <span>[<a href="#RFC1945" class="cite xref">RFC1945</a>]</span>. This is because
 the POST method and the Content-Type header field are available since
 version 1.0.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">Implementations <span class="bcp14">SHOULD</span> support HTTP/1.1 <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>. This is because the
+<p id="section-3.1-2">Implementations <span class="bcp14">SHOULD</span> support HTTP/1.1 as specified in <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>. This is because the
 Keep-Alive feature is used since version 1.1 by default, which helps
 transferring messages in transactions with more than one request/response
 pair more efficiently.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
@@ -1652,7 +1652,7 @@ users:<a href="#section-5-1" class="pilcrow">¶</a></p>
   an initial authentication of the RA/CA before the first CMP message
   is transmitted ensures the privacy of the End Entities requesting
   certificates. Therefore, users of the HTTP transfer for CMP messages
-  should consider using HTTP over TLS according to <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or using virtual
+  should consider using HTTP over TLS according to <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> or using virtual
   private networks created, for example, by utilizing Internet
   Protocol Security according to <span>[<a href="#RFC7296" class="cite xref">RFC7296</a>]</span>.<a href="#section-5-2.5.1" class="pilcrow">¶</a></p>
 </li>
