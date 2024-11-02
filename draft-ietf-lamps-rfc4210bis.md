@@ -3758,7 +3758,7 @@ described above in {{sect-7}}.
 
 It is well established that the role of a Certification Authority is to
 verify that the name and public key belong to the end entity prior to
-issuing a certificate. If an entity holding a private key obtains a certificate containing the corresponding public key issued for a different entity, can authenticate as the entity named in the certificate. This facilitates masquerading. It is not entirely clear what security guarantees are lost if an end entity is able to obtain a certificate containing a public key that they do not possess the corresponding private key for. There are some scenarios,
+issuing a certificate. If an entity holding a private key obtains a certificate containing the corresponding public key issued for a different entity, it can authenticate as the entity named in the certificate. This facilitates masquerading. It is not entirely clear what security guarantees are lost if an end entity is able to obtain a certificate containing a public key that they do not possess the corresponding private key for. There are some scenarios,
 described as "forwarding attacks" in Appendix A of [Gueneysu], in
 which this can lead to protocol attacks against a naively-implemented
 sign-then-encrypt protocol, but in general it merely results in the
@@ -5851,7 +5851,7 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 14 -> 15:
 
-* Addressed OPSDIR and TSVART review comments
+* Addressed SECDIR, OPSDIR, and TSVART review comments
 
 
 From version 13 -> 14:
