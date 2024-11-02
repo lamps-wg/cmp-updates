@@ -181,8 +181,8 @@ Profile {{RFC9483}}, in the following areas:
 
 This document obsoletes [RFC 6712](#RFC6712).
 It includes the changes specified by CMP Updates {{RFC9480}} Section 3 as
-described in {{sect-1.1}} and added the requirement on providing the
-Content-Length header field in {{sect-3.4}}.
+described in {{sect-1.1}} and added detail on providing the
+"Content-Length" header field in {{sect-3.4}}.
 
 
 
@@ -203,7 +203,7 @@ Implementations MUST support at least HTTP/1.0 {{RFC1945}}. This is because
 the POST method and the Content-Type header field are available since
 version 1.0.
 
-Implementations SHOULD support HTTP/1.1 {{RFC9110}} and {{RFC9112}}. This is because the
+Implementations SHOULD support HTTP/1.1 as specified in {{RFC9110}} and {{RFC9112}}. This is because the
 Keep-Alive feature is used since version 1.1 by default, which helps
 transferring messages in transactions with more than one request/response
 pair more efficiently.
@@ -442,7 +442,7 @@ users:
   an initial authentication of the RA/CA before the first CMP message
   is transmitted ensures the privacy of the End Entities requesting
   certificates. Therefore, users of the HTTP transfer for CMP messages
-  should consider using HTTP over TLS according to {{RFC9110}} and {{RFC9110}} or using virtual
+  should consider using HTTP over TLS according to {{RFC9110}} and {{RFC9112}} or using virtual
   private networks created, for example, by utilizing Internet
   Protocol Security according to {{RFC7296}}.
 
