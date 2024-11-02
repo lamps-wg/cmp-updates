@@ -1393,12 +1393,12 @@ conveying CMP messages.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-http-versions" class="section-name selfRef">HTTP Versions</a>
         </h3>
 <p id="section-3.1-1">Implementations <span class="bcp14">MUST</span> support at least HTTP/1.0 <span>[<a href="#RFC1945" class="cite xref">RFC1945</a>]</span>. This is because
-the POST method and the Content-Type header field are available since
+the POST method and the "Content-Type" and "Connection: keep-alive" header fields are available since
 version 1.0.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">Implementations <span class="bcp14">SHOULD</span> support HTTP/1.1 as specified in <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>. This is because the
-Keep-Alive feature is used since version 1.1 by default, which helps
+persistent connection was improved with HTTP/1.1 which helps
 transferring messages in transactions with more than one request/response
-pair more efficiently.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+pair more efficiently, see <span><a href="https://rfc-editor.org/rfc/rfc9112#section-9.3" class="relref">Section 9.3</a> of [<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> for persistent connections and <span><a href="https://rfc-editor.org/rfc/rfc9112#appendix-C.2.2" class="relref">Appendix C.2.2</a> of [<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> for interoperability with the Keep-Alive feature in HTTP/1.0.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-3.2">
@@ -1406,13 +1406,13 @@ pair more efficiently.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
         <h3 id="name-persistent-connections">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-persistent-connections" class="section-name selfRef">Persistent Connections</a>
         </h3>
-<p id="section-3.2-1">HTTP persistent connections <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> allow multiple interactions to
+<p id="section-3.2-1">HTTP persistent connections <span><a href="https://rfc-editor.org/rfc/rfc9112#section-9.3" class="relref">Section 9.3</a> of [<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> allow multiple interactions to
 take place on the same HTTP connection.  However, neither HTTP nor
 the protocol specified in this document are designed to correlate
 messages on the same connection in any meaningful way; persistent
 connections are only a performance optimization.  In particular,
 intermediaries can do things like mix connections from different
-clients into one "upstream" connection, terminate persistent
+clients into one upstream connection, terminate persistent
 connections, and forward requests as non-persistent requests, etc.
 As such, implementations <span class="bcp14">MUST NOT</span> infer that requests on the same
 connection come from the same client (e.g., for correlating PKI
@@ -1429,18 +1429,18 @@ in isolation.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 content of an HTTP POST request.  If this HTTP request is
 successful, the server returns the CMP response in the content of the
 HTTP response.  The HTTP response status code in this case <span class="bcp14">MUST</span> be
-200; other "Successful 2xx" codes <span class="bcp14">MUST NOT</span> be used for this purpose.
-HTTP responses to pushed CMP Announcement messages (i.e., CA
+200 (OK) status code; other Successful 2xx status codes <span class="bcp14">MUST NOT</span> be used for this purpose.
+HTTP responses to pushed CMP announcement messages (i.e., CA
 Certificate Announcement, Certificate Announcement, Revocation
 Announcement, and Certificate Revocation List (CRL) Announcement)
 utilize the status codes 201 and 202 to identify whether the received
 information was processed.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2">While "Redirection 3xx" status codes <span class="bcp14">MAY</span> be supported by
+<p id="section-3.3-2">While Redirection 3xx status codes <span class="bcp14">MAY</span> be supported by
 implementations, clients should only be enabled to automatically
 follow them after careful consideration of possible security
-implications.  As described in <a href="#sect-5" class="auto internal xref">Section 5</a>, "301 Moved Permanently"
+implications.  As described in <a href="#sect-5" class="auto internal xref">Section 5</a>, 301 (Moved Permanently) status code
 could be misused for permanent denial of service.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
-<p id="section-3.3-3">All applicable "Client Error 4xx" or "Server Error 5xx" status codes
+<p id="section-3.3-3">All applicable Client Error 4xx or Server Error 5xx status codes
 <span class="bcp14">MAY</span> be used to inform the client about errors.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1450,8 +1450,8 @@ could be misused for permanent denial of service.<a href="#section-3.3-2" class=
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-header-fields" class="section-name selfRef">Header Fields</a>
         </h3>
 <p id="section-3.4-1">The Internet Media Type "application/pkixcmp" <span class="bcp14">MUST</span> be set in the HTTP
-Content-Type header field when conveying a PKIMessage.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.4-2">Note that the PKIMessage type is used also when sending an Announcement
+"Content-Type" header field when conveying a PKIMessage.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">Note that the PKIMessage type is used also when sending an announcement
 message.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
 <p id="section-3.4-3">In line with <span><a href="https://rfc-editor.org/rfc/rfc9110#section-8.6" class="relref">Section 8.6</a> of [<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, the "Content-Length" header
 field should be provided whenever a PKIMessage is sent, giving the
@@ -1465,9 +1465,9 @@ length of the ASN.1 DER-encoded PKIMessage.<a href="#section-3.4-3" class="pilcr
         </h3>
 <p id="section-3.5-1">In CMP, most communication is initiated by the EEs where every CMP
 request triggers a CMP response message from the CA or RA.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
-<p id="section-3.5-2">The CMP Announcement messages described in <a href="#sect-3.7" class="auto internal xref">Section 3.7</a> are an
+<p id="section-3.5-2">The CMP announcement messages described in <a href="#sect-3.7" class="auto internal xref">Section 3.7</a> are an
 exception.  Their creation may be triggered by certain events or done
-on a regular basis by a CA.  The recipient of the Announcement only
+on a regular basis by a CA.  The recipient of the announcement only
 replies with an HTTP status code acknowledging the receipt or
 indicating an error, but not with a CMP response.<a href="#section-3.5-2" class="pilcrow">¶</a></p>
 <p id="section-3.5-3">If the receipt of an HTTP request is not confirmed by receiving an
@@ -1530,8 +1530,8 @@ no request messages are specified for those announcements, they can
 only be pushed to the recipient.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
 <p id="section-3.7-2">If an EE wants to poll for a potential CA Key Update Announcement or
 the current CRL, a PKI Information Request using a General Message as
-described in Appendix D.5 of <span>[<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span> can be used.<a href="#section-3.7-2" class="pilcrow">¶</a></p>
-<p id="section-3.7-3">When pushing Announcement messages, PKIMessage structures <span class="bcp14">MUST</span> be sent as
+described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-14#appendix-D.5" class="relref">Appendix D.5</a> of [<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span> can be used.<a href="#section-3.7-2" class="pilcrow">¶</a></p>
+<p id="section-3.7-3">When pushing announcement messages, PKIMessage structures <span class="bcp14">MUST</span> be sent as
 the content of an HTTP POST request.<a href="#section-3.7-3" class="pilcrow">¶</a></p>
 <p id="section-3.7-4">Suitable recipients for CMP announcements might, for example, be
 repositories storing the announced information, such as directory
@@ -1548,23 +1548,23 @@ element.<a href="#section-3.7-5" class="pilcrow">¶</a></p>
    [18] CRL Announcement
 </pre><a href="#section-3.7-6" class="pilcrow">¶</a>
 </div>
-<p id="section-3.7-7">CMP Announcement messages do not require any CMP response.  However,
+<p id="section-3.7-7">CMP announcement messages do not require any CMP response.  However,
 the recipient <span class="bcp14">MUST</span> acknowledge receipt with an HTTP response having
 an appropriate status code and an empty content.  When not receiving
 such a response, it <span class="bcp14">MUST</span> be assumed that the delivery was not
 successful.  If applicable, the sending side <span class="bcp14">MAY</span> try sending the
-Announcement again after waiting for an appropriate time span.<a href="#section-3.7-7" class="pilcrow">¶</a></p>
+announcement again after waiting for an appropriate time span.<a href="#section-3.7-7" class="pilcrow">¶</a></p>
 <p id="section-3.7-8">If the announced issue was successfully stored in a database or was
-already present, the answer <span class="bcp14">MUST</span> be an HTTP response with a "201 Created"
+already present, the answer <span class="bcp14">MUST</span> be an HTTP response with a 201 (Created)
 status code and an empty content.<a href="#section-3.7-8" class="pilcrow">¶</a></p>
 <p id="section-3.7-9">In case the announced information was only accepted for further
 processing, the status code of the returned HTTP response <span class="bcp14">MAY</span> also be
-"202 Accepted".  After an appropriate delay, the sender may then try
-to send the Announcement again and may repeat this until it receives
+202 (Accepted).  After an appropriate delay, the sender may then try
+to send the announcement again and may repeat this until it receives
 a confirmation that it has been successfully processed.  The
 appropriate duration of the delay and the option to increase it
 between consecutive attempts should be carefully considered.<a href="#section-3.7-9" class="pilcrow">¶</a></p>
-<p id="section-3.7-10">A receiver <span class="bcp14">MUST</span> answer with a suitable 4xx or 5xx HTTP error code
+<p id="section-3.7-10">A receiver <span class="bcp14">MUST</span> answer with a suitable 4xx or 5xx error code
 when a problem occurs.<a href="#section-3.7-10" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1578,8 +1578,8 @@ implementations, they should keep the protocol utilization as simple
 as possible.  For example, there is no benefit in using chunked
 Transfer-Encoding, as the length of an ASN.1 sequence is known when
 starting to send it.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
-<p id="section-3.8-2">There is no need for the clients to send an "Expect" request-header
-field with the "100-continue" expectation and wait for a "100 Continue" status
+<p id="section-3.8-2">There is no need for the clients to send an "Expect" request header
+field with the "100-continue" expectation and wait for a 100 (Continue) status code
 as described in <span><a href="https://rfc-editor.org/rfc/rfc9112#section-10.1.1" class="relref">Section 10.1.1</a> of [<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>.  The CMP
 payload sent by a client is relatively small, so having extra
 messages exchanged is inefficient, as the server will only seldom
@@ -1613,7 +1613,7 @@ users:<a href="#section-5-1" class="pilcrow">¶</a></p>
   consumption by opening many connections to an HTTP server.
   Therefore, idle connections should be terminated after an
   appropriate timeout; this may also depend on the available free
-  resources.  After sending a CMP Error Message with PKIStatus other than "waiting", the server should
+  resources.  After sending a CMP error message with PKIStatus other than "waiting", the server should
   close the connection, even if the CMP transaction is not yet
   fully completed.<a href="#section-5-2.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -1629,16 +1629,16 @@ users:<a href="#section-5-1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-5-2.3">
           <p id="section-5-2.3.1">Client users should be aware that storing the target location of
-  an HTTP response with the "301 Moved Permanently" status code
+  an HTTP response with the 301 (Moved Permanently) status code
   could be exploited by a man-in-the-middle attacker trying to
   block them permanently from contacting the correct server.<a href="#section-5-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-5-2.4">
           <p id="section-5-2.4.1">If no measures to authenticate and protect the HTTP responses to
-  pushed Announcement messages are in place, their information
-  regarding the Announcement's processing state may not be trusted.
+  pushed announcement messages are in place, their information
+  regarding the announcement's processing state may not be trusted.
   In that case, the overall design of the PKI system must not
-  depend on the Announcements being reliably received and processed
+  depend on the announcements being reliably received and processed
   by their destination.<a href="#section-5-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-5-2.5">
@@ -1647,10 +1647,10 @@ users:<a href="#section-5-1" class="pilcrow">¶</a></p>
   contain sensitive information endangering the security of the PKI
   when intercepted.  However, it might be possible for an
   eavesdropper to utilize the available information to gather
-  confidential technical or business critical information.
+  confidential personal, technical, or business critical information.
   The protection of the confidentiality of CMP messages together with
   an initial authentication of the RA/CA before the first CMP message
-  is transmitted ensures the privacy of the End Entities requesting
+  is transmitted ensures the privacy of the EE requesting
   certificates. Therefore, users of the HTTP transfer for CMP messages
   should consider using HTTP over TLS according to <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> or using virtual
   private networks created, for example, by utilizing Internet
@@ -1787,10 +1787,13 @@ original authors of <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</sp
 <p id="appendix-A-2">From version 07 -&gt; 08:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-3.1">
-          <p id="appendix-A-3.1.1">Addressed SECDIR, OPSDIR and ARTART review comments and also at least partly the HTTPDIR comments<a href="#appendix-A-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-3.1.1">Addressed HTTPDIR, SECDIR, OPSDIR and ARTART review comments<a href="#appendix-A-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-3.2">
-          <p id="appendix-A-3.2.1">Added normative language in Sections 3.3 and 3.7 for clarity<a href="#appendix-A-3.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-3.2.1">Aligned the terminology with https://httpwg.org/admin/editors/style-guide<a href="#appendix-A-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-3.3">
+          <p id="appendix-A-3.3.1">Added normative language in Sections 3.3 and 3.7 for clarity<a href="#appendix-A-3.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-A-4">From version 06 -&gt; 07:<a href="#appendix-A-4" class="pilcrow">¶</a></p>
