@@ -1341,7 +1341,7 @@ messages.<a href="#section-1-12" class="pilcrow">¶</a></p>
         <h3 id="name-changes-made-by-rfc-9480">
 <a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-changes-made-by-rfc-9480" class="section-name selfRef">Changes Made by RFC 9480</a>
         </h3>
-<p id="section-1.1-1"><span><a href="#RFC9480" class="internal xref">CMP Updates</a> [<a href="#RFC9480" class="cite xref">RFC9480</a>]</span> updated <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</span>, supporting the PKI
+<p id="section-1.1-1"><span><a href="#RFC9480" class="internal xref">CMP Updates</a> [<a href="#RFC9480" class="cite xref">RFC9480</a>]</span> updated <span><a href="https://rfc-editor.org/rfc/rfc6712#section-3.6" class="relref">Section 3.6</a> of [<a href="#RFC6712" class="cite xref">RFC6712</a>]</span>, supporting the PKI
 management operations specified in the <span><a href="#RFC9483" class="internal xref">Lightweight CMP Profile</a> [<a href="#RFC9483" class="cite xref">RFC9483</a>]</span>, in the following areas:<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1.1-2.1">
@@ -1594,8 +1594,9 @@ reject a message without evaluating the content.<a href="#section-3.8-2" class="
       </h2>
 <p id="section-4-1">Implementers should be aware that other implementations might exist that
 use a different approach for transferring CMP over HTTP.
-Further, implementations based on earlier I-Ds the led to
-<span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</span> might use an unregistered "application/pkixcmp-poll" MIME type.<a href="#section-4-1" class="pilcrow">¶</a></p>
+Further, implementations based on earlier I-Ds that led to
+<span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</span> might use an unregistered "application/pkixcmp-poll" Media Type.
+Conforming implementations <span class="bcp14">MAY</span> handle this type like "application/pkixcmp".<a href="#section-4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-5">
