@@ -76,6 +76,7 @@ informative:
   RFC8446:
   RFC9530:
   RFC9205:
+  RFC9293:
 normative:
   RFC1945:
   RFC8615:
@@ -132,20 +133,20 @@ providing this functionality vanished.  The remaining features CMP
 requires from its transfer protocols are connection and error
 handling.
 
-CMP can benefit from utilizing a reliable transport and it requires connection and error handling
-from the transfer protocol, which is all covered by HTTP.  Additionally,
+CMP can benefit from utilizing a reliable transport as CMP requires connection and error handling
+from the transfer protocol. All theses features are covered by HTTP.  Additionally,
 delayed delivery of CMP response messages may be handled at transfer level,
 regardless of the message contents.  Since {{RFC9480}} extends the polling
 mechanism specified in the second version of [CMP](#RFC4210) to cover
 all types of PKI management transactions, delays detected at application
 level may also be handled within CMP, using pollReq and pollRep messages.
 
-The usage of HTTP for transferring CMP messages exclusively uses the POST
+The usage of HTTP (e.g., HTTP/1.1 as specified in {{RFC9110}} and {{RFC9112}}) for transferring CMP messages exclusively uses the POST
 method for requests, effectively tunneling CMP over HTTP. While this is
 generally considered bad practice (see [BCP 56](#RFC9205) for best current
 practice on building protocols with HTTP) and should not be emulated, there
 are good reasons to do so for transferring CMP.  HTTP is used
-as it is generally easy to implement and it is able to traverse
+as it is generally easy-to-implement and it is able to traverse
 network borders utilizing ubiquitous proxies.  Most importantly, HTTP
 is already commonly used in existing CMP implementations.  Other HTTP
 request methods, such as GET, are not used because PKI management
@@ -157,7 +158,7 @@ capabilities.  General problems on the server side, as well as those
 directly caused by the respective request, can be reported to the
 client.
 
-As CMP implements a transaction ID, identifying transactions spanning
+As CMP implements a transaction identification (transactionID), identifying transactions spanning
 over more than just a single request/response pair, the statelessness
 of HTTP is not blocking its usage as the transfer protocol for CMP
 messages.
@@ -165,24 +166,23 @@ messages.
 ## Changes Made by RFC 9480
 {: id="sect-1.1"}
 
-CMP Updates {{RFC9480}} updated {{RFC6712}}, supporting the PKI
-management operations specified in the Lightweight CMP
-Profile {{RFC9483}}, in the following areas:
+[CMP Updates ](#RFC9480) updated {{RFC6712}}, supporting the PKI
+management operations specified in the [Lightweight CMP Profile](#RFC9483), in the following areas:
 
 
 * Introduce the HTTP URI path prefix '/.well-known/cmp'.
 
-* Add options for extending the URI structure with further segments and to
-  this end define a new protocol registry group.
+* Add options for extending the URI structure with further segments and
+  define a new protocol registry group to that aim.
 
 
 ## Changes Made by This Document
 {: id="sect-1.2"}
 
-This document obsoletes [RFC 6712](#RFC6712).
-It includes the changes specified by CMP Updates {{RFC9480}} Section 3 as
-described in {{sect-1.1}} and added detail on providing the
-"Content-Length" header field in {{sect-3.4}}.
+This document obsoletes {{RFC6712}}.
+It includes the changes specified in {{Section 3 of RFC9480}} as
+described in {{sect-1.1}} of this document and adds detail on providing the
+"Content-Length" header field in {{sect-3.4}} below.
 
 
 
@@ -193,7 +193,7 @@ described in {{sect-1.1}} and added detail on providing the
 # HTTP-Based Protocol {#sect-3}
 
 For direct interaction between two entities, where a reliable
-transport protocol like TCP is available, HTTP SHOULD be utilized for
+transport protocol like [TCP](#RFC9293) is available, HTTP SHOULD be utilized for
 conveying CMP messages.
 
 ## HTTP Versions
@@ -212,7 +212,7 @@ pair more efficiently, see {{Section 9.3 of RFC9112}} for persistent connections
 ## Persistent Connections
 {: id="sect-3.2"}
 
-HTTP persistent connections {{Section 9.3 of RFC9112}} allow multiple interactions to
+HTTP persistent connections ({{Section 9.3 of RFC9112}}) allow multiple interactions to
 take place on the same HTTP connection.  However, neither HTTP nor
 the protocol specified in this document are designed to correlate
 messages on the same connection in any meaningful way; persistent
@@ -229,7 +229,7 @@ in isolation.
 ## General Form
 {: id="sect-3.3"}
 
-A DER-encoded {{ITU.X690.1994}} PKIMessage {{I-D.ietf-lamps-rfc4210bis}} MUST be sent as the
+A DER-encoded {{ITU.X690.1994}} PKIMessage ({{Section 5.1 of I-D.ietf-lamps-rfc4210bis}}) MUST be sent as the
 content of an HTTP POST request.  If this HTTP request is
 successful, the server returns the CMP response in the content of the
 HTTP response.  The HTTP response status code in this case MUST be
@@ -289,7 +289,7 @@ MUST support the use of the path prefix '/.well-known/' as defined in
 {{RFC8615}} and the registered name 'cmp' to ease interworking
 in a multi-vendor environment.
 
-The CMP client needs to be configured with sufficient information to form
+CMP clients have to be configured with sufficient information to form
 the CMP server URI.  This is at least the authority portion of the URI, e.g.,
 'www.example.com:80', or the full operation path segment of the PKI management
 entity. Additionally, path segments MAY be added after the registered
@@ -298,7 +298,7 @@ The path segment 'p' followed by an arbitraryLabel \<name> could, for example,
 support the differentiation of specific CAs or certificate profiles. Further
 path segments, e.g., as specified in the Lightweight CMP Profile {{RFC9483}},
 could indicate PKI management operations using an operationLabel \<operation>.
-A valid, full CMP URI can look like this:
+The following list examples of valid full CMP URIs:
 
 
 
@@ -374,7 +374,7 @@ when a problem occurs.
 ## HTTP Considerations
 {: id="sect-3.8"}
 
-While all defined features of the HTTP protocol are available to
+While all defined features of the HTTP are available to
 implementations, they should keep the protocol utilization as simple
 as possible.  For example, there is no benefit in using chunked
 Transfer-Encoding, as the length of an ASN.1 sequence is known when
@@ -391,11 +391,10 @@ reject a message without evaluating the content.
 
 # Implementation Considerations {#sect-4}
 
-Implementers should be aware that implementations might exist that
+Implementers should be aware that other implementations might exist that
 use a different approach for transferring CMP over HTTP.
-Further, implementations based on earlier drafts of
-[RFC 6712](#RFC6712) might use an unregistered
-"application/pkixcmp-poll" MIME type.
+Further, implementations based on earlier I-Ds the led to
+{{RFC6712}} might use an unregistered "application/pkixcmp-poll" MIME type.
 
 # Security Considerations {#sect-5}
 
@@ -414,8 +413,8 @@ users:
 1. Without being encapsulated in effective security protocols, such
   as Transport Layer Security (TLS) {{RFC5246}} or {{RFC8446}}, or
   without using HTTP digest {{RFC9530}} there is no
-  integrity protection at the HTTP protocol level.  Therefore,
-  information from the HTTP protocol should not be used to change
+  integrity protection at the HTTP level.  Therefore,
+  information from the HTTP should not be used to change
   state of the transaction, regardless of whether any mechanism was
   used to ensure the authenticity or integrity of HTTP messages
   (e.g., TLS or HTTP digests).
@@ -461,10 +460,10 @@ updates.
 
 # Acknowledgments {#sect-7}
 
-The authors of this document wish to thank Tomi Kause and Martin Peylo, the
+The authors wish to thank Tomi Kause and Martin Peylo, the
 original authors of {{RFC6712}}, for their work.
 
-We also thank all reviewers of this document for their valuable feedback.
+We also thank all reviewers for their valuable feedback.
 
 
 --- back
@@ -479,6 +478,8 @@ From version 07 -> 08:
 * Addressed HTTPDIR, SECDIR, OPSDIR and ARTART review comments
 
 * Aligned the terminology with https://httpwg.org/admin/editors/style-guide
+
+* Implemented editorial changes proposed by OPSDIR reviewer
 
 * Added normative language in Sections 3.3 and 3.7 for clarity
 
