@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 6 May 2025                                              J. Gray
+Expires: 7 May 2025                                              J. Gray
                                                                  Entrust
-                                                         2 November 2024
+                                                         3 November 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 May 2025.
+   This Internet-Draft will expire on 7 May 2025.
 
 Copyright Notice
 
@@ -129,21 +129,22 @@ Table of Contents
    remaining features CMP requires from its transfer protocols are
    connection and error handling.
 
-   CMP can benefit from utilizing a reliable transport and it requires
-   connection and error handling from the transfer protocol, which is
-   all covered by HTTP.  Additionally, delayed delivery of CMP response
-   messages may be handled at transfer level, regardless of the message
-   contents.  Since [RFC9480] extends the polling mechanism specified in
-   the second version of CMP [RFC4210] to cover all types of PKI
-   management transactions, delays detected at application level may
-   also be handled within CMP, using pollReq and pollRep messages.
+   CMP can benefit from utilizing a reliable transport as CMP requires
+   connection and error handling from the transfer protocol.  All theses
+   features are covered by HTTP.  Additionally, delayed delivery of CMP
+   response messages may be handled at transfer level, regardless of the
+   message contents.  Since [RFC9480] extends the polling mechanism
+   specified in the second version of CMP [RFC4210] to cover all types
+   of PKI management transactions, delays detected at application level
+   may also be handled within CMP, using pollReq and pollRep messages.
 
-   The usage of HTTP for transferring CMP messages exclusively uses the
-   POST method for requests, effectively tunneling CMP over HTTP.  While
-   this is generally considered bad practice (see BCP 56 [RFC9205] for
-   best current practice on building protocols with HTTP) and should not
-   be emulated, there are good reasons to do so for transferring CMP.
-   HTTP is used as it is generally easy to implement and it is able to
+   The usage of HTTP (e.g., HTTP/1.1 as specified in [RFC9110] and
+   [RFC9112]) for transferring CMP messages exclusively uses the POST
+   method for requests, effectively tunneling CMP over HTTP.  While this
+   is generally considered bad practice (see BCP 56 [RFC9205] for best
+   current practice on building protocols with HTTP) and should not be
+   emulated, there are good reasons to do so for transferring CMP.  HTTP
+   is used as it is generally easy-to-implement and it is able to
    traverse network borders utilizing ubiquitous proxies.  Most
    importantly, HTTP is already commonly used in existing CMP
    implementations.  Other HTTP request methods, such as GET, are not
@@ -156,28 +157,28 @@ Table of Contents
    directly caused by the respective request, can be reported to the
    client.
 
-   As CMP implements a transaction ID, identifying transactions spanning
-   over more than just a single request/response pair, the statelessness
-   of HTTP is not blocking its usage as the transfer protocol for CMP
-   messages.
+   As CMP implements a transaction identification (transactionID),
+   identifying transactions spanning over more than just a single
+   request/response pair, the statelessness of HTTP is not blocking its
+   usage as the transfer protocol for CMP messages.
 
 1.1.  Changes Made by RFC 9480
 
-   CMP Updates [RFC9480] updated [RFC6712], supporting the PKI
-   management operations specified in the Lightweight CMP Profile
-   [RFC9483], in the following areas:
+   CMP Updates [RFC9480] updated RFC6712, supporting the PKI management
+   operations specified in the Lightweight CMP Profile [RFC9483], in the
+   following areas:
 
    *  Introduce the HTTP URI path prefix '/.well-known/cmp'.
 
    *  Add options for extending the URI structure with further segments
-      and to this end define a new protocol registry group.
+      and define a new protocol registry group to that aim.
 
 1.2.  Changes Made by This Document
 
-   This document obsoletes RFC 6712 [RFC6712].  It includes the changes
-   specified by CMP Updates [RFC9480] Section 3 as described in
-   Section 1.1 and added detail on providing the "Content-Length" header
-   field in Section 3.4.
+   This document obsoletes [RFC6712].  It includes the changes specified
+   in Section 3 of [RFC9480] as described in Section 1.1 of this
+   document and adds detail on providing the "Content-Length" header
+   field in Section 3.4 below.
 
 2.  Conventions Used in This Document
 
@@ -190,8 +191,8 @@ Table of Contents
 3.  HTTP-Based Protocol
 
    For direct interaction between two entities, where a reliable
-   transport protocol like TCP is available, HTTP SHOULD be utilized for
-   conveying CMP messages.
+   transport protocol like TCP [RFC9293] is available, HTTP SHOULD be
+   utilized for conveying CMP messages.
 
 3.1.  HTTP Versions
 
@@ -209,31 +210,32 @@ Table of Contents
 
 3.2.  Persistent Connections
 
-   HTTP persistent connections Section 9.3 of [RFC9112] allow multiple
-   interactions to take place on the same HTTP connection.  However,
-   neither HTTP nor the protocol specified in this document are designed
-   to correlate messages on the same connection in any meaningful way;
-   persistent connections are only a performance optimization.  In
-   particular, intermediaries can do things like mix connections from
-   different clients into one upstream connection, terminate persistent
-   connections, and forward requests as non-persistent requests, etc.
-   As such, implementations MUST NOT infer that requests on the same
-   connection come from the same client (e.g., for correlating PKI
-   messages with ongoing transactions); every message is to be evaluated
-   in isolation.
+   HTTP persistent connections specified in Section 9.3 of [RFC9112]
+   allow multiple interactions to take place on the same HTTP
+   connection.  However, neither HTTP nor the protocol specified in this
+   document are designed to correlate messages on the same connection in
+   any meaningful way; persistent connections are only a performance
+   optimization.  In particular, intermediaries can do things like mix
+   connections from different clients into one upstream connection,
+   terminate persistent connections, and forward requests as non-
+   persistent requests, etc.  As such, implementations MUST NOT infer
+   that requests on the same connection come from the same client (e.g.,
+   for correlating PKI messages with ongoing transactions); every
+   message is to be evaluated in isolation.
 
 3.3.  General Form
 
-   A DER-encoded [ITU.X690.1994] PKIMessage [I-D.ietf-lamps-rfc4210bis]
-   MUST be sent as the content of an HTTP POST request.  If this HTTP
-   request is successful, the server returns the CMP response in the
-   content of the HTTP response.  The HTTP response status code in this
-   case MUST be 200 (OK) status code; other Successful 2xx status codes
-   MUST NOT be used for this purpose.  HTTP responses to pushed CMP
-   announcement messages (i.e., CA Certificate Announcement, Certificate
-   Announcement, Revocation Announcement, and Certificate Revocation
-   List (CRL) Announcement) utilize the status codes 201 and 202 to
-   identify whether the received information was processed.
+   A DER-encoded [ITU.X690.1994] PKIMessage (Section 5.1 of
+   [I-D.ietf-lamps-rfc4210bis]) MUST be sent as the content of an HTTP
+   POST request.  If this HTTP request is successful, the server returns
+   the CMP response in the content of the HTTP response.  The HTTP
+   response status code in this case MUST be 200 (OK) status code; other
+   Successful 2xx status codes MUST NOT be used for this purpose.  HTTP
+   responses to pushed CMP announcement messages (i.e., CA Certificate
+   Announcement, Certificate Announcement, Revocation Announcement, and
+   Certificate Revocation List (CRL) Announcement) utilize the status
+   codes 201 and 202 to identify whether the received information was
+   processed.
 
    While Redirection 3xx status codes MAY be supported by
    implementations, clients should only be enabled to automatically
@@ -278,18 +280,18 @@ Table of Contents
    defined in [RFC8615] and the registered name 'cmp' to ease
    interworking in a multi-vendor environment.
 
-   The CMP client needs to be configured with sufficient information to
-   form the CMP server URI.  This is at least the authority portion of
-   the URI, e.g., 'www.example.com:80', or the full operation path
-   segment of the PKI management entity.  Additionally, path segments
-   MAY be added after the registered application name as part of the
-   full operation path to provide further distinction.  The path segment
-   'p' followed by an arbitraryLabel <name> could, for example, support
-   the differentiation of specific CAs or certificate profiles.  Further
+   CMP clients have to be configured with sufficient information to form
+   the CMP server URI.  This is at least the authority portion of the
+   URI, e.g., 'www.example.com:80', or the full operation path segment
+   of the PKI management entity.  Additionally, path segments MAY be
+   added after the registered application name as part of the full
+   operation path to provide further distinction.  The path segment 'p'
+   followed by an arbitraryLabel <name> could, for example, support the
+   differentiation of specific CAs or certificate profiles.  Further
    path segments, e.g., as specified in the Lightweight CMP Profile
    [RFC9483], could indicate PKI management operations using an
-   operationLabel <operation>.  A valid, full CMP URI can look like
-   this:
+   operationLabel <operation>.  The following list examples of valid
+   full CMP URIs:
 
       http://www.example.com/.well-known/cmp
 
@@ -356,7 +358,7 @@ Table of Contents
 
 3.8.  HTTP Considerations
 
-   While all defined features of the HTTP protocol are available to
+   While all defined features of the HTTP are available to
    implementations, they should keep the protocol utilization as simple
    as possible.  For example, there is no benefit in using chunked
    Transfer-Encoding, as the length of an ASN.1 sequence is known when
@@ -371,10 +373,10 @@ Table of Contents
 
 4.  Implementation Considerations
 
-   Implementers should be aware that implementations might exist that
-   use a different approach for transferring CMP over HTTP.  Further,
-   implementations based on earlier drafts of RFC 6712 [RFC6712] might
-   use an unregistered "application/pkixcmp-poll" MIME type.
+   Implementers should be aware that other implementations might exist
+   that use a different approach for transferring CMP over HTTP.
+   Further, implementations based on earlier I-Ds the led to [RFC6712]
+   might use an unregistered "application/pkixcmp-poll" MIME type.
 
 5.  Security Considerations
 
@@ -392,11 +394,11 @@ Table of Contents
    2.  Without being encapsulated in effective security protocols, such
        as Transport Layer Security (TLS) [RFC5246] or [RFC8446], or
        without using HTTP digest [RFC9530] there is no integrity
-       protection at the HTTP protocol level.  Therefore, information
-       from the HTTP protocol should not be used to change state of the
-       transaction, regardless of whether any mechanism was used to
-       ensure the authenticity or integrity of HTTP messages (e.g., TLS
-       or HTTP digests).
+       protection at the HTTP level.  Therefore, information from the
+       HTTP should not be used to change state of the transaction,
+       regardless of whether any mechanism was used to ensure the
+       authenticity or integrity of HTTP messages (e.g., TLS or HTTP
+       digests).
 
    3.  Client users should be aware that storing the target location of
        an HTTP response with the 301 (Moved Permanently) status code
@@ -445,11 +447,10 @@ Table of Contents
 
 7.  Acknowledgments
 
-   The authors of this document wish to thank Tomi Kause and Martin
-   Peylo, the original authors of [RFC6712], for their work.
+   The authors wish to thank Tomi Kause and Martin Peylo, the original
+   authors of [RFC6712], for their work.
 
-   We also thank all reviewers of this document for their valuable
-   feedback.
+   We also thank all reviewers for their valuable feedback.
 
 8.  References
 
@@ -548,6 +549,10 @@ Table of Contents
               RFC 9205, DOI 10.17487/RFC9205, June 2022,
               <https://www.rfc-editor.org/rfc/rfc9205>.
 
+   [RFC9293]  Eddy, W., Ed., "Transmission Control Protocol (TCP)",
+              STD 7, RFC 9293, DOI 10.17487/RFC9293, August 2022,
+              <https://www.rfc-editor.org/rfc/rfc9293>.
+
 Appendix A.  History of Changes
 
    Note: This appendix will be deleted in the final version of the
@@ -559,6 +564,8 @@ Appendix A.  History of Changes
 
    *  Aligned the terminology with https://httpwg.org/admin/editors/
       style-guide
+
+   *  Implemented editorial changes proposed by OPSDIR reviewer
 
    *  Added normative language in Sections 3.3 and 3.7 for clarity
 
