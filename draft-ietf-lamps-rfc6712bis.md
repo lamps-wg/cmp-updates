@@ -166,7 +166,7 @@ messages.
 ## Changes Made by RFC 9480
 {: id="sect-1.1"}
 
-[CMP Updates ](#RFC9480) updated {{RFC6712}}, supporting the PKI
+[CMP Updates](#RFC9480) updated {{Section 3.6 of RFC6712}}, supporting the PKI
 management operations specified in the [Lightweight CMP Profile](#RFC9483), in the following areas:
 
 
@@ -393,8 +393,9 @@ reject a message without evaluating the content.
 
 Implementers should be aware that other implementations might exist that
 use a different approach for transferring CMP over HTTP.
-Further, implementations based on earlier I-Ds the led to
-{{RFC6712}} might use an unregistered "application/pkixcmp-poll" MIME type.
+Further, implementations based on earlier I-Ds that led to
+{{RFC6712}} might use an unregistered "application/pkixcmp-poll" Media Type.
+Conforming implementations MAY handle this type like "application/pkixcmp".
 
 # Security Considerations {#sect-5}
 
