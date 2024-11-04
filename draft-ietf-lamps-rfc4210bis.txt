@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 7 May 2025                                              Entrust
-                                                         3 November 2024
+Expires: 8 May 2025                                              Entrust
+                                                         4 November 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 May 2025.
+   This Internet-Draft will expire on 8 May 2025.
 
 Copyright Notice
 
@@ -4248,11 +4248,11 @@ Table of Contents
    [I-D.ietf-lamps-kyber-certificates]
               Turner, S., Kampanakis, P., Massimo, J., and B.
               Westerbaan, "Internet X.509 Public Key Infrastructure -
-              Algorithm Identifiers for Module-Lattice-Based Key-
+              Algorithm Identifiers for the Module-Lattice-Based Key-
               Encapsulation Mechanism (ML-KEM)", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-kyber-certificates-04, 20
-              September 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lamps-kyber-certificates-04>.
+              Internet-Draft, draft-ietf-lamps-kyber-certificates-05, 3
+              November 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lamps-kyber-certificates-05>.
 
    [NIST.SP.800_90Ar1]
               Barker, E. B., Kelsey, J. M., and NIST, "Recommendation

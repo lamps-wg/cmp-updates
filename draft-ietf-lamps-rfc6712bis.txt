@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 7 May 2025                                              J. Gray
+Expires: 8 May 2025                                              J. Gray
                                                                  Entrust
-                                                         3 November 2024
+                                                         4 November 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 May 2025.
+   This Internet-Draft will expire on 8 May 2025.
 
 Copyright Notice
 
@@ -326,8 +326,8 @@ Table of Contents
    same HTTP Request-URI scheme as defined in Section 3.6.
 
    The following types of PKIMessage are announcements that may be
-   pushed by a CA.  The prefixed numbers reflect ASN.1 numbering of the
-   respective element.
+   pushed by a CA.  The prefixed numbers reflect ASN.1 tags of the
+   PKIBody structure (Section 5.1.2 of [I-D.ietf-lamps-rfc4210bis]).
 
       [15] CA Key Update Announcement
       [16] Certificate Announcement
@@ -404,7 +404,7 @@ Table of Contents
 
    3.  Client users should be aware that storing the target location of
        an HTTP response with the 301 (Moved Permanently) status code
-       could be exploited by a man-in-the-middle attacker trying to
+       could be exploited by an on-path-attacker attacker trying to
        block them permanently from contacting the correct server.
 
    4.  If no measures to authenticate and protect the HTTP responses to
