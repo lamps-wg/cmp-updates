@@ -338,8 +338,7 @@ services.  Those services listen for incoming messages, utilizing the
 same HTTP Request-URI scheme as defined in {{sect-3.6}}.
 
 The following types of PKIMessage are announcements that may be pushed by a
-CA.  The prefixed numbers reflect ASN.1 numbering of the respective
-element.
+CA.  The prefixed numbers reflect ASN.1 tags of the PKIBody structure ({{Section 5.1.2 of I-D.ietf-lamps-rfc4210bis}}).
 
 ~~~~
    [15] CA Key Update Announcement
@@ -422,7 +421,7 @@ users:
 
 1. Client users should be aware that storing the target location of
   an HTTP response with the 301 (Moved Permanently) status code
-  could be exploited by a man-in-the-middle attacker trying to
+  could be exploited by an on-path-attacker attacker trying to
   block them permanently from contacting the correct server.
 
 1. If no measures to authenticate and protect the HTTP responses to
