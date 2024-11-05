@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 8 May 2025                                              J. Gray
+Expires: 9 May 2025                                              J. Gray
                                                                  Entrust
-                                                         4 November 2024
+                                                         5 November 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 May 2025.
+   This Internet-Draft will expire on 9 May 2025.
 
 Copyright Notice
 
@@ -82,7 +82,6 @@ Table of Contents
      3.5.  Communication Workflow
      3.6.  HTTP Request-URI
      3.7.  Pushing of Announcements
-     3.8.  HTTP Considerations
    4.  Implementation Considerations
    5.  Security Considerations
    6.  IANA Considerations
@@ -177,8 +176,10 @@ Table of Contents
 
    This document obsoletes [RFC6712].  It includes the changes specified
    in Section 3 of [RFC9480] as described in Section 1.1 of this
-   document and adds detail on providing the "Content-Length" header
-   field in Section 3.4 below.
+   document, removed the requirement to support HTTP/1.0 [RFC1945] in
+   accordance with Section 4.1 of [RFC9205] and removed Section 3.8 of
+   [RFC6712] as it contains information redundant with current HTTP
+   specification.
 
 2.  Conventions Used in This Document
 
@@ -196,17 +197,11 @@ Table of Contents
 
 3.1.  HTTP Versions
 
-   Implementations MUST support at least HTTP/1.0 [RFC1945].  This is
-   because the POST method and the "Content-Type" and "Connection: keep-
-   alive" header fields are available since version 1.0.
-
-   Implementations SHOULD support HTTP/1.1 as specified in [RFC9110] and
-   [RFC9112].  This is because the persistent connection was improved
-   with HTTP/1.1 which helps transferring messages in transactions with
-   more than one request/response pair more efficiently, see Section 9.3
-   of [RFC9112] for persistent connections and Appendix C.2.2 of
-   [RFC9112] for interoperability with the Keep-Alive feature in
-   HTTP/1.0.
+   This draft requires uses of the POST method (Section 3.3) and the
+   "Content-Type" header field (Section 3.4) which are available since
+   HTTP/1.0 [RFC1945].  This specification also specifies use of
+   persistent connections (Section 3.2).  This document refers to
+   HTTP/1.1 as specified in [RFC9110] and [RFC9112] for further details.
 
 3.2.  Persistent Connections
 
@@ -231,11 +226,9 @@ Table of Contents
    the CMP response in the content of the HTTP response.  The HTTP
    response status code in this case MUST be 200 (OK) status code; other
    Successful 2xx status codes MUST NOT be used for this purpose.  HTTP
-   responses to pushed CMP announcement messages (i.e., CA Certificate
-   Announcement, Certificate Announcement, Revocation Announcement, and
-   Certificate Revocation List (CRL) Announcement) utilize the status
-   codes 201 and 202 to identify whether the received information was
-   processed.
+   responses to pushed CMP announcement messages described in
+   Section 3.7 utilize the status codes 201 and 202 to identify whether
+   the received information was processed.
 
    While Redirection 3xx status codes MAY be supported by
    implementations, clients should only be enabled to automatically
@@ -250,13 +243,6 @@ Table of Contents
 
    The Internet Media Type "application/pkixcmp" MUST be set in the HTTP
    "Content-Type" header field when conveying a PKIMessage.
-
-   Note that the PKIMessage type is used also when sending an
-   announcement message.
-
-   In line with Section 8.6 of [RFC9110], the "Content-Length" header
-   field should be provided whenever a PKIMessage is sent, giving the
-   length of the ASN.1 DER-encoded PKIMessage.
 
 3.5.  Communication Workflow
 
@@ -356,21 +342,6 @@ Table of Contents
    A receiver MUST answer with a suitable 4xx or 5xx error code when a
    problem occurs.
 
-3.8.  HTTP Considerations
-
-   While all defined features of the HTTP are available to
-   implementations, they should keep the protocol utilization as simple
-   as possible.  For example, there is no benefit in using chunked
-   Transfer-Encoding, as the length of an ASN.1 sequence is known when
-   starting to send it.
-
-   There is no need for the clients to send an "Expect" request header
-   field with the "100-continue" expectation and wait for a 100
-   (Continue) status code as described in Section 10.1.1 of [RFC9112].
-   The CMP content sent by a client is relatively small, so having extra
-   messages exchanged is inefficient, as the server will only seldom
-   reject a message without evaluating the content.
-
 4.  Implementation Considerations
 
    Implementers should be aware that other implementations might exist
@@ -425,9 +396,9 @@ Table of Contents
        before the first CMP message is transmitted ensures the privacy
        of the EE requesting certificates.  Therefore, users of the HTTP
        transfer for CMP messages should consider using HTTP over TLS
-       according to [RFC9110] and [RFC9112] or using virtual private
-       networks created, for example, by utilizing Internet Protocol
-       Security according to [RFC7296].
+       according to [RFC9110] or using virtual private networks created,
+       for example, by utilizing Internet Protocol Security according to
+       [RFC7296].
 
 6.  IANA Considerations
 
@@ -569,7 +540,12 @@ Appendix A.  History of Changes
 
    *  Implemented editorial changes proposed by OPSDIR reviewer
 
+   *  Removed requirement to support HTTP/1.0
+
    *  Added normative language in Sections 3.3 and 3.7 for clarity
+
+   *  Removed the paragraph on the "Content-Length" header field and
+      Section 3.8 to reduce redundancy with current versions HTTP/1.1
 
    From version 06 -> 07:
 

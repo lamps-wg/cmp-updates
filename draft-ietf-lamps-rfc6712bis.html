@@ -1092,7 +1092,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 8 May 2025</td>
+<td class="center">Expires 9 May 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1108,12 +1108,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc6712%209480" class="eref">6712 9480</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-11-04" class="published">4 November 2024</time>
+<time datetime="2024-11-05" class="published">5 November 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-05-08">8 May 2025</time></dd>
+<dd class="expires"><time datetime="2025-05-09">9 May 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1175,7 +1175,7 @@ RFC 9480.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 8 May 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 9 May 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1241,9 +1241,6 @@ RFC 9480.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.7">
                 <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="auto internal xref">3.7</a>.  <a href="#name-pushing-of-announcements" class="internal xref">Pushing of Announcements</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.8">
-                <p id="section-toc.1-1.3.2.8.1"><a href="#section-3.8" class="auto internal xref">3.8</a>.  <a href="#name-http-considerations" class="internal xref">HTTP Considerations</a></p>
 </li>
             </ul>
 </li>
@@ -1361,8 +1358,7 @@ define a new protocol registry group to that aim.<a href="#section-1.1-2.2.1" cl
         </h3>
 <p id="section-1.2-1">This document obsoletes <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</span>.
 It includes the changes specified in <span><a href="https://rfc-editor.org/rfc/rfc9480#section-3" class="relref">Section 3</a> of [<a href="#RFC9480" class="cite xref">RFC9480</a>]</span> as
-described in <a href="#sect-1.1" class="auto internal xref">Section 1.1</a> of this document and adds detail on providing the
-"Content-Length" header field in <a href="#sect-3.4" class="auto internal xref">Section 3.4</a> below.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+described in <a href="#sect-1.1" class="auto internal xref">Section 1.1</a> of this document, removed the requirement to support HTTP/1.0 <span>[<a href="#RFC1945" class="cite xref">RFC1945</a>]</span> in accordance with <span><a href="https://rfc-editor.org/rfc/rfc9205#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC9205" class="cite xref">RFC9205</a>]</span> and removed <span><a href="https://rfc-editor.org/rfc/rfc6712#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC6712" class="cite xref">RFC6712</a>]</span> as it contains information redundant with current HTTP specification.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1391,13 +1387,7 @@ conveying CMP messages.<a href="#section-3-1" class="pilcrow">¶</a></p>
         <h3 id="name-http-versions">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-http-versions" class="section-name selfRef">HTTP Versions</a>
         </h3>
-<p id="section-3.1-1">Implementations <span class="bcp14">MUST</span> support at least HTTP/1.0 <span>[<a href="#RFC1945" class="cite xref">RFC1945</a>]</span>. This is because
-the POST method and the "Content-Type" and "Connection: keep-alive" header fields are available since
-version 1.0.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">Implementations <span class="bcp14">SHOULD</span> support HTTP/1.1 as specified in <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>. This is because the
-persistent connection was improved with HTTP/1.1 which helps
-transferring messages in transactions with more than one request/response
-pair more efficiently, see <span><a href="https://rfc-editor.org/rfc/rfc9112#section-9.3" class="relref">Section 9.3</a> of [<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> for persistent connections and <span><a href="https://rfc-editor.org/rfc/rfc9112#appendix-C.2.2" class="relref">Appendix C.2.2</a> of [<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> for interoperability with the Keep-Alive feature in HTTP/1.0.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">This draft requires uses of the POST method (<a href="#sect-3.3" class="auto internal xref">Section 3.3</a>) and the "Content-Type" header field (<a href="#sect-3.4" class="auto internal xref">Section 3.4</a>) which are available since HTTP/1.0 <span>[<a href="#RFC1945" class="cite xref">RFC1945</a>]</span>. This specification also specifies use of persistent connections (<a href="#sect-3.2" class="auto internal xref">Section 3.2</a>). This document refers to HTTP/1.1 as specified in <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> for further details.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-3.2">
@@ -1429,9 +1419,7 @@ content of an HTTP POST request.  If this HTTP request is
 successful, the server returns the CMP response in the content of the
 HTTP response.  The HTTP response status code in this case <span class="bcp14">MUST</span> be
 200 (OK) status code; other Successful 2xx status codes <span class="bcp14">MUST NOT</span> be used for this purpose.
-HTTP responses to pushed CMP announcement messages (i.e., CA
-Certificate Announcement, Certificate Announcement, Revocation
-Announcement, and Certificate Revocation List (CRL) Announcement)
+HTTP responses to pushed CMP announcement messages described in <a href="#sect-3.7" class="auto internal xref">Section 3.7</a>
 utilize the status codes 201 and 202 to identify whether the received
 information was processed.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2">While Redirection 3xx status codes <span class="bcp14">MAY</span> be supported by
@@ -1450,11 +1438,6 @@ could be misused for permanent denial of service.<a href="#section-3.3-2" class=
         </h3>
 <p id="section-3.4-1">The Internet Media Type "application/pkixcmp" <span class="bcp14">MUST</span> be set in the HTTP
 "Content-Type" header field when conveying a PKIMessage.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.4-2">Note that the PKIMessage type is used also when sending an announcement
-message.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.4-3">In line with <span><a href="https://rfc-editor.org/rfc/rfc9110#section-8.6" class="relref">Section 8.6</a> of [<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, the "Content-Length" header
-field should be provided whenever a PKIMessage is sent, giving the
-length of the ASN.1 DER-encoded PKIMessage.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-3.5">
@@ -1566,24 +1549,6 @@ between consecutive attempts should be carefully considered.<a href="#section-3.
 when a problem occurs.<a href="#section-3.7-10" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sect-3.8">
-<section id="section-3.8">
-        <h3 id="name-http-considerations">
-<a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-http-considerations" class="section-name selfRef">HTTP Considerations</a>
-        </h3>
-<p id="section-3.8-1">While all defined features of the HTTP are available to
-implementations, they should keep the protocol utilization as simple
-as possible.  For example, there is no benefit in using chunked
-Transfer-Encoding, as the length of an ASN.1 sequence is known when
-starting to send it.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
-<p id="section-3.8-2">There is no need for the clients to send an "Expect" request header
-field with the "100-continue" expectation and wait for a 100 (Continue) status code
-as described in <span><a href="https://rfc-editor.org/rfc/rfc9112#section-10.1.1" class="relref">Section 10.1.1</a> of [<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>.  The CMP
-content sent by a client is relatively small, so having extra
-messages exchanged is inefficient, as the server will only seldom
-reject a message without evaluating the content.<a href="#section-3.8-2" class="pilcrow">¶</a></p>
-</section>
-</div>
 </section>
 </div>
 <div id="sect-4">
@@ -1650,7 +1615,7 @@ users:<a href="#section-5-1" class="pilcrow">¶</a></p>
   an initial authentication of the RA/CA before the first CMP message
   is transmitted ensures the privacy of the EE requesting
   certificates. Therefore, users of the HTTP transfer for CMP messages
-  should consider using HTTP over TLS according to <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> and <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> or using virtual
+  should consider using HTTP over TLS according to <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span> or using virtual
   private networks created, for example, by utilizing Internet
   Protocol Security according to <span>[<a href="#RFC7296" class="cite xref">RFC7296</a>]</span>.<a href="#section-5-2.5.1" class="pilcrow">¶</a></p>
 </li>
@@ -1798,7 +1763,13 @@ original authors of <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</sp
           <p id="appendix-A-3.3.1">Implemented editorial changes proposed by OPSDIR reviewer<a href="#appendix-A-3.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-3.4">
-          <p id="appendix-A-3.4.1">Added normative language in Sections 3.3 and 3.7 for clarity<a href="#appendix-A-3.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-3.4.1">Removed requirement to support HTTP/1.0<a href="#appendix-A-3.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-3.5">
+          <p id="appendix-A-3.5.1">Added normative language in Sections 3.3 and 3.7 for clarity<a href="#appendix-A-3.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-3.6">
+          <p id="appendix-A-3.6.1">Removed the paragraph on the "Content-Length" header field and Section 3.8 to reduce redundancy with current versions HTTP/1.1<a href="#appendix-A-3.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-A-4">From version 06 -&gt; 07:<a href="#appendix-A-4" class="pilcrow">¶</a></p>
