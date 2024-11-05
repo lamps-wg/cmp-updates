@@ -422,7 +422,7 @@ users:
 
 1. Client users should be aware that storing the target location of
   an HTTP response with the 301 (Moved Permanently) status code
-  could be exploited by an on-path-attacker attacker trying to
+  could be exploited by an on-path-attacker trying to
   block them permanently from contacting the correct server.
 
 1. If no measures to authenticate and protect the HTTP responses to
