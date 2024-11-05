@@ -181,8 +181,7 @@ management operations specified in the [Lightweight CMP Profile](#RFC9483), in t
 
 This document obsoletes {{RFC6712}}.
 It includes the changes specified in {{Section 3 of RFC9480}} as
-described in {{sect-1.1}} of this document and adds detail on providing the
-"Content-Length" header field in {{sect-3.4}} below.
+described in {{sect-1.1}} of this document, removed the requirement to support HTTP/1.0 {{RFC1945}} in accordance with {{Section 4.1 of RFC9205}} and removed {{Section 3.8 of RFC6712}} as it contains information redundant with current HTTP specification.
 
 
 
@@ -199,14 +198,16 @@ conveying CMP messages.
 ## HTTP Versions
 {: id="sect-3.1"}
 
-Implementations MUST support at least HTTP/1.0 {{RFC1945}}. This is because
+This draft requires uses of the POST method ({{sect-3.3}}) and the "Content-Type" header field ({{sect-3.4}}) which are available since HTTP/1.0 {{RFC1945}}. This specification also specifies use of persistent connections ({{sect-3.2}}). This document refers to HTTP/1.1 as specified in {{RFC9110}} and {{RFC9112}} for further details.
+
+<!-- Implementations MUST support at least HTTP/1.0 {{RFC1945}}. This is because
 the POST method and the "Content-Type" and "Connection: keep-alive" header fields are available since
 version 1.0.
 
 Implementations SHOULD support HTTP/1.1 as specified in {{RFC9110}} and {{RFC9112}}. This is because the
 persistent connection was improved with HTTP/1.1 which helps
 transferring messages in transactions with more than one request/response
-pair more efficiently, see {{Section 9.3 of RFC9112}} for persistent connections and {{Appendix C.2.2 of RFC9112}} for interoperability with the Keep-Alive feature in HTTP/1.0.
+pair more efficiently, see {{Section 9.3 of RFC9112}} for persistent connections and {{Appendix C.2.2 of RFC9112}} for interoperability with the Keep-Alive feature in HTTP/1.0. -->
 
 
 ## Persistent Connections
@@ -234,9 +235,7 @@ content of an HTTP POST request.  If this HTTP request is
 successful, the server returns the CMP response in the content of the
 HTTP response.  The HTTP response status code in this case MUST be
 200 (OK) status code; other Successful 2xx status codes MUST NOT be used for this purpose.
-HTTP responses to pushed CMP announcement messages (i.e., CA
-Certificate Announcement, Certificate Announcement, Revocation
-Announcement, and Certificate Revocation List (CRL) Announcement)
+HTTP responses to pushed CMP announcement messages described in {{sect-3.7}}
 utilize the status codes 201 and 202 to identify whether the received
 information was processed.
 
@@ -246,8 +245,10 @@ follow them after careful consideration of possible security
 implications.  As described in {{sect-5}}, 301 (Moved Permanently) status code
 could be misused for permanent denial of service.
 
+<!-- Implementations SHOULD use CMP Status Codes and Failure Information according to {{Section 5.2.3 of I-D.draft-ietf-lamps-rfc4210bis}} for error handling. -->
 All applicable Client Error 4xx or Server Error 5xx status codes
 MAY be used to inform the client about errors.
+<!-- Any content contained in such response message SHOULD be provided to the CMP application. -->
 
 
 ## Header Fields
@@ -256,12 +257,12 @@ MAY be used to inform the client about errors.
 The Internet Media Type "application/pkixcmp" MUST be set in the HTTP
 "Content-Type" header field when conveying a PKIMessage.
 
-Note that the PKIMessage type is used also when sending an announcement
+<!-- Note that the PKIMessage type is used also when sending an announcement
 message.
 
 In line with {{Section 8.6 of RFC9110}}, the "Content-Length" header
 field should be provided whenever a PKIMessage is sent, giving the
-length of the ASN.1 DER-encoded PKIMessage.
+length of the ASN.1 DER-encoded PKIMessage. -->
 
 
 ## Communication Workflow
@@ -370,7 +371,7 @@ A receiver MUST answer with a suitable 4xx or 5xx error code
 when a problem occurs.
 
 
-## HTTP Considerations
+<!-- ## HTTP Considerations
 {: id="sect-3.8"}
 
 While all defined features of the HTTP are available to
@@ -384,7 +385,7 @@ field with the "100-continue" expectation and wait for a 100 (Continue) status c
 as described in {{Section 10.1.1 of RFC9112}}.  The CMP
 content sent by a client is relatively small, so having extra
 messages exchanged is inefficient, as the server will only seldom
-reject a message without evaluating the content.
+reject a message without evaluating the content. -->
 
 
 
@@ -441,7 +442,7 @@ users:
   an initial authentication of the RA/CA before the first CMP message
   is transmitted ensures the privacy of the EE requesting
   certificates. Therefore, users of the HTTP transfer for CMP messages
-  should consider using HTTP over TLS according to {{RFC9110}} and {{RFC9112}} or using virtual
+  should consider using HTTP over TLS according to {{RFC9110}} or using virtual
   private networks created, for example, by utilizing Internet
   Protocol Security according to {{RFC7296}}.
 
@@ -481,7 +482,12 @@ From version 07 -> 08:
 
 * Implemented editorial changes proposed by OPSDIR reviewer
 
+* Removed requirement to support HTTP/1.0
+
 * Added normative language in Sections 3.3 and 3.7 for clarity
+
+* Removed the paragraph on the "Content-Length" header field and Section 3.8 to reduce redundancy with current versions HTTP/1.1
+
 
 From version 06 -> 07:
 
