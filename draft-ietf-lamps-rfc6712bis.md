@@ -248,7 +248,7 @@ could be misused for permanent denial of service.
 <!-- Implementations SHOULD use CMP Status Codes and Failure Information according to {{Section 5.2.3 of I-D.draft-ietf-lamps-rfc4210bis}} for error handling. -->
 All applicable Client Error 4xx or Server Error 5xx status codes
 MAY be used to inform the client about errors.
-<!-- Any content contained in such response message SHOULD be provided to the CMP application. -->
+<!-- Any content contained in such response message SHOULD be provided by the client to the CMP application. -->
 
 
 ## Header Fields
@@ -422,7 +422,7 @@ users:
 
 1. Client users should be aware that storing the target location of
   an HTTP response with the 301 (Moved Permanently) status code
-  could be exploited by an on-path-attacker trying to
+  could be exploited by a meddler-in-the-middle attacker trying to
   block them permanently from contacting the correct server.
 
 1. If no measures to authenticate and protect the HTTP responses to
