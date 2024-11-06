@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 9 May 2025                                              J. Gray
+Expires: 10 May 2025                                             J. Gray
                                                                  Entrust
-                                                         5 November 2024
+                                                         6 November 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 May 2025.
+   This Internet-Draft will expire on 10 May 2025.
 
 Copyright Notice
 
@@ -375,8 +375,8 @@ Table of Contents
 
    3.  Client users should be aware that storing the target location of
        an HTTP response with the 301 (Moved Permanently) status code
-       could be exploited by an on-path-attacker trying to block them
-       permanently from contacting the correct server.
+       could be exploited by a meddler-in-the-middle attacker trying to
+       block them permanently from contacting the correct server.
 
    4.  If no measures to authenticate and protect the HTTP responses to
        pushed announcement messages are in place, their information
