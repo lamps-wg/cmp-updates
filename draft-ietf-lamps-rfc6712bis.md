@@ -245,10 +245,11 @@ follow them after careful consideration of possible security
 implications.  As described in {{sect-5}}, 301 (Moved Permanently) status code
 could be misused for permanent denial of service.
 
-<!-- Implementations SHOULD use CMP Status Codes and Failure Information according to {{Section 5.2.3 of I-D.draft-ietf-lamps-rfc4210bis}} for error handling. -->
 All applicable Client Error 4xx or Server Error 5xx status codes
-MAY be used to inform the client about errors.
-<!-- Any content contained in such response message SHOULD be provided by the client to the CMP application. -->
+MAY be used to inform the client about errors. Note that whenever
+a client receives an HTTP response with a status code in the 2xx,
+4xx, or 5xx ranges, it needs to support handling response message
+content containing a CMP response PKIMessage.
 
 
 ## Header Fields
