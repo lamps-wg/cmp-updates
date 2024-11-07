@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 10 May 2025                                             J. Gray
+Expires: 11 May 2025                                             J. Gray
                                                                  Entrust
-                                                         6 November 2024
+                                                         7 November 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 May 2025.
+   This Internet-Draft will expire on 11 May 2025.
 
 Copyright Notice
 
@@ -237,7 +237,10 @@ Table of Contents
    status code could be misused for permanent denial of service.
 
    All applicable Client Error 4xx or Server Error 5xx status codes MAY
-   be used to inform the client about errors.
+   be used to inform the client about errors.  Note that whenever a
+   client receives an HTTP response with a status code in the 2xx, 4xx,
+   or 5xx ranges, it needs to support handling response message content
+   containing a CMP response PKIMessage.
 
 3.4.  Header Fields
 
