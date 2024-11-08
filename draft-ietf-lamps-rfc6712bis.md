@@ -181,7 +181,13 @@ management operations specified in the [Lightweight CMP Profile](#RFC9483), in t
 
 This document obsoletes {{RFC6712}}.
 It includes the changes specified in {{Section 3 of RFC9480}} as
-described in {{sect-1.1}} of this document, removed the requirement to support HTTP/1.0 {{RFC1945}} in accordance with {{Section 4.1 of RFC9205}} and removed {{Section 3.8 of RFC6712}} as it contains information redundant with current HTTP specification.
+described in {{sect-1.1}} of this document. Additionally it adds the following changes:
+
+* Removed the requirement to support HTTP/1.0 {{RFC1945}} in accordance with {{Section 4.1 of RFC9205}}.
+
+* Implementations MUST forward CMP messages when an HTTP error status code occurs, see  {{sect-3.3}}.
+
+* Removed {{Section 3.8 of RFC6712}} as it contains information redundant with current HTTP specification.
 
 
 
@@ -246,9 +252,9 @@ implications.  As described in {{sect-5}}, 301 (Moved Permanently) status code
 could be misused for permanent denial of service.
 
 All applicable Client Error 4xx or Server Error 5xx status codes
-MAY be used to inform the client about errors. Note that whenever
+MAY be used to inform the client about errors. Whenever
 a client receives an HTTP response with a status code in the 2xx,
-4xx, or 5xx ranges, it needs to support handling response message
+4xx, or 5xx ranges, it MUST support handling response message
 content containing a CMP response PKIMessage.
 
 
@@ -486,6 +492,8 @@ From version 07 -> 08:
 * Removed requirement to support HTTP/1.0
 
 * Added normative language in Sections 3.3 and 3.7 for clarity
+
+* Added the requirement to provide any HTTP response message content to the application
 
 * Removed the paragraph on the "Content-Length" header field and Section 3.8 to reduce redundancy with current versions HTTP/1.1
 
