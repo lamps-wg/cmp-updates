@@ -243,10 +243,10 @@ Table of Contents
    status code could be misused for permanent denial of service.
 
    All applicable Client Error 4xx or Server Error 5xx status codes MAY
-   be used to inform the client about errors.  Note that whenever a
-   client receives an HTTP response with a status code in the 2xx, 4xx,
-   or 5xx ranges, it MUST support handling response message content
-   containing a CMP response PKIMessage.
+   be used to inform the client about errors.  Whenever a client
+   receives an HTTP response with a status code in the 2xx, 4xx, or 5xx
+   ranges, it MUST support handling response message content containing
+   a CMP response PKIMessage.
 
 3.4.  Header Fields
 
