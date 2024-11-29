@@ -420,17 +420,22 @@ Conforming implementations MAY handle this type like "application/pkixcmp".
 
 # Security Considerations {#sect-5}
 
-The following aspects need to be considered by implementers and
-users:
+All security considerations in HTTP (#RFC9110) apply.
+The following items need to be considered by implementers and users:
 
 
 1. There is the risk for denial-of-service attacks through resource
+  consumption by opening many connections to an HTTP server. Therefore,
+  idle connections should be terminated after an appropriate timeout; this
+  may also depend on the available free resources.
+
+  <!-- There is the risk for denial-of-service attacks through resource
   consumption by opening many connections to an HTTP server.
   Therefore, idle connections should be terminated after an
   appropriate timeout; this may also depend on the available free
   resources.  After sending a CMP error message with PKIStatus other than "waiting", the server should
   close the connection, even if the CMP transaction is not yet
-  fully completed.
+  fully completed. -->
 
 1. Without being encapsulated in effective security protocols, such
   as Transport Layer Security (TLS) {{RFC5246}} or {{RFC8446}}, or
@@ -513,6 +518,7 @@ From version 07 -> 08:
 
 * Removed the paragraph on the "Content-Length" header field and Section 3.8 to reduce redundancy with current versions HTTP/1.1
 
+* Added reference to HTTP Security Considerations to Section 5 and updated the first item as proposed by HTTPDIR review
 
 From version 06 -> 07:
 
