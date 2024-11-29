@@ -198,18 +198,18 @@ described in {{sect-1.1}} of this document. Additionally it adds the following c
 # HTTP-Based Protocol {#sect-3}
 
 For direct interaction between two entities, where a reliable
-transport protocol like TCP (#RFC9293) is available, HTTP (#RFC9110) SHOULD be
+transport protocol like TCP {{RFC9293}} is available, HTTP {{RFC9110}} SHOULD be
 utilized for conveying CMP messages. This specification requires
 using the POST method (Section 3.1) and the "Content-Type" header
-field (Section 3.2), which are available since HTTP/1.0 (#RFC1945).
+field (Section 3.2), which are available since HTTP/1.0 {{RFC1945}}.
 
 Note: In some situations, CMP requires multiple request/response
 pairs to perform a PKI management operation. Their affiliation
 with a PKI management operation is indicated by a
 transaction identifier in the CMP message header (see transactionID
-described in Section 5.1.1 of (#I-D.ietf-lamps-rfc4210bis)).
+described in Section 5.1.1 of {{I-D.ietf-lamps-rfc4210bis}}).
 For details on how to transfer multiple requests see
-Section 4.11 of (#RFC9205).
+Section 4.11 of {{RFC9205}}.
 
 <!-- For direct interaction between two entities, where a reliable
 transport protocol like [TCP](#RFC9293) is available, HTTP SHOULD be utilized for
@@ -420,7 +420,7 @@ Conforming implementations MAY handle this type like "application/pkixcmp".
 
 # Security Considerations {#sect-5}
 
-All security considerations in HTTP (#RFC9110) apply.
+All security considerations in HTTP {{RFC9110}} apply.
 The following items need to be considered by implementers and users:
 
 
