@@ -185,7 +185,7 @@ described in {{sect-1.1}} of this document. Additionally it adds the following c
 
 * Removed the requirement to support HTTP/1.0 {{RFC1945}} in accordance with {{Section 4.1 of RFC9205}}.
 
-* Implementations MUST forward CMP messages when an HTTP error status code occurs, see  {{sect-3.3}}.
+* Implementations MUST forward CMP messages when an HTTP error status code occurs, see  {{sect-3.1}}.
 
 * Removed {{Section 3.8 of RFC6712}} as it contains information redundant with current HTTP specification.
 
@@ -198,6 +198,20 @@ described in {{sect-1.1}} of this document. Additionally it adds the following c
 # HTTP-Based Protocol {#sect-3}
 
 For direct interaction between two entities, where a reliable
+transport protocol like TCP (#RFC9293) is available, HTTP (#RFC9110) SHOULD be
+utilized for conveying CMP messages. This specification requires
+using the POST method (Section 3.1) and the "Content-Type" header
+field (Section 3.2), which are available since HTTP/1.0 (#RFC1945).
+
+Note: In some situations, CMP requires multiple request/response
+pairs to perform a PKI management operation. Their affiliation
+with a PKI management operation is indicated by a
+transaction identifier in the CMP message header (see transactionID
+described in Section 5.1.1 of (#I-D.ietf-lamps-rfc4210bis)).
+For details on how to transfer multiple requests see
+Section 4.11 of (#RFC9205).
+
+<!-- For direct interaction between two entities, where a reliable
 transport protocol like [TCP](#RFC9293) is available, HTTP SHOULD be utilized for
 conveying CMP messages.
 
@@ -213,7 +227,7 @@ version 1.0.
 Implementations SHOULD support HTTP/1.1 as specified in {{RFC9110}} and {{RFC9112}}. This is because the
 persistent connection was improved with HTTP/1.1 which helps
 transferring messages in transactions with more than one request/response
-pair more efficiently, see {{Section 9.3 of RFC9112}} for persistent connections and {{Appendix C.2.2 of RFC9112}} for interoperability with the Keep-Alive feature in HTTP/1.0. -->
+pair more efficiently, see {{Section 9.3 of RFC9112}} for persistent connections and {{Appendix C.2.2 of RFC9112}} for interoperability with the Keep-Alive feature in HTTP/1.0. --
 
 
 ## Persistent Connections
@@ -230,18 +244,18 @@ connections, and forward requests as non-persistent requests, etc.
 As such, implementations MUST NOT infer that requests on the same
 connection come from the same client (e.g., for correlating PKI
 messages with ongoing transactions); every message is to be evaluated
-in isolation.
+in isolation. -->
 
 
 ## General Form
-{: id="sect-3.3"}
+{: id="sect-3.1"}
 
 A DER-encoded {{ITU.X690.1994}} PKIMessage ({{Section 5.1 of I-D.ietf-lamps-rfc4210bis}}) MUST be sent as the
 content of an HTTP POST request.  If this HTTP request is
 successful, the server returns the CMP response in the content of the
 HTTP response.  The HTTP response status code in this case MUST be
 200 (OK) status code; other Successful 2xx status codes MUST NOT be used for this purpose.
-HTTP responses to pushed CMP announcement messages described in {{sect-3.7}}
+HTTP responses to pushed CMP announcement messages described in {{sect-3.5}}
 utilize the status codes 201 and 202 to identify whether the received
 information was processed.
 
@@ -258,8 +272,8 @@ a client receives an HTTP response with a status code in the 2xx,
 content containing a CMP response PKIMessage.
 
 
-## Header Fields
-{: id="sect-3.4"}
+## Media Type
+{: id="sect-3.2"}
 
 The Internet Media Type "application/pkixcmp" MUST be set in the HTTP
 "Content-Type" header field when conveying a PKIMessage.
@@ -273,12 +287,12 @@ length of the ASN.1 DER-encoded PKIMessage. -->
 
 
 ## Communication Workflow
-{: id="sect-3.5"}
+{: id="sect-3.3"}
 
 In CMP, most communication is initiated by the EEs where every CMP
 request triggers a CMP response message from the CA or RA.
 
-The CMP announcement messages described in {{sect-3.7}} are an
+The CMP announcement messages described in {{sect-3.5}} are an
 exception.  Their creation may be triggered by certain events or done
 on a regular basis by a CA.  The recipient of the announcement only
 replies with an HTTP status code acknowledging the receipt or
@@ -290,7 +304,7 @@ was not successfully delivered to its destination.
 
 
 ## HTTP Request-URI
-{: id="sect-3.6"}
+{: id="sect-3.4"}
 
 Each CMP server on a PKI management entity supporting HTTP or HTTPS transfer
 MUST support the use of the path prefix '/.well-known/' as defined in
@@ -324,7 +338,7 @@ Note that https can also be used instead of http, see [item 5 in the Security Co
 
 
 ## Pushing of Announcements
-{: id="sect-3.7"}
+{: id="sect-3.5"}
 
 A CMP server may create event-triggered announcements or generate
 them on a regular basis.  It MAY utilize HTTP transfer to convey them
@@ -343,7 +357,7 @@ the content of an HTTP POST request.
 Suitable recipients for CMP announcements might, for example, be
 repositories storing the announced information, such as directory
 services.  Those services listen for incoming messages, utilizing the
-same HTTP Request-URI scheme as defined in {{sect-3.6}}.
+same HTTP Request-URI scheme as defined in {{sect-3.4}}.
 
 The following types of PKIMessage are announcements that may be pushed by a
 CA.  The prefixed numbers reflect ASN.1 tags of the PKIBody structure ({{Section 5.1.2 of I-D.ietf-lamps-rfc4210bis}}).
@@ -490,6 +504,8 @@ From version 07 -> 08:
 * Implemented editorial changes proposed by OPSDIR reviewer
 
 * Removed requirement to support HTTP/1.0
+
+* Incorporated relevant text from former Sections 3.1 and 3.2 in the introduction of Section 3 as proposed by HTTPDIR review
 
 * Added normative language in Sections 3.3 and 3.7 for clarity
 
