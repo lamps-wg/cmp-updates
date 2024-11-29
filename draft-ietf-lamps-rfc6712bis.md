@@ -211,41 +211,6 @@ described in Section 5.1.1 of {{I-D.ietf-lamps-rfc4210bis}}).
 For details on how to transfer multiple requests see
 Section 4.11 of {{RFC9205}}.
 
-<!-- For direct interaction between two entities, where a reliable
-transport protocol like [TCP](#RFC9293) is available, HTTP SHOULD be utilized for
-conveying CMP messages.
-
-## HTTP Versions
-{: id="sect-3.1"}
-
-This draft requires uses of the POST method ({{sect-3.3}}) and the "Content-Type" header field ({{sect-3.4}}) which are available since HTTP/1.0 {{RFC1945}}. This specification also specifies use of persistent connections ({{sect-3.2}}). This document refers to HTTP/1.1 as specified in {{RFC9110}} and {{RFC9112}} for further details.
-
-<!-- Implementations MUST support at least HTTP/1.0 {{RFC1945}}. This is because
-the POST method and the "Content-Type" and "Connection: keep-alive" header fields are available since
-version 1.0.
-
-Implementations SHOULD support HTTP/1.1 as specified in {{RFC9110}} and {{RFC9112}}. This is because the
-persistent connection was improved with HTTP/1.1 which helps
-transferring messages in transactions with more than one request/response
-pair more efficiently, see {{Section 9.3 of RFC9112}} for persistent connections and {{Appendix C.2.2 of RFC9112}} for interoperability with the Keep-Alive feature in HTTP/1.0. --
-
-
-## Persistent Connections
-{: id="sect-3.2"}
-
-HTTP persistent connections ({{Section 9.3 of RFC9112}}) allow multiple interactions to
-take place on the same HTTP connection.  However, neither HTTP nor
-the protocol specified in this document are designed to correlate
-messages on the same connection in any meaningful way; persistent
-connections are only a performance optimization.  In particular,
-intermediaries can do things like mix connections from different
-clients into one upstream connection, terminate persistent
-connections, and forward requests as non-persistent requests, etc.
-As such, implementations MUST NOT infer that requests on the same
-connection come from the same client (e.g., for correlating PKI
-messages with ongoing transactions); every message is to be evaluated
-in isolation. -->
-
 
 ## General Form
 {: id="sect-3.1"}
@@ -277,13 +242,6 @@ content containing a CMP response PKIMessage.
 
 The Internet Media Type "application/pkixcmp" MUST be set in the HTTP
 "Content-Type" header field when conveying a PKIMessage.
-
-<!-- Note that the PKIMessage type is used also when sending an announcement
-message.
-
-In line with {{Section 8.6 of RFC9110}}, the "Content-Length" header
-field should be provided whenever a PKIMessage is sent, giving the
-length of the ASN.1 DER-encoded PKIMessage. -->
 
 
 ## Communication Workflow
@@ -392,24 +350,6 @@ A receiver MUST answer with a suitable 4xx or 5xx error code
 when a problem occurs.
 
 
-<!-- ## HTTP Considerations
-{: id="sect-3.8"}
-
-While all defined features of the HTTP are available to
-implementations, they should keep the protocol utilization as simple
-as possible.  For example, there is no benefit in using chunked
-Transfer-Encoding, as the length of an ASN.1 sequence is known when
-starting to send it.
-
-There is no need for the clients to send an "Expect" request header
-field with the "100-continue" expectation and wait for a 100 (Continue) status code
-as described in {{Section 10.1.1 of RFC9112}}.  The CMP
-content sent by a client is relatively small, so having extra
-messages exchanged is inefficient, as the server will only seldom
-reject a message without evaluating the content. -->
-
-
-
 # Implementation Considerations {#sect-4}
 
 Implementers should be aware that other implementations might exist that
@@ -428,14 +368,6 @@ The following items need to be considered by implementers and users:
   consumption by opening many connections to an HTTP server. Therefore,
   idle connections should be terminated after an appropriate timeout; this
   may also depend on the available free resources.
-
-  <!-- There is the risk for denial-of-service attacks through resource
-  consumption by opening many connections to an HTTP server.
-  Therefore, idle connections should be terminated after an
-  appropriate timeout; this may also depend on the available free
-  resources.  After sending a CMP error message with PKIStatus other than "waiting", the server should
-  close the connection, even if the CMP transaction is not yet
-  fully completed. -->
 
 1. Without being encapsulated in effective security protocols, such
   as Transport Layer Security (TLS) {{RFC5246}} or {{RFC8446}}, or
