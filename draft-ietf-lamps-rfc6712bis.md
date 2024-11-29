@@ -431,6 +431,13 @@ We also thank all reviewers for their valuable feedback.
 
 Note: This appendix will be deleted in the final version of the document.
 
+From version 08 -> 09:
+
+
+* Incorporated relevant text from former Sections 3.1 and 3.2 in the introduction of Section 3 as proposed by HTTPDIR review
+
+* Added reference to HTTP Security Considerations to Section 5 and updated the first item as proposed by HTTPDIR review
+
 From version 07 -> 08:
 
 
@@ -442,15 +449,11 @@ From version 07 -> 08:
 
 * Removed requirement to support HTTP/1.0
 
-* Incorporated relevant text from former Sections 3.1 and 3.2 in the introduction of Section 3 as proposed by HTTPDIR review
-
 * Added normative language in Sections 3.3 and 3.7 for clarity
 
 * Added the requirement to provide any HTTP response message content to the application
 
 * Removed the paragraph on the "Content-Length" header field and Section 3.8 to reduce redundancy with current versions HTTP/1.1
-
-* Added reference to HTTP Security Considerations to Section 5 and updated the first item as proposed by HTTPDIR review
 
 From version 06 -> 07:
 
