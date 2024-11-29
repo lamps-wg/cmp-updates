@@ -6,9 +6,9 @@ LAMPS Working Group                                         H. Brockhaus
 Internet-Draft                                             D. von Oheimb
 Obsoletes: 6712 9480 (if approved)                               Siemens
 Intended status: Standards Track                            M. Ounsworth
-Expires: 12 May 2025                                             J. Gray
+Expires: 2 June 2025                                             J. Gray
                                                                  Entrust
-                                                         8 November 2024
+                                                        29 November 2024
 
 
    Internet X.509 Public Key Infrastructure -- HTTP Transfer for the
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 May 2025.
+   This Internet-Draft will expire on 2 June 2025.
 
 Copyright Notice
 
@@ -75,13 +75,11 @@ Table of Contents
      1.2.  Changes Made by This Document
    2.  Conventions Used in This Document
    3.  HTTP-Based Protocol
-     3.1.  HTTP Versions
-     3.2.  Persistent Connections
-     3.3.  General Form
-     3.4.  Header Fields
-     3.5.  Communication Workflow
-     3.6.  HTTP Request-URI
-     3.7.  Pushing of Announcements
+     3.1.  General Form
+     3.2.  Media Type
+     3.3.  Communication Workflow
+     3.4.  HTTP Request-URI
+     3.5.  Pushing of Announcements
    4.  Implementation Considerations
    5.  Security Considerations
    6.  IANA Considerations
@@ -182,7 +180,7 @@ Table of Contents
       accordance with Section 4.1 of [RFC9205].
 
    *  Implementations MUST forward CMP messages when an HTTP error
-      status code occurs, see Section 3.3.
+      status code occurs, see Section 3.1.
 
    *  Removed Section 3.8 of [RFC6712] as it contains information
       redundant with current HTTP specification.
@@ -198,33 +196,20 @@ Table of Contents
 3.  HTTP-Based Protocol
 
    For direct interaction between two entities, where a reliable
-   transport protocol like TCP [RFC9293] is available, HTTP SHOULD be
-   utilized for conveying CMP messages.
+   transport protocol like TCP [RFC9293] is available, HTTP [RFC9110]
+   SHOULD be utilized for conveying CMP messages.  This specification
+   requires using the POST method (Section 3.1) and the "Content-Type"
+   header field (Section 3.2), which are available since HTTP/1.0
+   [RFC1945].
 
-3.1.  HTTP Versions
+   Note: In some situations, CMP requires multiple request/response
+   pairs to perform a PKI management operation.  Their affiliation with
+   a PKI management operation is indicated by a transaction identifier
+   in the CMP message header (see transactionID described in
+   Section 5.1.1 of [I-D.ietf-lamps-rfc4210bis]).  For details on how to
+   transfer multiple requests see Section 4.11 of [RFC9205].
 
-   This draft requires uses of the POST method (Section 3.3) and the
-   "Content-Type" header field (Section 3.4) which are available since
-   HTTP/1.0 [RFC1945].  This specification also specifies use of
-   persistent connections (Section 3.2).  This document refers to
-   HTTP/1.1 as specified in [RFC9110] and [RFC9112] for further details.
-
-3.2.  Persistent Connections
-
-   HTTP persistent connections (Section 9.3 of [RFC9112]) allow multiple
-   interactions to take place on the same HTTP connection.  However,
-   neither HTTP nor the protocol specified in this document are designed
-   to correlate messages on the same connection in any meaningful way;
-   persistent connections are only a performance optimization.  In
-   particular, intermediaries can do things like mix connections from
-   different clients into one upstream connection, terminate persistent
-   connections, and forward requests as non-persistent requests, etc.
-   As such, implementations MUST NOT infer that requests on the same
-   connection come from the same client (e.g., for correlating PKI
-   messages with ongoing transactions); every message is to be evaluated
-   in isolation.
-
-3.3.  General Form
+3.1.  General Form
 
    A DER-encoded [ITU.X690.1994] PKIMessage (Section 5.1 of
    [I-D.ietf-lamps-rfc4210bis]) MUST be sent as the content of an HTTP
@@ -233,7 +218,7 @@ Table of Contents
    response status code in this case MUST be 200 (OK) status code; other
    Successful 2xx status codes MUST NOT be used for this purpose.  HTTP
    responses to pushed CMP announcement messages described in
-   Section 3.7 utilize the status codes 201 and 202 to identify whether
+   Section 3.5 utilize the status codes 201 and 202 to identify whether
    the received information was processed.
 
    While Redirection 3xx status codes MAY be supported by
@@ -248,17 +233,17 @@ Table of Contents
    ranges, it MUST support handling response message content containing
    a CMP response PKIMessage.
 
-3.4.  Header Fields
+3.2.  Media Type
 
    The Internet Media Type "application/pkixcmp" MUST be set in the HTTP
    "Content-Type" header field when conveying a PKIMessage.
 
-3.5.  Communication Workflow
+3.3.  Communication Workflow
 
    In CMP, most communication is initiated by the EEs where every CMP
    request triggers a CMP response message from the CA or RA.
 
-   The CMP announcement messages described in Section 3.7 are an
+   The CMP announcement messages described in Section 3.5 are an
    exception.  Their creation may be triggered by certain events or done
    on a regular basis by a CA.  The recipient of the announcement only
    replies with an HTTP status code acknowledging the receipt or
@@ -268,7 +253,7 @@ Table of Contents
    HTTP response, it MUST be assumed that the transferred CMP message
    was not successfully delivered to its destination.
 
-3.6.  HTTP Request-URI
+3.4.  HTTP Request-URI
 
    Each CMP server on a PKI management entity supporting HTTP or HTTPS
    transfer MUST support the use of the path prefix '/.well-known/' as
@@ -299,7 +284,7 @@ Table of Contents
    Note that https can also be used instead of http, see item 5 in the
    Security Considerations (Section 5).
 
-3.7.  Pushing of Announcements
+3.5.  Pushing of Announcements
 
    A CMP server may create event-triggered announcements or generate
    them on a regular basis.  It MAY utilize HTTP transfer to convey them
@@ -318,7 +303,7 @@ Table of Contents
    Suitable recipients for CMP announcements might, for example, be
    repositories storing the announced information, such as directory
    services.  Those services listen for incoming messages, utilizing the
-   same HTTP Request-URI scheme as defined in Section 3.6.
+   same HTTP Request-URI scheme as defined in Section 3.4.
 
    The following types of PKIMessage are announcements that may be
    pushed by a CA.  The prefixed numbers reflect ASN.1 tags of the
@@ -362,16 +347,14 @@ Table of Contents
 
 5.  Security Considerations
 
-   The following aspects need to be considered by implementers and
-   users:
+   All security considerations in HTTP [RFC9110] apply.  The following
+   items need to be considered by implementers and users:
 
    1.  There is the risk for denial-of-service attacks through resource
        consumption by opening many connections to an HTTP server.
        Therefore, idle connections should be terminated after an
        appropriate timeout; this may also depend on the available free
-       resources.  After sending a CMP error message with PKIStatus
-       other than "waiting", the server should close the connection,
-       even if the CMP transaction is not yet fully completed.
+       resources.
 
    2.  Without being encapsulated in effective security protocols, such
        as Transport Layer Security (TLS) [RFC5246] or [RFC8446], or
@@ -460,9 +443,9 @@ Table of Contents
               Brockhaus, H., von Oheimb, D., Ounsworth, M., and J. Gray,
               "Internet X.509 Public Key Infrastructure -- Certificate
               Management Protocol (CMP)", Work in Progress, Internet-
-              Draft, draft-ietf-lamps-rfc4210bis-14, 9 October 2024,
+              Draft, draft-ietf-lamps-rfc4210bis-15, 18 November 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-lamps-
-              rfc4210bis-14>.
+              rfc4210bis-15>.
 
    [ITU.X690.1994]
               International Telecommunications Union, "Information
@@ -551,6 +534,9 @@ Appendix A.  History of Changes
 
    *  Removed requirement to support HTTP/1.0
 
+   *  Incorporated relevant text from former Sections 3.1 and 3.2 in the
+      introduction of Section 3 as proposed by HTTPDIR review
+
    *  Added normative language in Sections 3.3 and 3.7 for clarity
 
    *  Added the requirement to provide any HTTP response message content
@@ -558,6 +544,9 @@ Appendix A.  History of Changes
 
    *  Removed the paragraph on the "Content-Length" header field and
       Section 3.8 to reduce redundancy with current versions HTTP/1.1
+
+   *  Added reference to HTTP Security Considerations to Section 5 and
+      updated the first item as proposed by HTTPDIR review
 
    From version 06 -> 07:
 
