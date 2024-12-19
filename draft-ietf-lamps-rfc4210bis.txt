@@ -6167,6 +6167,11 @@ Appendix G.  History of Changes
    Note: This appendix will be deleted in the final version of the
    document.
 
+   From version 15 -> 16:
+
+   *  Addressed IESG review comments from Erik Kline, Gunter Van de
+      Velde, Orie Steele, Zaheduzzaman Sarker, and Paul Wouters
+
    From version 14 -> 15:
 
    *  Addressed SECDIR, OPSDIR, and TSVART review comments
