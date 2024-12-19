@@ -168,6 +168,7 @@ normative:
   RFC4211:
   RFC5280:
   RFC5480:
+  RFC5646:
   RFC5652:
   RFC5958:
   RFC6402:
@@ -382,7 +383,7 @@ of end entities.
 The entities involved in PKI management include the end entity (i.e.,
 the entity to whom the certificate is issued) and the certification
 authority (i.e., the entity that issues the certificate).  A
-registration authority MAY also be involved in PKI management.
+registration authority might also be involved in PKI management.
 
 #### Subjects and End Entities
 {: id="sect-3.1.1.1"}
@@ -420,7 +421,7 @@ as the end entity's Personal Security Environment (PSE).
 
 Though PSE formats are beyond the scope of this document (they are
 very dependent on equipment, et cetera), a generic interchange format
-for PSEs is defined here: a certification response message MAY be
+for PSEs is defined here: a certification response message, see {{sect-5.3.4}}, MAY be
 used.
 
 
@@ -1566,8 +1567,10 @@ correct/check their local time for consistency with the time on a
 central system.
 
 The freeText field may be used to send a human-readable message to
-the recipient (in any number of languages).  The first language used
-in this sequence indicates the desired language for replies.
+the recipient (in any number of languages).  Each UTF8String MAY
+include an {{RFC5646}} language tag to indicate the language of the
+contained text. The first language used in this sequence indicates
+the desired language for replies.
 
 The generalInfo field may be used to send machine-processable
 additional data to the recipient.  The following generalInfo
@@ -3021,7 +3024,7 @@ See {{sect-5.1.1.3}} for the definition and use of {id-it 15}.
 #### Supported Language Tags
 {: id="sect-5.3.19.13"}
 
-This MAY be used to determine the appropriate language tag to use in
+This MAY be used to determine the appropriate {{RFC5646}} language tag to use in
 subsequent messages.  The sender sends its list of supported
 languages (in order, most preferred to least); the receiver returns
 the one it wishes to use.  (Note: each UTF8String MUST include a
