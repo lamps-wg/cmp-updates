@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 2 June 2025                                             Entrust
-                                                        29 November 2024
+Expires: 22 June 2025                                            Entrust
+                                                        19 December 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 June 2025.
+   This Internet-Draft will expire on 22 June 2025.
 
 Copyright Notice
 
@@ -432,7 +432,7 @@ Table of Contents
    The entities involved in PKI management include the end entity (i.e.,
    the entity to whom the certificate is issued) and the certification
    authority (i.e., the entity that issues the certificate).  A
-   registration authority MAY also be involved in PKI management.
+   registration authority might also be involved in PKI management.
 
 3.1.1.1.  Subjects and End Entities
 
@@ -445,7 +445,7 @@ Table of Contents
    "subject", is preferred in order to avoid confusion with the field
    name.  It is important to note that the end entities here will
    include not only human users of applications, but also applications
-   themselves (e.g., for IP security) or devices (e.g., routers or
+   themselves (e.g., for IKE/IPSEC) or devices (e.g., routers or
    industrial control systems).  This factor influences the protocols
    that the PKI management operations use; for example, application
    software is far more likely to know exactly which certificate
@@ -464,12 +464,13 @@ Table of Contents
    or application-specific information).  The form of storage will also
    vary -- from files to tamper-resistant cryptographic tokens.  The
    information stored in such local, trusted storage is referred to here
-   as the end entity's Personal Security Environment (PSE).
+   as the end entity's Trusted Execution Environment (TEE) also known as
+   Personal Security Environment (PSE).
 
-   Though PSE formats are beyond the scope of this document (they are
+   Though TEE formats are beyond the scope of this document (they are
    very dependent on equipment, et cetera), a generic interchange format
-   for PSEs is defined here: a certification response message MAY be
-   used.
+   for TEEs is defined here: a certification response message, see
+   Section 5.3.4, MAY be used.
 
 3.1.1.2.  Certification Authority
 
@@ -489,10 +490,13 @@ Table of Contents
    (though it is also relevant as a policy issue).
 
    We use the term "root CA" to indicate a CA that is directly trusted
-   by an end entity; that is, securely acquiring the value of a root CA
-   public key requires some out-of-band step(s).  This term is not meant
-   to imply that a root CA is necessarily at the top of any hierarchy,
-   simply that the CA in question is trusted directly.
+   by an end entity (using its public key algorithm, public key
+   including optional parameter, and issuer name as trust anchor
+   information for certificate path validation according to Section 6 of
+   [RFC5280]); that is, securely acquiring the values of the trust
+   anchor information requires some out-of-band step(s).  This term is
+   not meant to imply that a root CA is necessarily at the top of any
+   hierarchy, simply that the CA in question is trusted directly.
 
    A "subordinate CA" is one that is not a root CA for the end entity in
    question.  Often, a subordinate CA will not be a root CA for any
@@ -617,7 +621,7 @@ Table of Contents
         key pair to the next (CA key update) must be supported (note
         that if the CA key is compromised, re-initialization must be
         performed for all entities in the domain of that CA).  An end
-        entity whose PSE contains the new CA public key (following a CA
+        entity whose TEE contains the new CA public key (following a CA
         key update) may also need to be able to verify certificates
         verifiable using the old public key.  End entities who directly
         trust the old CA key pair may also need to be able to verify
@@ -771,7 +775,7 @@ Table of Contents
        2.  CRL publication: As for certificate publication.
 
    5.  Recovery operations: Some PKI management operations are used when
-       an end entity has "lost" its PSE:
+       an end entity has "lost" its TEE:
 
        1.  key pair recovery: As an option, user client key materials
            (e.g., a user's private key used for decryption purposes) MAY
@@ -787,8 +791,8 @@ Table of Contents
        1.  revocation request: An authorized person advises a CA of an
            abnormal situation requiring certificate revocation.
 
-   7.  PSE operations: Whilst the definition of PSE operations (e.g.,
-       moving a PSE, changing a PIN, etc.) are beyond the scope of this
+   7.  TEE operations: Whilst the definition of TEE operations (e.g.,
+       moving a TEE, changing a PIN, etc.) are beyond the scope of this
        specification, we do define a PKIMessage (CertRepMessage) that
        can form the basis of such operations.
 
@@ -814,7 +818,8 @@ Table of Contents
    utilize the available information to gather confidential technical or
    business critical information.  Therefore, users should consider
    protection of confidentiality on lower levels of the protocol stack,
-   e.g., by using TLS [RFC8446], DTLS [RFC9147], or IPSEC [RFC7296].
+   e.g., by using TLS [RFC8446], DTLS [RFC9147], or IPSEC
+   [RFC7296][RFC4303].
 
 4.  Assumptions and Restrictions
 
@@ -958,7 +963,7 @@ Table of Contents
 
    In terms of message flow, this scheme means that the only message
    required is sent from the CA to the end entity.  The message must
-   contain the entire PSE for the end entity.  Some out-of-band means
+   contain the entire TEE for the end entity.  Some out-of-band means
    must be provided to allow the end entity to authenticate the message
    received and to decrypt any encrypted values.
 
@@ -1239,7 +1244,7 @@ Table of Contents
    range of new possibilities.  These are shown in the table below.
 
    +======================+======================+=====================+
-   |                      | Verifier's PSE       | Verifier's PSE      |
+   |                      | Verifier's TEE       | Verifier's TEE      |
    |                      | contains NEW public  | contains OLD        |
    |                      | key                  | public key          |
    +======================+======================+=====================+
@@ -1338,7 +1343,7 @@ Table of Contents
    As we saw above, the verification of a certificate becomes more
    complex once the CA is allowed to change its key.  This is also true
    for revocation checks as the CA may have signed the CRL using a newer
-   private key than the one within the user's PSE.
+   private key than the one within the user's TEE.
 
    The analysis of the alternatives is the same as for certificate
    verification.
@@ -1496,7 +1501,7 @@ Table of Contents
    key is associated with a given sender name).  The senderKID SHOULD be
    used in any case.
 
-   Note: The recommendation of using senderKID was changed since
+   Note: The recommendation of using senderKID is changed since
    [RFC4210], where it was recommended to be omitted if not needed to
    identify the protection key.
 
@@ -1534,14 +1539,14 @@ Table of Contents
    messages with the corresponding transaction.  Typically, this means
    that a server will require the {client, transactionID} tuple to be
    unique, or even the transactionID alone to be unique, if it cannot
-   distinguish clients based on transport-level information.  A server
-   receiving the first message of a transaction (which requires more
-   than a single request/response pair) that contains a transactionID
-   that does not allow it to meet the above constraints (typically
-   because the transactionID is already in use) MUST send back an
-   ErrorMsgContent with a PKIFailureInfo of transactionIdInUse.  It is
-   RECOMMENDED that the clients fill the transactionID field with 128
-   bits of (pseudo-) random data for the start of a transaction to
+   distinguish clients based on any transport-level information.  A
+   server receiving the first message of a transaction (which requires
+   more than a single request/response pair) that contains a
+   transactionID that does not allow it to meet the above constraints
+   (typically because the transactionID is already in use) MUST send
+   back an ErrorMsgContent with a PKIFailureInfo of transactionIdInUse.
+   It is RECOMMENDED that the clients fill the transactionID field with
+   128 bits of (pseudo-) random data for the start of a transaction to
    reduce the probability of having the transactionID in use at the
    server.
 
@@ -1557,8 +1562,10 @@ Table of Contents
    system.
 
    The freeText field may be used to send a human-readable message to
-   the recipient (in any number of languages).  The first language used
-   in this sequence indicates the desired language for replies.
+   the recipient (in any number of languages).  Each UTF8String MAY
+   include an [RFC5646] language tag to indicate the language of the
+   contained text.  The first language used in this sequence indicates
+   the desired language for replies.
 
    The generalInfo field may be used to send machine-processable
    additional data to the recipient.  The following generalInfo
@@ -3103,12 +3110,12 @@ Table of Contents
 
 5.3.19.13.  Supported Language Tags
 
-   This MAY be used to determine the appropriate language tag to use in
-   subsequent messages.  The sender sends its list of supported
-   languages (in order, most preferred to least); the receiver returns
-   the one it wishes to use.  (Note: each UTF8String MUST include a
-   language tag.)  If none of the offered tags are supported, an error
-   MUST be returned.
+   This MAY be used to determine the appropriate [RFC5646] language tag
+   to use in subsequent messages.  The sender sends its list of
+   supported languages (in order, most preferred to least); the receiver
+   returns the one it wishes to use.  (Note: each UTF8String MUST
+   include a language tag.)  If none of the offered tags are supported,
+   an error MUST be returned.
 
      GenMsg:    {id-it 16}, SEQUENCE SIZE (1..MAX) OF UTF8String
      GenRep:    {id-it 16}, SEQUENCE SIZE (1) OF UTF8String
@@ -4081,6 +4088,10 @@ Table of Contents
               Information", RFC 5480, DOI 10.17487/RFC5480, March 2009,
               <https://www.rfc-editor.org/rfc/rfc5480>.
 
+   [RFC5646]  Phillips, A., Ed. and M. Davis, Ed., "Tags for Identifying
+              Languages", BCP 47, RFC 5646, DOI 10.17487/RFC5646,
+              September 2009, <https://www.rfc-editor.org/rfc/rfc5646>.
+
    [RFC5652]  Housley, R., "Cryptographic Message Syntax (CMS)", STD 70,
               RFC 5652, DOI 10.17487/RFC5652, September 2009,
               <https://www.rfc-editor.org/rfc/rfc5652>.
@@ -4149,9 +4160,9 @@ Table of Contents
               Brockhaus, H., von Oheimb, D., Ounsworth, M., and J. Gray,
               "Internet X.509 Public Key Infrastructure -- HTTP Transfer
               for the Certificate Management Protocol (CMP)", Work in
-              Progress, Internet-Draft, draft-ietf-lamps-rfc6712bis-08,
-              18 November 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lamps-rfc6712bis-08>.
+              Progress, Internet-Draft, draft-ietf-lamps-rfc6712bis-09,
+              29 November 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lamps-rfc6712bis-09>.
 
    [RFC1847]  Galvin, J., Murphy, S., Crocker, S., and N. Freed,
               "Security Multiparts for MIME: Multipart/Signed and
@@ -4179,6 +4190,10 @@ Table of Contents
               Certificate Management Protocols", RFC 4212,
               DOI 10.17487/RFC4212, October 2005,
               <https://www.rfc-editor.org/rfc/rfc4212>.
+
+   [RFC4303]  Kent, S., "IP Encapsulating Security Payload (ESP)",
+              RFC 4303, DOI 10.17487/RFC4303, December 2005,
+              <https://www.rfc-editor.org/rfc/rfc4303>.
 
    [RFC4511]  Sermersheim, J., Ed., "Lightweight Directory Access
               Protocol (LDAP): The Protocol", RFC 4511,
@@ -5232,11 +5247,12 @@ D.7.  In-Band Initialization Using External Identity Certificate
    relationship must already have been established between CA-1 and CA-X
    so that CA-1 can validate the EE identity certificate signed by CA-X.
    Furthermore, some mechanism must already have been established within
-   the Personal Security Environment (PSE) of the EE that would allow it
-   to authenticate and verify PKIMessages signed by CA-1 (as one
-   example, the PSE may contain a certificate issued for the public key
-   of CA-1, signed by another CA that the EE trusts on the basis of out-
-   of-band authentication techniques).
+   the Trusted Execution Environment (TEE) also known as Personal
+   Security Environment (PSE) of the EE that would allow it to
+   authenticate and verify PKIMessages signed by CA-1 (as one example,
+   the TEE may contain a certificate issued for the public key of CA-1,
+   signed by another CA that the EE trusts on the basis of out-of-band
+   authentication techniques).
 
    The EE sends an initialization request to start the transaction.
    When CA-1 responds with a message containing the new certificate, the
@@ -5246,7 +5262,7 @@ D.7.  In-Band Initialization Using External Identity Certificate
    the public key in its external identity certificate; the CA-1
    messages are signed using the private key that corresponds to the
    public key in a certificate that can be chained to a trust anchor in
-   the EE's PSE).
+   the EE's TEE).
 
    The profile for this exchange is identical to that given in
    Appendix C.4, with the following exceptions:

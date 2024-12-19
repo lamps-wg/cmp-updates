@@ -29,22 +29,22 @@ RootCaKeyUpdateContent in ckuann messages.
 and it also obsoletes RFC 9480. Appendix F of this document updates the
 Section 9 of RFC 5912. 
     " name="description">
-<meta content="xml2rfc 3.24.0" name="generator">
+<meta content="xml2rfc 3.25.0" name="generator">
 <meta content="CMP" name="keyword">
 <meta content="Certificate Management" name="keyword">
 <meta content="PKI" name="keyword">
 <meta content="draft-ietf-lamps-rfc4210bis-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.24.0
-    Python 3.12.7
+  xml2rfc 3.25.0
+    Python 3.12.8
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.4
     lxml 5.3.0
     platformdirs 4.3.6
-    pycountry 22.3.5
-    PyYAML 6.0.1
+    pycountry 24.6.1
+    PyYAML 6.0.2
     requests 2.32.3
     setuptools 70.3.0
     wcwidth 0.2.13
@@ -556,7 +556,11 @@ figcaption, caption {
   }
   pre, svg {
     display: inline-block;
-    overflow-x: auto;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
   }
   pre {
     max-width: 100%;
@@ -1062,11 +1066,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">CMP</td>
-<td class="right">November 2024</td>
+<td class="right">December 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 2 June 2025</td>
+<td class="center">Expires 22 June 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1085,12 +1089,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-11-29" class="published">29 November 2024</time>
+<time datetime="2024-12-19" class="published">19 December 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-06-02">2 June 2025</time></dd>
+<dd class="expires"><time datetime="2025-06-22">22 June 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1164,7 +1168,7 @@ Section 9 of RFC 5912.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 2 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 22 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1946,7 +1950,7 @@ of end entities.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1.1-1">The entities involved in PKI management include the end entity (i.e.,
 the entity to whom the certificate is issued) and the certification
 authority (i.e., the entity that issues the certificate).  A
-registration authority <span class="bcp14">MAY</span> also be involved in PKI management.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
+registration authority might also be involved in PKI management.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
 <div id="sect-3.1.1.1">
 <section id="section-3.1.1.1">
             <h5 id="name-subjects-and-end-entities">
@@ -1961,7 +1965,7 @@ In general, the term "end entity" (EE), rather than
 "subject", is preferred in order to avoid confusion with the field
 name.  It is important to note that the end entities here will
 include not only human users of applications, but also applications
-themselves (e.g., for IP security) or devices (e.g., routers or industrial
+themselves (e.g., for IKE/IPSEC) or devices (e.g., routers or industrial
 control systems).  This factor influences the
 protocols that the PKI management operations use; for example,
 application software is far more likely to know exactly which
@@ -1980,10 +1984,11 @@ for more than this minimum (e.g., the end entity's own certificates or
 application-specific information).  The form of storage will also
 vary -- from files to tamper-resistant cryptographic tokens.  The
 information stored in such local, trusted storage is referred to here
-as the end entity's Personal Security Environment (PSE).<a href="#section-3.1.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.1.1-3">Though PSE formats are beyond the scope of this document (they are
+as the end entity's Trusted Execution Environment (TEE) also known as
+Personal Security Environment (PSE).<a href="#section-3.1.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.1.1-3">Though TEE formats are beyond the scope of this document (they are
 very dependent on equipment, et cetera), a generic interchange format
-for PSEs is defined here: a certification response message <span class="bcp14">MAY</span> be
+for TEEs is defined here: a certification response message, see <a href="#sect-5.3.4" class="auto internal xref">Section 5.3.4</a>, <span class="bcp14">MAY</span> be
 used.<a href="#section-3.1.1.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2004,10 +2009,13 @@ an "on-line" component, with the CA private key only available to the
 "off-line" component.  This is, however, a matter for implementers
 (though it is also relevant as a policy issue).<a href="#section-3.1.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-3.1.1.2-4">We use the term "root CA" to indicate a CA that is directly trusted
-by an end entity; that is, securely acquiring the value of a root CA
-public key requires some out-of-band step(s).  This term is not meant
-to imply that a root CA is necessarily at the top of any hierarchy,
-simply that the CA in question is trusted directly.<a href="#section-3.1.1.2-4" class="pilcrow">¶</a></p>
+by an end entity (using its public key algorithm, public key including
+optional parameter, and issuer name as trust anchor information for
+certificate path validation according to <span><a href="https://rfc-editor.org/rfc/rfc5280#section-6" class="relref">Section 6</a> of [<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>);
+that is, securely acquiring the values of the trust anchor information
+requires some out-of-band step(s). This term is not meant to imply
+that a root CA is necessarily at the top of any hierarchy, simply that
+the CA in question is trusted directly.<a href="#section-3.1.1.2-4" class="pilcrow">¶</a></p>
 <p id="section-3.1.1.2-5">A "subordinate CA" is one that is not a root CA for the end entity in
 question.  Often, a subordinate CA will not be a root CA for any
 entity, but this is not mandatory.<a href="#section-3.1.1.2-5" class="pilcrow">¶</a></p>
@@ -2147,7 +2155,7 @@ management<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
   key pair to the next (CA key update) must be supported (note
   that if the CA key is compromised, re-initialization must be
   performed for all entities in the domain of that CA).  An end
-  entity whose PSE contains the new CA public key (following a CA
+  entity whose TEE contains the new CA public key (following a CA
   key update) may also need to be able to verify certificates verifiable
   using the old public key.  End entities who directly trust the
   old CA key pair may also need to be able to verify certificates signed
@@ -2343,7 +2351,7 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
 </li>
             <li id="section-3.1.3-4.5">
               <p id="section-3.1.3-4.5.1">Recovery operations: Some PKI management operations are used when
-  an end entity has "lost" its PSE:<a href="#section-3.1.3-4.5.1" class="pilcrow">¶</a></p>
+  an end entity has "lost" its TEE:<a href="#section-3.1.3-4.5.1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.1.3-4.5.2">
 <li id="section-3.1.3-4.5.2.1">
                   <p id="section-3.1.3-4.5.2.1.1">key pair recovery: As an option, user client key materials
@@ -2367,8 +2375,8 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
               </ol>
 </li>
             <li id="section-3.1.3-4.7">
-              <p id="section-3.1.3-4.7.1">PSE operations: Whilst the definition of PSE operations (e.g.,
-  moving a PSE, changing a PIN, etc.) are beyond the scope of this
+              <p id="section-3.1.3-4.7.1">TEE operations: Whilst the definition of TEE operations (e.g.,
+  moving a TEE, changing a PIN, etc.) are beyond the scope of this
   specification, we do define a PKIMessage (CertRepMessage) that
   can form the basis of such operations.<a href="#section-3.1.3-4.7.1" class="pilcrow">¶</a></p>
 </li>
@@ -2392,7 +2400,7 @@ information endangering the security of the PKI when intercepted. However,
 it might be possible for an eavesdropper to utilize the available information to
 gather confidential technical or business critical information. Therefore, users
 should consider protection of confidentiality on lower levels of the protocol
-stack, e.g., by using TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, DTLS <span>[<a href="#RFC9147" class="cite xref">RFC9147</a>]</span>, or IPSEC <span>[<a href="#RFC7296" class="cite xref">RFC7296</a>]</span>.<a href="#section-3.1.3-7" class="pilcrow">¶</a></p>
+stack, e.g., by using TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, DTLS <span>[<a href="#RFC9147" class="cite xref">RFC9147</a>]</span>, or IPSEC <span>[<a href="#RFC7296" class="cite xref">RFC7296</a>]</span><span>[<a href="#RFC4303" class="cite xref">RFC4303</a>]</span>.<a href="#section-3.1.3-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2572,7 +2580,7 @@ the simplest possible, where:<a href="#section-4.2.2.1-1" class="pilcrow">¶</a>
             </ul>
 <p id="section-4.2.2.1-3">In terms of message flow, this scheme means that the only message
 required is sent from the CA to the end entity.  The message must
-contain the entire PSE for the end entity.  Some out-of-band means
+contain the entire TEE for the end entity.  Some out-of-band means
 must be provided to allow the end entity to authenticate the message
 received and to decrypt any encrypted values.<a href="#section-4.2.2.1-3" class="pilcrow">¶</a></p>
 </section>
@@ -2864,8 +2872,8 @@ range of new possibilities.  These are shown in the table below.<a href="#sectio
 <thead>
               <tr>
                 <th class="text-left" rowspan="1" colspan="1"> </th>
-                <th class="text-left" rowspan="1" colspan="1">Verifier's PSE contains NEW public key</th>
-                <th class="text-left" rowspan="1" colspan="1">Verifier's PSE contains OLD public key</th>
+                <th class="text-left" rowspan="1" colspan="1">Verifier's TEE contains NEW public key</th>
+                <th class="text-left" rowspan="1" colspan="1">Verifier's TEE contains OLD public key</th>
               </tr>
             </thead>
             <tbody>
@@ -2999,7 +3007,7 @@ certificate.<a href="#section-4.4.2.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.4.3-1">As we saw above, the verification of a certificate becomes more
 complex once the CA is allowed to change its key.  This is also true
 for revocation checks as the CA may have signed the CRL using a newer
-private key than the one within the user's PSE.<a href="#section-4.4.3-1" class="pilcrow">¶</a></p>
+private key than the one within the user's TEE.<a href="#section-4.4.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.4.3-2">The analysis of the alternatives is the same as for certificate
 verification.<a href="#section-4.4.3-2" class="pilcrow">¶</a></p>
 </section>
@@ -3162,7 +3170,7 @@ where protection of the message uses Diffie-Hellman (DH) or elliptic curve Diff
 These fields <span class="bcp14">MUST</span> be used if required to uniquely identify a key
 (e.g., if more than one key is associated with a given sender name).
 The senderKID <span class="bcp14">SHOULD</span> be used in any case.<a href="#section-5.1.1-8" class="pilcrow">¶</a></p>
-<p id="section-5.1.1-9">Note: The recommendation of using senderKID was changed since <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span>,
+<p id="section-5.1.1-9">Note: The recommendation of using senderKID is changed since <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span>,
 where it was recommended to be omitted if not needed to identify the protection
 key.<a href="#section-5.1.1-9" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-10">The transactionID field within the message header is to be used to
@@ -3197,7 +3205,7 @@ of the transactionID or not, as long as they are able to correctly
 associate messages with the corresponding transaction.  Typically,
 this means that a server will require the {client, transactionID}
 tuple to be unique, or even the transactionID alone to be unique, if
-it cannot distinguish clients based on transport-level information.
+it cannot distinguish clients based on any transport-level information.
 A server receiving the first message of a transaction (which requires
 more than a single request/response pair) that contains a
 transactionID that does not allow it to meet the above constraints
@@ -3217,8 +3225,10 @@ the message.  This may be useful to allow end entities to
 correct/check their local time for consistency with the time on a
 central system.<a href="#section-5.1.1-13" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-14">The freeText field may be used to send a human-readable message to
-the recipient (in any number of languages).  The first language used
-in this sequence indicates the desired language for replies.<a href="#section-5.1.1-14" class="pilcrow">¶</a></p>
+the recipient (in any number of languages).  Each UTF8String <span class="bcp14">MAY</span>
+include an <span>[<a href="#RFC5646" class="cite xref">RFC5646</a>]</span> language tag to indicate the language of the
+contained text. The first language used in this sequence indicates
+the desired language for replies.<a href="#section-5.1.1-14" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-15">The generalInfo field may be used to send machine-processable
 additional data to the recipient.  The following generalInfo
 extensions are defined and <span class="bcp14">MAY</span> be supported.<a href="#section-5.1.1-15" class="pilcrow">¶</a></p>
@@ -4794,7 +4804,7 @@ See <a href="#sect-b" class="auto internal xref">Appendix B</a> for further deta
             <h5 id="name-supported-language-tags">
 <a href="#section-5.3.19.13" class="section-number selfRef">5.3.19.13. </a><a href="#name-supported-language-tags" class="section-name selfRef">Supported Language Tags</a>
             </h5>
-<p id="section-5.3.19.13-1">This <span class="bcp14">MAY</span> be used to determine the appropriate language tag to use in
+<p id="section-5.3.19.13-1">This <span class="bcp14">MAY</span> be used to determine the appropriate <span>[<a href="#RFC5646" class="cite xref">RFC5646</a>]</span> language tag to use in
 subsequent messages.  The sender sends its list of supported
 languages (in order, most preferred to least); the receiver returns
 the one it wishes to use.  (Note: each UTF8String <span class="bcp14">MUST</span> include a
@@ -5860,6 +5870,10 @@ Tomi Kause, and Tero Mononen, the original authors of <span>[<a href="#RFC4210" 
         <dd>
 <span class="refAuthor">Turner, S.</span>, <span class="refAuthor">Brown, D.</span>, <span class="refAuthor">Yiu, K.</span>, <span class="refAuthor">Housley, R.</span>, and <span class="refAuthor">T. Polk</span>, <span class="refTitle">"Elliptic Curve Cryptography Subject Public Key Information"</span>, <span class="seriesInfo">RFC 5480</span>, <span class="seriesInfo">DOI 10.17487/RFC5480</span>, <time datetime="2009-03" class="refDate">March 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5480">https://www.rfc-editor.org/rfc/rfc5480</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC5646">[RFC5646]</dt>
+        <dd>
+<span class="refAuthor">Phillips, A., Ed.</span> and <span class="refAuthor">M. Davis, Ed.</span>, <span class="refTitle">"Tags for Identifying Languages"</span>, <span class="seriesInfo">BCP 47</span>, <span class="seriesInfo">RFC 5646</span>, <span class="seriesInfo">DOI 10.17487/RFC5646</span>, <time datetime="2009-09" class="refDate">September 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5646">https://www.rfc-editor.org/rfc/rfc5646</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC5652">[RFC5652]</dt>
         <dd>
 <span class="refAuthor">Housley, R.</span>, <span class="refTitle">"Cryptographic Message Syntax (CMS)"</span>, <span class="seriesInfo">STD 70</span>, <span class="seriesInfo">RFC 5652</span>, <span class="seriesInfo">DOI 10.17487/RFC5652</span>, <time datetime="2009-09" class="refDate">September 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5652">https://www.rfc-editor.org/rfc/rfc5652</a>&gt;</span>. </dd>
@@ -5923,7 +5937,7 @@ Tomi Kause, and Tero Mononen, the original authors of <span>[<a href="#RFC4210" 
 <dd class="break"></dd>
 <dt id="I-D.ietf-lamps-rfc6712bis">[I-D.ietf-lamps-rfc6712bis]</dt>
         <dd>
-<span class="refAuthor">Brockhaus, H.</span>, <span class="refAuthor">von Oheimb, D.</span>, <span class="refAuthor">Ounsworth, M.</span>, and <span class="refAuthor">J. Gray</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure -- HTTP Transfer for the Certificate Management Protocol (CMP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-rfc6712bis-08</span>, <time datetime="2024-11-18" class="refDate">18 November 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc6712bis-08">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc6712bis-08</a>&gt;</span>. </dd>
+<span class="refAuthor">Brockhaus, H.</span>, <span class="refAuthor">von Oheimb, D.</span>, <span class="refAuthor">Ounsworth, M.</span>, and <span class="refAuthor">J. Gray</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure -- HTTP Transfer for the Certificate Management Protocol (CMP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-rfc6712bis-09</span>, <time datetime="2024-11-29" class="refDate">29 November 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc6712bis-09">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc6712bis-09</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC1847">[RFC1847]</dt>
         <dd>
@@ -5944,6 +5958,10 @@ Tomi Kause, and Tero Mononen, the original authors of <span>[<a href="#RFC4210" 
 <dt id="RFC4212">[RFC4212]</dt>
         <dd>
 <span class="refAuthor">Blinov, M.</span> and <span class="refAuthor">C. Adams</span>, <span class="refTitle">"Alternative Certificate Formats for the Public-Key Infrastructure Using X.509 (PKIX) Certificate Management Protocols"</span>, <span class="seriesInfo">RFC 4212</span>, <span class="seriesInfo">DOI 10.17487/RFC4212</span>, <time datetime="2005-10" class="refDate">October 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4212">https://www.rfc-editor.org/rfc/rfc4212</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4303">[RFC4303]</dt>
+        <dd>
+<span class="refAuthor">Kent, S.</span>, <span class="refTitle">"IP Encapsulating Security Payload (ESP)"</span>, <span class="seriesInfo">RFC 4303</span>, <span class="seriesInfo">DOI 10.17487/RFC4303</span>, <time datetime="2005-12" class="refDate">December 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4303">https://www.rfc-editor.org/rfc/rfc4303</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4511">[RFC4511]</dt>
         <dd>
@@ -7081,9 +7099,10 @@ identity certificate issued by another (external) CA, CA-X.  A trust
 relationship must already have been established between CA-1 and CA-X
 so that CA-1 can validate the EE identity certificate signed by CA-X.
 Furthermore, some mechanism must already have been established within
-the Personal Security Environment (PSE) of the EE that would allow it
+the Trusted Execution Environment (TEE) also known as
+Personal Security Environment (PSE) of the EE that would allow it
 to authenticate and verify PKIMessages signed by CA-1 (as one
-example, the PSE may contain a certificate issued for the public key
+example, the TEE may contain a certificate issued for the public key
 of CA-1, signed by another CA that the EE trusts on the basis of
 out-of-band authentication techniques).<a href="#appendix-D.7-1" class="pilcrow">¶</a></p>
 <p id="appendix-D.7-2">The EE sends an initialization request to start the transaction.
@@ -7093,7 +7112,7 @@ with a PKIConfirm to close the transaction.  All messages are signed
 (the EE messages are signed using the private key that corresponds to
 the public key in its external identity certificate; the CA-1
 messages are signed using the private key that corresponds to the
-public key in a certificate that can be chained to a trust anchor in the EE's PSE).<a href="#appendix-D.7-2" class="pilcrow">¶</a></p>
+public key in a certificate that can be chained to a trust anchor in the EE's TEE).<a href="#appendix-D.7-2" class="pilcrow">¶</a></p>
 <p id="appendix-D.7-3">The profile for this exchange is identical to that given in <a href="#sect-c.4" class="auto internal xref">Appendix C.4</a>,
 with the following exceptions:<a href="#appendix-D.7-3" class="pilcrow">¶</a></p>
 <ul class="normal">
