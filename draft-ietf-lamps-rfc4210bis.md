@@ -1506,7 +1506,7 @@ These fields MUST be used if required to uniquely identify a key
 (e.g., if more than one key is associated with a given sender name).
 The senderKID SHOULD be used in any case.
 
-Note: The recommendation of using senderKID was changed since {{RFC4210}},
+Note: The recommendation of using senderKID is changed since {{RFC4210}},
 where it was recommended to be omitted if not needed to identify the protection
 key.
 
