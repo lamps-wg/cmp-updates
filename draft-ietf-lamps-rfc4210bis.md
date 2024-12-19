@@ -1544,7 +1544,7 @@ of the transactionID or not, as long as they are able to correctly
 associate messages with the corresponding transaction.  Typically,
 this means that a server will require the {client, transactionID}
 tuple to be unique, or even the transactionID alone to be unique, if
-it cannot distinguish clients based on transport-level information.
+it cannot distinguish clients based on any transport-level information.
 A server receiving the first message of a transaction (which requires
 more than a single request/response pair) that contains a
 transactionID that does not allow it to meet the above constraints
