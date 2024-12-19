@@ -397,7 +397,7 @@ In general, the term "end entity" (EE), rather than
 "subject", is preferred in order to avoid confusion with the field
 name.  It is important to note that the end entities here will
 include not only human users of applications, but also applications
-themselves (e.g., for IP security) or devices (e.g., routers or industrial
+themselves (e.g., for IKE/IPSEC) or devices (e.g., routers or industrial
 control systems).  This factor influences the
 protocols that the PKI management operations use; for example,
 application software is far more likely to know exactly which
@@ -417,11 +417,12 @@ for more than this minimum (e.g., the end entity's own certificates or
 application-specific information).  The form of storage will also
 vary -- from files to tamper-resistant cryptographic tokens.  The
 information stored in such local, trusted storage is referred to here
-as the end entity's Personal Security Environment (PSE).
+as the end entity's Trusted Execution Environment (TEE) also known as
+Personal Security Environment (PSE).
 
-Though PSE formats are beyond the scope of this document (they are
+Though TEE formats are beyond the scope of this document (they are
 very dependent on equipment, et cetera), a generic interchange format
-for PSEs is defined here: a certification response message, see {{sect-5.3.4}}, MAY be
+for TEEs is defined here: a certification response message, see {{sect-5.3.4}}, MAY be
 used.
 
 
@@ -443,10 +444,13 @@ an "on-line" component, with the CA private key only available to the
 (though it is also relevant as a policy issue).
 
 We use the term "root CA" to indicate a CA that is directly trusted
-by an end entity; that is, securely acquiring the value of a root CA
-public key requires some out-of-band step(s).  This term is not meant
-to imply that a root CA is necessarily at the top of any hierarchy,
-simply that the CA in question is trusted directly.
+by an end entity (using its public key algorithm, public key including
+optional parameter, and issuer name as trust anchor information for
+certificate path validation according to {{Section 6 of RFC5280}});
+that is, securely acquiring the values of the trust anchor information
+requires some out-of-band step(s). This term is not meant to imply
+that a root CA is necessarily at the top of any hierarchy, simply that
+the CA in question is trusted directly.
 
 A "subordinate CA" is one that is not a root CA for the end entity in
 question.  Often, a subordinate CA will not be a root CA for any
@@ -577,7 +581,7 @@ management
   key pair to the next (CA key update) must be supported (note
   that if the CA key is compromised, re-initialization must be
   performed for all entities in the domain of that CA).  An end
-  entity whose PSE contains the new CA public key (following a CA
+  entity whose TEE contains the new CA public key (following a CA
   key update) may also need to be able to verify certificates verifiable
   using the old public key.  End entities who directly trust the
   old CA key pair may also need to be able to verify certificates signed
@@ -745,7 +749,7 @@ messages are defined can be grouped as follows.
 
 
 1. Recovery operations: Some PKI management operations are used when
-  an end entity has "lost" its PSE:
+  an end entity has "lost" its TEE:
 
 
 
@@ -767,8 +771,8 @@ messages are defined can be grouped as follows.
       abnormal situation requiring certificate revocation.
 
 
-1. PSE operations: Whilst the definition of PSE operations (e.g.,
-  moving a PSE, changing a PIN, etc.) are beyond the scope of this
+1. TEE operations: Whilst the definition of TEE operations (e.g.,
+  moving a TEE, changing a PIN, etc.) are beyond the scope of this
   specification, we do define a PKIMessage (CertRepMessage) that
   can form the basis of such operations.
 
@@ -957,7 +961,7 @@ the simplest possible, where:
 
 In terms of message flow, this scheme means that the only message
 required is sent from the CA to the end entity.  The message must
-contain the entire PSE for the end entity.  Some out-of-band means
+contain the entire TEE for the end entity.  Some out-of-band means
 must be provided to allow the end entity to authenticate the message
 received and to decrypt any encrypted values.
 
@@ -1240,7 +1244,7 @@ other things) the certificate containing the public key of the
 signer.  However, once a CA is allowed to update its key there are a
 range of new possibilities.  These are shown in the table below.
 
-|     | Verifier's PSE contains NEW public key | Verifier's PSE contains OLD public key |
+|     | Verifier's TEE contains NEW public key | Verifier's TEE contains OLD public key |
 |:----|:---------------------------------------|:---------------------------------------|
 | Signer's certificate is protected using NEW key pair | Case 1: The verifier can directly verify the certificate. | Case 2: The verifier is missing the NEW public key. |
 | Signer's certificate is protected using OLD key pair | Case 3: The verifier is missing the OLD public key. | Case 4: The verifier can directly verify the certificate. |
@@ -1342,7 +1346,7 @@ The verifier does the following:
 As we saw above, the verification of a certificate becomes more
 complex once the CA is allowed to change its key.  This is also true
 for revocation checks as the CA may have signed the CRL using a newer
-private key than the one within the user's PSE.
+private key than the one within the user's TEE.
 
 The analysis of the alternatives is the same as for certificate
 verification.
@@ -4943,9 +4947,10 @@ identity certificate issued by another (external) CA, CA-X.  A trust
 relationship must already have been established between CA-1 and CA-X
 so that CA-1 can validate the EE identity certificate signed by CA-X.
 Furthermore, some mechanism must already have been established within
-the Personal Security Environment (PSE) of the EE that would allow it
+the Trusted Execution Environment (TEE) also known as
+Personal Security Environment (PSE) of the EE that would allow it
 to authenticate and verify PKIMessages signed by CA-1 (as one
-example, the PSE may contain a certificate issued for the public key
+example, the TEE may contain a certificate issued for the public key
 of CA-1, signed by another CA that the EE trusts on the basis of
 out-of-band authentication techniques).
 
@@ -4956,7 +4961,7 @@ with a PKIConfirm to close the transaction.  All messages are signed
 (the EE messages are signed using the private key that corresponds to
 the public key in its external identity certificate; the CA-1
 messages are signed using the private key that corresponds to the
-public key in a certificate that can be chained to a trust anchor in the EE's PSE).
+public key in a certificate that can be chained to a trust anchor in the EE's TEE).
 
 The profile for this exchange is identical to that given in {{sect-c.4}},
 with the following exceptions:
