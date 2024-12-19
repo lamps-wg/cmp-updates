@@ -75,6 +75,7 @@ informative:
   RFC2585:
   RFC4210:
   RFC4212:
+  RFC4303:
   RFC4511:
   RFC5912:
   RFC6268:
@@ -791,7 +792,7 @@ information endangering the security of the PKI when intercepted. However,
 it might be possible for an eavesdropper to utilize the available information to
 gather confidential technical or business critical information. Therefore, users
 should consider protection of confidentiality on lower levels of the protocol
-stack, e.g., by using TLS {{RFC8446}}, DTLS {{RFC9147}}, or IPSEC {{RFC7296}}.
+stack, e.g., by using TLS {{RFC8446}}, DTLS {{RFC9147}}, or IPSEC {{RFC7296}}{{RFC4303}}.
 
 
 
