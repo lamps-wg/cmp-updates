@@ -405,39 +405,35 @@ Table of Contents
    capitals, as shown here.
 
    This document relies on the terminology defined in [RFC5280].  The
-   most important abbreviations are listed below.
+   most important abbreviations are listed below:
 
-   CA: Certification Authority
+   CA:  Certification Authority CMP:
 
-   CMP: Certificate Management Protocol
+        Certificate Management Protocol CMS:
 
-   CMS: Cryptographic Message Syntax
+        Cryptographic Message Syntax CRL:
 
-   CRL: Certificate Revocation List
+        Certificate Revocation List CRMF:
 
-   CRMF: Certificate Request Message Format
+        Certificate Request Message Format EE:
 
-   EE: End Entity
+        End Entity KEM:
 
-   EKU: Extended Key Usage
+        Key Encapsulation Mechanism KGA:
 
-   KEM: Key Encapsulation Mechanism
+        Key Generation Authority LRA:
 
-   KGA: Key Generation Authority
+        Local Registration Authority MAC:
 
-   LRA: Local Registration Authority
+        Message Authentication Code PKI:
 
-   MAC: Message Authentication Code
+        Public Key Infrastructure POP:
 
-   OID: Object Identifier
+        Proof Of Possession RA:
 
-   PKI: Public Key Infrastructure
+        Registration Authority TEE:
 
-   POP: Proof Of Possession
-
-   RA: Registration Authority
-
-   TEE: Trusted Execution Environment
+        Trusted Execution Environment
 
 3.  PKI Management Overview
 
@@ -1033,17 +1029,17 @@ Table of Contents
      Key generation
      Creation of certification request
      Protect request with IAK
-                   -->>-- certification request -->>--
+                   ---->> certification request ---->>
                                                     verify request
                                                     process request
                                                     create response
-                   --<<-- certification response --<<--
+                   <<---- certification response <<----
      handle response
      create confirmation
-                   -->>-- cert conf message      -->>--
+                   ---->> cert conf message      ---->>
                                                     verify confirmation
                                                     create response
-                   --<<-- conf ack (optional)    --<<--
+                   <<---- conf ack (optional)    <<----
      handle response
 
    Note: Where verification of the cert confirmation message fails, the
@@ -1428,15 +1424,15 @@ Table of Contents
    The meaning of the id-kp-cmKGA EKU is as follows:
 
    CMP KGA:  CMP key generation authorities are CAs or are identified by
-             the id-kp-cmKGA extended key usage.  The CMP KGA knows the
-             private key it generated on behalf of the end entity.  This
-             is a very sensitive service and needs specific
-             authorization, which by default is with the CA certificate
-             itself.  The CA may delegate its authorization by placing
-             the id-kp-cmKGA extended key usage in the certificate used
-             to authenticate the origin of the generated private key.
-             The authorization may also be determined through local
-             configuration of the end entity.
+            the id-kp-cmKGA extended key usage.  The CMP KGA knows the
+            private key it generated on behalf of the end entity.  This
+            is a very sensitive service and needs specific
+            authorization, which by default is with the CA certificate
+            itself.  The CA may delegate its authorization by placing
+            the id-kp-cmKGA extended key usage in the certificate used
+            to authenticate the origin of the generated private key.
+            The authorization may also be determined through local
+            configuration of the end entity.
 
 5.  Data Structures
 
@@ -3416,8 +3412,8 @@ Table of Contents
      Add to <----------- Check CertResponse ------> Add to       |
     conf list           for each certificate      pending list   |
                                 / \                              |
-                               /   \                             |
-                  (conf list) /     \ (empty conf list)          |
+                               /   \  (empty conf list)          |
+                  (conf list) /     \                            |
                              /       \              ip           |
                             /         \        +-----------------+
       (empty pending list) /           \       |    pollRep
