@@ -1029,17 +1029,17 @@ Table of Contents
      Key generation
      Creation of certification request
      Protect request with IAK
-                   ---->> certification request ---->>
+                   -----> certification request ----->
                                                     verify request
                                                     process request
                                                     create response
-                   <<---- certification response <<----
+                   <----- certification response <-----
      handle response
      create confirmation
-                   ---->> cert conf message      ---->>
+                   -----> cert conf message      ----->
                                                     verify confirmation
                                                     create response
-                   <<---- conf ack (optional)    <<----
+                   <----- conf ack (optional)    <-----
      handle response
 
    Note: Where verification of the cert confirmation message fails, the
