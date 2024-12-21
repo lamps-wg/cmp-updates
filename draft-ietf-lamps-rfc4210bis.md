@@ -201,7 +201,7 @@ X.509v3 certificate creation and management. CMP provides interactions between
 client systems and PKI components such as a Registration Authority (RA) and
 a Certification Authority (CA).
 
-This document adds support for management of KEM certificates and use
+This document adds support for management of certificates containing a Key Encapsulation Mechanism (KEM) public key and use
 EnvelopedData instead of EncryptedValue. This document also includes the
 updates specified in Section 2 and Appendix A.2 of RFC 9480.
 
@@ -347,9 +347,40 @@ This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes spe
 * Added security considerations Sections {{<sect-8.1}}, {{<sect-8.5}}, {{<sect-8.8}}, and {{<sect-8.11}}.
 
 
-# Requirements {#sect-2}
+# Terminology and Abbreviations {#sect-2}
 
 {::boilerplate bcp14-tagged}
+
+This document relies on the terminology defined in {{RFC5280}}.
+The most important abbreviations are listed below:
+
+> CA: Certification Authority
+
+> CMP: Certificate Management Protocol
+
+> CMS: Cryptographic Message Syntax
+
+> CRL: Certificate Revocation List
+
+> CRMF: Certificate Request Message Format
+
+> EE: End Entity
+
+> KEM: Key Encapsulation Mechanism
+
+> KGA: Key Generation Authority
+
+> LRA: Local Registration Authority
+
+> MAC: Message Authentication Code
+
+> PKI: Public Key Infrastructure
+
+> POP: Proof Of Possession
+
+> RA: Registration Authority
+
+> TEE: Trusted Execution Environment
 
 
 # PKI Management Overview {#sect-3}
@@ -556,8 +587,9 @@ management
   attacks, which are possible, are not made simpler.
 
 1. PKI management protocols must be usable over a variety of
-  "transport" mechanisms, specifically including mail, HTTP,
-  MQTT, CoAP, and off-line file-based.
+  "transport" mechanisms, specifically including mail, Hypertext
+  Transfer Protocol (HTTP), Message Queuing Telemetry Transport (MQTT),
+  Constrained Application Protocol (CoAP), and off-line file-based.
 
 1. Final authority for certification creation rests with the CA.
   No RA or end entity equipment can assume that any certificate
@@ -615,7 +647,7 @@ of PKI management messages can be sent along each of the lettered
 lines.
 
 
-~~~~
+~~~~ aasvg
   +---+     cert. publish        +------------+      j
   |   |  <---------------------  | End Entity | <-------
   | C |             g            +------------+      "out-of-band"
@@ -681,7 +713,9 @@ messages are defined can be grouped as follows.
       "steps", possibly including an initialization of the end
       entity's equipment.  For example, the end entity's equipment
       must be securely initialized with the public key of a CA, e.g.,
-      using zero-touch methods like BRSKI {{RFC8995}} or SZTP {{RFC8572}}, to
+      using zero-touch methods like Bootstrapping Remote Secure Key
+	  Infrastructure (BRSKI) {{RFC8995}} or Secure Zero Touch
+	  Provisioning (SZTP) {{RFC8572}}, to
       be used in validating certificate paths.  Furthermore, an end
       entity typically needs to be initialized with its own key
       pair(s).
@@ -985,7 +1019,7 @@ an asymmetric private key with a certificate issued by another PKI trusted
 for this purpose.  The establishment of such trust is out of scope of this
 document.
 
-~~~~
+~~~~ aasvg
 In terms of message flow, the basic authenticated scheme is as
 follows:
 
@@ -996,17 +1030,17 @@ follows:
   Key generation
   Creation of certification request
   Protect request with IAK
-                -->>-- certification request -->>--
+                -----> certification request ----->
                                                  verify request
                                                  process request
                                                  create response
-                --<<-- certification response --<<--
+                <----- certification response <-----
   handle response
   create confirmation
-                -->>-- cert conf message      -->>--
+                -----> cert conf message      ----->
                                                  verify confirmation
                                                  create response
-                --<<-- conf ack (optional)    --<<--
+                <----- conf ack (optional)    <-----
   handle response
 ~~~~
 
@@ -1394,7 +1428,7 @@ these EKUs are reused by CMP.
 
 The meaning of the id-kp-cmKGA EKU is as follows:
 
-{: indent="10"}
+{: indent="9"}
 CMP KGA:
 : CMP key generation authorities are CAs or are identified by the id-kp-cmKGA
   extended key usage.  The CMP KGA knows the private key it generated on behalf
@@ -1902,7 +1936,7 @@ In the following, a generic message flow for MAC-based protection using KEM is s
 
 Generic Message Flow:
 
-~~~~
+~~~~ aasvg
 Step# Alice                                Bob
 ---------------------------------------------------------------------
   1                                        perform KEM Encapsulate
@@ -2355,7 +2389,7 @@ Note: The thisMessage choice has been deprecated in favor of encryptedKey.  When
 
 The indirect method mentioned previously in {{sect-4.3}} demonstrates proof-of-possession of the private key by having the CA return the requested certificate in encrypted form, see {{sect-5.2.2}}.  This method is indicated in the CertRequest by requesting the encrCert option in the subsequentMessage choice of POPOPrivKey.
 
-~~~~
+~~~~ aasvg
                 EE                         RA/CA
                  ----       req        ---->
                  <---  rep (enc cert)  -----
@@ -2377,7 +2411,7 @@ Note: This method would typically be used in an environment in which an RA verif
 
 The complete protocol then looks as follows (note that req' does not necessarily encapsulate req as a nested message):
 
-~~~~
+~~~~ aasvg
                 EE            RA            CA
                  ---- req ---->
                  <--- chall ---
@@ -2393,7 +2427,7 @@ The complete protocol then looks as follows (note that req' does not necessarily
 
 This protocol is obviously much longer than the exchange given in {{sect-5.2.8.3.2}} above, but allows a local Registration Authority to be involved and has the property that the certificate itself is not actually created until the proof-of-possession is complete. In some environments, a different order of the above messages may be required, such as the following (this may be determined by policy):
 
-~~~~
+~~~~ aasvg
                 EE            RA            CA
                  ---- req ---->
                  <--- chall ---
@@ -3293,7 +3327,7 @@ considered by the transfer protocol.
 The following client-side state machine describes polling for individual
 CertResponse elements at the example of an ir request message.
 
-~~~~
+~~~~ aasvg
                             START
                               |
                               v
@@ -3310,8 +3344,8 @@ CertResponse elements at the example of an ir request message.
   Add to <----------- Check CertResponse ------> Add to       |
  conf list           for each certificate      pending list   |
                              / \                              |
-                            /   \                             |
-               (conf list) /     \ (empty conf list)          |
+                            /   \  (empty conf list)          |
+               (conf list) /     \                            |
                           /       \              ip           |
                          /         \        +-----------------+
    (empty pending list) /           \       |    pollRep
@@ -3325,7 +3359,7 @@ CertResponse elements at the example of an ir request message.
 In the following exchange, the end entity is enrolling for two certificates
 in one request.
 
-~~~~
+~~~~ aasvg
 Step# End Entity                       PKI
 ---------------------------------------------------------------------
   1   format ir
@@ -3371,7 +3405,7 @@ Step# End Entity                       PKI
 The following client-side state machine describes polling for a complete
 response message.
 
-~~~~
+~~~~ aasvg
                                 Start
                                   |
                                   | Send request
@@ -3400,7 +3434,7 @@ response message.
 In the following exchange, the end entity is sending a general message request,
 and the response is delayed by the server.
 
-~~~~
+~~~~ aasvg
 Step# End Entity                       PKI
 ---------------------------------------------------------------------
   1   format genm
@@ -3703,7 +3737,7 @@ from a previous PKIMessage exchange or via some out-of-band means), then
 it MUST send a PKIMessage with the highest version supported by both it and
 the server.  If a client does not know what version(s) the server supports,
 then it MUST send a PKIMessage using the highest version it supports with
-the following exception. Version cmp2021 SHOULD only be used if cmp2021 syntax
+the following exception: version cmp2021 SHOULD only be used if cmp2021 syntax
 is needed for the request being sent or for the expected response.
 
 Note: Using cmp2000 as the default pvno is done to avoid extra message exchanges
@@ -4274,7 +4308,7 @@ Preconditions:
 
 Message flow:
 
-~~~~
+~~~~ aasvg
 Step# End entity                           PKI
 ---------------------------------------------------------------------
   1   format ir
@@ -4704,7 +4738,7 @@ not required from the end entity.
 
 Message Flows:
 
-~~~~
+~~~~ aasvg
 Step# End entity                        PKI
 ---------------------------------------------------------------------
   1   format genm
@@ -4809,7 +4843,7 @@ for either confirmation.
 
 Message Flows:
 
-~~~~
+~~~~ aasvg
 Step# Requesting CA                       Responding CA
 ---------------------------------------------------------------------
   1   format ccr
@@ -4996,7 +5030,7 @@ In the following message flows Alice indicates the PKI entity that uses a KEM ke
 
 Message Flow when the PKI entity has a KEM key pair and certificate:
 
-~~~
+~~~~ aasvg
 Step# PKI entity                           PKI management entity
       (Alice)                              (Bob)
 ---------------------------------------------------------------------
@@ -5038,12 +5072,12 @@ Step# PKI entity                           PKI management entity
  16       Further messages of this PKI management operation
         can be exchanged with MAC-based protection by the PKI
          entity using the established shared secret key (ssk)
-~~~
+~~~~
 {: #KEM-Flow1 title='Message Flow when PKI entity has a KEM key pair' artwork-align="left"}
 
 Message Flow when the PKI entity knows that the PKI management entity uses a KEM key pair and has the authentic public key:
 
-~~~
+~~~~ aasvg
 Step# PKI entity                           PKI management entity
       (Bob)                                (Alice)
 ---------------------------------------------------------------------
@@ -5073,7 +5107,7 @@ Step# PKI entity                           PKI management entity
           can be exchanged with MAC-based protection by the
              PKI management entity using the established
                         shared secret key (ssk)
-~~~
+~~~~
 {: #KEM-Flow2 title='Message Flow when the PKI entity knows that the PKI management entity uses a KEM key pair and has the authentic public key' artwork-align="left"}
 
 Note: {{KEM-Flow2}} describes the situation where KEM-based message protection may not require more that one message exchange.  In this case, the transactionID MUST also be used by the PKI entity (Bob) to ensure domain separation between different PKI management operations.
@@ -5081,7 +5115,7 @@ Note: {{KEM-Flow2}} describes the situation where KEM-based message protection m
 
 Message Flow when the PKI entity does not know that the PKI management entity uses a KEM key pair:
 
-~~~
+~~~~ aasvg
 Step# PKI entity                           PKI management entity
       (Bob)                                (Alice)
 ---------------------------------------------------------------------
@@ -5100,7 +5134,7 @@ Step# PKI entity                           PKI management entity
   5   validate KEM certificate
 
   6              proceed as shown in the Figure before
-~~~
+~~~~
 {: #KEM-Flow3 title='Message Flow when the PKI entity does not know that the PKI management entity uses a KEM key pair' artwork-align="left"}
 
 
