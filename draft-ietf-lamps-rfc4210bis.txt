@@ -407,11 +407,8 @@ Table of Contents
    This document relies on the terminology defined in [RFC5280].  The
    most important abbreviations are listed below:
 
-      CA: Certification Authority
-
-      CMP: Certificate Management Protocol
-
-   CMS: Cryptographic Message Syntax
+      CA: Certification Authority CMP: Certificate Management Protocol
+      CMS: Cryptographic Message Syntax
 
    CRL: Certificate Revocation List
 
