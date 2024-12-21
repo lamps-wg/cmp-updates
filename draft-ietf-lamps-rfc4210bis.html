@@ -15,7 +15,7 @@ Certificate Management Protocol (CMP).  Protocol messages are defined for
 X.509v3 certificate creation and management. CMP provides interactions between
 client systems and PKI components such as a Registration Authority (RA) and
 a Certification Authority (CA). 
-       This document adds support for management of KEM certificates and use
+       This document adds support for management of certificates containing a Key Encapsulation Mechanism (KEM) public key and use
 EnvelopedData instead of EncryptedValue. This document also includes the
 updates specified in Section 2 and Appendix A.2 of RFC 9480. 
        The updates maintain backward compatibility with CMP version 2 wherever
@@ -1070,7 +1070,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 22 June 2025</td>
+<td class="center">Expires 24 June 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1089,12 +1089,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-12-19" class="published">19 December 2024</time>
+<time datetime="2024-12-21" class="published">21 December 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-06-22">22 June 2025</time></dd>
+<dd class="expires"><time datetime="2025-06-24">24 June 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1124,7 +1124,7 @@ Certificate Management Protocol (CMP).  Protocol messages are defined for
 X.509v3 certificate creation and management. CMP provides interactions between
 client systems and PKI components such as a Registration Authority (RA) and
 a Certification Authority (CA).<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">This document adds support for management of KEM certificates and use
+<p id="section-abstract-2">This document adds support for management of certificates containing a Key Encapsulation Mechanism (KEM) public key and use
 EnvelopedData instead of EncryptedValue. This document also includes the
 updates specified in Section 2 and Appendix A.2 of RFC 9480.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">The updates maintain backward compatibility with CMP version 2 wherever
@@ -1168,7 +1168,7 @@ Section 9 of RFC 5912.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 22 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1212,7 +1212,7 @@ Section 9 of RFC 5912.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-requirements" class="internal xref">Requirements</a></p>
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology-and-abbreviatio" class="internal xref">Terminology and Abbreviations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-pki-management-overview" class="internal xref">PKI Management Overview</a></p>
@@ -1906,13 +1906,31 @@ C of <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span> to <a href=
 </div>
 <div id="sect-2">
 <section id="section-2">
-      <h2 id="name-requirements">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-requirements" class="section-name selfRef">Requirements</a>
+      <h2 id="name-terminology-and-abbreviatio">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terminology-and-abbreviatio" class="section-name selfRef">Terminology and Abbreviations</a>
       </h2>
 <p id="section-2-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
 appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">This document relies on the terminology defined in <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>.
+The most important abbreviations are listed below.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-3">CA: Certification Authority<a href="#section-2-3" class="pilcrow">¶</a></p>
+<p id="section-2-4">CMP: Certificate Management Protocol<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-5">CMS: Cryptographic Message Syntax<a href="#section-2-5" class="pilcrow">¶</a></p>
+<p id="section-2-6">CRL: Certificate Revocation List<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-7">CRMF: Certificate Request Message Format<a href="#section-2-7" class="pilcrow">¶</a></p>
+<p id="section-2-8">EE: End Entity<a href="#section-2-8" class="pilcrow">¶</a></p>
+<p id="section-2-9">EKU: Extended Key Usage<a href="#section-2-9" class="pilcrow">¶</a></p>
+<p id="section-2-10">KEM: Key Encapsulation Mechanism<a href="#section-2-10" class="pilcrow">¶</a></p>
+<p id="section-2-11">KGA: Key Generation Authority<a href="#section-2-11" class="pilcrow">¶</a></p>
+<p id="section-2-12">LRA: Local Registration Authority<a href="#section-2-12" class="pilcrow">¶</a></p>
+<p id="section-2-13">MAC: Message Authentication Code<a href="#section-2-13" class="pilcrow">¶</a></p>
+<p id="section-2-14">OID: Object Identifier<a href="#section-2-14" class="pilcrow">¶</a></p>
+<p id="section-2-15">PKI: Public Key Infrastructure<a href="#section-2-15" class="pilcrow">¶</a></p>
+<p id="section-2-16">POP: Proof Of Possession<a href="#section-2-16" class="pilcrow">¶</a></p>
+<p id="section-2-17">RA: Registration Authority<a href="#section-2-17" class="pilcrow">¶</a></p>
+<p id="section-2-18">TEE: Trusted Execution Environment<a href="#section-2-18" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-3">
@@ -2128,8 +2146,9 @@ management<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-3.1.2-2.8">
               <p id="section-3.1.2-2.8.1">PKI management protocols must be usable over a variety of
-  "transport" mechanisms, specifically including mail, HTTP,
-  MQTT, CoAP, and off-line file-based.<a href="#section-3.1.2-2.8.1" class="pilcrow">¶</a></p>
+  "transport" mechanisms, specifically including mail, Hypertext
+  Transfer Protocol (HTTP), Message Queuing Telemetry Transport (MQTT),
+  Constrained Application Protocol (CoAP), and off-line file-based.<a href="#section-3.1.2-2.8.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-3.1.2-2.9">
               <p id="section-3.1.2-2.9.1">Final authority for certification creation rests with the CA.
@@ -2195,43 +2214,138 @@ of PKI management messages can be sent along each of the lettered
 lines.<a href="#section-3.1.3-1" class="pilcrow">¶</a></p>
 <span id="name-pki-entities"></span><div id="ure-pki-entities">
 <figure id="figure-1">
-            <div class="alignLeft art-text artwork" id="section-3.1.3-2.1">
-<pre>
-  +---+     cert. publish        +------------+      j
-  |   |  &lt;---------------------  | End Entity | &lt;-------
-  | C |             g            +------------+      "out-of-band"
-  | e |                            | ^                loading
-  | r |                            | |      initial
-  | t |                          a | | b     registration/
-  |   |                            | |       certification
-  | / |                            | |      key pair recovery
-  |   |                            | |      key pair update
-  | C |                            | |      certificate update
-  | R |  PKI "USERS"               V |      revocation request
-  | L | -------------------+-+-----+-+------+-+-------------------
-  |   |  PKI MANAGEMENT    | ^              | ^
-  |   |    ENTITIES      a | | b          a | | b
-  | R |                    V |              | |
-  | e |             g   +------+    d       | |
-  | p |   &lt;------------ | RA   | &lt;-----+    | |
-  | o |      cert.      |      | ----+ |    | |
-  | s |       publish   +------+   c | |    | |
-  | i |                              | |    | |
-  | t |                              V |    V |
-  | o |          g                 +------------+   i
-  | r |   &lt;------------------------|     CA     |-------&gt;
-  | y |          h                 +------------+  "out-of-band"
-  |   |      cert. publish              | ^         publication
-  |   |      CRL publish                | |
-  +---+                                 | |    cross-certification
-                                      e | | f  cross-certificate
-                                        | |       update
-                                        | |
-                                        V |
-                                      +------+
-                                      | CA-2 |
-                                      +------+
-</pre>
+            <div id="section-3.1.3-2.1">
+              <div class="alignLeft art-svg artwork" id="section-3.1.3-2.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="592" width="520" viewBox="0 0 520 592" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 8,32 L 8,448" fill="none" stroke="black"></path>
+                  <path d="M 40,32 L 40,448" fill="none" stroke="black"></path>
+                  <path d="M 184,272 L 184,320" fill="none" stroke="black"></path>
+                  <path d="M 208,208 L 208,264" fill="none" stroke="black"></path>
+                  <path d="M 224,216 L 224,264" fill="none" stroke="black"></path>
+                  <path d="M 240,272 L 240,320" fill="none" stroke="black"></path>
+                  <path d="M 256,32 L 256,64" fill="none" stroke="black"></path>
+                  <path d="M 272,72 L 272,200" fill="none" stroke="black"></path>
+                  <path d="M 272,368 L 272,400" fill="none" stroke="black"></path>
+                  <path d="M 288,72 L 288,208" fill="none" stroke="black"></path>
+                  <path d="M 288,304 L 288,360" fill="none" stroke="black"></path>
+                  <path d="M 296,528 L 296,560" fill="none" stroke="black"></path>
+                  <path d="M 304,288 L 304,360" fill="none" stroke="black"></path>
+                  <path d="M 312,408 L 312,520" fill="none" stroke="black"></path>
+                  <path d="M 328,408 L 328,520" fill="none" stroke="black"></path>
+                  <path d="M 344,208 L 344,360" fill="none" stroke="black"></path>
+                  <path d="M 352,528 L 352,560" fill="none" stroke="black"></path>
+                  <path d="M 360,32 L 360,64" fill="none" stroke="black"></path>
+                  <path d="M 360,216 L 360,360" fill="none" stroke="black"></path>
+                  <path d="M 376,368 L 376,400" fill="none" stroke="black"></path>
+                  <path d="M 8,32 L 40,32" fill="none" stroke="black"></path>
+                  <path d="M 256,32 L 360,32" fill="none" stroke="black"></path>
+                  <path d="M 64,48 L 232,48" fill="none" stroke="black"></path>
+                  <path d="M 376,48 L 432,48" fill="none" stroke="black"></path>
+                  <path d="M 256,64 L 360,64" fill="none" stroke="black"></path>
+                  <path d="M 56,208 L 512,208" fill="none" stroke="black"></path>
+                  <path d="M 184,272 L 240,272" fill="none" stroke="black"></path>
+                  <path d="M 72,288 L 168,288" fill="none" stroke="black"></path>
+                  <path d="M 256,288 L 304,288" fill="none" stroke="black"></path>
+                  <path d="M 256,304 L 288,304" fill="none" stroke="black"></path>
+                  <path d="M 184,320 L 240,320" fill="none" stroke="black"></path>
+                  <path d="M 272,368 L 376,368" fill="none" stroke="black"></path>
+                  <path d="M 72,384 L 264,384" fill="none" stroke="black"></path>
+                  <path d="M 384,384 L 440,384" fill="none" stroke="black"></path>
+                  <path d="M 272,400 L 376,400" fill="none" stroke="black"></path>
+                  <path d="M 8,448 L 40,448" fill="none" stroke="black"></path>
+                  <path d="M 296,528 L 352,528" fill="none" stroke="black"></path>
+                  <path d="M 296,560 L 352,560" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="448,384 436,378.4 436,389.6" fill="black" transform="rotate(0,440,384)"></polygon>
+                  <polygon class="arrowhead" points="384,48 372,42.4 372,53.6" fill="black" transform="rotate(180,376,48)"></polygon>
+                  <polygon class="arrowhead" points="368,216 356,210.4 356,221.6" fill="black" transform="rotate(270,360,216)"></polygon>
+                  <polygon class="arrowhead" points="352,360 340,354.4 340,365.6" fill="black" transform="rotate(90,344,360)"></polygon>
+                  <polygon class="arrowhead" points="336,408 324,402.4 324,413.6" fill="black" transform="rotate(270,328,408)"></polygon>
+                  <polygon class="arrowhead" points="320,520 308,514.4 308,525.6" fill="black" transform="rotate(90,312,520)"></polygon>
+                  <polygon class="arrowhead" points="296,360 284,354.4 284,365.6" fill="black" transform="rotate(90,288,360)"></polygon>
+                  <polygon class="arrowhead" points="296,72 284,66.4 284,77.6" fill="black" transform="rotate(270,288,72)"></polygon>
+                  <polygon class="arrowhead" points="280,200 268,194.4 268,205.6" fill="black" transform="rotate(90,272,200)"></polygon>
+                  <polygon class="arrowhead" points="264,288 252,282.4 252,293.6" fill="black" transform="rotate(180,256,288)"></polygon>
+                  <polygon class="arrowhead" points="232,216 220,210.4 220,221.6" fill="black" transform="rotate(270,224,216)"></polygon>
+                  <polygon class="arrowhead" points="216,264 204,258.4 204,269.6" fill="black" transform="rotate(90,208,264)"></polygon>
+                  <polygon class="arrowhead" points="80,384 68,378.4 68,389.6" fill="black" transform="rotate(180,72,384)"></polygon>
+                  <polygon class="arrowhead" points="80,288 68,282.4 68,293.6" fill="black" transform="rotate(180,72,288)"></polygon>
+                  <polygon class="arrowhead" points="72,48 60,42.4 60,53.6" fill="black" transform="rotate(180,64,48)"></polygon>
+                  <g class="text">
+                    <text x="104" y="36">cert.</text>
+                    <text x="160" y="36">publish</text>
+                    <text x="416" y="36">j</text>
+                    <text x="280" y="52">End</text>
+                    <text x="324" y="52">Entity</text>
+                    <text x="24" y="68">C</text>
+                    <text x="152" y="68">g</text>
+                    <text x="464" y="68">"out-of-band"</text>
+                    <text x="24" y="84">e</text>
+                    <text x="448" y="84">loading</text>
+                    <text x="24" y="100">r</text>
+                    <text x="368" y="100">initial</text>
+                    <text x="24" y="116">t</text>
+                    <text x="256" y="116">a</text>
+                    <text x="304" y="116">b</text>
+                    <text x="400" y="116">registration/</text>
+                    <text x="400" y="132">certification</text>
+                    <text x="24" y="148">/</text>
+                    <text x="352" y="148">key</text>
+                    <text x="388" y="148">pair</text>
+                    <text x="444" y="148">recovery</text>
+                    <text x="352" y="164">key</text>
+                    <text x="388" y="164">pair</text>
+                    <text x="436" y="164">update</text>
+                    <text x="24" y="180">C</text>
+                    <text x="384" y="180">certificate</text>
+                    <text x="460" y="180">update</text>
+                    <text x="24" y="196">R</text>
+                    <text x="72" y="196">PKI</text>
+                    <text x="120" y="196">"USERS"</text>
+                    <text x="380" y="196">revocation</text>
+                    <text x="456" y="196">request</text>
+                    <text x="24" y="212">L</text>
+                    <text x="72" y="228">PKI</text>
+                    <text x="132" y="228">MANAGEMENT</text>
+                    <text x="108" y="244">ENTITIES</text>
+                    <text x="192" y="244">a</text>
+                    <text x="240" y="244">b</text>
+                    <text x="328" y="244">a</text>
+                    <text x="376" y="244">b</text>
+                    <text x="24" y="260">R</text>
+                    <text x="24" y="276">e</text>
+                    <text x="152" y="276">g</text>
+                    <text x="280" y="276">d</text>
+                    <text x="24" y="292">p</text>
+                    <text x="204" y="292">RA</text>
+                    <text x="24" y="308">o</text>
+                    <text x="112" y="308">cert.</text>
+                    <text x="24" y="324">s</text>
+                    <text x="128" y="324">publish</text>
+                    <text x="272" y="324">c</text>
+                    <text x="24" y="340">i</text>
+                    <text x="24" y="356">t</text>
+                    <text x="24" y="372">o</text>
+                    <text x="128" y="372">g</text>
+                    <text x="408" y="372">i</text>
+                    <text x="24" y="388">r</text>
+                    <text x="324" y="388">CA</text>
+                    <text x="24" y="404">y</text>
+                    <text x="128" y="404">h</text>
+                    <text x="448" y="404">"out-of-band"</text>
+                    <text x="112" y="420">cert.</text>
+                    <text x="168" y="420">publish</text>
+                    <text x="448" y="420">publication</text>
+                    <text x="104" y="436">CRL</text>
+                    <text x="152" y="436">publish</text>
+                    <text x="440" y="452">cross-certification</text>
+                    <text x="296" y="468">e</text>
+                    <text x="344" y="468">f</text>
+                    <text x="432" y="468">cross-certificate</text>
+                    <text x="412" y="484">update</text>
+                    <text x="324" y="548">CA-2</text>
+                  </g>
+                </svg><a href="#section-3.1.3-2.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
 <a href="#name-pki-entities" class="selfRef">PKI Entities</a>
@@ -2266,7 +2380,9 @@ messages are defined can be grouped as follows.<a href="#section-3.1.3-3" class=
    "steps", possibly including an initialization of the end
    entity's equipment.  For example, the end entity's equipment
    must be securely initialized with the public key of a CA, e.g.,
-   using zero-touch methods like BRSKI <span>[<a href="#RFC8995" class="cite xref">RFC8995</a>]</span> or SZTP <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>, to
+   using zero-touch methods like Bootstrapping Remote Secure Key
+   Infrastructure (BRSKI) <span>[<a href="#RFC8995" class="cite xref">RFC8995</a>]</span> or Secure Zero Touch
+   Provisioning (SZTP) <span>[<a href="#RFC8572" class="cite xref">RFC8572</a>]</span>, to
    be used in validating certificate paths.  Furthermore, an end
    entity typically needs to be initialized with its own key
    pair(s).<a href="#section-3.1.3-4.3.2.1.1" class="pilcrow">¶</a></p>
@@ -5095,35 +5211,90 @@ considered by the transfer protocol.<a href="#section-5.3.22-5.1.1" class="pilcr
           </ol>
 <p id="section-5.3.22-7">The following client-side state machine describes polling for individual
 CertResponse elements at the example of an ir request message.<a href="#section-5.3.22-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.3.22-8">
-<pre>
-                            START
-                              |
-                              v
-                           Send ir
-                              | ip
-                              v
-                         Check status
-                         of returned &lt;------------------------+
-                            certs                             |
-                              |                               |
-    +------------------------&gt;|&lt;------------------+           |
-    |                         |                   |           |
-    |        (issued)         v       (waiting)   |           |
-  Add to &lt;----------- Check CertResponse ------&gt; Add to       |
- conf list           for each certificate      pending list   |
-                             / \                              |
-                            /   \                             |
-               (conf list) /     \ (empty conf list)          |
-                          /       \              ip           |
-                         /         \        +-----------------+
-   (empty pending list) /           \       |    pollRep
-     END &lt;---- Send certConf        Send pollReq----------&gt;Wait
-                      |                 ^   ^               |
-                      |                 |   |               |
-                      +-----------------+   +---------------+
-                         (pending list)
-</pre><a href="#section-5.3.22-8" class="pilcrow">¶</a>
+<div id="section-5.3.22-8">
+            <div class="alignLeft art-svg artwork" id="section-5.3.22-8.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="464" width="504" viewBox="0 0 504 464" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 32,192 L 32,224" fill="none" stroke="black"></path>
+                <path d="M 176,384 L 176,416" fill="none" stroke="black"></path>
+                <path d="M 240,48 L 240,64" fill="none" stroke="black"></path>
+                <path d="M 240,96 L 240,112" fill="none" stroke="black"></path>
+                <path d="M 240,176 L 240,224" fill="none" stroke="black"></path>
+                <path d="M 320,384 L 320,416" fill="none" stroke="black"></path>
+                <path d="M 352,336 L 352,352" fill="none" stroke="black"></path>
+                <path d="M 352,384 L 352,416" fill="none" stroke="black"></path>
+                <path d="M 400,192 L 400,224" fill="none" stroke="black"></path>
+                <path d="M 480,384 L 480,416" fill="none" stroke="black"></path>
+                <path d="M 496,144 L 496,336" fill="none" stroke="black"></path>
+                <path d="M 296,144 L 496,144" fill="none" stroke="black"></path>
+                <path d="M 32,192 L 232,192" fill="none" stroke="black"></path>
+                <path d="M 248,192 L 400,192" fill="none" stroke="black"></path>
+                <path d="M 72,240 L 160,240" fill="none" stroke="black"></path>
+                <path d="M 328,240 L 376,240" fill="none" stroke="black"></path>
+                <path d="M 352,336 L 496,336" fill="none" stroke="black"></path>
+                <path d="M 72,368 L 104,368" fill="none" stroke="black"></path>
+                <path d="M 384,368 L 464,368" fill="none" stroke="black"></path>
+                <path d="M 176,416 L 320,416" fill="none" stroke="black"></path>
+                <path d="M 352,416 L 480,416" fill="none" stroke="black"></path>
+                <path d="M 248,272 L 288,352" fill="none" stroke="black"></path>
+                <path d="M 192,352 L 232,272" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="472,368 460,362.4 460,373.6" fill="black" transform="rotate(0,464,368)"></polygon>
+                <polygon class="arrowhead" points="384,240 372,234.4 372,245.6" fill="black" transform="rotate(0,376,240)"></polygon>
+                <polygon class="arrowhead" points="360,384 348,378.4 348,389.6" fill="black" transform="rotate(270,352,384)"></polygon>
+                <polygon class="arrowhead" points="328,384 316,378.4 316,389.6" fill="black" transform="rotate(270,320,384)"></polygon>
+                <polygon class="arrowhead" points="304,144 292,138.4 292,149.6" fill="black" transform="rotate(180,296,144)"></polygon>
+                <polygon class="arrowhead" points="256,192 244,186.4 244,197.6" fill="black" transform="rotate(180,248,192)"></polygon>
+                <polygon class="arrowhead" points="248,224 236,218.4 236,229.6" fill="black" transform="rotate(90,240,224)"></polygon>
+                <polygon class="arrowhead" points="248,112 236,106.4 236,117.6" fill="black" transform="rotate(90,240,112)"></polygon>
+                <polygon class="arrowhead" points="248,64 236,58.4 236,69.6" fill="black" transform="rotate(90,240,64)"></polygon>
+                <polygon class="arrowhead" points="240,192 228,186.4 228,197.6" fill="black" transform="rotate(0,232,192)"></polygon>
+                <polygon class="arrowhead" points="80,368 68,362.4 68,373.6" fill="black" transform="rotate(180,72,368)"></polygon>
+                <polygon class="arrowhead" points="80,240 68,234.4 68,245.6" fill="black" transform="rotate(180,72,240)"></polygon>
+                <g class="text">
+                  <text x="240" y="36">START</text>
+                  <text x="228" y="84">Send</text>
+                  <text x="260" y="84">ir</text>
+                  <text x="260" y="100">ip</text>
+                  <text x="216" y="132">Check</text>
+                  <text x="268" y="132">status</text>
+                  <text x="204" y="148">of</text>
+                  <text x="252" y="148">returned</text>
+                  <text x="240" y="164">certs</text>
+                  <text x="132" y="228">(issued)</text>
+                  <text x="336" y="228">(waiting)</text>
+                  <text x="24" y="244">Add</text>
+                  <text x="52" y="244">to</text>
+                  <text x="192" y="244">Check</text>
+                  <text x="268" y="244">CertResponse</text>
+                  <text x="400" y="244">Add</text>
+                  <text x="428" y="244">to</text>
+                  <text x="20" y="260">conf</text>
+                  <text x="60" y="260">list</text>
+                  <text x="176" y="260">for</text>
+                  <text x="212" y="260">each</text>
+                  <text x="280" y="260">certificate</text>
+                  <text x="400" y="260">pending</text>
+                  <text x="452" y="260">list</text>
+                  <text x="136" y="308">(conf</text>
+                  <text x="184" y="308">list)</text>
+                  <text x="300" y="308">(empty</text>
+                  <text x="348" y="308">conf</text>
+                  <text x="392" y="308">list)</text>
+                  <text x="396" y="324">ip</text>
+                  <text x="44" y="356">(empty</text>
+                  <text x="104" y="356">pending</text>
+                  <text x="160" y="356">list)</text>
+                  <text x="416" y="356">pollRep</text>
+                  <text x="48" y="372">END</text>
+                  <text x="132" y="372">Send</text>
+                  <text x="188" y="372">certConf</text>
+                  <text x="300" y="372">Send</text>
+                  <text x="352" y="372">pollReq</text>
+                  <text x="484" y="372">Wait</text>
+                  <text x="228" y="436">(pending</text>
+                  <text x="288" y="436">list)</text>
+                </g>
+              </svg><a href="#section-5.3.22-8.1" class="pilcrow">¶</a>
+</div>
 </div>
 <p id="section-5.3.22-9">In the following exchange, the end entity is enrolling for two certificates
 in one request.<a href="#section-5.3.22-9" class="pilcrow">¶</a></p>
@@ -5173,32 +5344,53 @@ Step# End Entity                       PKI
 </div>
 <p id="section-5.3.22-11">The following client-side state machine describes polling for a complete
 response message.<a href="#section-5.3.22-11" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.3.22-12">
-<pre>
-                                Start
-                                  |
-                                  | Send request
-                                  |
-             +----------- Receive response ------------+
-             |                                         |
-             | ip/cp/kup/krp/ccp/error with            | other
-             | status "waiting"                        | response
-             |                                         |
-             v                                         |
- +------&gt; Polling                                      |
- |           |                                         |
- |           | Send pollReq                            |
- |           | Receive response                        |
- |           |                                         |
- |   pollRep | other response                          |
- +-----------+-------------------&gt;+&lt;-------------------+
-                                  |
-                                  v
-                            Handle response
-                                  |
-                                  v
-                                 End
-</pre><a href="#section-5.3.22-12" class="pilcrow">¶</a>
+<div id="section-5.3.22-12">
+            <div class="alignLeft art-svg artwork" id="section-5.3.22-12.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="416" width="520" viewBox="0 0 520 416" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,192 L 8,288" fill="none" stroke="black"></path>
+                <path d="M 104,96 L 104,176" fill="none" stroke="black"></path>
+                <path d="M 104,208 L 104,288" fill="none" stroke="black"></path>
+                <path d="M 272,48 L 272,80" fill="none" stroke="black"></path>
+                <path d="M 272,288 L 272,320" fill="none" stroke="black"></path>
+                <path d="M 272,352 L 272,368" fill="none" stroke="black"></path>
+                <path d="M 440,96 L 440,288" fill="none" stroke="black"></path>
+                <path d="M 104,96 L 192,96" fill="none" stroke="black"></path>
+                <path d="M 344,96 L 440,96" fill="none" stroke="black"></path>
+                <path d="M 8,192 L 64,192" fill="none" stroke="black"></path>
+                <path d="M 8,288 L 264,288" fill="none" stroke="black"></path>
+                <path d="M 280,288 L 440,288" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="288,288 276,282.4 276,293.6" fill="black" transform="rotate(180,280,288)"></polygon>
+                <polygon class="arrowhead" points="280,368 268,362.4 268,373.6" fill="black" transform="rotate(90,272,368)"></polygon>
+                <polygon class="arrowhead" points="280,320 268,314.4 268,325.6" fill="black" transform="rotate(90,272,320)"></polygon>
+                <polygon class="arrowhead" points="272,288 260,282.4 260,293.6" fill="black" transform="rotate(0,264,288)"></polygon>
+                <polygon class="arrowhead" points="112,176 100,170.4 100,181.6" fill="black" transform="rotate(90,104,176)"></polygon>
+                <polygon class="arrowhead" points="72,192 60,186.4 60,197.6" fill="black" transform="rotate(0,64,192)"></polygon>
+                <g class="text">
+                  <text x="272" y="36">Start</text>
+                  <text x="300" y="68">Send</text>
+                  <text x="352" y="68">request</text>
+                  <text x="232" y="100">Receive</text>
+                  <text x="300" y="100">response</text>
+                  <text x="208" y="132">ip/cp/kup/krp/ccp/error</text>
+                  <text x="324" y="132">with</text>
+                  <text x="472" y="132">other</text>
+                  <text x="140" y="148">status</text>
+                  <text x="208" y="148">"waiting"</text>
+                  <text x="484" y="148">response</text>
+                  <text x="104" y="196">Polling</text>
+                  <text x="132" y="228">Send</text>
+                  <text x="184" y="228">pollReq</text>
+                  <text x="144" y="244">Receive</text>
+                  <text x="212" y="244">response</text>
+                  <text x="64" y="276">pollRep</text>
+                  <text x="136" y="276">other</text>
+                  <text x="196" y="276">response</text>
+                  <text x="244" y="340">Handle</text>
+                  <text x="308" y="340">response</text>
+                  <text x="272" y="388">End</text>
+                </g>
+              </svg><a href="#section-5.3.22-12.1" class="pilcrow">¶</a>
+</div>
 </div>
 <p id="section-5.3.22-13">In the following exchange, the end entity is sending a general message request,
 and the response is delayed by the server.<a href="#section-5.3.22-13" class="pilcrow">¶</a></p>
@@ -5527,7 +5719,7 @@ from a previous PKIMessage exchange or via some out-of-band means), then
 it <span class="bcp14">MUST</span> send a PKIMessage with the highest version supported by both it and
 the server.  If a client does not know what version(s) the server supports,
 then it <span class="bcp14">MUST</span> send a PKIMessage using the highest version it supports with
-the following exception. Version cmp2021 <span class="bcp14">SHOULD</span> only be used if cmp2021 syntax
+the following exception: version cmp2021 <span class="bcp14">SHOULD</span> only be used if cmp2021 syntax
 is needed for the request being sent or for the expected response.<a href="#section-7-2" class="pilcrow">¶</a></p>
 <p id="section-7-3">Note: Using cmp2000 as the default pvno is done to avoid extra message exchanges
 for version negotiation and to foster compatibility with cmp2000 implementations.
