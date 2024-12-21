@@ -407,33 +407,33 @@ Table of Contents
    This document relies on the terminology defined in [RFC5280].  The
    most important abbreviations are listed below:
 
-   CA:  Certification Authority CMP:
+   CA:  Certification Authority
 
-        Certificate Management Protocol CMS:
+   CMP:  Certificate Management Protocol
 
-        Cryptographic Message Syntax CRL:
+   CMS:  Cryptographic Message Syntax
 
-        Certificate Revocation List CRMF:
+   CRL:  Certificate Revocation List
 
-        Certificate Request Message Format EE:
+   CRMF:  Certificate Request Message Format
 
-        End Entity KEM:
+   EE:  End Entity
 
-        Key Encapsulation Mechanism KGA:
+   KEM:  Key Encapsulation Mechanism
 
-        Key Generation Authority LRA:
+   KGA:  Key Generation Authority
 
-        Local Registration Authority MAC:
+   LRA:  Local Registration Authority
 
-        Message Authentication Code PKI:
+   MAC:  Message Authentication Code
 
-        Public Key Infrastructure POP:
+   PKI:  Public Key Infrastructure
 
-        Proof Of Possession RA:
+   POP:  Proof Of Possession
 
-        Registration Authority TEE:
+   RA:  Registration Authority
 
-        Trusted Execution Environment
+   TEE:  Trusted Execution Environment
 
 3.  PKI Management Overview
 
