@@ -5398,7 +5398,7 @@ Appendix E.  Variants of Using KEM Keys for PKI Message Protection
     13                                        format response with
                                                 protection depending on
                                                 available key material
-    14                     <--  response <--
+    14                     <-- response  <--
     15   verify protection
            provided by the
            PKI management entity
@@ -5429,7 +5429,7 @@ Appendix E.  Variants of Using KEM Keys for PKI Message Protection
                                                 to get ssk
      6                                        format response with
                                                 MAC-based protection
-     7                     <--  response <--
+     7                     <-- response  <--
      8   perform key derivation
            to get ssk
      9   verify MAC-based
