@@ -4253,15 +4253,6 @@ certificate has been requested.
 | algorithmIdentifier | MSG_SIG_ALG | only signature protection is allowed for this proof |
 | signature | present | bits calculated using MSG_SIG_ALG |
 
-~~~~
-Field               Value         Comment
-
-algorithmIdentifier MSG_SIG_ALG   only signature protection is
-                                  allowed for this proof
-
-signature           present       bits calculated using MSG_SIG_ALG
-~~~~
-
 Note: For examples of MSG_SIG_ALG OIDs see CMP Algorithms Section 3 {{RFC9481}}.
 
 Proof-of-possession of a private decryption key that corresponds to a
@@ -4691,17 +4682,6 @@ of the use of these structures):
 | oldWithNew | previous root CA public key signed with new private key |
 | newWithOld | new root CA public key signed with previous private key |
 
-~~~~
-Type          Function
------------------------------------------------------------------
-newWithNew a true "self-signed" certificate; the contained
-           public key MUST be usable to verify the signature
-           (though this provides only integrity and no
-           authentication whatsoever)
-oldWithNew previous root CA public key signed with new private key
-newWithOld new root CA public key signed with previous private key
-~~~~
-
 Such certificates (including relevant extensions) must contain
 "sensible" values for all fields.  For example, when present,
 subjectAltName MUST be identical to issuerAltName, and, when present,
@@ -4726,20 +4706,6 @@ ckuann message:
 | newWithOld | optionally present | see {{sect-d.3}} above |
 | oldWithNew | optionally present | see {{sect-d.3}} above |
 | extraCerts | optionally present | can be used to "publish" certificates (e.g., certificates signed using the new private key) |
-
-~~~~
- Field        Value                        Comment
---------------------------------------------------------------
- sender       CA name CA name
- body         ckuann(RootCaKeyUpdateContent)
- newWithNew   present                  see Appendix D.3 above
- newWithOld   optionally present       see Appendix D.3 above
- oldWithNew   optionally present       see Appendix D.3 above
- extraCerts   optionally present       can be used to "publish"
-                                       certificates (e.g.,
-                                       certificates signed using
-                                       the new private key)
-~~~~
 
 
 ## PKI Information Request/Response
