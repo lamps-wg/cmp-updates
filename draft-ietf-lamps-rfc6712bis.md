@@ -133,8 +133,8 @@ providing this functionality vanished.  The remaining features CMP
 requires from its transfer protocols are connection and error
 handling.
 
-CMP can benefit from utilizing a reliable transport as CMP requires connection and error handling
-from the transfer protocol. All theses features are covered by HTTP.  Additionally,
+CMP can benefit from utilizing reliable transport as CMP requires connection and error handling
+from the transfer protocol. All these features are covered by HTTP.  Additionally,
 delayed delivery of CMP response messages may be handled at transfer level,
 regardless of the message contents.  Since {{RFC9480}} extends the polling
 mechanism specified in the second version of [CMP](#RFC4210) to cover
@@ -181,7 +181,7 @@ management operations specified in the [Lightweight CMP Profile](#RFC9483), in t
 
 This document obsoletes {{RFC6712}}.
 It includes the changes specified in {{Section 3 of RFC9480}} as
-described in {{sect-1.1}} of this document. Additionally it adds the following changes:
+described in {{sect-1.1}} of this document. Additionally, it adds the following changes:
 
 * Removed the requirement to support HTTP/1.0 {{RFC1945}} in accordance with {{Section 4.1 of RFC9205}}.
 
@@ -430,6 +430,12 @@ We also thank all reviewers for their valuable feedback.
 # History of Changes {#History}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 09 -> 10:
+
+
+* Addressed IESG review comments from Mahesh Jethanandani and responded to comments from Orie Steele and Zaheduzzaman Sarker via email
+
 
 From version 08 -> 09:
 
