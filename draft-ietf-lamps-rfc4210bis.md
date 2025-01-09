@@ -5047,7 +5047,7 @@ Step# PKI entity                           PKI management entity
  13                                        format response with
                                              protection depending on
                                              available key material
- 14                     <--  response <--
+ 14                     <-- response  <--
  15   verify protection
         provided by the
         PKI management entity
@@ -5078,7 +5078,7 @@ Step# PKI entity                           PKI management entity
                                              to get ssk
   6                                        format response with
                                              MAC-based protection
-  7                     <--  response <--
+  7                     <-- response  <--
   8   perform key derivation
         to get ssk
   9   verify MAC-based
