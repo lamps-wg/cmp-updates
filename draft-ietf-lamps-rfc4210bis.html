@@ -5483,11 +5483,13 @@ CertResponse elements at the example of an ir request message.<a href="#section-
                 <polygon class="arrowhead" points="360,384 348,378.4 348,389.6" fill="black" transform="rotate(270,352,384)"></polygon>
                 <polygon class="arrowhead" points="328,384 316,378.4 316,389.6" fill="black" transform="rotate(270,320,384)"></polygon>
                 <polygon class="arrowhead" points="304,144 292,138.4 292,149.6" fill="black" transform="rotate(180,296,144)"></polygon>
+                <polygon class="arrowhead" points="296,352 284,346.4 284,357.6" fill="black" transform="rotate(63.43494882292201,288,352)"></polygon>
                 <polygon class="arrowhead" points="256,192 244,186.4 244,197.6" fill="black" transform="rotate(180,248,192)"></polygon>
                 <polygon class="arrowhead" points="248,224 236,218.4 236,229.6" fill="black" transform="rotate(90,240,224)"></polygon>
                 <polygon class="arrowhead" points="248,112 236,106.4 236,117.6" fill="black" transform="rotate(90,240,112)"></polygon>
                 <polygon class="arrowhead" points="248,64 236,58.4 236,69.6" fill="black" transform="rotate(90,240,64)"></polygon>
                 <polygon class="arrowhead" points="240,192 228,186.4 228,197.6" fill="black" transform="rotate(0,232,192)"></polygon>
+                <polygon class="arrowhead" points="200,352 188,346.4 188,357.6" fill="black" transform="rotate(116.56505117707799,192,352)"></polygon>
                 <polygon class="arrowhead" points="80,368 68,362.4 68,373.6" fill="black" transform="rotate(180,72,368)"></polygon>
                 <polygon class="arrowhead" points="80,240 68,234.4 68,245.6" fill="black" transform="rotate(180,72,240)"></polygon>
                 <g class="text">
@@ -6938,7 +6940,29 @@ conforming implementations, please refer to Section 7.1 of CMP Algorithms <span>
 ProofOfPossession structure) when proving possession of a private
 signing key that corresponds to a public verification key for which a
 certificate has been requested.<a href="#appendix-C.3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-C.3-2">
+<table class="center" id="table-2">
+          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Field</th>
+              <th class="text-left" rowspan="1" colspan="1">Value</th>
+              <th class="text-left" rowspan="1" colspan="1">Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">algorithmIdentifier</td>
+              <td class="text-left" rowspan="1" colspan="1">MSG_SIG_ALG</td>
+              <td class="text-left" rowspan="1" colspan="1">only signature protection is allowed for this proof</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">signature</td>
+              <td class="text-left" rowspan="1" colspan="1">present</td>
+              <td class="text-left" rowspan="1" colspan="1">bits calculated using MSG_SIG_ALG</td>
+            </tr>
+          </tbody>
+        </table>
+<div class="alignLeft art-text artwork" id="appendix-C.3-3">
 <pre>
 Field               Value         Comment
 
@@ -6946,14 +6970,14 @@ algorithmIdentifier MSG_SIG_ALG   only signature protection is
                                   allowed for this proof
 
 signature           present       bits calculated using MSG_SIG_ALG
-</pre><a href="#appendix-C.3-2" class="pilcrow">¶</a>
+</pre><a href="#appendix-C.3-3" class="pilcrow">¶</a>
 </div>
-<p id="appendix-C.3-3">Note: For examples of MSG_SIG_ALG OIDs see CMP Algorithms Section 3 <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span>.<a href="#appendix-C.3-3" class="pilcrow">¶</a></p>
-<p id="appendix-C.3-4">Proof-of-possession of a private decryption key that corresponds to a
+<p id="appendix-C.3-4">Note: For examples of MSG_SIG_ALG OIDs see CMP Algorithms Section 3 <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span>.<a href="#appendix-C.3-4" class="pilcrow">¶</a></p>
+<p id="appendix-C.3-5">Proof-of-possession of a private decryption key that corresponds to a
 public encryption key for which a certificate has been requested does
 not use this profile; the CertHash field of the certConf message is
-used instead.<a href="#appendix-C.3-4" class="pilcrow">¶</a></p>
-<p id="appendix-C.3-5">Not every CA/RA will do Proof-of-Possession (of signing key,
+used instead.<a href="#appendix-C.3-5" class="pilcrow">¶</a></p>
+<p id="appendix-C.3-6">Not every CA/RA will do Proof-of-Possession (of signing key,
 decryption key, or key agreement key) in the PKIX-CMP in-band
 certification request protocol (how POP is done <span class="bcp14">MAY</span> ultimately be a
 policy issue that is made explicit for any given CA in its publicized
@@ -6961,7 +6985,7 @@ Policy OID and Certification Practice Statement).  However, this
 specification mandates that CA/RA entities <span class="bcp14">MUST</span> do POP (by some
 means) as part of the certification process.  All end entities <span class="bcp14">MUST</span>
 be prepared to provide POP (i.e., these components of the PKIX-CMP
-protocol <span class="bcp14">MUST</span> be supported).<a href="#appendix-C.3-5" class="pilcrow">¶</a></p>
+protocol <span class="bcp14">MUST</span> be supported).<a href="#appendix-C.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-c.4">
@@ -7435,7 +7459,30 @@ operations, if desired).<a href="#appendix-D-4" class="pilcrow">¶</a></p>
 structures are used for distribution of CA public keys.  This can
 occur in one of three ways (see <a href="#sect-4.4" class="auto internal xref">Section 4.4</a> above for a description
 of the use of these structures):<a href="#appendix-D.3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-D.3-2">
+<table class="center" id="table-3">
+          <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Type</th>
+              <th class="text-left" rowspan="1" colspan="1">Function</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">newWithNew</td>
+              <td class="text-left" rowspan="1" colspan="1">a true "self-signed" certificate; the contained public key <span class="bcp14">MUST</span> be usable to verify the signature (though this provides only integrity and no authentication whatsoever)</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">oldWithNew</td>
+              <td class="text-left" rowspan="1" colspan="1">previous root CA public key signed with new private key</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">newWithOld</td>
+              <td class="text-left" rowspan="1" colspan="1">new root CA public key signed with previous private key</td>
+            </tr>
+          </tbody>
+        </table>
+<div class="alignLeft art-text artwork" id="appendix-D.3-3">
 <pre>
 Type          Function
 -----------------------------------------------------------------
@@ -7445,12 +7492,12 @@ newWithNew a true "self-signed" certificate; the contained
            authentication whatsoever)
 oldWithNew previous root CA public key signed with new private key
 newWithOld new root CA public key signed with previous private key
-</pre><a href="#appendix-D.3-2" class="pilcrow">¶</a>
+</pre><a href="#appendix-D.3-3" class="pilcrow">¶</a>
 </div>
-<p id="appendix-D.3-3">Such certificates (including relevant extensions) must contain
+<p id="appendix-D.3-4">Such certificates (including relevant extensions) must contain
 "sensible" values for all fields.  For example, when present,
 subjectAltName <span class="bcp14">MUST</span> be identical to issuerAltName, and, when present,
-keyIdentifiers must contain appropriate values, et cetera.<a href="#appendix-D.3-3" class="pilcrow">¶</a></p>
+keyIdentifiers must contain appropriate values, et cetera.<a href="#appendix-D.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-d.4">
@@ -7463,7 +7510,49 @@ announcement message that can be made available (via some transport
 mechanism) to the relevant end entities.  A confirmation message is
 not required from the end entities.<a href="#appendix-D.4-1" class="pilcrow">¶</a></p>
 <p id="appendix-D.4-2">ckuann message:<a href="#appendix-D.4-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-D.4-3">
+<table class="center" id="table-4">
+          <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Field</th>
+              <th class="text-left" rowspan="1" colspan="1">Value</th>
+              <th class="text-left" rowspan="1" colspan="1">Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sender</td>
+              <td class="text-left" rowspan="1" colspan="1">CA name CA name</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">body</td>
+              <td class="text-left" rowspan="1" colspan="1">ckuann(RootCaKeyUpdateContent)</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">newWithNew</td>
+              <td class="text-left" rowspan="1" colspan="1">optionally present</td>
+              <td class="text-left" rowspan="1" colspan="1">see <a href="#sect-d.3" class="auto internal xref">Appendix D.3</a> above</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">newWithOld</td>
+              <td class="text-left" rowspan="1" colspan="1">optionally present</td>
+              <td class="text-left" rowspan="1" colspan="1">see <a href="#sect-d.3" class="auto internal xref">Appendix D.3</a> above</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">oldWithNew</td>
+              <td class="text-left" rowspan="1" colspan="1">optionally present</td>
+              <td class="text-left" rowspan="1" colspan="1">see <a href="#sect-d.3" class="auto internal xref">Appendix D.3</a> above</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">extraCerts</td>
+              <td class="text-left" rowspan="1" colspan="1">optionally present</td>
+              <td class="text-left" rowspan="1" colspan="1">can be used to "publish" certificates (e.g., certificates signed using the new private key)</td>
+            </tr>
+          </tbody>
+        </table>
+<div class="alignLeft art-text artwork" id="appendix-D.4-4">
 <pre>
  Field        Value                        Comment
 --------------------------------------------------------------
@@ -7476,7 +7565,7 @@ not required from the end entities.<a href="#appendix-D.4-1" class="pilcrow">¶<
                                        certificates (e.g.,
                                        certificates signed using
                                        the new private key)
-</pre><a href="#appendix-D.4-3" class="pilcrow">¶</a>
+</pre><a href="#appendix-D.4-4" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -8947,7 +9036,7 @@ END
 <p id="appendix-G-2">From version 15 -&gt; 16:<a href="#appendix-G-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-3.1">
-          <p id="appendix-G-3.1.1">Addressed IESG review comments from Erik Kline, Gunter Van de Velde, Orie Steele, Zaheduzzaman Sarker, and Paul Wouters, except the DISCUSS issue Paul raised<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.1.1">Addressed IESG review comments from Erik Kline, Gunter Van de Velde, Orie Steele, Zaheduzzaman Sarker, Éric Vyncke, and Paul Wouters, except the DISCUSS issue Paul raised<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-G-4">From version 14 -&gt; 15:<a href="#appendix-G-4" class="pilcrow">¶</a></p>

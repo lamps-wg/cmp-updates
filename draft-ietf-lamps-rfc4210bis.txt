@@ -3413,7 +3413,7 @@ Table of Contents
                   (conf list) /     \                            |
                              /       \              ip           |
                             /         \        +-----------------+
-      (empty pending list) /           \       |    pollRep
+      (empty pending list) V           V       |    pollRep
         END <---- Send certConf        Send pollReq---------->Wait
                          |                 ^   ^               |
                          |                 |   |               |
@@ -4603,6 +4603,18 @@ C.3.  Proof-of-Possession Profile
    signing key that corresponds to a public verification key for which a
    certificate has been requested.
 
+     +=====================+=============+===========================+
+     | Field               | Value       | Comment                   |
+     +=====================+=============+===========================+
+     | algorithmIdentifier | MSG_SIG_ALG | only signature protection |
+     |                     |             | is allowed for this proof |
+     +---------------------+-------------+---------------------------+
+     | signature           | present     | bits calculated using     |
+     |                     |             | MSG_SIG_ALG               |
+     +---------------------+-------------+---------------------------+
+
+                                  Table 2
+
    Field               Value         Comment
 
    algorithmIdentifier MSG_SIG_ALG   only signature protection is
@@ -5006,6 +5018,23 @@ D.3.  Self-Signed Certificates
    occur in one of three ways (see Section 4.4 above for a description
    of the use of these structures):
 
+      +============+===============================================+
+      | Type       | Function                                      |
+      +============+===============================================+
+      | newWithNew | a true "self-signed" certificate; the         |
+      |            | contained public key MUST be usable to verify |
+      |            | the signature (though this provides only      |
+      |            | integrity and no authentication whatsoever)   |
+      +------------+-----------------------------------------------+
+      | oldWithNew | previous root CA public key signed with new   |
+      |            | private key                                   |
+      +------------+-----------------------------------------------+
+      | newWithOld | new root CA public key signed with previous   |
+      |            | private key                                   |
+      +------------+-----------------------------------------------+
+
+                                 Table 3
+
    Type          Function
    -----------------------------------------------------------------
    newWithNew a true "self-signed" certificate; the contained
@@ -5028,6 +5057,33 @@ D.4.  Root CA Key Update
    not required from the end entities.
 
    ckuann message:
+
+   +============+================================+=====================+
+   | Field      | Value                          | Comment             |
+   +============+================================+=====================+
+   | sender     | CA name CA name                |                     |
+   +------------+--------------------------------+---------------------+
+   | body       | ckuann(RootCaKeyUpdateContent) |                     |
+   +------------+--------------------------------+---------------------+
+   | newWithNew | optionally present             | see Appendix D.3    |
+   |            |                                | above               |
+   +------------+--------------------------------+---------------------+
+   | newWithOld | optionally present             | see Appendix D.3    |
+   |            |                                | above               |
+   +------------+--------------------------------+---------------------+
+   | oldWithNew | optionally present             | see Appendix D.3    |
+   |            |                                | above               |
+   +------------+--------------------------------+---------------------+
+   | extraCerts | optionally present             | can be used to      |
+   |            |                                | "publish"           |
+   |            |                                | certificates        |
+   |            |                                | (e.g.,              |
+   |            |                                | certificates        |
+   |            |                                | signed using the    |
+   |            |                                | new private key)    |
+   +------------+--------------------------------+---------------------+
+
+                                  Table 4
 
     Field        Value                        Comment
    --------------------------------------------------------------
@@ -6202,8 +6258,8 @@ Appendix G.  History of Changes
    From version 15 -> 16:
 
    *  Addressed IESG review comments from Erik Kline, Gunter Van de
-      Velde, Orie Steele, Zaheduzzaman Sarker, and Paul Wouters, except
-      the DISCUSS issue Paul raised
+      Velde, Orie Steele, Zaheduzzaman Sarker, Éric Vyncke, and Paul
+      Wouters, except the DISCUSS issue Paul raised
 
    From version 14 -> 15:
 
