@@ -3345,7 +3345,7 @@ CertResponse elements at the example of an ir request message.
                (conf list) /     \                            |
                           /       \              ip           |
                          /         \        +-----------------+
-   (empty pending list) /           \       |    pollRep
+   (empty pending list) V           V       |    pollRep
      END <---- Send certConf        Send pollReq---------->Wait
                       |                 ^   ^               |
                       |                 |   |               |
@@ -4248,6 +4248,11 @@ ProofOfPossession structure) when proving possession of a private
 signing key that corresponds to a public verification key for which a
 certificate has been requested.
 
+|Field | Value | Comment |
+|:-----|:------|:--------|
+| algorithmIdentifier | MSG_SIG_ALG | only signature protection is allowed for this proof |
+| signature | present | bits calculated using MSG_SIG_ALG |
+
 ~~~~
 Field               Value         Comment
 
@@ -4680,6 +4685,12 @@ structures are used for distribution of CA public keys.  This can
 occur in one of three ways (see {{sect-4.4}} above for a description
 of the use of these structures):
 
+|Type | Function |
+|:----|:---------|
+| newWithNew |a true "self-signed" certificate; the contained public key MUST be usable to verify the signature (though this provides only integrity and no authentication whatsoever) |
+| oldWithNew | previous root CA public key signed with new private key |
+| newWithOld | new root CA public key signed with previous private key |
+
 ~~~~
 Type          Function
 -----------------------------------------------------------------
@@ -4706,6 +4717,15 @@ mechanism) to the relevant end entities.  A confirmation message is
 not required from the end entities.
 
 ckuann message:
+
+|Field | Value | Comment |
+|:-----|:------|:--------|
+| sender | CA name CA name |  |
+| body | ckuann(RootCaKeyUpdateContent) |  |
+| newWithNew | optionally present | see {{sect-d.3}} above |
+| newWithOld | optionally present | see {{sect-d.3}} above |
+| oldWithNew | optionally present | see {{sect-d.3}} above |
+| extraCerts | optionally present | can be used to "publish" certificates (e.g., certificates signed using the new private key) |
 
 ~~~~
  Field        Value                        Comment
@@ -5891,7 +5911,7 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 15 -> 16:
 
-* Addressed IESG review comments from Erik Kline, Gunter Van de Velde, Orie Steele, Zaheduzzaman Sarker, and Paul Wouters, except the DISCUSS issue Paul raised
+* Addressed IESG review comments from Erik Kline, Gunter Van de Velde, Orie Steele, Zaheduzzaman Sarker, Éric Vyncke, and Paul Wouters, except the DISCUSS issue Paul raised
 
 
 From version 14 -> 15:
