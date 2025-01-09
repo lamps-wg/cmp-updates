@@ -1937,12 +1937,12 @@ Generic Message Flow:
 Step# Alice                                Bob
 ---------------------------------------------------------------------
   1                                        perform KEM Encapsulate
-                       <- KEM Ciphertext <-
+                      <-- KEM Ciphertext <--
   2   perform KEM Decapsulate,
         perform key derivation,
         format message with
         MAC-based protection
-                       ->    message     ->
+                      -->    message     -->
   3                                        perform key derivation,
                                              verify MAC-based
                                              protection
@@ -3360,43 +3360,43 @@ in one request.
 Step# End Entity                       PKI
 ---------------------------------------------------------------------
   1   format ir
-  2                    -> ir      ->
+  2                   --> ir       -->
   3                                    handle ir
   4                                    manual intervention is
                                          required for both certs
-  5                    <- ip      <-
+  5                   <-- ip       <--
   6   process ip
   7   format pollReq
-  8                    -> pollReq  ->
+  8                   --> pollReq  -->
   9                                    check status of cert requests,
                                          certificates not ready
  10                                    format pollRep
- 11                    <- pollRep  <-
+ 11                   <-- pollRep  <--
  12   wait
  13   format pollReq
- 14                    -> pollReq  ->
+ 14                   --> pollReq  -->
  15                                    check status of cert requests,
                                          one certificate is ready
  16                                    format ip
- 17                    <- ip       <-
+ 17                   <-- ip       <--
  18   handle ip
  19   format certConf
- 20                    -> certConf ->
+ 20                   --> certConf -->
  21                                    handle certConf
  22                                    format ack
- 23                    <- pkiConf   <-
+ 23                   <-- pkiConf  <--
  24   format pollReq
- 25                    -> pollReq  ->
+ 25                   --> pollReq  -->
  26                                    check status of certificate,
                                          certificate is ready
  27                                    format ip
- 28                    <- ip       <-
+ 28                   <-- ip       <--
  29   handle ip
  30   format certConf
- 31                    -> certConf ->
+ 31                   --> certConf -->
  32                                    handle certConf
  33                                    format ack
- 34                    <- pkiConf  <-
+ 34                   <-- pkiConf  <--
 ~~~~
 
 The following client-side state machine describes polling for a complete
@@ -3435,28 +3435,28 @@ and the response is delayed by the server.
 Step# End Entity                       PKI
 ---------------------------------------------------------------------
   1   format genm
-  2                  -> genm     ->
+  2                  --> genm    -->
   3                                 handle genm
   4                                 delay in response is necessary
   5                                 format error message "waiting"
                                       with certReqId set to -1
-  6                   <- error   <-
+  6                  <-- error   <--
   7   process error
   8   format pollReq
-  9                   -> pollReq ->
+  9                  --> pollReq -->
  10                                 check status of original request,
                                       general message response not
                                       ready
  11                                 format pollRep
- 12                   <- pollRep <-
+ 12                  <-- pollRep <--
  13   wait
  14   format pollReq
- 15                   -> pollReq ->
+ 15                  --> pollReq -->
  16                                 check status of original request,
                                       general message response is
                                       ready
  17                                 format genp
- 18                   <- genp    <-
+ 18                  <-- genp    <--
  19   handle genp
 ~~~~
 
@@ -4305,16 +4305,16 @@ Message flow:
 Step# End entity                           PKI
 ---------------------------------------------------------------------
   1   format ir
-  2                      ->   ir      ->
+  2                     -->   ir      -->
   3                                        handle ir
   4                                        format ip
-  5                      <-   ip      <-
+  5                     <--   ip      <--
   6   handle ip
   7   format certConf
-  8                      ->   certConf ->
+  8                     -->  certConf -->
   9                                        handle certConf
  10                                        format PKIConf
- 11                      <-   PKIConf  <-
+ 11                     <--  PKIConf  <--
  12   handle PKIConf
 ~~~~
 
@@ -4725,10 +4725,10 @@ Message Flows:
 Step# End entity                        PKI
 ---------------------------------------------------------------------
   1   format genm
-  2                 ->   genm   ->
+  2                -->   genm   -->
   3                                     handle genm
   4                                     produce genp
-  5                 <-   genp   <-
+  5                <--   genp   <--
   6   handle genp
 ~~~~
 
@@ -4830,10 +4830,10 @@ Message Flows:
 Step# Requesting CA                       Responding CA
 ---------------------------------------------------------------------
   1   format ccr
-  2                   ->    ccr    ->
+  2                  -->    ccr    -->
   3                                       handle ccr
   4                                       produce ccp
-  5                   <-    ccp    <-
+  5                  <--    ccp    <--
   6   handle ccp
 ~~~~
 
@@ -5023,20 +5023,20 @@ Step# PKI entity                           PKI management entity
         without value, and
         KEM certificate in
         extraCerts
-  2                      ->   genm    ->
+  2                     -->   genm    -->
   3                                        validate KEM certificate
   4                                        perform KEM Encapsulate
   5                                        format unprotected genp
                                              of type
                                              KemCiphertextInfo
                                              providing KEM ciphertext
-  6                      <-   genp    <-
+  6                     <--   genp    <--
   7   perform KEM Decapsulate
   8   perform key derivation
         to get ssk
   9   format request with
         MAC-based protection
- 10                      ->  request  ->
+ 10                     -->  request  -->
  11                                        perform key derivation
                                              to get ssk
  12                                        verify MAC-based
@@ -5047,7 +5047,7 @@ Step# PKI entity                           PKI management entity
  13                                        format response with
                                              protection depending on
                                              available key material
- 14                      <-  response <-
+ 14                     <--  response <--
  15   verify protection
         provided by the
         PKI management entity
@@ -5072,13 +5072,13 @@ Step# PKI entity                           PKI management entity
         and with protection
         depending on available
         key material
-  3                      ->  request  ->
+  3                     -->  request  -->
   4                                        perform KEM Decapsulate
   5                                        perform key derivation
                                              to get ssk
   6                                        format response with
                                              MAC-based protection
-  7                      <-  response <-
+  7                     <--  response <--
   8   perform key derivation
         to get ssk
   9   verify MAC-based
@@ -5106,14 +5106,14 @@ Step# PKI entity                           PKI management entity
         protection depending
         on available key
         material
-  2                      ->  request  ->
+  2                     -->  request  -->
   3                                        format unprotected error
                                              with status "rejection"
                                              and failInfo
                                              "wrongIntegrity" and KEM
                                              certificate in
                                              extraCerts
-  4                      <-   error   <-
+  4                     <--   error   <--
   5   validate KEM certificate
 
   6              proceed as shown in the Figure before
