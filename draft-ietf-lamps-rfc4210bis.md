@@ -416,6 +416,7 @@ the entity to whom the certificate is issued) and the certification
 authority (i.e., the entity that issues the certificate).  A
 registration authority might also be involved in PKI management.
 
+
 #### Subjects and End Entities
 {: id="sect-3.1.1.1"}
 
