@@ -475,13 +475,10 @@ an "on-line" component, with the CA private key only available to the
 (though it is also relevant as a policy issue).
 
 We use the term "root CA" to indicate a CA that is directly trusted
-by an end entity (using its public key algorithm, public key including
-optional parameter, and issuer name as trust anchor information for
-certificate path validation according to {{Section 6 of RFC5280}});
-that is, securely acquiring the values of the trust anchor information
-requires some out-of-band step(s). This term is not meant to imply
-that a root CA is necessarily at the top of any hierarchy, simply that
-the CA in question is trusted directly.
+by an end entity; that is, securely acquiring the value of a root CA
+public key requires some out-of-band step(s). This term is not meant
+to imply that a root CA is necessarily at the top of any hierarchy,
+simply that the CA in question is trusted directly.
 
 A "subordinate CA" is one that is not a root CA for the end entity in
 question.  Often, a subordinate CA will not be a root CA for any
@@ -5894,7 +5891,7 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 15 -> 16:
 
-* Addressed IESG review comments from Erik Kline, Gunter Van de Velde, Orie Steele, Zaheduzzaman Sarker, and Paul Wouters
+* Addressed IESG review comments from Erik Kline, Gunter Van de Velde, Orie Steele, Zaheduzzaman Sarker, and Paul Wouters, except the DISCUSS issue Paul raised
 
 
 From version 14 -> 15:
