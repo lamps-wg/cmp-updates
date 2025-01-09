@@ -428,7 +428,7 @@ In general, the term "end entity" (EE), rather than
 "subject", is preferred in order to avoid confusion with the field
 name.  It is important to note that the end entities here will
 include not only human users of applications, but also applications
-themselves (e.g., for IKE/IPSEC) or devices (e.g., routers or industrial
+themselves (e.g., for IKE/IPsec) or devices (e.g., routers or industrial
 control systems).  This factor influences the
 protocols that the PKI management operations use; for example,
 application software is far more likely to know exactly which
@@ -828,7 +828,7 @@ information endangering the security of the PKI when intercepted. However,
 it might be possible for an eavesdropper to utilize the available information to
 gather confidential technical or business critical information. Therefore, users
 should consider protection of confidentiality on lower levels of the protocol
-stack, e.g., by using TLS {{RFC8446}}, DTLS {{RFC9147}}, or IPSEC {{RFC7296}}{{RFC4303}}.
+stack, e.g., by using TLS {{RFC8446}}, DTLS {{RFC9147}}, or IPsec {{RFC7296}}{{RFC4303}}.
 
 
 
