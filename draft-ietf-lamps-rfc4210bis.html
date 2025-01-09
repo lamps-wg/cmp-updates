@@ -6962,22 +6962,12 @@ certificate has been requested.<a href="#appendix-C.3-1" class="pilcrow">¶</a><
             </tr>
           </tbody>
         </table>
-<div class="alignLeft art-text artwork" id="appendix-C.3-3">
-<pre>
-Field               Value         Comment
-
-algorithmIdentifier MSG_SIG_ALG   only signature protection is
-                                  allowed for this proof
-
-signature           present       bits calculated using MSG_SIG_ALG
-</pre><a href="#appendix-C.3-3" class="pilcrow">¶</a>
-</div>
-<p id="appendix-C.3-4">Note: For examples of MSG_SIG_ALG OIDs see CMP Algorithms Section 3 <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span>.<a href="#appendix-C.3-4" class="pilcrow">¶</a></p>
-<p id="appendix-C.3-5">Proof-of-possession of a private decryption key that corresponds to a
+<p id="appendix-C.3-3">Note: For examples of MSG_SIG_ALG OIDs see CMP Algorithms Section 3 <span>[<a href="#RFC9481" class="cite xref">RFC9481</a>]</span>.<a href="#appendix-C.3-3" class="pilcrow">¶</a></p>
+<p id="appendix-C.3-4">Proof-of-possession of a private decryption key that corresponds to a
 public encryption key for which a certificate has been requested does
 not use this profile; the CertHash field of the certConf message is
-used instead.<a href="#appendix-C.3-5" class="pilcrow">¶</a></p>
-<p id="appendix-C.3-6">Not every CA/RA will do Proof-of-Possession (of signing key,
+used instead.<a href="#appendix-C.3-4" class="pilcrow">¶</a></p>
+<p id="appendix-C.3-5">Not every CA/RA will do Proof-of-Possession (of signing key,
 decryption key, or key agreement key) in the PKIX-CMP in-band
 certification request protocol (how POP is done <span class="bcp14">MAY</span> ultimately be a
 policy issue that is made explicit for any given CA in its publicized
@@ -6985,7 +6975,7 @@ Policy OID and Certification Practice Statement).  However, this
 specification mandates that CA/RA entities <span class="bcp14">MUST</span> do POP (by some
 means) as part of the certification process.  All end entities <span class="bcp14">MUST</span>
 be prepared to provide POP (i.e., these components of the PKIX-CMP
-protocol <span class="bcp14">MUST</span> be supported).<a href="#appendix-C.3-6" class="pilcrow">¶</a></p>
+protocol <span class="bcp14">MUST</span> be supported).<a href="#appendix-C.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-c.4">
@@ -7482,22 +7472,10 @@ of the use of these structures):<a href="#appendix-D.3-1" class="pilcrow">¶</a>
             </tr>
           </tbody>
         </table>
-<div class="alignLeft art-text artwork" id="appendix-D.3-3">
-<pre>
-Type          Function
------------------------------------------------------------------
-newWithNew a true "self-signed" certificate; the contained
-           public key MUST be usable to verify the signature
-           (though this provides only integrity and no
-           authentication whatsoever)
-oldWithNew previous root CA public key signed with new private key
-newWithOld new root CA public key signed with previous private key
-</pre><a href="#appendix-D.3-3" class="pilcrow">¶</a>
-</div>
-<p id="appendix-D.3-4">Such certificates (including relevant extensions) must contain
+<p id="appendix-D.3-3">Such certificates (including relevant extensions) must contain
 "sensible" values for all fields.  For example, when present,
 subjectAltName <span class="bcp14">MUST</span> be identical to issuerAltName, and, when present,
-keyIdentifiers must contain appropriate values, et cetera.<a href="#appendix-D.3-4" class="pilcrow">¶</a></p>
+keyIdentifiers must contain appropriate values, et cetera.<a href="#appendix-D.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sect-d.4">
@@ -7552,21 +7530,6 @@ not required from the end entities.<a href="#appendix-D.4-1" class="pilcrow">¶<
             </tr>
           </tbody>
         </table>
-<div class="alignLeft art-text artwork" id="appendix-D.4-4">
-<pre>
- Field        Value                        Comment
---------------------------------------------------------------
- sender       CA name CA name
- body         ckuann(RootCaKeyUpdateContent)
- newWithNew   present                  see Appendix D.3 above
- newWithOld   optionally present       see Appendix D.3 above
- oldWithNew   optionally present       see Appendix D.3 above
- extraCerts   optionally present       can be used to "publish"
-                                       certificates (e.g.,
-                                       certificates signed using
-                                       the new private key)
-</pre><a href="#appendix-D.4-4" class="pilcrow">¶</a>
-</div>
 </section>
 </div>
 <div id="sect-d.5">
