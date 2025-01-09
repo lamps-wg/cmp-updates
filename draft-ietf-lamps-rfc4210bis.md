@@ -24,7 +24,7 @@ keyword:
 - PKI
 github: "lamps-wg/cmp-updates"
 latest: "https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html"
-date: 2024
+date: 2025
 author:
 - name: Hendrik Brockhaus
   org: Siemens
