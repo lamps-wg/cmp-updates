@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 24 June 2025                                            Entrust
-                                                        21 December 2024
+Expires: 12 July 2024                                            Entrust
+                                                          9 January 2024
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 June 2025.
+   This Internet-Draft will expire on 12 July 2024.
 
 Copyright Notice
 
@@ -522,13 +522,10 @@ Table of Contents
    (though it is also relevant as a policy issue).
 
    We use the term "root CA" to indicate a CA that is directly trusted
-   by an end entity (using its public key algorithm, public key
-   including optional parameter, and issuer name as trust anchor
-   information for certificate path validation according to Section 6 of
-   [RFC5280]); that is, securely acquiring the values of the trust
-   anchor information requires some out-of-band step(s).  This term is
-   not meant to imply that a root CA is necessarily at the top of any
-   hierarchy, simply that the CA in question is trusted directly.
+   by an end entity; that is, securely acquiring the value of a root CA
+   public key requires some out-of-band step(s).  This term is not meant
+   to imply that a root CA is necessarily at the top of any hierarchy,
+   simply that the CA in question is trusted directly.
 
    A "subordinate CA" is one that is not a root CA for the end entity in
    question.  Often, a subordinate CA will not be a root CA for any
@@ -4300,9 +4297,9 @@ Table of Contents
               Westerbaan, "Internet X.509 Public Key Infrastructure -
               Algorithm Identifiers for the Module-Lattice-Based Key-
               Encapsulation Mechanism (ML-KEM)", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-kyber-certificates-06, 4
-              November 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lamps-kyber-certificates-06>.
+              Internet-Draft, draft-ietf-lamps-kyber-certificates-07, 7
+              January 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lamps-kyber-certificates-07>.
 
    [NIST.SP.800_90Ar1]
               Barker, E. B., Kelsey, J. M., and NIST, "Recommendation
@@ -6205,7 +6202,8 @@ Appendix G.  History of Changes
    From version 15 -> 16:
 
    *  Addressed IESG review comments from Erik Kline, Gunter Van de
-      Velde, Orie Steele, Zaheduzzaman Sarker, and Paul Wouters
+      Velde, Orie Steele, Zaheduzzaman Sarker, and Paul Wouters, except
+      the DISCUSS issue Paul raised
 
    From version 14 -> 15:
 
