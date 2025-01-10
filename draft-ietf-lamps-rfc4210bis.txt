@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 13 July 2025                                            Entrust
-                                                          9 January 2025
+Expires: 14 July 2025                                            Entrust
+                                                         10 January 2025
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 July 2025.
+   This Internet-Draft will expire on 14 July 2025.
 
 Copyright Notice
 
@@ -477,7 +477,7 @@ Table of Contents
    "subject", is preferred in order to avoid confusion with the field
    name.  It is important to note that the end entities here will
    include not only human users of applications, but also applications
-   themselves (e.g., for IKE/IPSEC) or devices (e.g., routers or
+   themselves (e.g., for IKE/IPsec) or devices (e.g., routers or
    industrial control systems).  This factor influences the protocols
    that the PKI management operations use; for example, application
    software is far more likely to know exactly which certificate
@@ -850,7 +850,7 @@ Table of Contents
    utilize the available information to gather confidential technical or
    business critical information.  Therefore, users should consider
    protection of confidentiality on lower levels of the protocol stack,
-   e.g., by using TLS [RFC8446], DTLS [RFC9147], or IPSEC
+   e.g., by using TLS [RFC8446], DTLS [RFC9147], or IPsec
    [RFC7296][RFC4303].
 
 4.  Assumptions and Restrictions
@@ -4192,9 +4192,9 @@ Table of Contents
               Brockhaus, H., von Oheimb, D., Ounsworth, M., and J. Gray,
               "Internet X.509 Public Key Infrastructure -- HTTP Transfer
               for the Certificate Management Protocol (CMP)", Work in
-              Progress, Internet-Draft, draft-ietf-lamps-rfc6712bis-09,
-              29 November 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lamps-rfc6712bis-09>.
+              Progress, Internet-Draft, draft-ietf-lamps-rfc6712bis-10,
+              9 January 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lamps-rfc6712bis-10>.
 
    [RFC1847]  Galvin, J., Murphy, S., Crocker, S., and N. Freed,
               "Security Multiparts for MIME: Multipart/Signed and
