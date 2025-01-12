@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-07-11T00:35:13.384339+00:00",
+  "timestamp": "2025-01-12T01:41:46.049624+00:00",
   "repo": "lamps-wg/cmp-updates",
   "labels": [
     {
@@ -773,15 +773,15 @@
       "id": "I_kwDOInbtzM5fpL28",
       "title": "Adding support for KEM to Section 5.2.8",
       "url": "https://github.com/lamps-wg/cmp-updates/issues/17",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "HBrock",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "ToDo in Section 5.2.8: Adding support for KEM keys and fixing some inconsistencies in Section 5.2.8.3 resulting from the update of RFC2510 to RFC4210\r\n",
       "createdAt": "2023-03-01T09:52:52Z",
-      "updatedAt": "2023-05-25T07:31:17Z",
-      "closedAt": null,
+      "updatedAt": "2024-02-26T15:40:52Z",
+      "closedAt": "2024-02-26T15:40:52Z",
       "comments": [
         {
           "author": "HBrock",
@@ -803,6 +803,34 @@
           "body": "Yes, we need to look into it ... :-)",
           "createdAt": "2023-05-25T07:31:17Z",
           "updatedAt": "2023-05-25T07:31:17Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Please review updates updated Section 5.2.8 (see fa57a14f292affa3a60be051cc7c1eb318320aff)",
+          "createdAt": "2024-01-08T16:31:58Z",
+          "updatedAt": "2024-01-08T16:31:58Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@johngray-dev will review this\r\nAlso with focus on encryptedRand",
+          "createdAt": "2024-01-22T17:48:12Z",
+          "updatedAt": "2024-01-22T17:48:12Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "From Section 5.2.8.3 of RFC4210 says\r\n\"Alternatively, the POP can use the POPOSigningKey structure\r\n   given in [[CRMF](https://www.rfc-editor.org/rfc/rfc4210#ref-CRMF)] (where the alg field is DHBasedMAC and the signature\r\n   field is the MAC) as a fourth alternative for demonstrating POP if\r\n   the CA already has a D-H certificate that is known to the EE.\"\r\n\r\nI shifted and rephrased this to Section 5.2.8 of rfc4210bis\r\n\"In the special case that the CA/RA has a D-H certificate that is known to the EE and the certification request is for a key agreement key pair, the EE can also use the POPOSigningKey structure (where the algorithmIdentifier field is DHBasedMAC and the signature field is the MAC) for demonstrating POP.\" \r\n\r\n@johngray-dev Do you know, why the MAC is not placed in POPOPrivKey agreeMAC?\r\nShould we change this?",
+          "createdAt": "2024-01-24T13:32:04Z",
+          "updatedAt": "2024-01-24T13:32:04Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We discussed this on February 22nd and 26th.   The text around using CMPv3 when this field is used will mitigate any backwards compatibility issues.   Mike had comments about the size of the integer as well as possibly using it to decode an arbitrary CMS message.  The previous challenge was an OCTET_STRING.  It is now an Enveloped data format which would contain many other fields as a structure which would be unlikely to be able to be decoded arbitrarily.  ",
+          "createdAt": "2024-02-26T15:38:33Z",
+          "updatedAt": "2024-02-26T15:38:33Z"
         }
       ]
     },
@@ -811,15 +839,15 @@
       "id": "I_kwDOInbtzM5fpMqQ",
       "title": "Appendix B would needs a review",
       "url": "https://github.com/lamps-wg/cmp-updates/issues/18",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "HBrock",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "ToDo: Review Appendix B and try to push the content to Section 4 or Section 5 of this document.\r\nToDo: Possibly add support for certificates containing KEM keys.\r\n",
       "createdAt": "2023-03-01T09:54:24Z",
-      "updatedAt": "2023-05-25T07:30:33Z",
-      "closedAt": null,
+      "updatedAt": "2024-01-08T16:30:35Z",
+      "closedAt": "2024-01-08T16:30:34Z",
       "comments": [
         {
           "author": "HBrock",
@@ -841,6 +869,13 @@
           "body": "This is still a ToDo. Probably we need to digg into it a bit :-)",
           "createdAt": "2023-05-25T07:30:33Z",
           "updatedAt": "2023-05-25T07:30:33Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Updated Appendix B with fa57a14f292affa3a60be051cc7c1eb318320aff",
+          "createdAt": "2024-01-08T16:30:34Z",
+          "updatedAt": "2024-01-08T16:30:34Z"
         }
       ]
     },
@@ -1133,15 +1168,15 @@
       "id": "I_kwDOInbtzM5lwLaf",
       "title": "Introduction of KemBMParameter",
       "url": "https://github.com/lamps-wg/cmp-updates/issues/26",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "HBrock",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Meeting 11.5.23\r\nIt was decided to introduce an new AlgID for KEM based message protection\r\n`  id-KemBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 TBD4}\r\n\r\n  KemBMParameter ::= SEQUENCE {\r\n    kdf              AlgorithmIdentifier{KEY-DERIVATION, {...}},\r\n    len              INTEGER (1..MAX),\r\n    mac              AlgorithmIdentifier{MAC-ALGORITHM, {...}}\r\n  }`",
       "createdAt": "2023-05-12T07:45:15Z",
-      "updatedAt": "2023-06-23T16:42:34Z",
-      "closedAt": null,
+      "updatedAt": "2023-11-27T11:50:03Z",
+      "closedAt": "2023-11-27T11:50:03Z",
       "comments": [
         {
           "author": "HBrock",
@@ -1418,6 +1453,1075 @@
           "updatedAt": "2023-07-04T10:23:50Z"
         }
       ]
+    },
+    {
+      "number": 34,
+      "id": "I_kwDOInbtzM5zqKh3",
+      "title": "Add in Section 5.1.3.5. (Multiple Protection) a cross-reference to Section 5.1.1.3. (OrigPKIMessage)",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/34",
+      "state": "CLOSED",
+      "author": "DDvO",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "As discussed with @HBrock today, we wanna add to the end of [Section 5.1.3.5](https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis#section-5.1.3.5) something like the following:\r\n\r\nIn case an RA needs to modify a request message, it MAY include the original PKIMessage in the generalInfo field of the modified message as described in [Section 5.1.1.3](https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis#section-5.1.1.3).",
+      "createdAt": "2023-10-12T17:05:54Z",
+      "updatedAt": "2023-11-27T12:24:35Z",
+      "closedAt": "2023-11-27T12:24:35Z",
+      "comments": []
+    },
+    {
+      "number": 35,
+      "id": "I_kwDOInbtzM50GR_k",
+      "title": "Clarify usage of transactionID in KEM use cases",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/35",
+      "state": "CLOSED",
+      "author": "kiron-mx",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "HBrock"
+      ],
+      "labels": [],
+      "body": "In a discussion with @HBrock we concluded that the use of the `transactionID` field in the PKI header should be more clarified for KEM-based message protection.\r\n\r\nCurrently, the `transactionID` is an optional field of the `KemOtherInfo` datastructure. Now, the specification of `transactionID` in Section 5.1.1 allows the following scenario:\r\nWhen the PKI entity knows that the PKI management entity uses a KEM key pair and has the authentic public key (Appendix E, Fig. 4), the transaction can be reduced a single request/response pair (if `implicitConfirm` is used). In that case, no `transactionID` is required. Since the `transactionID` is only an optional parameter of the `KemOtherInfo` data structure, this may result in a KDF context with the KEM ciphertext as the only source of entropy (in the absence of senderNonce and recipNonce).\r\n\r\nSuggestion:\r\nThere could be a note in Section 5.1.3.4 recommending (or even mandating) the usage of `transactionID`. This would make the `transactionID` a mandatory field of `KemOtherInfo`.\r\nDoing so, a higher entropy of the KDF context and consequently, of the shared secret key (ssk) can be achieved in the absence of senderNonce and recipNonce.\r\n\r\nAs Section 5.1.1 describes all usage scenarios of the `transactionID` field, it should be appended with the treatment of the field in KEM use cases.",
+      "createdAt": "2023-10-17T16:23:11Z",
+      "updatedAt": "2024-01-19T15:57:17Z",
+      "closedAt": "2024-01-19T15:57:17Z",
+      "comments": []
+    },
+    {
+      "number": 37,
+      "id": "I_kwDOInbtzM51slG1",
+      "title": ":== --> ::=",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/37",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "  id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }\r\n  KemCiphertextInfoValue :== KemCiphertextInfo\r\n-->\r\n  id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }\r\n  KemCiphertextInfoValue ::= KemCiphertextInfo",
+      "createdAt": "2023-11-02T16:28:18Z",
+      "updatedAt": "2023-11-27T10:09:35Z",
+      "closedAt": "2023-11-27T10:09:35Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "fixed in https://github.com/lamps-wg/cmp-updates/commit/c7986b2a41d872e872028a5329f8f0ea4d8470d3\r\n",
+          "createdAt": "2023-11-27T10:09:35Z",
+          "updatedAt": "2023-11-27T10:09:35Z"
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "id": "I_kwDOInbtzM56a2XF",
+      "title": "Shall EnvelopedDate be offered for encrypting Rand in POPODecKeyChallContent?",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/38",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The challenge field in popdecc messages is supposed to contain Rand in encrypted form.\r\nSee RFC 9480 Appendix A and RFC 4210 Section 5.2.8.3.\r\n\r\n```\r\nPOPODecKeyChallContent ::= SEQUENCE OF Challenge\r\n-- One Challenge per encryption key certification request (in the\r\n-- same order as these requests appear in CertReqMessages)\r\n\r\nChallenge ::= SEQUENCE {\r\n    owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}}\r\n                            OPTIONAL,\r\n    -- MUST be present in the first Challenge; MAY be omitted in\r\n    -- any subsequent Challenge in POPODecKeyChallContent (if\r\n    -- omitted, then the owf used in the immediately preceding\r\n    -- Challenge is to be used)\r\n    witness             OCTET STRING,\r\n    -- the result of applying the One-Way Function (owf) to a\r\n    -- randomly generated INTEGER, A (Note that a different\r\n    -- INTEGER MUST be used for each Challenge.)\r\n    challenge           OCTET STRING\r\n    -- the encryption (under the public key for which the cert.\r\n    -- request is being made) of Rand\r\n}\r\n\r\n-- Rand was added in CMP Updates [RFC9480]\r\n\r\nRand ::= SEQUENCE {\r\n-- Rand is encrypted under the public key to form the challenge\r\n-- in POPODecKeyChallContent\r\n   int                  INTEGER,\r\n   -- the randomly generated INTEGER A (above)\r\n   sender               GeneralName\r\n   -- the sender's name (as included in PKIHeader)\r\n}\r\n\r\nPOPODecKeyRespContent ::= SEQUENCE OF INTEGER\r\n-- One INTEGER per encryption key certification request (in the\r\n-- same order as these requests appear in CertReqMessages).  The\r\n-- retrieved INTEGER A (above) is returned to the sender of the\r\n-- corresponding Challenge.\r\n``` \r\n\r\nCurrently it is poorly specified which encryption key and encryption algorithm is used. To support also KEM-keys and to improve the clarity of the specification, Challenge could be extended to also be capable using EnvelopedData for transferring the encrypted Rand.\r\n\r\n```\r\nPOPODecKeyChallContent ::= SEQUENCE OF Challenge\r\n-- One Challenge per certification request (in the same order\r\n-- as these requests appear in CertReqMessages)\r\n\r\nChallenge ::= SEQUENCE {\r\n    owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}}\r\n                            OPTIONAL,\r\n    -- MUST be present in the first Challenge; MAY be omitted in\r\n    -- any subsequent Challenge in POPODecKeyChallContent (if\r\n    -- omitted, then the owf used in the immediately preceding\r\n    -- Challenge is to be used)\r\n    witness             OCTET STRING,\r\n    -- the result of applying the One-Way Function (owf) to a\r\n    -- randomly generated INTEGER, A (Note that a different\r\n    -- INTEGER MUST be used for each Challenge.)\r\n    challenge           OCTET STRING\r\n    -- MUST be used for CMP V1 and V2 popdecc messages\r\n    -- MUST be an empty OCTET STRING for CMP V3 popdecc\r\n    -- messages\r\n    -- The encryption (under the public key for which the certification\r\n    -- request is being made) of Rand\r\n     encRand             EnvelopedData    OPTIONAL\r\n    -- MUST be omitted for CMP V 1 and V2 popdecc messages\r\n    -- MUST be used for CMP V3 messages and contain the encrypted\r\n    -- value of Rand\r\n    -- Using Challenge omitting the optional encRand is bit-compatible\r\n    -- to the syntax without this change.\r\n}\r\n\r\n-- Rand was added in CMP Updates [RFC9480]\r\n\r\nRand ::= SEQUENCE {\r\n-- Rand is encrypted under the public key to form the challenge\r\n-- in POPODecKeyChallContent\r\n   int                  INTEGER,\r\n   -- the randomly generated INTEGER A (above)\r\n   sender               GeneralName\r\n   -- the sender's name (as included in PKIHeader)\r\n}\r\n\r\nPOPODecKeyRespContent ::= SEQUENCE OF INTEGER\r\n-- One INTEGER per certification request (in the same order\r\n-- as these requests appear in CertReqMessages).  The\r\n-- retrieved INTEGER A (above) is returned to the sender of the\r\n-- corresponding Challenge.\r\n```\r\n\r\nBut I am uncertain if it is worth doing this, because I am not aware of any implementation using popdecc messages.\r\n",
+      "createdAt": "2023-12-22T12:31:29Z",
+      "updatedAt": "2024-01-08T16:29:35Z",
+      "closedAt": "2024-01-08T16:29:35Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Updated Section 5.2.8 with fa57a14f292affa3a60be051cc7c1eb318320aff",
+          "createdAt": "2024-01-08T16:29:35Z",
+          "updatedAt": "2024-01-08T16:29:35Z"
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "id": "I_kwDOInbtzM58n7rA",
+      "title": "Content of KemOtherInfo in Section 5.1.3.4",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/39",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Decide on the content of KemOtherInfo decpending on the conclusions taken in cms-kemri\r\nThe goal is to use the algorithm specification for use with CMS also for use with CMP.\r\n\r\n    KemOtherInfo ::= SEQUENCE {\r\n      staticString      PKIFreeText,\r\n      transactionID     OCTET STRING,\r\n      ct                OCTET STRING\r\n    }\r\n\r\nQuestions:\r\n- Should ct be OPTIONAL or not?\r\n- What about the public kem key?\r\n- Is any other content needed?\r\n- For symmetry with cms-kemri, should we rename ct to ukm? ",
+      "createdAt": "2024-01-19T16:03:48Z",
+      "updatedAt": "2024-02-26T15:41:43Z",
+      "closedAt": "2024-02-26T15:41:43Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "We decided to change to \r\n\r\n    KemOtherInfo ::= SEQUENCE {\r\n      staticString      PKIFreeText,\r\n      transactionID     OCTET STRING,\r\n      kemContext    [0] OCTET STRING OPTIONAL\r\n    }\r\n\r\nand \r\n\r\n  kemContext MAY contain additional algorithm specific context information.\r\n\r\nand further wait for cms-kemri",
+          "createdAt": "2024-01-22T17:47:10Z",
+          "updatedAt": "2024-01-22T17:47:10Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "As we cannot expect the the content of kemContext is implicit, I also added kemContect to KemCiphertextInfo.\r\n~~~~\r\n  KemCiphertextInfo ::= SEQUENCE {\r\n    kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},\r\n    ct               OCTET STRING,\r\n    kemContext   [0] OCTET STRING OPTIONAL\r\n  }\r\n~~~~\r\nThis is in line with cms-kemri where KEMRecipientInfo also transfers ukm.",
+          "createdAt": "2024-02-26T07:30:31Z",
+          "updatedAt": "2024-02-26T07:30:31Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Alignment meeting 26.02.24\r\nI will move the kemContext from the KemCiphertextInfo to the KemBMParameters structure",
+          "createdAt": "2024-02-26T15:41:43Z",
+          "updatedAt": "2024-02-26T15:41:43Z"
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "id": "I_kwDOInbtzM58n9Gm",
+      "title": "Replace the ASN.1 version 1988 module from Appendix F with the 2002 version module",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/40",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Should we remove the ASN.1 version 1988 module completely from the document and replace it with the version 2002 module in Appendix F?\r\nThen there is no complete ASN.1 version 1988 module available containing the KEM support.",
+      "createdAt": "2024-01-19T16:07:14Z",
+      "updatedAt": "2024-02-26T15:49:27Z",
+      "closedAt": "2024-02-26T15:49:27Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@johngray-dev will have a look into",
+          "createdAt": "2024-01-22T17:46:04Z",
+          "updatedAt": "2024-01-22T17:46:04Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes, I think we should replace the 1988 module and replace with 2002.   I also noticed our ASN.1 module has a typo in it:\r\n\r\n  cmp2012(3) },\r\n\r\nIt says cmp2012 instead of cmp2021(3).",
+          "createdAt": "2024-02-24T20:54:19Z",
+          "updatedAt": "2024-02-24T20:54:19Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I fixed the typo...     Will look at how easy it will be to rip out the 1988 module.",
+          "createdAt": "2024-02-24T21:00:23Z",
+          "updatedAt": "2024-02-24T21:00:23Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> Yes, I think we should replace the 1988 module and replace with 2002. I also noticed our ASN.1 module has a typo in it:\r\n> \r\n> cmp2012(3) },\r\n> \r\n> It says cmp2012 instead of cmp2021(3).\r\n\r\nThank you for spotting this. \r\nSadly, this typo is also present in RFC9480 Appendix A.2. In Appendix A.1 it is correct.",
+          "createdAt": "2024-02-26T07:26:51Z",
+          "updatedAt": "2024-02-26T07:26:51Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "summary of meeting 26.02.2024:\r\n@johngray-dev will report the errata\r\nWe decided to drop the 1988 syntax ASN.1 module.",
+          "createdAt": "2024-02-26T15:49:27Z",
+          "updatedAt": "2024-02-26T15:49:27Z"
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "id": "I_kwDOInbtzM581lNB",
+      "title": "Profile use of EnvelopedData in Section 5.2.2",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/41",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Check if we need specific profiling on the use of OPTIONAL field in EnvelopedData. Potentially add a paragraph on it.\r\nCheck also with CRMF and CMC on this.",
+      "createdAt": "2024-01-22T17:36:03Z",
+      "updatedAt": "2024-02-26T16:03:50Z",
+      "closedAt": "2024-02-26T16:03:50Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@HBrock will look into CMS, CRMF, CMC and other docs to figure out what OriginatorInfo is used for.\r\n@johngray-dev will check this his code\r\n@DDvO David will check in OpenSSL",
+          "createdAt": "2024-01-22T18:04:32Z",
+          "updatedAt": "2024-01-22T18:04:32Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I did some investigations and could not find any further profiling regarding use of originatorInfo in EnvelopedData in neither CMC nor CRMF.\r\nCMS writes \"originatorInfo optionally provides information about the originator.  It is present only if required by the key management algorithm.\" and information about the originator may only required for kari.\r\nI think, we do not need to profile the use of this field further.",
+          "createdAt": "2024-01-24T13:23:53Z",
+          "updatedAt": "2024-01-24T13:23:53Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "conclusion 26.02.2024:\r\nWe agree to say nothing additional regarding OPTIONAL fields",
+          "createdAt": "2024-02-26T16:03:50Z",
+          "updatedAt": "2024-02-26T16:03:50Z"
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "id": "I_kwDOInbtzM59TX17",
+      "title": "Check for potential upstream problems due to changes in the ASN.1 module",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/42",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Michael StJohns wrote:\r\n> --> Next - for the changes to the body of the module, are there any upstream modules where such a change could be problematic or limiting? E.g. importing an enum that's been extended? (Do we have a tool for scanning for imports and doing the cross verification?\r\n\r\nCarl Wallace proposed:\r\nThe Referenced By feature of the data tracker could be useful if one wanted to pursue this. For example, https://datatracker.ietf.org/doc/rfc4210/referencedby/. This is well short of analyzing ASN.1 modules of course.",
+      "createdAt": "2024-01-26T13:37:09Z",
+      "updatedAt": "2024-02-26T16:23:35Z",
+      "closedAt": "2024-02-26T16:23:35Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I checked all I-Ds and RFCs that normatively or informatively reference RFC 4210. \r\nNone of them have an ASN.1 module importing from a PKIXCMP-... module. \r\nI also checked what parts of RFC 4210 are referred to in the text of the document. \r\nRFC 4210 is referred to:\r\n- CMP as general example of a protocol managing certificates\r\n- root CA cert update\r\n- certificate request messages\r\n- delivery of centrally generated keys\r\n- POP methods other than self-signature\r\n- requesting certificates other than X.509v3 public-key certificates\r\n- revocation of certificates\r\n- transferal of PKIMessages\r\n- PKIStatus bits\r\n\r\nSee the attached PDF for details.\r\n[References to RFC4210.pdf](https://github.com/lamps-wg/cmp-updates/files/14223361/References.to.RFC4210.pdf)\r\n\r\n",
+          "createdAt": "2024-02-09T15:23:17Z",
+          "updatedAt": "2024-02-09T15:31:51Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "conclusion 26.02.2024\r\nThe ASN.1 module is versioned\r\nWe could not spot any ASN.1 module importing from any of the CMP modules",
+          "createdAt": "2024-02-26T16:23:35Z",
+          "updatedAt": "2024-02-26T16:23:35Z"
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "id": "I_kwDOInbtzM59VGhw",
+      "title": "Removing normative language from Section 4.2.2",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/43",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As @primetomas proposed:\r\n1.\tSection 4.2.2.1 describes it as mandatory that the CA can send a CMP message to the end entity directly. I think this is an extremely rare case, and very hard to interpret. CAs can virtually never make an on-line connection to end entities, so this scheme assumes an out-of-band deliver of the CMP message, which is hard to envision imho. At least without stating that this is outside of the scop. The most basic cases I know of always involve some RA that initiates the request to the CA. This is confusing to me.\r\n\r\n[HB]  I fully support your point. As you know, RFC 9483 also addresses PKI Management Operations between RA and CA.\r\nBut as I read Section 4.2.2 the only mandators scheme is specified in Section 4.2.2.2. The Centralizes Scheme specified in Section 4.2.2.1 is optional. But I can envision this scheme for example in a factory with a local CA providing key generation and certificate issuance on behalf of the device. But you are perfectly right, this is not a scenario CMP would be used for.\r\nI see Section 4.2 more as a first illustration how enrollment could look like. As there is the profile for enrollment of person-certificate in the Appendix and the profile for machine-to-machine enrollment in RFC 9483, it would be fine removing normative language from Section 4.2 completely, if the WG agrees.",
+      "createdAt": "2024-01-26T18:20:17Z",
+      "updatedAt": "2024-06-26T06:29:20Z",
+      "closedAt": "2024-06-26T06:29:20Z",
+      "comments": [
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "I support removing the normative language in 4.2.2. This can be handled in profiles, and is in many cases already. I.e. 3GPP 33.310, Lightweight CMP profile, Unisig ERTMS, etc.",
+          "createdAt": "2024-02-26T20:25:38Z",
+          "updatedAt": "2024-02-26T20:25:38Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@johngray-dev @ounsworth @DDvO What do you think of removing normative text from [Section 4.2.2](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#name-mandatory-schemes) and leave this to the respective profiles?",
+          "createdAt": "2024-02-27T16:12:40Z",
+          "updatedAt": "2024-02-27T16:12:40Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes I agree.   Our end-entities can connect to our CA, but it is always end-entity driven.   The keys are generated at either the CA, the client or 3rd party.   I agree the text only says 4.2.2.2 is mandatory, but I see how it can be confusing since it is all under 4.2.2 titled \"Mandatory Schemes\".   Maybe just changing the title of 4.2.2 to \"Registration / Certification Schemes\", take out the normative language, then then add the MUST in 4.2.2.2 directly would make it more clear.    ",
+          "createdAt": "2024-03-01T04:34:12Z",
+          "updatedAt": "2024-03-01T04:34:12Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "As there are several profiles of CMP available, like\r\n\r\n- Appendix D and E of RFC 4210,\r\n- RFC 9483,\r\n- 3GPP TS 33.310, and\r\n- UNISIG Subset 137.\r\n\r\nTherefore, RFC 4210 developed more to a framework and a generic protocol specification. \r\nRFC 5280 also defines the X.509 certificate and CRL content and path validation mechanism in a generic manner, and there are many protocol specific profiles available.\r\n\r\nWhen looking at RFC 4210 there are more section using normative language that may hinder claiming compliance when using one of the above listed profiles or when using CMP with a proprietary profile. \r\nIf we support the development of rfc4210bis to such a generic certificate management protocol framework, I feel like, we must also also look at other sections, e.g., Section 6, and reconsider the usage of normative language there.\r\nCurrently this was out-of-scope of the tasks we got from the LAMPS WG.",
+          "createdAt": "2024-03-01T10:21:47Z",
+          "updatedAt": "2024-03-01T10:21:47Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "> I agree the text only says 4.2.2.2 is mandatory, but I see how it can be confusing since it is all under 4.2.2 titled \"Mandatory Schemes\". Maybe just changing the title of 4.2.2 to \"Registration / Certification Schemes\", take out the normative language, then then add the MUST in 4.2.2.2 directly would make it more clear.\r\n\r\nI support this and am confident that the WG will be fine with this.\r\nIt is essentially just an editorial change that prevents needless confusion.",
+          "createdAt": "2024-03-07T12:41:40Z",
+          "updatedAt": "2024-03-07T12:41:40Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The following slide was presented at IETF 119:\r\n\r\nRemove normative language from Section 4.2.2, by Tomas Gustavsson\r\n\r\nThere are various profiles that specify initial registration and certification in much more detail, e.g., Appendix C and D, RFC 9483, 3GPP TS 33.310, UNISIG Subset 137. Therefore, today rfc4210bis is more of a framework and Section 4.2 is more a guidance.\r\n\r\n**Option 1**: Adapt headline of Section 4.2.2 to avoid confusion and keep text as of RFC 4210 retaining backward compatibility.\r\n**Option 2**: Adapt headline of Section 4.2.2 to avoid confusion and remove normative language.\r\n**Option 3**: Rework Section 3, 4, and 6 to modernize it and remove normative where not needed.",
+          "createdAt": "2024-03-20T13:21:21Z",
+          "updatedAt": "2024-03-20T13:21:21Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "With V10 the following changes were addresses:\r\n   *  Implemented some minor editorial changes modernizing the text in\r\n      Section 3, 4, and 5.2.8 as proposed during IETF 119, without\r\n      changing normative language.\r\n   *  Added to Section 4.2.2 two ToDos for further discussion, based on\r\n      the comment from Tomas Gustavsson as presented during IETF 119.\r\n\r\nI will address proposals for the remaining ToDos on the LAMPS list.",
+          "createdAt": "2024-05-06T11:20:59Z",
+          "updatedAt": "2024-05-06T11:20:59Z"
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "id": "I_kwDOInbtzM59VHFC",
+      "title": "Add description on raVerified to Section 5.2.8",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/44",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As @primetomas proposed:\r\nAdditional: In section 4.3 I think it's good to explicitly call out raVerified POP in a subsection. It is quite commonly used.\r\nIt is mentioned in 5.1.1.3 and 5.2.8.4 and deserves a description under 4.3 imho.\r\n\r\n[HB] You are right, the raVerified POP method is only described briefly in Section 5.2.8.4. This text may be extended.\r\nSection 4.3 is describing which POP methods to uses for which key-types. Section 5.2.8 describes different POP structures and methods and is the more appropriate place describing raVerified. Currently an additional subsection for raVerified would not fit well into the existing structure of Section 5.2.8. But if we decide to restructure the section, it could nicely fit. To be honest, the current structure is a bit odd anyhow, but as it originates from RFC 2510, I tried to change as little as possible. \r\nA new structure could look like this:\r\n5.2.8.  Proof-of-Possession Structures\r\n  5.2.8.1 raVerified\r\n  5.2.8.2 POPOSigningKey Structure\r\n  5.2.8.3 POPOPrivKey Structure\r\n     5.2.8.3.1.  Inclusion of the Private Key\r\n     5.2.8.3.2.  Encrypted Certificate - Indirect Method\r\n     5.2.8.3.3.  Challenge-Response Protocol \u2013 Direct Method\r\n  5.2.8.4.  Summary of PoP Options\r\n",
+      "createdAt": "2024-01-26T18:21:21Z",
+      "updatedAt": "2024-02-28T15:20:37Z",
+      "closedAt": "2024-02-28T15:20:37Z",
+      "comments": [
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Just for comparison, the current section has this structure:\r\n\r\n>5.2.8.  Proof-of-Possession Structures\r\n5.2.8.1.  Inclusion of the Private Key\r\n5.2.8.2.  Indirect Method - Encrypted Certificate\r\n5.2.8.3.  Direct Method - Challenge-Response Protocol\r\n5.2.8.4.  Summary of PoP Options\r\n\r\nSo you are instead laying out the sections based on ASN.1 structures, and putting protocol flows as a sub-level.\r\n\r\nI think that works.\r\n\r\n\r\n\r\n\r\n",
+          "createdAt": "2024-02-26T14:47:20Z",
+          "updatedAt": "2024-02-26T14:47:20Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "I like that",
+          "createdAt": "2024-02-26T14:50:03Z",
+          "updatedAt": "2024-02-26T14:50:03Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "conclusion 26.02.2024\r\nThe following points should be covered in the explanatory paragraph:\r\n- The RA MUST check the POP before using raVerified\r\n- If the RA performs changes to the original request that breaks the POP provided by the EE\r\n- If the RA request on behalf of an EE which provided the POP out-of-band\r\n- In other cases the RA MAY use raVerified together with providing the original message containing the POP in generalInfo, otherwise it SHOULD NOT use raVerified",
+          "createdAt": "2024-02-26T17:21:14Z",
+          "updatedAt": "2024-02-26T17:21:14Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@primetomas @johngray-dev @ounsworth  What do you think about this text explaining the usage of raVerified?\r\n\r\nSection 5.2.8.1 raVerified\r\nWhen using raVerified, the RA MUST check the proof-of-possession provided by the EE. It MAY use raVerified together with providing the original message containing the POP provided by the EE in the generalInfo field using the id-it-origPKIMessage, see Section 5.1.1.3.\r\nIf the RA performs changes to a certification request received from an EE, where these changes break the POP provided by the EE, or if the RA requests a certificate on behalf of an EE which provided the POP out-of-band, the RA MUST use the raVerified choice. Otherwise, it SHOULD NOT use raVerified.\r\n",
+          "createdAt": "2024-02-27T14:21:38Z",
+          "updatedAt": "2024-02-27T14:21:38Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "As long as that description also work for i.e. RA generated smart cards. I guess you can interpret that as \"the RA requests a certificate on behalf of an EE which provided the POP out-of-band\", if you interpret the EE's PoP as the smart card printer being local :-)",
+          "createdAt": "2024-02-27T15:25:32Z",
+          "updatedAt": "2024-02-27T15:25:32Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Good point.\r\nI would regard smart card production as 'on-behalf' where either the RA can provide a POP as it has access to the private key (either as it generates the key pair outside the smart card, or because it could make use of the private key on the smart card), or the POP is provided out-of-band due to organizational measures (as you suggested).\r\nOnly in the latter case usage of raVerified is needed. ",
+          "createdAt": "2024-02-27T16:18:07Z",
+          "updatedAt": "2024-02-27T16:18:07Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@primetomas David and I rephrased the section to address your point. What do you think?\r\n\r\n### 5.2.8.1. raVerified\r\nAn EE MUST NOT use raVerified. If an RA performs changes to a certification request breaking the provided proof-of-possession (POP), or if the RA requests a certificate on behalf of an EE and cannot provide the POP itself, the RA MUST use raVerified. Otherwise, it SHOULD NOT use raVerified.\r\nWhen introducing raVerified, the RA MUST check the existing POP, or it MUST ensure by other means that the EE is the holder of the private key. The RA MAY provide the original message containing the POP in the generalInfo field using the id-it-origPKIMessage, see Section 5.1.1.3, enabling the CA to verify it.",
+          "createdAt": "2024-02-28T15:14:47Z",
+          "updatedAt": "2024-02-28T15:14:47Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "Sounds good!",
+          "createdAt": "2024-02-28T15:16:09Z",
+          "updatedAt": "2024-02-28T15:16:09Z"
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "id": "I_kwDOInbtzM59VIyh",
+      "title": "Update Sections 4.4 and 5.2.5 moving outdated text to an appendix",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/45",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "@primetomas proposed:\r\n2.\tSection 4.4 on root CA key update seems very verbose.\r\nIt discusses the odd case of CA rollback to great lengths, which I'm sure is extremely rare.\r\nWe discussed during the period of RFC9480, about the need for OldWithNew, which is why RFC9480 have both NewWithOld and OldWithNew as optional in 5.3.19.15. I don't think it is good to bring that back here in the form of: \"Thus, when a CA updates its key pair it must generate two extra cACertificate attribute values if certificates are made available using an X.500 directory (for a total of four: OldWithOld, OldWithNew, NewWithOld, and NewWithNew).\".\r\nUsing an x.500 directory as reference I don't think is a good one.\r\n\u2022\tKeeping these optional enables us to cut down on the verbose wording quite some. You can basically remove the whole section 4.4.1, or shorten it substantially.\r\n\u2022\tIt would be good if section 4.4 gave more advice on the standard use case of CA Renewal\r\n\u2022\tSection 4.4.2.x seems to assume an LDAP directory. Also nothing that is common, I don't think the CMP draft should specify which LDAP attributes to look up (\"Look up the cACertificate attribute in the repository\"). Either CMP have a mechanism to distribute new certificates, or it's out of scop and we can remove those words.\r\n\u2022\tThe section assumes support for X.509 v1, without extensions. I don't think this is appropriate. CMPv3 makes extensive use of extensions in the specification so assuming X.509v3 with extensions I think would be better. CMPv3 will not work without extensions anyhow.\r\n\r\n[HB] I absolutely support your point. I see Section 4.4 more as a historic and explanatory section. I cannot say, if it has any relevance today. But I know that at least Section 4.1.3 of RFC 7030 is referring to the CA rollover model of CMP pointing to Section 4.4 of RFC 4210. Therefore, I was hesitating to change anything further on this section.\r\nFinally, this section does not use normative language (except twice where it is not critical). Therefore, I do not see the need for implementing this as specified here for RFC compliance.\r\nBut as said, I am open for proposals how to update the section to express the issues you described. Maybe we can also move historic text of this section to an Appendix if people do not want to drop it completely.\r\nCould you contribute text for an updates Section 4.4? \r\n\r\n@primetomas proposed:\r\n4.\tSection 5.2.5 should be removed imho. It says it is out of scope, why define ASN.1 data structures for something that is out of scope of the document? I think it's right to keep it out of scope, but then the whole section can be removed.\r\n\r\n[HB] I do not know, why this section and the ASN.1 definition were added to the document, but they were already part of RFC 2510  :-)\r\nI could imagine moving this section together with parts of Section 4.4 to an appendix. Could you address this in your proposal for an updated Section 4.4 as well?",
+      "createdAt": "2024-01-26T18:24:37Z",
+      "updatedAt": "2024-03-18T14:15:26Z",
+      "closedAt": "2024-03-18T14:15:25Z",
+      "comments": [
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "Created PR with proposed changes",
+          "createdAt": "2024-02-26T21:07:25Z",
+          "updatedAt": "2024-02-26T21:09:19Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you for your proposal. \r\nI saw, you that you updated Section 4.4 and Section 4.4.1 and removed Section 4.4.2. Section 5.2.5 is unchanged. See the diff [Section 4.4 old.diff.html.pdf](https://github.com/lamps-wg/cmp-updates/files/14422485/Section.4.4.old.diff.html.pdf).\r\n\r\nWhen checking https://datatracker.ietf.org/doc/rfc4210/referencedby/, I identified the following documents referring to Section 4.4 of RFC 4210:\r\n- draft-ietf-anima-constrained-voucher\r\n- RFC 8994\r\n- RFC 8649\r\n- RFC 7030\r\n- RFC 6024\r\n- RFC 5280\r\nTherefore, I am uncertain if we should change/delete this much text.\r\n\r\n@johngray-dev @ounsworth Do you have any further thoughts or proposals?",
+          "createdAt": "2024-02-27T16:08:23Z",
+          "updatedAt": "2024-02-27T16:08:23Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "Should we keep the section but state that it changed and moved to Appendix?",
+          "createdAt": "2024-02-27T16:33:11Z",
+          "updatedAt": "2024-02-27T16:33:11Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I would propose to present the proposal to the LAMPS WG during next IETF and ask for their guidance.",
+          "createdAt": "2024-02-27T16:38:48Z",
+          "updatedAt": "2024-02-27T16:38:48Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The text as it is in there makes perfect sense to me, and essentially describes how our CA works for doing its CA key updates (for probably the past 20+ years).  \r\n\r\nCurrent Text:\r\nThe basis of the procedure described here is that the CA protects its\r\nnew public key using its previous private key and vice versa.  Thus,\r\nwhen a CA updates its key pair it must generate two extra\r\ncACertificate attribute values if certificates are made available\r\nusing an X.500 directory (for a total of four: OldWithOld,\r\nOldWithNew, NewWithOld, and NewWithNew).\r\n\r\nProposed Change:\r\nRFC4210 describes extra certificates used by a CA to protect its\r\nnew public key. This method has been shown to be very use case specific \r\nand no assumptions are done on this aspect and RootCaKeyUpdateContent is \r\nupdated to specify the extra fields as optional. \r\n\r\nI don't know what is meant by \"This method has been shown to be very use case specific\"?   How has it been shown to be use-case specific?   The existing text essentially explains an example of how root CA certificate management works.   I guess it is only giving one specific way of doing a CA key update but it is the use case I believe makes the most sense.  If you don't make link certificates then existing clients will have to have their trust stores manually updated with the new CA root, or some alternate out of band means for them to retrieve and trust the new root would be required.  The link certificates allow them to temporarily verify there is a link of trust between the original trusted root and the new root, and therefore trust the updated root.   I guess not everyone needs to use link certificates, but then CA updates are just so much more painful.\r\n\r\nSo if these CA key management methods aren't written in another RFC, then I think having it is in the scope of this document, it is CMP, and managing a CA's Certificate management is in scope right?   If we want to cover other use cases like the non-link cert method, or various out-of-band methods then I would be okay with moving this to an appendix, and at least keep this link cert method and why its useful, and the non-link cert method and its requirement of out-of-band updates (which we can say it out of scope).   Then at least the information is captured.\r\n\r\nSo yes, probably this needs to be mentioned in a LAMPS update",
+          "createdAt": "2024-03-01T05:01:52Z",
+          "updatedAt": "2024-03-01T05:01:52Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "Thanks for sharing your experience.\r\n\r\n1. What I meant with \"This method has been shown to be very use case specific\" is that there are other standards (some using CMP) that performs CA updates in different ways.Two specific examples: \r\n- Link certificates using NewWithOld is common, in ICAO 9303 it is mandated. ICAO 9303 does not use NewWithOld however.\r\n- 3GPP 33.310 relies on CMP, but don't specify use of link certificates at all, and implementation I'm aware of don't use it.\r\nI do agree that link certificates as used in ICAO 9303 is useful for trust anchor update.\r\n\r\n2. Most CAs do not use X.500 directories. It doesn't feel right that RFC4210bit mentions specific database technology.\r\n\r\nWhile you can read 4.4 as it is only a discussion of an example method. This is not fully clear. Being under section 4 that is called \"Assumptions and Restrictions\".\r\n\r\nThe fact that the link certificates are now Optional in CMPv3 makes me want to update this section, because the 4.4 discussion is not written with this optionality in mind.\r\n\r\nAbout references (thanks for digging them up Hendrik):\r\n- RFC7030 references it as a defined SHOULD requirement, but no client has asked us about link certificates in EST yet. Being a SHOULD and the optionality in CMPv3 I'd expect different use case can arise. An updated section 4.4 could be helpful\r\n- RFC8994 references it much more loosely than RFC7030. An updated section 4.4 incorporating the CMPv3 optionality would suffice to fulfill this reference.\r\n- I can't find the reference in RFC5280.\r\n- RFC8649 has it under Operational Considerations, so an updated section 4.4. should work there as well\r\n- RFC6024 doesn't reference section 4.4 directly but RFC4210 in general so it's ok.\r\n- draft-ietf-anima-constrained-voucher references it as a \"mechanism described in RFC4210 Section 4.4\" being a bit problematic, but could likely be ok with an updated section 4.4?\r\n\r\nThis discussion makes me want to keep it as section 4.4, but update it to\r\n- introduce the Optionality of CMPv3\r\n- remove specification of an X.500 directory (the specs referencing this section all specify distribution through their protocol instead of through a directory)\r\n- Add something more about assumptions and restrictions. For example that CA subject DN change it a common, that old and new CAs may be on different systems, and that different use cases for the same protocol may have different restrictions and capabilities.\r\n- remove the assumption on X.509v1 only certs\r\n- potentially shorten it a bit, it's a quite long discussion section?\r\n\r\nCould you agree with that approach?\r\n",
+          "createdAt": "2024-03-01T08:57:32Z",
+          "updatedAt": "2024-03-01T08:57:32Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "thanks for the lively discussion. \r\nI do not have the experience that you have regarding the variety of PKI usages. I only have my limited scope on the OT space. Therefor I may be a bit shy to change some of the old and mature text in 4210. I do not want to accidently break anything.\r\n\r\n`The fact that the link certificates are now Optional in CMPv3 makes me want to update this section, because the 4.4 discussion is not written with this optionality in mind.`\r\n[Section 5.3.19.15](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-5.3.19.15) offers a ASN.1 type with optional newWithOld and oldWithNew. This is to support also those entities that may not need the one or the other link certificate. this section says nothing about whether or not a CA should issue it for proper trust establishment in both directions.\r\n\r\n`I can't find the reference in RFC5280.`\r\nRFC5280 refers to RFC 4210 in the Security Considerations saying:\r\n   Detailed procedures for \"CA\r\n   key update\" are specified in [RFC4210], where the CA protects its new\r\n   public key using its previous private key and vice versa using two\r\n   self-issued certificates.\r\n\r\n`RFC6024 doesn't reference section 4.4 directly but RFC4210 in general so it's ok.`\r\nRFC 6042 refers to RFC 4210 with regard to in-band trust anchor update saying:\r\n   Routine trust\r\n   anchor rekey operations typically require similar out-of-band checks,\r\n   though in-band rekey of a trust anchor is supported by the\r\n   Certificate Management Protocol (CMP) [RFC4210].\r\n\r\nGenerally speaking, I also think, theses references should not hinder updating Section 4.4. I also like Tomas proposals. Maybe we can leave LDAP as an example.\r\nAs said before, I just do not fee comfortable with changing the content of this section due to my limited background on this section and therefore would need strong support by the LAMPS WG or others having this background.",
+          "createdAt": "2024-03-01T10:09:21Z",
+          "updatedAt": "2024-03-01T10:09:21Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "closed after merging PR #54",
+          "createdAt": "2024-03-18T14:15:26Z",
+          "updatedAt": "2024-03-18T14:15:26Z"
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "id": "I_kwDOInbtzM5-jWwF",
+      "title": "Context input to KDF",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/46",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The current draft of cms-kemri specified ukm as a field in KEMRecipientInfo. I must be used in CMSORIforKEMOtherInfo as input for the KDF.\r\nSection 3 of cms-kemri writes:\r\n\"ukm is optional user keying material. When the ukm value is provided, it is used as part of the info structure described in Section 5 to provide a context input to the key-derivation function. For example, the ukm value could include a nonce, application-specific context information, or an identifier for the originator. A KEM algorithm may place requirements on the ukm value. Implementations that do not support the ukm field SHOULD gracefully discontinue processing when the ukm field is present. Note that this requirement expands the original purpose of the ukm described in Section 10.2.6 of [RFC5652]; it is not limited to being used with key agreement algorithms.\"\r\n\r\nCurrently we specify KemOtherInfo as CMP alternative to ukm. It contains a static string \"CMP-KEM\", the transactionID and an optional kemContext. The kemContext is supposed to contain additional algorithm specific context information.\r\n- I think we need to describe the use of KemOtherInfo and kemContext more specific, as for ukm above.\r\n- Do we also need to offer the transferring the kemContext as part of the delivering the kemct, potentially as part of KemCiphertextInfo structure?\r\n\r\n@johngray-dev @ounsworth What do think?",
+      "createdAt": "2024-02-07T14:45:01Z",
+      "updatedAt": "2024-02-26T16:25:53Z",
+      "closedAt": "2024-02-26T16:25:53Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Additionally, the CMSORIforKEMOtherInfo also contains the algorithm the derived key will be used for as well as its keylength.\r\nI think we discussed this before and we decided that the sender of the kemct should not decide on this, but it should leave this to the holder of the kem private key.\r\nThis just to make sure, that we think it is safe to stick to this approach. ",
+          "createdAt": "2024-02-07T15:07:30Z",
+          "updatedAt": "2024-02-07T15:07:30Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "while discussing with Kiron, I decided to add kemContext also to the KemCiphertextInfo structure to be in line with the definition in cms-kemri.\r\n\r\n@johngray-dev @ounsworth What do you think?",
+          "createdAt": "2024-02-19T17:47:30Z",
+          "updatedAt": "2024-02-19T17:47:30Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "conclusion 26.02.2024\r\nsee #39 ",
+          "createdAt": "2024-02-26T16:25:53Z",
+          "updatedAt": "2024-02-26T16:25:53Z"
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "id": "I_kwDOInbtzM6AIrHm",
+      "title": "Clear up incompatibility issue in section 5.1.3.1",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/48",
+      "state": "CLOSED",
+      "author": "johngray-dev",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In RFC 5.1.3.1 it contains a description of Key expansion that should occur when the Key is larger than the one-way function:\r\n\r\n In the above protectionAlg, the salt value is appended to the shared\r\n   secret input.  The OWF is then applied iterationCount times, where\r\n   the salted secret is the input to the first iteration and, for each\r\n   successive iteration, the input is set to be the output of the\r\n   previous iteration.  The output of the final iteration (called\r\n   \"BASEKEY\" for ease of reference, with a size of \"H\") is what is used\r\n   to form the symmetric key.  If the MAC algorithm requires a K-bit key\r\n   and K <= H, then the most significant K bits of BASEKEY are used.  If\r\n   K > H, then all of BASEKEY is used for the most significant H bits of\r\n   the key, OWF(\"1\" || BASEKEY) is used for the next most significant H\r\n   bits of the key, OWF(\"2\" || BASEKEY) is used for the next most\r\n   significant H bits of the key, and so on, until all K bits have been\r\n   derived.  [Here \"N\" is the ASCII byte encoding the number N and \"||\"\r\n   represents concatenation.]\r\n\r\nFrom David:\r\nI just came across the weird situation that the definition of PBM in RFC 4210 section 5.1.3.1 describes\r\n- for the case that the base key, derived using the one-way-function, is too short for the HMAC key input -\r\na different (and needlessly complicated) padding than the one that was specified in RFC 4211 section 4.4,\r\nwhich uses a simple zero padding defined in RFC 2104 section 2.\r\n\r\nAre you aware of this inconsistency, which can lead to incompatibility of implementations\r\nin case the size of the hash alg used as the OWF is smaller than of the hash alg used for the HMAC?\r\nLooks like most implementations follow RFC 4211 here. What does your implementation do?\r\n\r\n",
+      "createdAt": "2024-02-22T19:06:46Z",
+      "updatedAt": "2024-03-18T14:05:56Z",
+      "closedAt": "2024-03-18T14:05:56Z",
+      "comments": [
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes, we have definitely noticed this situation.  We had incorrectly implemented the key expansion in 4210 in our own proprietary version (we call this \u201centrust-style\u201d), and recently corrected it to also support the RFC 4210 key expansion (we call it \u201crfc4210-style\u201d).   So I take it you have implemented the 4211 way, which is different that what we did, and therefore we would probably not be compatible with something like a 3DES SHA1 MAC, or AES SHA1 or any combination where the key used is larger than the OWF.\r\n\r\n I would hope one possible mitigation is that *most* implementations would have moved on to using a SHA2 based OWF in which case they should be good in almost all cases.   \r\n\r\nWe had a bunch of internal discussions on this today, and it seems less horrible than I first thought\u2026 \r\n\r\nRFC 4211 seems to only talk about HMAC, and in these cases key expansion is never needed.   The OWF will run first to derive K before being put into the Mac function and the HMac will internally digest if needed, so essentially no external expansion is needed.   RFC 4210 talks about key expansion when K > H, and it is not required when K <= H\r\n\r\nSo, in this regard, 4211 and 4210 will not lead to an incompatibility.   If you need to use (for example) an AES MAC algorithm and key expansion is required, you would follow RFC 4210, if you don\u2019t need key expansion you can follow 4211 and/or 4210.    \r\n\r\nIt is just very unclear and totally confusing, so I still think we want a clarifying sentence or two in RFC 4210-bis.\r\n\r\n\r\nWe could state something like:\r\n\r\n\"RFC 4210 section 5.1.3.1 gives a method of key expansion to be used when the key used for a Mac algorithm is larger than the size of the one-way-function.   RFC 4211 section 4.4 did not mention this key expansion method and gives an example using HMAC algorithms where key expansion is not needed.   It is recognized that this omission in RFC 4211 can lead to confusion and possible incompatibility if RFC 4210 key expansion is not used when needed.  Therefore, when key expansion is required (when K > H) the key expansion defined in RFC 4210 section 5.1.3.1 MUST be used.\"\r\n \r\n\r\n\r\n\r\n",
+          "createdAt": "2024-02-22T19:10:12Z",
+          "updatedAt": "2024-02-22T21:49:34Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I just noticed in RFC 4211 in section 4.4 says:  \r\n\r\nAll implementations MUST\r\n      support SHA-1.\r\n\r\nSo I don't know if adding the suggested text above becomes problematic.   Ideally people wouldn't use SHA1 anymore, but I suppose if they do then we would be recommending they use a key the same size as SHA1 (which I guess would be HMAC SHA1 or AES128 SHA1 or combinations like that for compatibility.",
+          "createdAt": "2024-02-22T19:17:28Z",
+          "updatedAt": "2024-02-22T19:17:28Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@johngray-dev, thank you for the explanation.\r\n\r\nWhile writing CMP Algorithms we came across the requirement of CRMF implementing SHA-1. Russ wrote [RFC 9045](https://datatracker.ietf.org/doc/html/rfc9045) updating these requirements.\r\nRFC9045 states: MUST implement id-PasswordBasedMAC and MAY implement PBMAC1\r\nFor PasswordBasedMAC: MUST implement SHA-256 for owf and MUST implement HMAC-SHA256 and SHOULD implement AES-GMAC for mac\r\n\r\nIn [RFC 9481](https://datatracker.ietf.org/doc/html/rfc9481) we list SHA2 and SHAKE as potential owf in Section 2 and SHA2-based HMAC, AES-GMAC, and SHAKE-based KMAC as potential mac in Section 6.2. Section 7.1 of RFC 9481 requires SHA-256 and HMAC-SHA256  to be used with PasswordBasedMAC.\r\n\r\nWhat does this change about the requirement for key expansion?",
+          "createdAt": "2024-02-23T08:12:58Z",
+          "updatedAt": "2024-02-23T08:12:58Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "As addition to rfc4210bis Section 5.1.3.1 we could write the following based on John's proposal:\r\n\r\ncurrent text:\r\n\"5.1.3.1.  Shared Secret Information\r\n\r\nIn this case, the sender and recipient share secret information with sufficient entropy (established via out-of-band means). PKIProtection will contain a MAC value and the protectionAlg MAY be one of the options described in CMP Algorithms Section 6.1 [RFC9481].\r\n\r\nThe following text gives further details on PasswordBasedMac. It is mentioned in Section 6.1.1 of [RFC9481] for backward compatibility. More modern alternatives are listed in Section 6.1 of [RFC9481].\r\n~~~~\r\n  id-PasswordBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 13}\r\n  PBMParameter ::= SEQUENCE {\r\n     salt                OCTET STRING,\r\n     owf                 AlgorithmIdentifier,\r\n     iterationCount      INTEGER,\r\n     mac                 AlgorithmIdentifier\r\n  }\r\n~~~~\r\nIn the above protectionAlg, the salt value is appended to the shared secret input. The OWF is then applied iterationCount times, where the salted secret is the input to the first iteration and, for each successive iteration, the input is set to be the output of the previous iteration. The output of the final iteration (called \"BASEKEY\" for ease of reference, with a size of \"H\") is what is used to form the symmetric key. If the MAC algorithm requires a K-bit key and K <= H, then the most significant K bits of BASEKEY are used. If K > H, then all of BASEKEY is used for the most significant H bits of the key, OWF(\"1\" || BASEKEY) is used for the next most significant H bits of the key, OWF(\"2\" || BASEKEY) is used for the next most significant H bits of the key, and so on, until all K bits have been derived. [Here \"N\" is the ASCII byte encoding the number N and \"||\" represents concatenation.]\r\n\r\nNote: It is RECOMMENDED that the fields of PBMParameter remain constant throughout the messages of a single transaction (e.g., ir/ip/certConf/pkiConf) to reduce the overhead associated with PasswordBasedMac computation.\"\r\n\r\nnew text:\r\n\r\n\"5.1.3.1.  Shared Secret Information\r\n\r\nIn this case, the sender and recipient share secret information with sufficient entropy (established via out-of-band means). PKIProtection will contain a MAC value and the protectionAlg MAY be one of the options described in CMP Algorithms Section 6.1 [RFC9481].\r\n\r\n**_The algorithm identifier id-PasswordBasedMac is defined in Section 4.4 of RFC 4211 and updated by RFC 9045._** It is mentioned in Section 6.1.1 of [RFC9481] for backward compatibility. More modern alternatives are listed in Section 6.1 of [RFC9481].\r\n~~~~\r\n  id-PasswordBasedMac OBJECT IDENTIFIER ::= {1 2 840 113533 7 66 13}\r\n  PBMParameter ::= SEQUENCE {\r\n     salt                OCTET STRING,\r\n     owf                 AlgorithmIdentifier,\r\n     iterationCount      INTEGER,\r\n     mac                 AlgorithmIdentifier\r\n  }\r\n~~~~\r\n**_The following text  gives a method of key expansion to be used when the key used for a MAC-algorithm is larger than the size of the one-way-function._**\r\n\r\n**_Note: RFC 4211 Section 4.4  and RFC 9045 do not mention this key expansion method and gives an example using HMAC algorithms where key expansion is not needed. It is recognized that this omission in RFC 4211 can lead to confusion and possible incompatibility if RFC 4210 key expansion is not used when needed. Therefore, when key expansion is required (when K > H) the key expansion defined in in the following text MUST be used._**\r\n\r\nIn the above protectionAlg, the salt value is appended to the shared secret input. The OWF is then applied iterationCount times, where the salted secret is the input to the first iteration and, for each successive iteration, the input is set to be the output of the previous iteration. The output of the final iteration (called \"BASEKEY\" for ease of reference, with a size of \"H\") is what is used to form the symmetric key. If the MAC algorithm requires a K-bit key and K <= H, then the most significant K bits of BASEKEY are used. If K > H, then all of BASEKEY is used for the most significant H bits of the key, OWF(\"1\" || BASEKEY) is used for the next most significant H bits of the key, OWF(\"2\" || BASEKEY) is used for the next most significant H bits of the key, and so on, until all K bits have been derived. [Here \"N\" is the ASCII byte encoding the number N and \"||\" represents concatenation.]\r\n\r\nNote: It is RECOMMENDED that the fields of PBMParameter remain constant throughout the messages of a single transaction (e.g., ir/ip/certConf/pkiConf) to reduce the overhead associated with PasswordBasedMac computation.\"",
+          "createdAt": "2024-02-23T08:39:38Z",
+          "updatedAt": "2024-02-23T08:39:38Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "conclusion 26.02.2024:\r\nTake the changes written above with the following changes.\r\nold:\r\n\"The following text gives a method of key expansion to be used when the key used for a MAC-algorithm is larger than the size of the one-way-function.\"\r\nnew:\r\n\"The following text gives a method of key expansion to be used when the MAC-algorithm requires an input length that is larger than the size of the one-way-function.\"",
+          "createdAt": "2024-02-26T16:52:13Z",
+          "updatedAt": "2024-02-26T16:52:13Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I responded to the email communication from San Francisco IETF las July on this matter asking Russ, David H. , and Mark for their opinion on \r\n- Is the text in rfc4210bis Section 5.1.3.1 sufficiently clarifying the issue? \r\n- How to proceed regarding a potential erratum to RFC 4211 or even RFC 9045?\r\n\r\n\r\n~~~~\r\nRuss, David H., Mark\r\n\r\nI am uncertain if there was final agreement on how to handle this issue back last summer. I did not see further\r\ncommunication on this topic and no errata on RFC 4211. Maybe I missed something.\r\n\r\nIn the rfc4210bis editors group we discussed this issue again some days ago, see\r\nhttps://github.com/lamps-wg/cmp-updates/issues/48, and proposed clarifying text for rfc4210bis, see\r\nhttps://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#name-shared-secret-information. I am\r\nplanning to submit the version on github latest on Monday.\r\n\r\nThe conclusion was, as long as HMAC is used as mac with id-PasswordBasedMAC, there is no need for key expansion as\r\nHMAC has no required input length. In general, an implementation could use different MAC algorithms for messages\r\nprotection as well as for POP. \r\n\r\nRFC 9481 updates RFC 4210. In RFC 9481 we list SHA2 and SHAKE as potential owf in Section 2 and SHA2-based HMAC,\r\nAES-GMAC, and SHAKE-based KMAC as potential mac in Section 6.2. Section 7.1 of RFC 9481 requires SHA-256 and\r\nHMAC-SHA256 to be used with id-PasswordBasedMAC.\r\n\r\nRFC 9045 updates RFC 4211. RFC9045 states: MUST implement id-PasswordBasedMAC and MAY implement PBMAC1,\r\nand for id-PasswordBasedMAC: MUST implement SHA-256 for owf and MUST implement HMAC-SHA256 and SHOULD\r\nimplement AES-GMAC for mac.\r\n\r\nBoth CMP and CRMF do not restrict implementations to only using the above listed algorithms with id-PasswordBasedMAC\r\nfor message protection or POP. Therefore, I think there is still need for aligning both specifications regarding key expansion.\r\n\r\nI have two questions:\r\nIs the text in rfc4210bis Section 5.1.3.1 sufficiently clarifying the issue? \r\nHow to proceed regarding a potential erratum to RFC 4211 or even RFC 9045?\r\n\r\nHendrik\r\n~~~~",
+          "createdAt": "2024-02-29T15:28:57Z",
+          "updatedAt": "2024-02-29T15:28:57Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "David H. and Russ reported consent with the text proposed in rfc4210bis on email.\r\nI did not get any feedback from Mark.\r\nNo one indicated need for an errata on RFC 4211 or RFC 9045 so fare.\r\n\r\nI will wait for further feedback until after IETF and close the issue if nothing more comes.",
+          "createdAt": "2024-03-06T12:39:05Z",
+          "updatedAt": "2024-03-06T12:39:05Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "During LAMPS meeting today, no one raised the request to file a erratum to RFC 4211.",
+          "createdAt": "2024-03-18T14:05:56Z",
+          "updatedAt": "2024-03-18T14:05:56Z"
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "id": "I_kwDOInbtzM6BckG5",
+      "title": "Why is CAKeyUpdAnnContent not identical to RootCaKeyUpdateContent?",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/50",
+      "state": "CLOSED",
+      "author": "primetomas",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "These are identical data structures for the same use case, isn't it?",
+      "createdAt": "2024-03-06T15:14:24Z",
+      "updatedAt": "2024-03-11T08:46:25Z",
+      "closedAt": "2024-03-11T08:46:25Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "CAKeyUpdAnnContent is the content type for an announcement message from the CA/RA to the EE, see [Section 5.3.13](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-5.3.13) and [Section 5.3.19.5](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-5.3.19.5). I cannot say, why it is available as ckuann and as genm value.\r\n\r\nRootCaKeyUpdateContent was added by RFC 9480 for genm/genp message pair. The genm of type id-it-rootCaCert offers the EE a request message to request a root CA key update from the RA/CA, see [Section 5.3.19.15](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-5.3.19.15) and [RFC 9483 Section 4.3.2](https://datatracker.ietf.org/doc/html/rfc9483#section-4.3.2).\r\n\r\nIn contrast to CAKeyUpdAnnContent, in RootCaKeyUpdateContent the newWithOld and OldWithNew link certificates are optional and can be omitted, depending on the EE needs.",
+          "createdAt": "2024-03-06T15:37:34Z",
+          "updatedAt": "2024-03-06T15:37:34Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Typically the number of certificates contained in a message rule the size of the message. This becomes even more crucial with PQC algorithms. Therefore, we want to offer a message that does not need to transfer certificates that are not needed.\r\nWe think, in many cases the oldWithNew certificate is not required, therefore, we wanted to have it optional. For flexibility, we also defined newWithOld as optional, but RFC 9483 required to use it. So the message offers full flexibility, but the profile limits it to the main use case.",
+          "createdAt": "2024-03-06T16:01:25Z",
+          "updatedAt": "2024-03-06T16:01:25Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "Exactly, sorry for the brief description. I know the differences. When introducing CMPv3 why not update CAKeyUpdAnnContent as well?",
+          "createdAt": "2024-03-07T08:51:57Z",
+          "updatedAt": "2024-03-07T08:51:57Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "You are right, we could have changed CAKeyUpdAnnContent, but this would have complicated the version management.\r\n\r\nThe design criteria for CMP Updates was to add what is needed for the Lightweight CMP Profile and not to break or change any existing functionality. We do not use any announcement messages in LCMPP. Therefore, we did not think about changing the content of outbound CA messages like ckuann or genm with id-it-caKeyUpdateInfo.\r\n\r\nAre you aware of products making use of announcement messages?\r\nDo you think this is a change we should add to rfc4210bis?",
+          "createdAt": "2024-03-07T10:41:19Z",
+          "updatedAt": "2024-03-07T10:41:19Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "I'm not aware of any product that uses ckuann or genm with id-it-caKeyUpdateInfo. So not updating will not change any use case that I'm aware of. \r\nFor future consistence (you never know who gets into which part of the spec) it would be worth changing it imho. Since I don't know of anyone using it, I also don't know that anyone would be hurt by it, and it would make the specification more consistent and easier to grasp/harder to make mistakes.",
+          "createdAt": "2024-03-07T11:21:17Z",
+          "updatedAt": "2024-03-07T11:21:17Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you. I see your point.\r\n\r\nIf we want to align this, I would propose to define that ckuann uses RootCaKeyUpdateContent with CMP v3 instead of changing the ASN.1 definition of CAKeyUpdAnnContent. \r\nI am uncertain how to change the ASN.1 syntax of CAKeyUpdAnnContent keeping backward compatible.\r\n\r\nWith genm the CA could technically already use id-it-caKeyUpdateInfo. This would need to be changed in Section 5.3.19.5.\r\n\r\nWhat do you think?",
+          "createdAt": "2024-03-07T12:13:27Z",
+          "updatedAt": "2024-03-07T12:13:27Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "Yeah, we could cleanly modify ckuann to use RootCaKeyUpdateContent (instead of CAKeyUpdAnnContent) by requiring this to be indicated with CMPv3 in the message header,\r\nand deprecate CAKeyUpdAnnContent.",
+          "createdAt": "2024-03-07T12:31:06Z",
+          "updatedAt": "2024-03-07T12:31:06Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "Agree, that sounds like a neat solution.",
+          "createdAt": "2024-03-07T13:52:15Z",
+          "updatedAt": "2024-03-07T13:52:15Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This will also affect [Appendix D.4](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#appendix-D.4).\r\nI would propose to also use RootCaKeyUpdateContent there and allow CAKeyUpdAnnContent only if backward compatibility is required.\r\nShould we keep the requirement of oldWithNew and newWithOld beeing both present, or should be change anything there?",
+          "createdAt": "2024-03-07T14:45:09Z",
+          "updatedAt": "2024-03-07T14:45:09Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "I think we should make them optional as for RootCaKeyUpdateContent. That makes CMP more adaptable to different use cases.",
+          "createdAt": "2024-03-07T15:03:17Z",
+          "updatedAt": "2024-03-07T15:03:17Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "You are right, they are optional in RootCaKeyUpdateContent. The question is, shall we change the profile in Appendix D.4.\r\nMy proposal would be to at least require setting newWithOld in the profile as we also did in RFC9483 Section 4.3.2. \r\nBut as said above, I am not aware of the intended use case behind this PKI management operation. Therefore, oldWithNew may also be required.",
+          "createdAt": "2024-03-07T15:14:03Z",
+          "updatedAt": "2024-03-07T15:14:03Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "Appendix D.4 looks very much like [5.3.19.5](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-5.3.19.15) to me. \"via some transport mechanism\" in D.4, sounds like \"for example the one described in 5.3.19.15, or another method.",
+          "createdAt": "2024-03-07T15:27:18Z",
+          "updatedAt": "2024-03-07T15:27:18Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The point is that Section 5.3.19.15 specifies the fully flexible ASN.1 structure and Appendix D.4 is supposed to be a profile providing a clear guidance what options to use and what not.\r\nIf we now say, newWithOld and oldWithNew are optional, it a repetition of the content from before and no profiling. Therefore, I asked for the use case behind Appendix D.4 to decide on what option is needed. As we do not know the use case, we could use the profiling like in RFC 9483 saying the newWithOld is required and oldWithNew is optional.",
+          "createdAt": "2024-03-07T15:47:45Z",
+          "updatedAt": "2024-03-07T15:47:45Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "Imho D.4 isn't much of a profile. To me it looks like Appendix D just _must_ have a section for every message of the specification, even if it doesn't add any, or much, information. It doesn't really add any new information that is not already in [5.3.19.15](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-5.3.19.15), [5.3.13](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-5.3.13) and [5.3.19.5](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#section-5.3.19.5). Not sure what profile guidance information D.4 adds here for implementors? [Appendix D.3](https://lamps-wg.github.io/cmp-updates/draft-ietf-lamps-rfc4210bis.html#appendix-D.3) doesn't give much guidance either imho. Changing \"present\" to \"optional\" in D.4 at least makes it consistent across the document. D.4 doesn't describe any specific use case or processing, so what harm can it do?",
+          "createdAt": "2024-03-07T16:01:19Z",
+          "updatedAt": "2024-03-07T16:01:19Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Sorry, probably did not explain my point properly.\r\n\r\nIn CAKeyUpdAnnContent there are no options. There is no profiling possible.\r\nIf we introduce RootCaKeyUpdateContent instead, we also introduce options in the syntax.\r\nTypically a profile explains how to handle optional fields depending on the use case the profile addresses. I wanted to clarify, if the we want to state how to handle these options in the profile defined in Appendix C and D.\r\n\r\nAs we do not know what uses case drives the profile in Appendix D.4, there three potential was to go forward\r\n- both optional fields must be used (this is the status quo as of RFC 4210) \r\n- only newWithOld must be set and oldWithNew is optional (this is in line with RFC 9483)\r\n- both fields are optional (this is what you propose)",
+          "createdAt": "2024-03-08T07:54:39Z",
+          "updatedAt": "2024-03-08T07:54:39Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I prepared a PR implementing this change. Does that fit?\r\n\r\nWhile doing the changes, I noticed that I had to introduce a new PKIBody choice \"ckuannV3\" of type RootCaKeyUpdateContent for use with CMP V3. For backward compatibility I had to keep ckuann unchanged for use with CMP V2.",
+          "createdAt": "2024-03-08T15:31:56Z",
+          "updatedAt": "2024-03-08T15:31:56Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I updated the PR (2c87ff1bfda862d4182398e2d9cba3c3e4a112a9) introducing \r\n~~~\r\nCAKeyUpdContent ::= CHOICE {\r\n    cAKeyUpdAnnV2      CAKeyUpdAnnContent, -- deprecated\r\n    cAKeyUpdAnnV3  [0] RootCaKeyUpdateContent\r\n}\r\n~~~\r\nto ease backward compatibility.\r\n\r\n@primetomas,  what do you think. Is this what you had in mind?",
+          "createdAt": "2024-03-11T08:05:21Z",
+          "updatedAt": "2024-03-11T08:05:21Z"
+        },
+        {
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "body": "That sounds great. I can close this issue.\r\n",
+          "createdAt": "2024-03-11T08:46:25Z",
+          "updatedAt": "2024-03-11T08:46:25Z"
+        }
+      ]
+    },
+    {
+      "number": 53,
+      "id": "I_kwDOInbtzM6CZ_cG",
+      "title": "Check if IANA references pointing to RFC 4210 must be updated to rfc4210bis ",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/53",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "IANA wrote:\r\nShould those references be replaced with references to this document (this is typical)? For IANA\u2019s purposes, this could be covered by a line that says something like \u201cAll existing references to RFC 4210 at https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml and https://www.iana.org/assignments/core-parameters/core-parameters.xhtml should be replaced with references to this document,\u201d or \u201cAll existing references [...] except for the following registrations:\u201d",
+      "createdAt": "2024-03-15T06:59:47Z",
+      "updatedAt": "2024-03-20T08:31:03Z",
+      "closedAt": "2024-03-20T08:31:03Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "RFC XXXX is new RFC number of --> the assigned numerical RFC value for I-D.ietf-lamps-rfc4210bis\r\nRFC YYYY is new RFC number of --> the assigned numerical RFC value for I-D.ietf-lamps-rfc6712bis\r\n\r\n\r\nhttps://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml\r\nSMI Security for PKIX Module Identifier\r\n- id-mod-cmp: keep RFC 2510\r\n- id-mod-cmp2000: keep RFC 4210\r\n- BTW: should RFC4211 be the reference for id-mod-crmf2005?\r\n- id-mod-cmp2000-02: keep RFC 5912\r\n- id-mod-cmp2021-88: keep RFC 9480\r\n- id-mod-cmp2021-02: keep RFC 9480\r\n\r\n\r\nSMI Security for PKIX Extended Key Purpose\r\n- id-kp-cmKGA: RFC 9480 -> RFC XXXX\r\n\r\n\r\nSMI Security for PKIX CMP Information Types\r\n- id-it-caProtEncCert: RFC 2510 -> RFC XXX\r\n- id-it-signKeyPairTypes: RFC 2510 -> RFC XXX\r\n- id-it-encKeyPairTypes: RFC 2510 -> RFC XXX\r\n- id-it-preferredSymmAlg: RFC 2510 -> RFC XXX\r\n- id-it-caKeyUpdateInfo: RFC 2510 -> RFC XXX\r\n- id-it-currentCRL: RFC 2510 -> RFC XXX\r\n- id-it-unsupportedOIDs: RFC 4210 -> RFC XXXX\r\n- id-it-keyPairParamReq: RFC 4210 -> RFC XXXX\r\n- id-it-keyPairParamRep: RFC 4210 -> RFC XXXX\r\n- id-it-revPassphrase: RFC 4210 -> RFC XXXX\r\n- id-it-implicitConfirm: RFC 4210 -> RFC XXXX\r\n- id-it-confirmWaitTime: RFC 4210 -> RFC XXXX\r\n- id-it-origPKIMessage: RFC 4210 -> RFC XXXX\r\n- id-it-suppLangTags: RFC 4210 -> RFC XXXX\r\n- id-it-caCerts: RFC 9480 -> RFC XXXX\r\n- id-it-rootCaKeyUpdate: RFC 9480 -> RFC XXXX\r\n- id-it-certReqTemplate: RFC 9480 -> RFC XXXX\r\n- id-it-rootCaCert: RFC 9480 -> RFC XXXX\r\n- id-it-certProfile: RFC 9480 -> RFC XXXX\r\n- id-it-crlStatusList: RFC 9480 -> RFC XXXX\r\n- id-it-crls: RFC 9480 -> RFC XXXX\r\n\r\n\r\nSMI Security for PKIX CRMF Registration Controls\r\n- id-regCtrl-altCertTemplate: RFC 4210 -> RFC XXXX\r\n- id-regCtrl-algId: RFC 9480 -> RFC XXXX\r\n- id-regCtrl-rsaKeyLen: RFC 9480 -> RFC XXXX\r\n\r\n\r\nhttps://www.iana.org/assignments/core-parameters/core-parameters.xhtml\r\nCoAP Content-Formats\r\n- application/pkixcmp: RFC 9482, RFC 4210 -> RFC 9482, RFC YYYY",
+          "createdAt": "2024-03-18T14:33:28Z",
+          "updatedAt": "2024-03-18T14:46:02Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@russhousley may I ask for your advice?\r\nIANA asked me to specify which references shall be updated to the new RFC 4210bis and 6712bis. Above I provided a list. But I am uncertain if it is correct to update also references to the RFCs, where the OIDs were originally registered.\r\nFor example I found OIDs with reference RFC 2510, even though the OID is still in use in RFC 4210. I had expected that this reference should have been updated to RFC 4210 back then.",
+          "createdAt": "2024-03-18T14:46:22Z",
+          "updatedAt": "2024-03-18T14:46:22Z"
+        },
+        {
+          "author": "russhousley",
+          "authorAssociation": "NONE",
+          "body": "I did a very quick review.  This looks correct to me.",
+          "createdAt": "2024-03-19T03:35:27Z",
+          "updatedAt": "2024-03-19T03:35:27Z"
+        }
+      ]
+    },
+    {
+      "number": 55,
+      "id": "I_kwDOInbtzM6CyUjC",
+      "title": "Clarify if reference to ITU-T X.509 shall be updated to RFC 5280",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/55",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Russ wrote:\r\nMike:\r\n> Hmm. 4210 pre-dates 5280. I suppose there are two questions here:\r\n> \r\n> 1) can someone who was around please illuminate on why 2510/4210 references an ISO doc and not an IETF doc (2459/3280/5280)?\r\n\r\nI do not recall why RFC 2510 did not reference RFC 2459.  However, the development of the two documents was going on at the same time.  My guess is that we did not know which would reach the RFC Editor first.\r\n\r\n> 2) Is it a trivial change to swap out the X.509 reference? Or will that turn into a cascade of difference-hunting and backwards compatibility? Is that worth doing?\r\n\r\nReference to RFC 5280 seems like the right thing to do today.\r\nRuss\r\n\r\nMichael wrote:\r\nIn https://datatracker.ietf.org/doc/draft-ietf-lamps-rfc4210bis/  it says:\r\n   The term\r\n   \"certificate\" in this document refers to an X.509v3 Certificate as\r\n   defined in [ITU.X509.2000].\r\nand I wondered why an ITU document is referred to, rather than RFC5280.\r\nFurther, why the 2000 era document, when I think there is a 2019 one.\r\n{at least, the 2019 version is freely available, but I can't find the 2000\r\nera document easily}",
+      "createdAt": "2024-03-19T07:26:57Z",
+      "updatedAt": "2024-03-20T08:30:48Z",
+      "closedAt": "2024-03-20T08:30:48Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "RFC 2510 / RFC 4210 define \u201ccertificate\u201d as defined in ITU-T X.509 in the abstract / in the introduction. \r\nOf course, the term \u201ccertificate\u201d is used on many many places.\r\n\r\nRFC 2510 and RFC 4210 use the ASN.1 types Certificate as defined in RFC 2459.\r\nRFC 4210 introduces the ASN.1 type CMPCertificate.\r\n\r\n~~~\r\n      CMPCertificate ::= CHOICE {\r\n         x509v3PKCert        Certificate\r\n      }\r\n   -- This syntax, while bits-on-the-wire compatible with the\r\n   -- standard X.509 definition of \"Certificate\", allows the\r\n   -- possibility of future certificate types [\u2026]\r\n~~~\r\n\r\nWith the 2002 ASN.1 module updates the type Certificate is imported from the 2002 ASN.1 module of RFC 5280.\r\nAs the ASN.1 module in rfc4210bis in based upon that 2002 ASN.1 module, it clearly imports from RFC 5280. Therefore, I think it is safe to change the reference from ITU-T X.509 to RFC 5280.",
+          "createdAt": "2024-03-19T14:33:17Z",
+          "updatedAt": "2024-03-19T14:39:40Z"
+        }
+      ]
+    },
+    {
+      "number": 62,
+      "id": "I_kwDOInbtzM6L30me",
+      "title": "Identifying private key when using EnvelopedData for indirect POPO ",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/62",
+      "state": "CLOSED",
+      "author": "rajeev-0",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "When using EnvelopedData with encrypted certificate (section 5.2.2) for indirect POPO (section 5.2.8.3.2), RecipientIdentifier in KeyTransRecipientInfo ([RFC 5652, section 6.2.1](https://www.rfc-editor.org/rfc/rfc5652.html#section-6.2.1) ) and KEMRecipientInfo ([draft-ietf-lamps-cms-kemri-08, section 3](https://www.ietf.org/archive/id/draft-ietf-lamps-cms-kemri-08.html#section-3)) can not be used by client to identify the corresponding private key for obtaining content-encryption key (CEK). So an alternative should be provided for matching the cert response (containing EnvelopedData with encrypted certificate) to corresponding private key. \r\n\r\nOne suggestion would be to add a note in section 5.2.2 stating:\r\nWhen using certificate in encrypted form for indirect POP, client should use `transactionID` and `certReqId` to identify the corresponding private key for decrypting the content-encryption key. ",
+      "createdAt": "2024-06-11T15:02:56Z",
+      "updatedAt": "2024-07-12T15:00:46Z",
+      "closedAt": "2024-07-12T15:00:46Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Indirect POP is specifically relevant for KEM keys. I posted a question on this topic to the LAMPS email list.\r\nIn any case if Indirect POP is used, also with key agreement, the certificate is delivered in encrypted form and the recipient has no knowledge of issuerAndSerialNumber or subjectKeyIdentifier before decrypting it.\r\nTherefore, the note is specific to Indirect POP and we should consider adding it to Section 5.2.8.3.2.",
+          "createdAt": "2024-06-12T07:24:59Z",
+          "updatedAt": "2024-06-12T07:24:59Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "An additional paragraphe to Section 5.2.8.3.2 could be:\r\n\"Note that in some cases CMS enveloped data uses `issuerAndSerialNumber` or `subjectKeyIdentifier` to specify the recipient's certificate, and thereby the recipient's public key, that was used to generate the key-encryption key.  In the indirect method, the specified recipient's certificate is delivered in encrypted form and therefore the recipient cannot use `issuerAndSerialNumber` or `subjectKeyIdentifier` to identify the private key for decrypting the key-encryption key. Alternatively the recipient should use `transactionID` and `certReqId`.\"",
+          "createdAt": "2024-06-12T07:56:48Z",
+          "updatedAt": "2024-06-14T08:37:11Z"
+        },
+        {
+          "author": "rajeev-0",
+          "authorAssociation": "NONE",
+          "body": " I agree, it should be added to Section 5.3.8.3.2.",
+          "createdAt": "2024-06-12T08:37:43Z",
+          "updatedAt": "2024-06-12T08:37:43Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Russ proposed to use a key identifyer, see https://mailarchive.ietf.org/arch/msg/spasm/0xuq496AV-pkyiAF2kqvOTi0-uI/",
+          "createdAt": "2024-06-14T08:34:40Z",
+          "updatedAt": "2024-06-14T08:34:40Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Russ proposes to specify method 4) from RFC 7093 Section 2 (https://datatracker.ietf.org/doc/html/rfc7093#section-2) to use with SHA-256 for the CMS recipient identifier in RecipienInfo.\r\n\r\nAn additional paragraphe to Section 5.2.8.3.2 could be:\r\n\"Note that when using CMS `EnvelopedData` to deliver the newly issued certificate in encrypted form, the sender requires to let the recipient know which key was used to protect the certificate.  All `RecipientInfo` types, except `PasswordRecipientInfo`, offer two choices to specify the recipient's certificate, and thereby the recipient's public key, that was used to protect the content-encryption key.  As long as the newly issued certificate was not decrypted, the recipient cannot use any content of that certificate to identify this key.  Therefore, the sender and recipient MUST use a SHA-256 hash of the DER encoding of a `SubjectPublicKeyInfo` value in the `SubjectKeyIdentifier` choice of `RecipientIdentifier`, which uses method 4 from RFC 7093 Section 2,  to identify the key that was used by the sender to protect the content-encryption key.\"\r\n\r\n@DDvO What do you think?",
+          "createdAt": "2024-06-14T14:05:28Z",
+          "updatedAt": "2024-06-14T14:05:28Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "I suggest the following wording for enhanced explanation and preciseness:\r\n\r\n\"As always when using CMS EnvelopedData to deliver encrypted content, the sender needs to let the recipient know which asymmetric key was used for the encryption. Usually this is done by identifying a certificate of the recipient using the issuer and serial number fields or the subject key identifier field contained in the certificate. Yet in the case of encrypting the newly issued certificate with the public key contained in that certificate, the recipient cannot use any of these fields because it does not yet have access to them before decrypting the certificate.\r\nTo solve this problem, an identifier needs to be chosen that can be computed by both the sender and the recipient without knowing the newly issued certificate.\r\nMethod 4 from RFC 7093 Section 2 with SHA-256 SHALL be applied. That is, the `RecipientIdentifier` MUST contain the `subjectKeyIdentifier` choice, with its value being the SHA-256 hash for the DER encoding of the `SubjectPublicKeyInfo` contained in the certificate signing request.\"",
+          "createdAt": "2024-06-14T19:22:50Z",
+          "updatedAt": "2024-06-28T10:58:08Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you David, I took some of you proposaly.\r\n\"Note that when delivering the newly issued certificate in encrypted form, the sender requires to let the recipient know which (private) key to use when decrypting the certificate. For asymmetric keys, CMS `EnvelopedData` is identifying a certificate of the recipient using the issuer and serial number fields or the subject key identifier field contained in the certificate to identify this key pair. As the recipient receives the newly issued certificate in encrypted form, the recipient cannot use any content of that certificate for identifying the private key to utilize for decryption. Therefore, the sender and recipient MUST use a SHA-256 hash of the DER encoding of the `SubjectPublicKeyInfo` contained in the certificate signing request to fill in the `SubjectKeyIdentifier` choice of `RecipientIdentifier.` This utilizes SHA-256 with method 4 from RFC 7093 Section 2.\"",
+          "createdAt": "2024-06-17T13:40:36Z",
+          "updatedAt": "2024-06-17T13:40:36Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "What is the best way to identify the newly generated key pair to use for decrypting the EnvelopedData containing the new certificate using\r\n-\ttransactionID and certReqId from the CMP message header and the certificate request object or\r\n-\trecipient identifier in the recipienInfo with a fixed method for generation by sender and recipient and not the subject key identifier from the new certificate?\r\n\r\nThe first procedure only affects the recipient and not the sender of the message.",
+          "createdAt": "2024-06-19T06:08:19Z",
+          "updatedAt": "2024-06-19T06:08:19Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I like the second option, as it makes no assumptions on how an implementation may need to use the transactionID or certReqId.   \r\n\r\nI combined the text you and Daivd suggest above Hendrik:\r\n\r\nWhen delivering the newly issued certificate in encrypted form, the sender needs to let the recipient know which asymmetric private key to use when decrypting the certificate.  Normally the recipients private key is identified by using the issuer and serial number or subject key identifier fields contained in its associated public certificate, but this is not possible when the certificate itself is received in encrypted form.   Therefore, the sender and recipient MUST use a SHA-256 hash of the DER encoding of the SubjectPublicKeyInfo contained in the certificate signing request to fill in the SubjectKeyIdentifier choice of RecipientIdentifier. This utilizes SHA-256 with method 4 from RFC 7093 Section 2.\r\n\r\n",
+          "createdAt": "2024-06-24T16:39:36Z",
+          "updatedAt": "2024-06-24T16:39:36Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "To me, the first option appears best for two reasons.\r\n* The sender is free do whatever it usually does anyway when sending CMS encrypted stuff (no changes needed on this end).\r\n* The way to select the decryption key on the receiver end is straightforward: it is the private key related to the currently requested certificate. In nearly all cases, this trivially is the one key for which a cert is being requested. \r\nJust in the rare case a CMP request contained multiple CRMF requests the certReqId needs to be taken into account, and also this does not require implementing a new form of key identifier as proposed in the section option.",
+          "createdAt": "2024-06-25T06:48:26Z",
+          "updatedAt": "2024-06-25T06:48:26Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you for your proposals. I see @russhousley, @rajeev-0, and @johngray-dev  in favor of the second option and @DDvO in favor of the first option.\r\n@primetomas, @dghgit, and @ralienpp, is there anything you want to add?\r\nDoes anyone wants to comment on @DDvO arguments?\r\n\r\nIt would be great to conclude on this topic before the submission-cutoff for next IETF.",
+          "createdAt": "2024-06-26T06:51:28Z",
+          "updatedAt": "2024-06-26T06:51:28Z"
+        },
+        {
+          "author": "dghgit",
+          "authorAssociation": "NONE",
+          "body": "I'd also go with the second.\r\n\r\nIt's true the receiver could try winging it, but it's always good to have a sanity check.\r\n\r\n\r\n\r\n",
+          "createdAt": "2024-06-26T07:13:13Z",
+          "updatedAt": "2024-06-26T07:13:13Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I missed the feedback from @primetomas on email. I copied the text in this comment below. But I do not see a clear preference for one or the other option.\r\n\r\n\"I did see that question. As you noted, any method that the client and server can generate independently without the client needing to receive the full response would work.\r\nTransaction and reqID are well known in CMP, and mandatory, so should be easy to use\r\n Rec keyid may be useful for carrier pidgeon transport, if the client looses state?\r\n\r\nFor implementation i think it's helpful to specify a mandatory option to avoid making it more complex than it is for clients and servers, having to implement lots of checks for different possibilities.\r\n\r\nRegards,\r\nTomas\"",
+          "createdAt": "2024-06-26T07:26:50Z",
+          "updatedAt": "2024-06-26T07:26:50Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I am definitely planning for a clear specification and normative text her to prevent the implementations check for different options.\r\nCurrently I do see a clear preference for option 2 using the SHA-256 hash of the DER-encoded SubjectPublicKey structure as recipient key identifier. I also like the text proposed by @johngray-dev.\r\n\r\nDoes anyone still want to respond to @DDvO points in order to convince him?",
+          "createdAt": "2024-06-26T07:32:51Z",
+          "updatedAt": "2024-06-26T07:32:51Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "> Transaction and reqID are well known in CMP, and mandatory, so should be easy to use\r\n\r\nYes, they are.\r\n\r\n> Rec keyid may be useful for carrier pidgeon transport, if the client looses state?\r\n\r\nIf the client ever loses its transaction state, it would be lost anyway. \r\n(And BTW this does not happen practice - I can say this with nearly 10 years of experience with various CMP clients.)\r\n\r\nSo the first option is most painless and pretty much a no-brainer for both clients and server.\r\nUpdate: I meanwhile had a look at the OpenSSL CMS documentation and implementation and found that for all key management techniques supported so far (which does not yet include KEM), it is assumed that the private key to use for decryption is pre-determined (by the application layer calling CMS, which in our case is CMP).\r\n\r\n> It's true the receiver could try winging it, but it's always good to have a sanity check.\r\n\r\nI do not see the need for an extra sanity check (using a key identifier or the like).\r\nThe client knows for sure which key(s) it used in the request.\r\n",
+          "createdAt": "2024-06-26T20:11:21Z",
+          "updatedAt": "2024-06-28T11:44:18Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@DDvO I see you point. Thank you for explaining it further.\r\n\r\n@russhousley @rajeev-0 @johngray-dev @DDvO @primetomas @dghgit @ralienpp @ounsworth @carl-wallace \r\nHow do we get to a conclusion now?\r\n\r\n@russhousley Is there a procedure to reach consensus?",
+          "createdAt": "2024-06-28T07:04:06Z",
+          "updatedAt": "2024-06-28T07:04:06Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "The origin of this issue is that all respective texts so far (more or less) assume that the recipient/receiver already has (direct access to) a certificate that is used to (indirectly) refer to the key to use for decryption:\r\n\r\n* paragraph on KEM use in Section 5.2.2:\r\n\r\n> recipient's certificate with an algorithm identifier and a public key that supports key encapsulation mechanism and where any given key usage extension allows keyEncipherment: The content-encryption key will be protected using the key management technique for KEM keys, as specified in [[I-D.ietf-lamps-cms-kemri](https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-kemri-08)].\r\n\r\n* the following paragraph in the cms-kemri draft section 3 - writes \"certificate or key\" initially, but the rest of the paragraph keeps talking about certificates, also for the `subjectKeyIdentfier` case, which gives the wrong impression that access to certificate is needed there, too:\r\n\r\n>  rid specifies the recipient's certificate or key that was used by\r\n      the originator with the KEM Encapsulate() function.  The\r\n      RecipientIdentifier provides two alternatives for specifying the\r\n      recipient's certificate [RFC5280], and thereby the recipient's\r\n      public key.  The recipient's certificate MUST contain a KEM public\r\n      key.  Therefore, a recipient X.509 version 3 certificate that\r\n      contains a key usage extension MUST assert the keyEncipherment\r\n      bit.  The issuerAndSerialNumber alternative identifies the\r\n      recipient's certificate by the issuer's distinguished name and the\r\n      certificate serial number; the subjectKeyIdentifier alternative\r\n      identifies the recipient's certificate by a key identifier.  When\r\n      an X.509 certificate is referenced, the key identifier matches the\r\n      X.509 subjectKeyIdentifier extension value.  When other\r\n      certificate formats are referenced, the documents that specify the\r\n      certificate format and their use with the CMS must include details\r\n      on matching the key identifier to the appropriate certificate\r\n      field.  For recipient processing, implementations MUST support\r\n      both of these alternatives for specifying the recipient's\r\n      certificate.  For originator processing, implementations MUST\r\n      support at least one of these alternatives.\r\n\r\n* BTW, also the paragraph in the CMS RFC section 6.2.1 (which does not really apply here but served as the source of the former) writes \"certificate or key\" initially, but the rest of the paragraph keeps talking about certificates, also for the `subjectKeyIdentfier` case, which gives the wrong impression that access to certificate is needed there, too:\r\n\r\n> rid specifies the recipient's certificate or key that was used by\r\n      the sender to protect the content-encryption key.  The content-\r\n      encryption key is encrypted with the recipient's public key.  The\r\n      RecipientIdentifier provides two alternatives for specifying the\r\n      recipient's certificate, and thereby the recipient's public key.\r\n      The recipient's certificate must contain a key transport public\r\n      key.  Therefore, a recipient X.509 version 3 certificate that\r\n      contains a key usage extension MUST assert the keyEncipherment\r\n      bit.  The issuerAndSerialNumber alternative identifies the\r\n      recipient's certificate by the issuer's distinguished name and the\r\n      certificate serial number; the subjectKeyIdentifier identifies the\r\n      recipient's certificate by a key identifier.  When an X.509\r\n      certificate is referenced, the key identifier matches the X.509\r\n      subjectKeyIdentifier extension value.  When other certificate\r\n      formats are referenced, the documents that specify the certificate\r\n      format and their use with the CMS must include details on matching\r\n      the key identifier to the appropriate certificate field.  For\r\n      recipient processing, implementations MUST support both of these\r\n      alternatives for specifying the recipient's certificate.  For\r\n      sender processing, implementations MUST support at least one of\r\n      these alternatives.\r\n      \r\nIt would be good if these were extended to explicitly describe or reference a proper handling of the case where the sender directly references a public key (rather than a certificate), providing a default method for computing the `SubjectKeyIdentifier`. \r\nBTW, when using the `subjectKeyIdentifier` choice, my preference would be to use from RFC 7093 Section 2 not method 4, but method 1 because it is simpler (does not use an extra level of DER encoding) and already implies the use of SHA256. Anyway, note that for the specific use case of identifying a public key for CMS encryption, the old method using 160-bit SHA-1 as described in RFC 5280 would still work perfectly fine as well.\r\n\r\nIf this is done in [KEMRI section 3](https://www.ietf.org/archive/id/draft-ietf-lamps-cms-kemri-08.html#section-3), I'd be fine with using the second option here\r\nbecause then for both sides a default way of directly referencing a key via a `SubjectKeyIdentfier` is defined already at CMS level, and doing the key selection at application level (using CMP transaction details) is then clearly not needed.\r\nThen it will be sufficient to require (and explain why, as already suggested) that for the special use case of sending an encrypted cert, the `subjectKeyIdentifier` choice of the `RecipientIdentifier` MUST be used, applying the default method of computing the key identifier value.",
+          "createdAt": "2024-06-28T09:49:16Z",
+          "updatedAt": "2024-06-28T11:17:23Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "On further thoughts, I've extended the text and revised the final part of my most recent comment.",
+          "createdAt": "2024-06-28T10:31:55Z",
+          "updatedAt": "2024-06-28T11:18:01Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "Is anyone aware of a CMS implementation that already provides the possibility for a *sender* application to specify the RecipientIdentifier in a way independent of a recipient certificate?\r\n\r\nOpenSSL does not. \r\nSo when adding KEM support, going for option 2, this would be required to add to the implementation.",
+          "createdAt": "2024-06-28T12:42:14Z",
+          "updatedAt": "2024-06-28T12:42:14Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "Is anyone aware of a CMS implementation that does not provide a way for the *receiver* application to pre-select the private key to use for decryption?\r\n\r\nFor the key management mechanisms so far supported by OpenSSL, this is the only way to do it.\r\n\r\nAnd does anyone know of a CMS implementation that enables the receiver to hand in a key identifier for an asymmetric key that is independent of a cert?\r\n\r\nOpenSSL does not. \r\n\r\nOne can in addition provide a related certificate, which is then used for a sanity check matching the cert with the RecipientIdentifier(s),  but so far no sanity check is implemented that works without a certificate - \r\nthe existing implementation does the same thing that the hitherto CMS spec(s) assume: \r\nthey take the SubjectKeyIdentifier from any cert provided by the application.",
+          "createdAt": "2024-06-28T12:42:21Z",
+          "updatedAt": "2024-06-28T12:42:21Z"
+        },
+        {
+          "author": "carl-wallace",
+          "authorAssociation": "NONE",
+          "body": "I've written code that allows for searching a key store for a match against a recipient identifier and code that allows pre-selection. I have not written code that allows for creation of a recipient identifier independent of a certificate, but that's not the case here. The server has the cert. \r\n\r\nWhy is a SKID calculated per a standard mechanism a problem? The server will have the certificate, the client will not, but will have the public key and can calculate the SKID. As has been noted many times in this thread, in the common case there is only one key that makes sense for the client to use and a SKID calculated on the key can provide a sanity check for folks that want it. Folks who don't want it, can wing it. I am missing what the issue is.\r\n\r\n",
+          "createdAt": "2024-06-28T14:01:45Z",
+          "updatedAt": "2024-06-28T14:01:45Z"
+        },
+        {
+          "author": "russhousley",
+          "authorAssociation": "NONE",
+          "body": "@Hendrik: Consensus will not be determined in a GitHub issue discussion.  You have two ways forward. You either describe the alternatives in a message to the mail list or you pick one and put it in the document.  The first one allows for a very narrow discussion.  The second one has the possibility of discussing this issue and others at the same time.",
+          "createdAt": "2024-06-28T14:39:00Z",
+          "updatedAt": "2024-06-28T14:39:00Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "> I've written code that allows for searching a key store for a match against a recipient identifier and code that allows pre-selection. I have not written code that allows for creation of a recipient identifier independent of a certificate, but that's not the case here. The server has the cert.\r\n\r\nSure the sender/server has the cert, but the client/recipient does not (yet) know it before decrypting it, for which it needs to determine which key to use in advance. So any key identification based on the cert contents does not work (yet). \r\n\r\nIn my opinion it is sufficient and clearly more straightforward to use the first option suggested to determine the right key to use at application level, independent of the CMS level. This effectively ignores the identifier inserted by the sender. \r\n\r\n> Why is a SKID calculated per a standard mechanism a problem? The server will have the certificate, the client will not, but will have the public key and can calculate the SKID. As has been noted many times in this thread, in the common case there is only one key that makes sense for the client to use and a SKID calculated on the key can provide a sanity check for folks that want it. Folks who don't want it, can wing it. I am missing what the issue is.\r\n\r\nAs there is no such thing as *the* SKID of a given public key (there are just more or less common ways of computing some useful SKID) and the method is not made explicit, the receiver would not know which method to use for computing it. \r\n\r\nThe suggested second option would provide a unique way for computing a specific SKID. Yet this makes things more complicated for implementations with no real gain (just a pretty redundant sanity checking). ",
+          "createdAt": "2024-06-28T15:29:19Z",
+          "updatedAt": "2024-06-28T15:56:26Z"
+        },
+        {
+          "author": "carl-wallace",
+          "authorAssociation": "NONE",
+          "body": "> Sure the sender/server has the cert, but the client/recipient does not (yet) know it before decrypting it\r\n\r\nIf the SKID value can be calculated from the public key via a mechanism that assures both the client and the server arrive at the same value, how does it matter that the client does not have the cert? The client obviously has the public key value because it generated the public key value.\r\n\r\n> the receiver would not know which method to use for computing it\r\n\r\nThe point is that the authors of this spec write down how to compute it. There are not \"more or less common ways\", you pick one and write it down.\r\n\r\nI think you are saying is that if you assume that SKIDs can be any old value that the server elects and the client cannot know the value and thus cannot avail itself of this sanity check. This is true. So don't do that. Either codify a way to calculate the SKID *when using this new spec* or elect to not have a sanity check. \r\n\r\nIf you are electing to allow the server a free hand in choosing SKID values (or to use issuer/serial recipient key identifier) then you are either sacrificing the sanity check or you are adding a new recipient identifier choice (based on transaction ID or something else). I think you are electing to not have a sanity check. That may be OK, write it down. To my eye, the simplest path is to not allow the server a free hand in choosing SKID values.",
+          "createdAt": "2024-06-28T15:56:08Z",
+          "updatedAt": "2024-06-28T15:56:08Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "> > Sure the sender/server has the cert, but the client/recipient does not (yet) know it before decrypting it\r\n> \r\n> If the SKID value can be calculated from the public key via a mechanism that assures both the client and the server arrive at the same value, how does it matter that the client does not have the cert? The client obviously has the public key value because it generated the public key value.\r\n\r\nSure this works, and is what has been suggested as the 2nd option.\r\n \r\n> > the receiver would not know which method to use for computing it\r\n> \r\n> The point is that the authors of this spec write down how to compute it. There are not \"more or less common ways\", you pick one and write it down.\r\n\r\nYes, but as I've been conveying to those favouring this approach, this comes at extra cost:\r\nIt needs to be specified that a certain method has to be used, \r\nthis needs to be implemented on both sender and receiver side\r\n(and there is also a minor computational penalty computing the DER encoding and hash value).\r\n\r\n> I think you are saying is that if you assume that SKIDs can be any old value that the server elects and the client cannot know the value and thus cannot avail itself of this sanity check. This is true. So don't do that. Either codify a way to calculate the SKID _when using this new spec_ or elect to not have a sanity check.\r\n\r\nBasically yes (though in theory even when not going for the 2nd suggested option, after the receiver decrypted the cert, it could do the sanity check in retrospect, yet in this case the CMS level has already been left, which would make it more hard to do at that point, and IMO the benefit of the sanity check is negligible).\r\n\r\n> If you are electing to allow the server a free hand in choosing SKID values (or to use issuer/serial recipient key identifier) then you are either sacrificing the sanity check or you are adding a new recipient identifier choice (based on transaction ID or something else). I think you are electing to not have a sanity check. That may be OK, write it down. To my eye, the simplest path is to not allow the server a free hand in choosing SKID values.\r\n\r\nYes, this is my preference and also my advice from implementer's perspective: \r\nlet the server do whatever it is accustomed to do providing any (direct or indirect) key identifier, and the receiver simply ignores it.\r\nThis is sufficient and does not require extra specification effort, and - more importantly - no extra implementation effort.",
+          "createdAt": "2024-06-28T16:38:19Z",
+          "updatedAt": "2024-06-28T16:48:04Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "In fact, the choice to make is not whether to use\r\n* transactionID and certReqId from the CMP message header and the certificate request object \r\n**or**\r\n* recipient identifier in the recipienInfo with a fixed method for generation by sender and recipient and not the subject key identifier from the new certificate?\r\n\r\nbut whether to use only the first item or *in addition* also the second item.\r\nThis is because, in practice, the CMP client will always have to tell the CMS library/layer which private key (it expects the CMS layer) to use for decrypting the CMS encrypted cert. \r\n\r\nThe only thing the CMS lib may do in case the section item is implemented is to (sanity-)check in addition that the received RecipientIdentifier agrees with that.\r\n\r\nYet even if this check is performed, such that it gets confirmed that sender and receiver agree on the key to use for decryption, this is not sufficient to guarantee that the decryption works fine (because many other things may have gone wrong).\r\nSo anyway the decrypted cert will need to be sanity-checked, at the latest at application level.\r\nAnd when this succeeds, among others the correct choice of the decryption key is indirectly confirmed.\r\nThis is why I see (little to) no real value in spending the effort to come up with a RecipientIdentifier that the receiver can use to sanity-check in advance the agreement on the decryption key.\r\n\r\nAlso note that the CMS encryption is part of a CMP message, the origin of which will already have been verified by the receiver before it involves the CMS lib. So at this point it is already clear that the encrypting party is authorised to send CMP messages with responses that ask for indirect POP by cert decryption,\r\nand thus we do not need to defend at CMS level against nifty decryption oracle attacks or the like.",
+          "createdAt": "2024-06-29T08:38:40Z",
+          "updatedAt": "2024-06-29T08:40:41Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This issue was solved with V12",
+          "createdAt": "2024-07-12T15:00:46Z",
+          "updatedAt": "2024-07-12T15:00:46Z"
+        }
+      ]
+    },
+    {
+      "number": 63,
+      "id": "I_kwDOInbtzM6Rb1aF",
+      "title": "Direct POP - hash of Rand instead of plain INTEGER",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/63",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Coming back to the discussion in the LAMPS session.\r\nIn the Direct POP in CMC the hash of the challenge is returned. If I got it right, it was mentioned that it may not be secure, if the challenge is responded in plain.\r\n\r\nIn CMP Rand containing a sequence of an INTEGER and the sender's GeneralName is the challenge and is provides as EnvelopedData. In the response the INTEGER is returned in plain.\r\n\r\nIf people think this is insecure, we should update the response to responding the hash of Rand. \r\nThis was also a proposal from Thom Wiggers.",
+      "createdAt": "2024-07-31T12:54:46Z",
+      "updatedAt": "2024-09-05T15:51:16Z",
+      "closedAt": "2024-09-05T15:42:17Z",
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Mike responded on email:\r\nCMC says this for the direct POP challenge response:\r\n\r\n     DecryptedPOP ::= SEQUENCE {\r\n           bodyPartID     BodyPartID,\r\n           thePOPAlgID    AlgorithmIdentifier,\r\n           thePOP         OCTET STRING\r\n      }\r\n\r\n       thePOPAlgID  identifies the algorithm to be used in computing the\r\n           return POP value.\r\n       thePOP  contains the possession proof.  This value is computed by\r\n          the POPAlgID using the POP Proof Value and the request.\r\n\r\nAnd the example shows:\r\n\r\n             thePOPAlgID HMAC-SHA1,\r\n             thePOP <HMAC computed value goes here>}}\r\n\r\nIt would not be a terrible idea to do the same thing in CMP. I\u2019m not sure that it is exactly an attack since in CMP an attacker would also need to be able to forge the overall HMAC message protection, but it is maybe a good idea to align with CMC?",
+          "createdAt": "2024-07-31T12:59:32Z",
+          "updatedAt": "2024-07-31T12:59:32Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think that the CMP request message can be extended easily. But extending the existing response message will not work. Therefore we either need to redefine the existing response message with CMP V3 or we need to define a new response message.\r\n\r\n**Current syntax according to rfc4210bis:**\r\n\r\nPKIBody ::= CHOICE {       -- message-specific body elements\r\n\u2026\r\n    popdecc  [5]  POPODecKeyChallContent, --pop Challenge\r\n    popdecr  [6]  POPODecKeyRespContent,  --pop Response\r\n\u2026\r\n}\r\n\r\nPOPODecKeyChallContent ::= SEQUENCE OF Challenge\r\n-- One Challenge per encryption or key agreement key certification\r\n-- request (in the same order as these requests appear in\r\n-- CertReqMessages).\r\n\r\n-- encryptedRand was added in [RFCXXXX]\r\n\r\nChallenge ::= SEQUENCE {\r\n   owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}}\r\n                            OPTIONAL,\r\n   -- MUST be present in the first Challenge; MAY be omitted in\r\n   -- any subsequent Challenge in POPODecKeyChallContent (if\r\n   -- omitted, then the owf used in the immediately preceding\r\n   -- Challenge is to be used).\r\n   witness             OCTET STRING,\r\n   -- the result of applying the one-way function (owf) to a\r\n   -- randomly-generated INTEGER, A. (Note that a different\r\n   -- INTEGER MUST be used for each Challenge.)\r\n   challenge           OCTET STRING,\r\n   -- MUST be used for cmp2000(2) popdecc messages and MUST be\r\n   -- the encryption of Rand (using a mechanism depending on the\r\n   -- private key type).\r\n   -- MUST be an empty OCTET STRING for cmp2021(3) popdecc messages.\r\n   -- Note: Using challenge omitting the optional encryptedRand is\r\n   -- bit-compatible to the syntax without adding this optional\r\n   -- field.\r\n   encryptedRand   [0] EnvelopedData OPTIONAL\r\n   -- MUST be omitted for cmp2000(2) popdecc messages.\r\n   -- MUST be used for cmp2021(3) popdecc messages and MUST contain\r\n   -- the encrypted value of Rand using CMS EnvelopedData using the\r\n   -- key management technique depending on the private key type as\r\n   -- defined in Section 5.2.2.\r\n}\r\n\r\n-- Rand was added in [RFC9480]\r\n\r\nRand ::= SEQUENCE {\r\n-- Rand is encrypted involving the public key to form the content of\r\n-- challenge or encryptedRand in POPODecKeyChallContent\r\n   int                  INTEGER,\r\n   -- the randomly generated INTEGER A (above)\r\n   sender               GeneralName\r\n   -- the sender's name (as included in PKIHeader)\r\n}\r\n\r\nPOPODecKeyRespContent ::= SEQUENCE OF INTEGER\r\n-- One INTEGER per encryption or key agreement key certification\r\n-- request (in the same order as these requests appear in\r\n-- CertReqMessages). The retrieved INTEGER A (above) is returned to\r\n-- the sender of the corresponding Challenge.\r\n\r\n\r\n**Updated Syntax:**\r\n\r\nPKIBody ::= CHOICE {       -- message-specific body elements\r\n\u2026\r\n    popdecc  [5]  POPODecKeyChallContent, --pop Challenge\r\n    popdecr  [6]  POPODecKeyRespContent,  --pop Response\r\n\u2026\r\n    popdecrV3 [27] POPODecKeyRespContentV3 \u2013 pop Response in CMP V3\r\n}\r\n\r\nPOPODecKeyChallContent ::= SEQUENCE OF Challenge\r\n-- One Challenge per encryption or key agreement key certification\r\n-- request (in the same order as these requests appear in\r\n-- CertReqMessages).\r\n\r\nChallenge ::= SEQUENCE {\r\n   owf                 AlgorithmIdentifier{DIGEST-ALGORITHM, {...}}\r\n                            OPTIONAL,\r\n   -- MUST be present in the first Challenge; MAY be omitted in\r\n   -- any subsequent Challenge in POPODecKeyChallContent (if\r\n   -- omitted, then the owf used in the immediately preceding\r\n   -- Challenge is to be used).\r\n   witness             OCTET STRING,\r\n   -- the result of applying the one-way function (owf) to a\r\n   -- randomly-generated INTEGER, A. (Note that a different\r\n   -- INTEGER MUST be used for each Challenge.)\r\n   challenge           OCTET STRING,\r\n   -- MUST be used for cmp2000(2) popdecc messages and MUST be\r\n   -- the encryption of Rand (using a mechanism depending on the\r\n   -- private key type).\r\n   -- MUST be an empty OCTET STRING for cmp2021(3) popdecc messages.\r\n   -- Note: Using challenge omitting the optional encryptedRand is\r\n   -- bit-compatible to the syntax without adding this optional\r\n   -- field.\r\n   encryptedRand   [0] EnvelopedData OPTIONAL,\r\n   -- MUST be omitted for cmp2000(2) popdecc messages.\r\n   -- MUST be used for cmp2021(3) popdecc messages and MUST contain\r\n   -- the encrypted value of Rand using CMS EnvelopedData using the\r\n   -- key management technique depending on the private key type as\r\n   -- defined in Section 5.2.2.\r\n   popAlgID     [1] AlgorithmIdentifier OPTIONAL\r\n   -- MUST be omitted for cmp2000(2) popdecc messages.\r\n   -- MUST be used for cmp2021(3) popdecc messages and MUST\r\n   -- identify the algorithm to be used in computing the return POP value.\r\n}\r\n\r\nRand ::= SEQUENCE {\r\n-- Rand is encrypted involving the public key to form the content of\r\n-- challenge or encryptedRand in POPODecKeyChallContent\r\n   int                  INTEGER,\r\n   -- the randomly generated INTEGER A (above)\r\n   sender               GeneralName\r\n   -- the sender's name (as included in PKIHeader)\r\n}\r\n\r\nPOPODecKeyRespContent ::= SEQUENCE OF INTEGER\r\n-- MUST be used for cmp2000(2) popdecr messages\r\n-- One INTEGER per encryption or key agreement key certification\r\n-- request (in the same order as these requests appear in\r\n-- CertReqMessages). The retrieved INTEGER A (above) is returned to\r\n-- the sender of the corresponding Challenge.\r\n\r\nPOPODecKeyRespContentV3 ::= SEQUENCE OF ChallengeResponse\r\n-- MUST be used for cmp2001(3) popdecrV3 messages\r\n-- One ChallengeResponse per encryption or key agreement key\r\n--  certification request (in the same order as these requests appear in\r\n-- CertReqMessages). The hash of the retrieved Rand including the\r\n-- INTEGER A (above) is returned to the sender of the corresponding\r\n-- Challenge.\r\n\r\nChallengeResponse ::= SEQUENCE {\r\n   popAlgID    AlgorithmIdentifier,\r\n   -- MUST be the value from Callenge\r\n   pop         OCTET STRING\r\n   -- MUST contain the possession proof. This value is computed by\r\n   -- the popAlgID using the Rand value.\r\n}\r\n\r\nIntroducing the new PKIBody choice popdecrV3 is not nice. Does anyone have a better idea?\r\n@johngray-dev  what do you think?\r\n",
+          "createdAt": "2024-08-02T09:26:36Z",
+          "updatedAt": "2024-08-02T09:26:36Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@johngray-dev Do you have any feedback to this issue?\r\n@ounsworth what do you think with regard to alignment with CMCbis?\r\n@DDvO do you have any opinion?\r\n\r\nAs the draft is already at IESG for AD review, we need to hurry, if we want to change anything here. Therefore, you quick feedback is appreciated! :-)\r\nI am also happy to close this issue without any further change to the draft if we feel like it is not needed.\r\nIf we decide to implement this change, it will most likely end up in a new WGLC. But this should not be the blocking point of course.\r\n",
+          "createdAt": "2024-09-02T12:18:45Z",
+          "updatedAt": "2024-09-02T12:25:16Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "For clarity, this must have been the concern raised by Thom on July 10th:\r\n\r\n> Regarding security consideration 8.2, have you considered returning H(rand) instead of rand to further avoid these decryption oracles? However, arguably the derivation of challenge encryption key should be set up in a way to sufficiently domain-separate this. Again, this comes back to how the challenge encryption keys are set up.",
+          "createdAt": "2024-09-02T14:47:01Z",
+          "updatedAt": "2024-09-02T14:47:01Z"
+        },
+        {
+          "author": "DDvO",
+          "authorAssociation": "NONE",
+          "body": "> @johngray-dev Do you have any feedback to this issue? \r\n> @ounsworth what do you think with regard to alignment with CMCbis?\r\n> @DDvO do you have any opinion?\r\n> \r\n> As the draft is already at IESG for AD review, we need to hurry, if we want to change anything here. Therefore, you quick feedback is appreciated! :-) I am also happy to close this issue without any further change to the draft if we feel like it is not needed. If we decide to implement this change, it will most likely end up in a new WGLC. But this should not be the blocking point of course.\r\n\r\nI do not believe that there really is a security problem with the CMP client responding the decrypted challenge in plain (unencrypted non-hashed form).\r\n\r\nThe concern was that the unencrypted response could be used as part of a decryption oracle attack.\r\nThis would require sending many challenges (possibly even with specifically chosen input data).\r\n\r\nYet this cannot happen here because for a given private key, a cert request will be sent only once\r\n(or at least not often; even if the client later sent requests  for certificate updates using the same key pair, \r\nquite long time would have passed between any such requests),\r\nand a legitimate CMP server (typically, the CA) reacts with a direct POP challenge at most once for each cert request,\r\nand the client would accept such a challenge only once per cert request that it sent.\r\n\r\n(Moreover, direct POP requests by an illegitimate CMP server (posing as the CA) would be rejected by the client\r\nbecause such an attacker would not be able to provide valid CMP message protection.)\r\n\r\nThus I do not see the need for making any further (even worse, last-minute!) changes to the direct POP mechanism.\r\n\r\nAs far as you agree with this argumentation, it may be taken as the basis for a paragraph \r\nto be added regarding this concern in the security considerations section.\r\n",
+          "createdAt": "2024-09-02T14:48:07Z",
+          "updatedAt": "2024-09-02T14:51:14Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think the concern would be a malicious entity that sent in the encrypted challenge many times (though they would have to know how to protect the message in the first place....).  You mention a legitimate CMP server will react with a direct POP challenge at most once for each cert request.  Is that stated anywhere?   If not then I maybe that just needs to be stated somewhere in normative language in the security concerns section.  That maybe overkill, but if it is a concern then we could say something like: \r\n\r\n - A CMP server MUST not respond to a direct POP challenge for a cert request more than once.   If a subsequent request for the same certificate request is received, the CMP server MUST send an error indicating a POP challenge has already been received for the specific cert request.\r\n\r\nIf the same cert requests should be allowed (as David mentioned maybe a re-keying of the same cert request), then maybe some type of retry interval should be recommended? \r\n\r\nThom's mentioned the following:\r\n\r\n- Regarding security consideration 8.2, have you considered returning H(rand) instead of rand to further avoid these decryption oracles? However, arguably the derivation of challenge encryption key should be set up in a way to sufficiently domain-separate this. Again, this comes back to how the challenge encryption keys are set up.\r\n\r\nAnother way to mitigate is we could say something like the key management technique should use sufficient context (domain separation) information when deriving the keys for the challenge.   We mention key transport, key agreement, password and KEM as key management techniques (Section 5.2.2).   Perhaps this is something to state in the security concerns section.  \r\n\r\nI thinking making a whole new PKIBody message with caveats when to use it may be a bit of overkill.  It would definitely solve the issue.  I guess we need to convince ourselves there is an issue to resolve first of all.   I think the biggest hurdle is the message protection, so unless we think that isn't sufficient, then we need to do something.   ",
+          "createdAt": "2024-09-03T03:21:58Z",
+          "updatedAt": "2024-09-03T03:21:58Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> I thinking making a whole new PKIBody message with caveats when to use it may be a bit of overkill. It would definitely solve the issue. I guess we need to convince ourselves there is an issue to resolve first of all. I think the biggest hurdle is the message protection, so unless we think that isn't sufficient, then we need to do something.\r\n\r\nIn fact, it is not only with Direct POP that we have the situation that data is transmitted from the CMP server to the CMP client, where the data has been encrypted with the public key of the CMP client. This is also the case with indirect POP and central key generation, where the certificate or private key is transmitted in encrypted form. In the opposite direction, CMS EnvelopdData from the CMP client to the CMP server is also specified for the transfer of revocation passphrases and private keys as POP and for key escrow/recovery. In all these cases, we rely on the security of CMS Enveloped Data!\r\nSpontaneously, I see no reason why we should rely less on the security of CMS Enveloped Data for Direct POP and take special precautions. If we don't trust in the security of CMS EnvelopedData, we have a much bigger problem elsewhere, especially with transferal of private keys. The transfer of H(Rand) would be cryptographically nicer, but the change to the syntax would be ugly, and we would only address a potential problem for a corner case.\r\nIf you agree, I vote for not changing from Rand --> H(Rand).\r\nOr am I missing something here?\r\nPlease add you vote as comment.",
+          "createdAt": "2024-09-03T17:06:11Z",
+          "updatedAt": "2024-09-03T17:06:11Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The analysis in my previous comment was not entirely complete.\r\n\r\nYes, we rely on the security of CMS EnvelopedData in all the cases listed above. But only in two cases can an attacker simply have access to ciphertext and plaintext.\r\n- Indirect POP: The attacker would have to obtain the new certificate in plain from other communications. In certConf, only H(certificate) is transmitted.\r\n- Direct POP: The attacker gets ciphertext and plaintext from the Rand of the same transaction.\r\n\r\nI think that's what makes the difference. The question now is, should we take countermeasures?\r\nIn both cases, the content of the ciphertext must have a valid ASN.1 structure. This MUST be checked by the CMP client, as stated in Section 8.2. An attacker also cannot choose the ciphertext if the message is signed by the CMP server.\r\n\r\nPossible countermeasures could be the following:\r\n1. Answer H(Rand) instead of Rand\r\n2. Expand Section 8.2 with a security consideration that a CMP server MUST only provide an encrypted challenge/certificate once for a given public-private key pair.\r\n3. Note that in the cases described above, sufficient domain separation must be applied to the key management technique used. At the moment, it is not quite clear to me how we can specify this simply and unambiguously.\r\n4. Message protection by the CMP server is required for POPODecKeyChallContent messages.\r\n5. No further countermeasures if we believe that the attack is sufficiently unlikely.\r\n\r\n@johngray-dev , @ounsworth , and @DDvO \r\nWhat do you think? Do you have anything else to add to this analysis?\r\nIf not, what countermeasure do you vote for?",
+          "createdAt": "2024-09-03T19:07:26Z",
+          "updatedAt": "2024-09-03T19:07:26Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "DDvO\r\n\r\n> I do not believe that there really is a security problem with the CMP client responding the decrypted challenge in plain (unencrypted non-hashed form).\r\n\r\nUltimately, I think I agree with this.\r\n\r\nI think we have now considered it, and it is not worth the effort to make any change.",
+          "createdAt": "2024-09-04T20:06:15Z",
+          "updatedAt": "2024-09-04T20:06:15Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thanks to all of you for responding to this issue. I am also fine with changing nothing further.\r\nIf I got John's and David's comments right, they are also not convinced that there is need for action.\r\nPlease reopen this issue if you think we need further discussion.",
+          "createdAt": "2024-09-05T15:42:17Z",
+          "updatedAt": "2024-09-05T15:42:17Z"
+        },
+        {
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I am okay with this outcome.   If it were to come up again during the write-up processes we could add a sentence to security considerations.   ",
+          "createdAt": "2024-09-05T15:51:15Z",
+          "updatedAt": "2024-09-05T15:51:15Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -1569,7 +2673,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2023-05-15T00:54:50Z",
-      "updatedAt": "2023-05-17T14:34:50Z",
+      "updatedAt": "2024-10-02T16:00:00Z",
       "baseRepository": "lamps-wg/cmp-updates",
       "baseRefName": "main",
       "baseRefOid": "74e9882608d1e227a70e232547592fad38c0b976",
@@ -1624,6 +2728,960 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 36,
+      "id": "PR_kwDOInbtzM5dYXux",
+      "title": "Clarify references to KEM definition and genm/genp usage in Section 5.1.3.4",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/36",
+      "state": "CLOSED",
+      "author": "kiron-mx",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-20T13:07:21Z",
+      "updatedAt": "2023-11-27T12:43:32Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "4bccf65be27ac32f90dd83a2964c607ae9793e90",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "kiron-kem-references",
+      "headRefOid": "8e9de5f794eef3dcf2cdd911a53a3b2a2263c5d6",
+      "closedAt": "2023-11-27T12:43:32Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "cherry-picked your changes",
+          "createdAt": "2023-11-27T12:43:32Z",
+          "updatedAt": "2023-11-27T12:43:32Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 47,
+      "id": "PR_kwDOInbtzM5nRMRG",
+      "title": "Fixed some typos, punctuation and broken links",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/47",
+      "state": "MERGED",
+      "author": "kiron-mx",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-02-19T10:11:16Z",
+      "updatedAt": "2024-02-21T07:18:06Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "3d6dd3e9b4957c3909a524d446d1a96a2c13226b",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "kiron-typos-and-links",
+      "headRefOid": "727ae7e26077128675667922188a8432e31a355a",
+      "closedAt": "2024-02-21T07:18:06Z",
+      "mergedAt": "2024-02-21T07:18:06Z",
+      "mergedBy": "HBrock",
+      "mergeCommit": {
+        "oid": "325930b3bdd2f549ed10f9c1faf1bc9d5e0441bd"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOInbtzM5wkriL",
+          "commit": {
+            "abbreviatedOid": "13fcddd"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-19T15:15:45Z",
+          "updatedAt": "2024-02-19T16:01:13Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "not needed",
+              "createdAt": "2024-02-19T15:15:45Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 13,
+              "body": "is supposed to be {{I-D.ietf-lamps-rfc6712bis}}",
+              "createdAt": "2024-02-19T15:19:03Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 24,
+              "body": "to be done by the RFC Editors",
+              "createdAt": "2024-02-19T15:19:49Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 33,
+              "body": "to be done by the RFC Editors",
+              "createdAt": "2024-02-19T15:19:59Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 44,
+              "body": "to be done by the RFC Editors",
+              "createdAt": "2024-02-19T15:20:13Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 62,
+              "body": "check if there is no difference",
+              "createdAt": "2024-02-19T15:25:28Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 71,
+              "body": "to be done by the RFC Editors",
+              "createdAt": "2024-02-19T15:27:47Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 80,
+              "body": "to be done by the RFC Editors",
+              "createdAt": "2024-02-19T15:27:53Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 89,
+              "body": "to be done by the RFC Editors",
+              "createdAt": "2024-02-19T15:30:07Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 100,
+              "body": "to be done by the RFC Editors",
+              "createdAt": "2024-02-19T15:30:14Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 109,
+              "body": "boot-strapping",
+              "createdAt": "2024-02-19T15:30:42Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 113,
+              "body": "boot-strapping",
+              "createdAt": "2024-02-19T15:30:48Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 124,
+              "body": "Please also change | to \\|",
+              "createdAt": "2024-02-19T15:34:18Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 148,
+              "body": "please ensure that there is no content change",
+              "createdAt": "2024-02-19T15:38:02Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 177,
+              "body": "Leave this to the RFC Editors",
+              "createdAt": "2024-02-19T15:49:35Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 186,
+              "body": "This was correct, keep it",
+              "createdAt": "2024-02-19T15:54:23Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 195,
+              "body": "keep it",
+              "createdAt": "2024-02-19T15:55:23Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 204,
+              "body": "keep the \\[ \\] and add them to 6.1 as well",
+              "createdAt": "2024-02-19T15:57:13Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            },
+            {
+              "originalPosition": 222,
+              "body": "do not change",
+              "createdAt": "2024-02-19T16:00:40Z",
+              "updatedAt": "2024-02-19T16:01:13Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5wsxxf",
+          "commit": {
+            "abbreviatedOid": "13fcddd"
+          },
+          "author": "kiron-mx",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-20T15:41:50Z",
+          "updatedAt": "2024-02-20T15:41:50Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "only whitespaces were deleted; reverting the change",
+              "createdAt": "2024-02-20T15:41:50Z",
+              "updatedAt": "2024-02-20T15:41:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5ws0ga",
+          "commit": {
+            "abbreviatedOid": "13fcddd"
+          },
+          "author": "kiron-mx",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-20T15:46:25Z",
+          "updatedAt": "2024-02-20T15:46:25Z",
+          "comments": [
+            {
+              "originalPosition": 148,
+              "body": "only whitespaces were deleted; reverting line breaks",
+              "createdAt": "2024-02-20T15:46:25Z",
+              "updatedAt": "2024-02-20T15:46:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5wyZgP",
+          "commit": {
+            "abbreviatedOid": "727ae7e"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-02-21T07:17:52Z",
+          "updatedAt": "2024-02-21T07:17:52Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "id": "PR_kwDOInbtzM5n931E",
+      "title": "edit section 4.4 and move it and 5.2.5 to appendix",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/49",
+      "state": "CLOSED",
+      "author": "primetomas",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #45 ",
+      "createdAt": "2024-02-26T21:06:37Z",
+      "updatedAt": "2024-03-18T14:14:59Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "b00d8721541eff94593ccb25022fd11e0ea11698",
+      "headRepository": "primetomas/cmp-updates",
+      "headRefName": "section-4_2-RootCAUpdate",
+      "headRefOid": "9676c758032f0e815da0413f1fd479683a8e1e36",
+      "closedAt": "2024-03-18T14:14:49Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Closed in favor of PR #54",
+          "createdAt": "2024-03-18T14:14:49Z",
+          "updatedAt": "2024-03-18T14:14:59Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 51,
+      "id": "PR_kwDOInbtzM5pGA6C",
+      "title": "Addressing #50: Deprecating CAKeyUpdAnnContent and ckuann in favor of\u2026",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/51",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\u2026 RootCaKeyUpdateContent and ckuannV3 in CMP V3 as proposed by Tomas",
+      "createdAt": "2024-03-08T15:26:14Z",
+      "updatedAt": "2024-03-08T16:19:17Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "0686196fb1103654b285c2d9162714685d7abfc5",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "#50-RootCaKeyUpdateContent",
+      "headRefOid": "5f1571d31700f544c098427840955e48263042af",
+      "closedAt": "2024-03-08T16:19:16Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 52,
+      "id": "PR_kwDOInbtzM5pGYeW",
+      "title": "Addressing #50: Deprecating CAKeyUpdAnnContent and ckuann in favor of\u2026",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/52",
+      "state": "MERGED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\u2026 RootCaKeyUpdateContent and ckuannV3 in CMP V3 as proposed by Tomas",
+      "createdAt": "2024-03-08T16:25:06Z",
+      "updatedAt": "2024-10-02T15:59:59Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "0686196fb1103654b285c2d9162714685d7abfc5",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "issue50-RootCaKeyUpdateContent",
+      "headRefOid": "4c52343a522cf71556589cbcf1d6f51c87c417bb",
+      "closedAt": "2024-03-18T14:07:13Z",
+      "mergedAt": "2024-03-18T14:07:13Z",
+      "mergedBy": "HBrock",
+      "mergeCommit": {
+        "oid": "77d5180625f12ddddc896b4aa84bfc506a321e64"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 54,
+      "id": "PR_kwDOInbtzM5pwG93",
+      "title": "Addressing #45 updating Section 4.4",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/54",
+      "state": "MERGED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-03-15T14:12:12Z",
+      "updatedAt": "2024-10-02T15:59:57Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "77d5180625f12ddddc896b4aa84bfc506a321e64",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "issue45-UpdateSection4.4",
+      "headRefOid": "51debb27c93755b14440531a0e69b5a4ab484e68",
+      "closedAt": "2024-03-18T14:13:33Z",
+      "mergedAt": "2024-03-18T14:13:33Z",
+      "mergedBy": "HBrock",
+      "mergeCommit": {
+        "oid": "d45300e551939fbb5b02865a609c93a797866d58"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOInbtzM5znSd4",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-15T17:24:34Z",
+          "updatedAt": "2024-03-15T17:24:34Z",
+          "comments": [
+            {
+              "originalPosition": 66,
+              "body": "Some Language issues:\r\n\r\nOriginal:\r\nNote:  Sometime root CA certificates do not make use of any of the\r\nX.509 v3 extensions and may be X.509 v1 certificates. Therefore, root\r\nCA key update must be able to even for version 1 certificates.\r\nAnyhow, to make use of the KeyIdentifier extension for easier path\r\nbuilding, the use of X.509 v3 is recommended.\r\n\r\nSuggested:\r\nNote:  Sometimes root CA certificates do not make use of \r\nX.509 v3 extensions and may be X.509 v1 certificates. Therefore, a root\r\nCA key update must be able to work for version 1 certificates.\r\nThe use of the X.509 v3 KeyIdentifier extension is recommended for \r\neasier path building.   ",
+              "createdAt": "2024-03-15T17:24:34Z",
+              "updatedAt": "2024-03-15T17:24:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5znc_K",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-15T17:33:39Z",
+          "updatedAt": "2024-03-15T17:33:40Z",
+          "comments": [
+            {
+              "originalPosition": 257,
+              "body": "Couldn't they get the bundle of certificates (new with new, new with old, etc using the AIA v3 extension?)  if it exists in the existing certificate.  Usually it points to an http .p7c file, which could be updated by the CA when the \"new with new\" and \"new with old\" is created.",
+              "createdAt": "2024-03-15T17:33:39Z",
+              "updatedAt": "2024-03-15T17:33:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5zneoD",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-15T17:35:09Z",
+          "updatedAt": "2024-03-15T17:35:09Z",
+          "comments": [
+            {
+              "originalPosition": 282,
+              "body": "We do this exact thing in our code when a root CA key update is done and it is detected by the client.  ",
+              "createdAt": "2024-03-15T17:35:09Z",
+              "updatedAt": "2024-03-15T17:35:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5znl05",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-15T17:41:35Z",
+          "updatedAt": "2024-03-15T17:41:36Z",
+          "comments": [
+            {
+              "originalPosition": 66,
+              "body": "I like the change, thanks.",
+              "createdAt": "2024-03-15T17:41:36Z",
+              "updatedAt": "2024-03-15T17:41:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5znnLQ",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-15T17:42:44Z",
+          "updatedAt": "2024-03-15T17:42:44Z",
+          "comments": [
+            {
+              "originalPosition": 257,
+              "body": "I was not aware of this option. We could add it as a third option, if it really works.",
+              "createdAt": "2024-03-15T17:42:44Z",
+              "updatedAt": "2024-03-15T17:42:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5znorm",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-15T17:44:06Z",
+          "updatedAt": "2024-03-15T17:44:07Z",
+          "comments": [
+            {
+              "originalPosition": 316,
+              "body": "Same comment as before, the AIA extension id-ad-caIssuers could be used to get the certificates (From an LDAP, or HTTP or somewhere else).   We usually treat the two operations as separate things to be checked.  For example, we would use the AIA if it exists, and also lookup the caCertificate attribute.   If no successful path can be built to the desired target (either the old or new CA) then we fail because we didn't have access to the link certificates.",
+              "createdAt": "2024-03-15T17:44:06Z",
+              "updatedAt": "2024-03-15T17:44:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5znudH",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-15T17:49:19Z",
+          "updatedAt": "2024-03-15T17:49:20Z",
+          "comments": [
+            {
+              "originalPosition": 66,
+              "body": "I updated the branch.",
+              "createdAt": "2024-03-15T17:49:19Z",
+              "updatedAt": "2024-03-15T17:49:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5znvg-",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-15T17:50:14Z",
+          "updatedAt": "2024-03-15T17:50:14Z",
+          "comments": [
+            {
+              "originalPosition": 257,
+              "body": "Is there an RFC specifying this usage of the AIA, or is it pure RFC 5280?",
+              "createdAt": "2024-03-15T17:50:14Z",
+              "updatedAt": "2024-03-15T17:50:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5znzD7",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-15T17:53:25Z",
+          "updatedAt": "2024-03-15T17:53:25Z",
+          "comments": [
+            {
+              "originalPosition": 257,
+              "body": "Yes, I think it can be another option.   The purpose is to enable the client a way to lookup the certificates needed for path building (in this case the new CA cert and the CA link certificate), and RFC 5280 section 4.2.2.1 describes how id-ad-caIssuers works.   So I don't think there is a reason why it couldn't be used, its just a more standard way of looking up certificates (rather than other out-of-band mechanisms that are out of scope for this document).",
+              "createdAt": "2024-03-15T17:53:25Z",
+              "updatedAt": "2024-03-15T17:53:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5zn-AR",
+          "commit": {
+            "abbreviatedOid": "0312c79"
+          },
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-15T18:02:53Z",
+          "updatedAt": "2024-03-15T18:02:53Z",
+          "comments": [
+            {
+              "originalPosition": 257,
+              "body": "I don't know of any specific RFC that specifies AIA usage for CA key renewal, I think RFC 4210 was based on RFC 2510, which was around the time of RFC 3280.  I see AIA ca-Issuers was in there, but maybe it was too new at the time, or they just didn't think about using it?\r\n",
+              "createdAt": "2024-03-15T18:02:53Z",
+              "updatedAt": "2024-03-15T18:02:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5zwwvV",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-18T07:41:12Z",
+          "updatedAt": "2024-03-18T07:41:12Z",
+          "comments": [
+            {
+              "originalPosition": 257,
+              "body": "@johngray-dev  What do you fink of this wording?\r\n\r\n~~~\r\nThe verifier does the following:\r\n1. Get the \"new with new\" and \"new with old\" certificate.\r\n    1. If an caIssuers access method is available in the authority\r\n      information access extension of the \"old with old\" certificate,\r\n      the verifier should retrieve the \"new with new\" and\r\n      \"new with new\" certificate using the specified assess location,\r\n      see Section 4.2.2.1 of {{RFC5280}}.\r\n    2. If no caIssuers access method is available, the verifier can\r\n      use the root CA update general message to request the new root\r\n      CA and link certificates from a PKI management entity, see\r\n      {{sect-5.3.19.15}}.\r\n    3. Otherwise, get it \"out-of-band\" in a trustworthy manner.\r\n2. If received the two certificates, check that the validity periods\r\n  and the subject and issuer fields match. Verify the signatures\r\n  using the old CA key (which the verifier has locally). Securely\r\n  store the new trust anchor information if all checks were\r\n  successful.\r\n3. If correct, check the signer's certificate using the new CA key.\r\n~~~\r\n",
+              "createdAt": "2024-03-18T07:41:12Z",
+              "updatedAt": "2024-03-18T07:41:12Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5zxBpo",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-18T08:21:44Z",
+          "updatedAt": "2024-03-18T08:21:44Z",
+          "comments": [
+            {
+              "originalPosition": 257,
+              "body": "alternative proposal\r\n~~~\r\nThe verifier does the following:\r\n1. Get the \"new with new\" and \"new with old\" certificates. The location to retrieve theses certificates from, may be available in the authority information access extension of the \"old with old\" certificate, see caIssuers access method in Section 4.2.2.1 of {{RFC5280}}, or it may be locally configured.\r\n    1. If a repository is available, look up the certificates in the caCertificate attribute.\r\n    2. If a HTTP or FTP server is available, pick the certificates from the \"certs-only\" CMS message.\r\n    3. If a CMP server is available, request the certificates using the root CA update general message, see {{sect-5.3.19.15}}.\r\n    4. Otherwise, the get the certificates \"out-of-band\" using any trustworthy mechanism.\r\n2. If received the two certificates, check that the validity periods and the subject and issuer fields match. Verify the signatures using the old root CA key (which the verifier has locally). \r\n3. If all checks were successful, securely store the new trust anchor information and validate the signer's certificate.\r\n~~~",
+              "createdAt": "2024-03-18T08:21:44Z",
+              "updatedAt": "2024-03-18T13:05:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5zzwy1",
+          "commit": {
+            "abbreviatedOid": "bd601c5"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-18T13:22:01Z",
+          "updatedAt": "2024-03-18T13:22:02Z",
+          "comments": [
+            {
+              "originalPosition": 257,
+              "body": "I updated the PR",
+              "createdAt": "2024-03-18T13:22:01Z",
+              "updatedAt": "2024-03-18T13:22:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5z0jeY",
+          "commit": {
+            "abbreviatedOid": "aaee886"
+          },
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-18T13:58:13Z",
+          "updatedAt": "2024-03-18T13:58:14Z",
+          "comments": [
+            {
+              "originalPosition": 274,
+              "body": "redundant \"the\", change: \"the get the\" -> \"get the\"",
+              "createdAt": "2024-03-18T13:58:14Z",
+              "updatedAt": "2024-03-18T13:58:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5z0kJR",
+          "commit": {
+            "abbreviatedOid": "aaee886"
+          },
+          "author": "primetomas",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-18T13:58:58Z",
+          "updatedAt": "2024-03-18T13:58:58Z",
+          "comments": [
+            {
+              "originalPosition": 340,
+              "body": "\"the get the\" again.",
+              "createdAt": "2024-03-18T13:58:58Z",
+              "updatedAt": "2024-03-18T13:58:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5z0pKn",
+          "commit": {
+            "abbreviatedOid": "aaee886"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-18T14:04:24Z",
+          "updatedAt": "2024-03-18T14:04:24Z",
+          "comments": [
+            {
+              "originalPosition": 274,
+              "body": "Thank you, fixed",
+              "createdAt": "2024-03-18T14:04:24Z",
+              "updatedAt": "2024-03-18T14:04:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM5z0pTc",
+          "commit": {
+            "abbreviatedOid": "aaee886"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-18T14:04:37Z",
+          "updatedAt": "2024-03-18T14:04:38Z",
+          "comments": [
+            {
+              "originalPosition": 340,
+              "body": "Thank you, fixed",
+              "createdAt": "2024-03-18T14:04:37Z",
+              "updatedAt": "2024-03-18T14:04:38Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "id": "PR_kwDOInbtzM5qOOtD",
+      "title": "#43 Option 1: Updated the title of Section 4.2.2",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/56",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-03-20T13:32:05Z",
+      "updatedAt": "2024-03-20T13:37:42Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "9792ca181f8280bb14a5bc6249b809ad65f4e43d",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "Addressing-Issue34-Option1",
+      "headRefOid": "cd6540574eb48ad23ad90beafc846e437bc7094d",
+      "closedAt": "2024-03-20T13:37:41Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 57,
+      "id": "PR_kwDOInbtzM5qOQPK",
+      "title": "#43 Option 2: Updated the title of Section 4.2.2 and removed normative language",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/57",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-03-20T13:34:47Z",
+      "updatedAt": "2024-03-20T13:59:29Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "9792ca181f8280bb14a5bc6249b809ad65f4e43d",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "Addressing-Issue34-Option2",
+      "headRefOid": "35b855c1c010a126d4ad196b0abab55478331f3a",
+      "closedAt": "2024-03-20T13:37:23Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 58,
+      "id": "PR_kwDOInbtzM5qOckk",
+      "title": "issue 43, option1: Update headline of Section 4.2.2",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/58",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "#43 Option 1: Adapt headline of Section 4.2.2 to avoid confusion and keep text as of RFC 4210 retaining backward compatibility.",
+      "createdAt": "2024-03-20T13:57:41Z",
+      "updatedAt": "2024-09-05T15:43:00Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "ae8d569048acc99ba09917e66d0138bbdb18007c",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "Addressing-Issue43-Option1",
+      "headRefOid": "9afc5ac459118b8a0d79d37137b36fdb42f352b7",
+      "closedAt": "2024-05-06T11:19:11Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 59,
+      "id": "PR_kwDOInbtzM5qOdDo",
+      "title": "Updated the title of Section 4.2.2 and removed normative language",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/59",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "#43 Option 2: Adapt headline of Section 4.2.2 to avoid confusion and remove normative language.",
+      "createdAt": "2024-03-20T13:58:20Z",
+      "updatedAt": "2024-09-05T15:43:02Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "ae8d569048acc99ba09917e66d0138bbdb18007c",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "Addressing-Issue43-Option2",
+      "headRefOid": "f5eb835899e7558ac92aa26fedd714ff492efbb7",
+      "closedAt": "2024-05-06T11:19:12Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 60,
+      "id": "PR_kwDOInbtzM5qOg7l",
+      "title": "Starting rework of Sections 3, 4, and 6",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/60",
+      "state": "CLOSED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "#43 Option 3: Rework Section 3, 4, and 6 to modernize it and remove normative where not needed.",
+      "createdAt": "2024-03-20T14:05:02Z",
+      "updatedAt": "2024-09-05T15:43:03Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "ae8d569048acc99ba09917e66d0138bbdb18007c",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "Addressing-Issue43-Option3",
+      "headRefOid": "cfae209cd12753c5f677c18a3c0988e2e21a36f4",
+      "closedAt": "2024-05-06T11:18:48Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 61,
+      "id": "PR_kwDOInbtzM5sJlgt",
+      "title": "address errataum 7888",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/61",
+      "state": "CLOSED",
+      "author": "seanturner",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes [erratum 7888](https://www.rfc-editor.org/errata_search.php?eid=7888).",
+      "createdAt": "2024-04-09T16:00:04Z",
+      "updatedAt": "2024-07-04T06:55:56Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "57dd47d65c9660382fb079203e5f800177685d0d",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "seanturner-erratum-7888",
+      "headRefOid": "b576dc980881005c18f621f275287e203ee95ac1",
+      "closedAt": "2024-07-04T06:55:56Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The erratum was fixed with V10 of the draft",
+          "createdAt": "2024-07-04T06:55:56Z",
+          "updatedAt": "2024-07-04T06:55:56Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOInbtzM52mEQH",
+          "commit": {
+            "abbreviatedOid": "b576dc9"
+          },
+          "author": "seanturner",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-09T17:23:23Z",
+          "updatedAt": "2024-04-09T17:23:24Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "```suggestion\r\nAn Initialization response message contains a\r\nCertRepMessage data structure in PKIBody, which has for each certificate\r\n```",
+              "createdAt": "2024-04-09T17:23:24Z",
+              "updatedAt": "2024-04-09T17:23:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM52tAlC",
+          "commit": {
+            "abbreviatedOid": "b576dc9"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-10T12:06:54Z",
+          "updatedAt": "2024-04-10T12:06:54Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "The fixing of the erratum  (an -> a) here is fine.\r\n\r\nBut, PKIBody is a choice and I am wondering if 'as' is correct.\r\nBut I am not a native speaker, so I will follow your advice :-)\r\nIf we change the text here, we also need to change it in Sections 5.3.1, 5.3.3, and 5.3.4.",
+              "createdAt": "2024-04-10T12:06:54Z",
+              "updatedAt": "2024-04-10T12:06:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM53S5xE",
+          "commit": {
+            "abbreviatedOid": "b576dc9"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-15T15:35:54Z",
+          "updatedAt": "2024-04-15T15:35:54Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "@seanturner should I only change the a -> an or should I also implement the change you proposed to Section  5.3.1, 5.3.3, and 5.3.4?",
+              "createdAt": "2024-04-15T15:35:54Z",
+              "updatedAt": "2024-04-15T15:35:54Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 64,
+      "id": "PR_kwDOInbtzM5-DLx0",
+      "title": "Editorial changes to rfc4210bis and rfc6712bis",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/64",
+      "state": "MERGED",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-10-09T09:08:11Z",
+      "updatedAt": "2024-10-09T09:26:16Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "6eed3757571a7f716322e5044d6dfe16a81ab0f3",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "editorial-changes-to-rfc4210bis",
+      "headRefOid": "c9956751746e507c9b3cd6b9537afa3e68aeb370",
+      "closedAt": "2024-10-09T09:25:58Z",
+      "mergedAt": "2024-10-09T09:25:58Z",
+      "mergedBy": "HBrock",
+      "mergeCommit": {
+        "oid": "45ce64bb6a8c5fa0cef67aa2f8821bea9bfd02c1"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
