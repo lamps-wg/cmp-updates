@@ -1237,7 +1237,7 @@ entity's equipment).
 Note:  In practice, a new trusted CA may have a slightly different subject
 DN, e.g., indicating a generation identifier like the year of issuance or
 a version number, for instance in an OU element.  How to bridge trust to
-a new CA certificate in a CA DN change or a cross-certificate scenario
+a newly trusted CA certificate in a CA DN change or a cross-certificate scenario
 is out of scope for this document.
 
 ### CA Operator Actions
@@ -4697,7 +4697,7 @@ Identical to {{sect-c.2}}.
 {: id="sect-d.3"}
 
 Profile of how a certificate structure may be "self-signed".  These
-structures are used for distribution of new trusted CA public keys as self-signed certificate.  This can
+structures are used for distribution of newly trusted CA public keys as self-signed certificate.  This can
 occur in one of three ways (see {{sect-4.4}} above for a description
 of the use of these structures):
 
