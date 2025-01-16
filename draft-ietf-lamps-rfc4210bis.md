@@ -112,6 +112,14 @@ informative:
     - name: J. Alex Halderman
       org: University of Michigan
     date: 2012-08
+  X509.2019:
+    target: https://handle.itu.int/11.1002/1000/14033
+    title: 'Information technology - Open Systems Interconnection - The Directory: Public-key and attribute certificate frameworks'
+    author:
+    - org: International Telecommunications Union (ITU)
+    date: 2019-10-14
+    seriesinfo:
+      ITU: Recommendation X.509 (10/2019)
   ISO.20543-2019:
     title: Information technology -- Security techniques -- Test and analysis methods for random bit generators within ISO/IEC 19790 and ISO/IEC 15408
     author:
@@ -327,11 +335,13 @@ Profile {{RFC9483}}, in the following areas:
 
 This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes specified by Section 2 and Appendix C.2 of {{RFC9480}} as described in {{sect-1.2}}. Additionally this document updates the content of {{RFC4210}} in the following areas:
 
+* Changes terminology of "root CA" to "trusted CA" to align with {{X509.2019}} and {{RFC5280}}.
+
 * Added {{sect-3.1.1.4}} introducing the Key Generation Authority.
 
 * Extended {{sect-3.1.2}} regarding use of Certificate Transparency logs.
 
-* Updated {{sect-4.4}} introducing RootCaKeyUpdateContent as alternative to using a repository to acquire new root CA certificates.
+* Updated {{sect-4.4}} introducing RootCaKeyUpdateContent as alternative to using a repository to acquire new trusted CA certificates.
 
 * Added {{sect-5.1.1.3}} containing description of origPKIMessage content moved here from {{sect-5.1.3.4}}.
 
@@ -475,14 +485,23 @@ an "on-line" component, with the CA private key only available to the
 "off-line" component.  This is, however, a matter for implementers
 (though it is also relevant as a policy issue).
 
-We use the term "root CA" to indicate a CA that is directly trusted
-by an end entity; that is, securely acquiring the value of a root CA
-public key requires some out-of-band step(s). This term is not meant
-to imply that a root CA is necessarily at the top of any hierarchy,
-simply that the CA in question is trusted directly.
 
-A "subordinate CA" is one that is not a root CA for the end entity in
-question.  Often, a subordinate CA will not be a root CA for any
+We use the term "trusted CA" to indicate a CA that is directly trusted
+by an end entity; that is, securely acquiring the value of a trusted CA
+public key requires some out-of-band step(s). This term is not meant
+to imply that a trusted CA is necessarily at the top of any hierarchy,
+simply that the CA in question is trusted directly.  The "trusted CA" may
+provide its trust anchor information with or without using a
+certificate.  In some circumstances such a certificate may be self-
+signed, but in other circumstances it may be cross signed, signed by a
+peer, signed by a superior CA, or unsigned.
+
+Note that in {{RFC4210}} the term "root CA" was used as synonym to "trusted CA".
+This was updated to align with {{X509.2019}} and {{RFC5280}}. The term root CA
+can still be found in the ASN.1 syntax.
+
+A "subordinate CA" is one that is signed by another CA and that is not a trusted CA for the end entity in
+question.  Often, a subordinate CA will not be a trusted CA for any
 entity, but this is not mandatory.
 
 
@@ -691,7 +710,7 @@ messages are defined can be grouped as follows.
   required (e.g., production of initial CRLs, export of CA public
   key).
 
-1. End entity initialization: This includes importing a root CA
+1. End entity initialization: This includes importing a trusted CA
   public key and requesting information about the options supported
   by a PKI management entity.
 
@@ -842,7 +861,7 @@ stack, e.g., by using TLS {{RFC8446}}, DTLS {{RFC9147}}, or IPsec {{RFC7296}}{{R
 
 The first step for an end entity in dealing with PKI management
 entities is to request information about the PKI functions supported
-and to securely acquire a copy of the relevant root CA public key(s).
+and to securely acquire a copy of the relevant trusted CA public key(s).
 
 
 ## Initial Registration/Certification
@@ -858,7 +877,7 @@ However, we can classify the initial registration/certification
 schemes that are supported by this specification.  Note that the word
 "initial", above, is crucial: we are dealing with the situation where
 the end entity in question has had no previous contact with the PKI,
-except having received the root CA certificate of that PKI by some
+except having received the trusted CA certificate of that PKI by some
 zero-touch method like BRSKI {{RFC8995}} and
 {{I-D.ietf-anima-brski-ae}} or SZTP {{RFC8572}}.  In case the end
 entity already possesses certified keys, then some
@@ -927,7 +946,7 @@ entity' messages are authenticated or not.
 
 Note 1: We do not discuss the authentication of the 'PKI management
 entity -> end entity' messages here, as this is always REQUIRED.  In any case, it can be
-achieved simply once the root-CA public key has been installed at the
+achieved simply once the trusted CA public key has been installed at the
 end entity's equipment or it can be based on the initial
 authentication key.
 
@@ -1158,7 +1177,7 @@ no extra messages to be sent (i.e., the proof can be demonstrated using the
 
 A certification request message for a KEM certificate SHALL use POPOPrivKey by using the keyEncipherment choice of ProofOfPossession, see {{sect-5.2.8}}, in the popo field of CertReqMsg as long as no KEM-specific choice is available.
 
-## Root CA Key Update
+## Trusted CA Key Update
 {: id="sect-4.4"}
 
 This discussion only applies to CAs that are directly trusted by some
@@ -1177,8 +1196,8 @@ case specific and no assumptions are done on this aspect.
 RootCaKeyUpdateContent is updated to specify these link certificates
 as optional.
 
-Note: When an LDAP directory is used to publish root CA updates, the
-old and new root CA certificates together with the two link
+Note: When an LDAP directory is used to publish trusted CA updates, the
+old and new CA certificates together with the two link
 certificates are stored as cACertificate attribute values.
 
 When a CA changes its key pair, those entities who have acquired the
@@ -1191,12 +1210,12 @@ the new CA public key, it must load the new trust anchor information
 into its trusted store.
 
 The data structure used to protect the new and old CA public keys is
-typically a standard X.509 v3 self-signed certificate (which may also
+typically a standard X.509 v3 certificate (which may also
 contain extensions).  There are no new data structures required.
 
-Note: Sometimes root CA certificates do not make use of
+Note: Sometimes self-signed trusted CA certificates do not make use of
 X.509 v3 extensions and may be X.509 v1 certificates. Therefore, a
-root CA key update must be able to work for version 1 certificates.
+trusted CA key update must be able to work for version 1 certificates.
 The use of the X.509 v3 KeyIdentifier extension is recommended for
 easier path building.
 
@@ -1215,10 +1234,10 @@ private key.  Certificate and/or key update operations occurring at
 other times do not necessarily require this (depending on the end
 entity's equipment).
 
-Note:  In practice, a new root CA may have a slightly different subject
+Note:  In practice, a new trusted CA may have a slightly different subject
 DN, e.g., indicating a generation identifier like the year of issuance or
 a version number, for instance in an OU element.  How to bridge trust to
-the new root CA certificate in a CA DN change or a cross-certificate scenario
+a new CA certificate in a CA DN change or a cross-certificate scenario
 is out of scope for this document.
 
 ### CA Operator Actions
@@ -1230,7 +1249,8 @@ To change the key of the CA, the CA operator does the following:
 1. Generate a new key pair.
 
 1. Create a certificate containing the new CA public key signed with
-  the new private key (the "new with new" certificate).
+  the new private key or by the private key of some other CA
+  (the "new with new" certificate).
 
 1. Optionally: Create a link certificate containing the new CA public
   key signed with the old private key (the "new with old"
@@ -1264,8 +1284,8 @@ the latest, at the notAfter time of the "old with old" certificate).
 The "old with new" certificate must have a validity period with the same
 notBefore and notAfter time as the "old with old" certificate.
 
-Note:  Further operational considerations on transition from one root CA
-self-signed certificate to the next is available in [RFC 8649 Section 5](#RFC8649).
+Note:  Further operational considerations on transition from one trusted CA
+certificate to the next is available in [RFC 8649 Section 5](#RFC8649).
 
 
 ### Verifying Certificates
@@ -1316,7 +1336,7 @@ The verifier does the following:
       from the "certs-only" CMS message.
 
     1. If a CMP server is available, request the certificates using
-      the root CA update general message, see {{sect-5.3.19.15}}.
+      the trusted CA update general message, see {{sect-5.3.19.15}}.
 
     1. Otherwise, get the certificates "out-of-band" using any
       trustworthy mechanism.
@@ -1324,7 +1344,7 @@ The verifier does the following:
 
 1. If received the certificates, check that the validity periods
   and the subject and issuer fields match. Verify the signatures
-  using the old root CA key (which the verifier has locally).
+  using the old trusted CA key (which the verifier has locally).
 
 1. If all checks were successful, securely store the new trust anchor
   information and validate the signer's certificate.
@@ -1355,10 +1375,10 @@ The verifier does the following:
     1. If a HTTP or FTP server is available, pick the certificate
       from the "certs-only" CMS message.
 
-    1. If a CMP server and an untrusted copy of the old root CA
+    1. If a CMP server and an untrusted copy of the old trusted CA
       certificate is available (e.g., the signer provided it in-band
       in the CMP extraCerts filed), request the certificate using the
-      root CA update general message, see {{sect-5.3.19.15}}.
+      trusted CA update general message, see {{sect-5.3.19.15}}.
 
     1. Otherwise, get the certificate "out-of-band" using any
       trustworthy mechanism.
@@ -1366,7 +1386,7 @@ The verifier does the following:
 
 1. If received the certificate, check that the validity periods
   and the subject and issuer fields match. Verify the signatures
-  using the new root CA key (which the verifier has locally).
+  using the new trusted CA key (which the verifier has locally).
 
 1. If all checks were successful, securely store the old trust anchor
   information and validate the signer's certificate.
@@ -1475,7 +1495,7 @@ The extraCerts field can contain certificates that may be useful to
 the recipient.  For example, this can be used by a CA or RA to
 present an end entity with certificates that it needs to verify its
 own new certificate (if, for example, the CA that issued the end
-entity's certificate is not a root CA for the end entity).  Note that
+entity's certificate is not a trusted CA for the end entity).  Note that
 this field does not necessarily contain a certification path; the
 recipient may have to sort, select from, or otherwise process the
 extra certificates in order to use them.
@@ -2229,10 +2249,10 @@ structure is used.
 See {{RFC4211}} for CertId syntax.
 
 
-### Out-of-band root CA Public Key
+### Out-of-band trusted CA Public Key
 {: id="sect-5.2.5"}
 
-Each root CA must be able to publish its current public key via some
+Each trusted CA must be able to publish its current public key via some
 "out-of-band" means or together with the respective link certificate using an online mechanism.  While such mechanisms are beyond the scope of
 this document, we define data structures that can support such
 mechanisms.
@@ -2242,7 +2262,7 @@ publishes its self-signed certificate, or this information is
 available via the directory (or equivalent) and the CA publishes a
 hash of this value to allow verification of its integrity before use.
 
-Note: As an alternative to out-of-band distribution of root CA public keys, the CA can provide the self-signed certificate together with link certificates, e.g., using RootCaKeyUpdateContent ({{sect-5.3.19.15}}).
+Note: As an alternative to out-of-band distribution of trusted CA public keys, the CA can provide the self-signed certificate together with link certificates, e.g., using RootCaKeyUpdateContent ({{sect-5.3.19.15}}).
 
 ~~~~ asn.1
   OOBCert ::= Certificate
@@ -2545,7 +2565,7 @@ a private key (normally encrypted using EnvelopedData, see {{RFC9483}} Section
 See {{sect-5.3.4}} for CertRepMessage syntax.  Note that if the PKI
 Message Protection is "shared secret information" (see {{sect-5.1.3.1}}),
 then any certificate transported in the caPubs field may be
-directly trusted as a root CA certificate by the initiator.
+directly trusted as a trusted CA certificate by the initiator.
 
 
 ### Certification Request
@@ -2776,6 +2796,8 @@ CAKeyUpdContent ::= CHOICE {
 When using RootCaKeyUpdateContent in the ckuann message, the pvno cmp2021 MUST be used. Details on the usage of the protocol version number (pvno) are described in Section 7.
 
 In contrast to CAKeyUpdAnnContent as supported with cmp2000, RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew, depending on the needs of the EE.
+
+Note that the term 'RootCa' in the ASN.1 types not necessarily refers to a self-signed root CA, but more generally to a trusted CA.
 
 ### Certificate Announcement
 {: id="sect-5.3.14"}
@@ -3085,15 +3107,15 @@ This MAY be used by the client to get CA certificates.
 ~~~~
 
 
-#### Root CA Update
+#### Trusted CA Update
 {: id="sect-5.3.19.15"}
 
-This MAY be used by the client to get an update of a root CA certificate,
+This MAY be used by the client to get an update of a trusted CA certificate,
 which is provided in the body of the request message.  In contrast to the
 ckuann message, this approach follows the request/response model.
 
 The EE SHOULD reference its current trust anchor in RootCaCertValue
-in the request body, giving the root CA certificate if available.
+in the request body, giving the trusted CA certificate if available.
 
 ~~~~
   GenMsg:    {id-it 20}, RootCaCertValue | < absent >
@@ -3115,6 +3137,8 @@ in the request body, giving the root CA certificate if available.
 Note: In contrast to CAKeyUpdAnnContent (which was deprecated with pvno cmp2021),
 RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew,
 depending on the needs of the EE.
+
+Note that the term 'RootCa' in the ASN.1 types not necessarily refers to a self-signed root CA, but more generally to a trusted CA.
 
 
 #### Certificate Request Template
@@ -3479,16 +3503,16 @@ if alternate means are suitable for a given environment. See
 {{RFC9483}} Section 7 and {{sect-c}} for profiles of the PKIMessage structures
 that MUST be supported for specific use cases.
 
-## Root CA Initialization
+## Trusted CA Initialization
 {: id="sect-6.1"}
-\[See {{sect-3.1.1.2}} for this document's definition of "root CA".\]
+\[See {{sect-3.1.1.2}} for this document's definition of "trusted CA".\]
 
-A newly created root CA must produce a "self-certificate", which is a
-Certificate structure with the profile defined for the "newWithNew"
-certificate issued following a root CA key update.
+If the newly created trusted CA is the top of a PKI hierarchy, it must produce a "self-certificate", which is a
+certificate structure with the profile defined for the "newWithNew"
+certificate issued following a trusted CA key update.
 
-In order to make the CA's self certificate useful to end entities
-that do not acquire the self certificate via "out-of-band" means, the
+In order to make the CA's self-certificate useful to end entities
+that do not acquire the self-certificate via "out-of-band" means, the
 CA must also produce a fingerprint for its certificate.  End entities
 that acquire this fingerprint securely via some "out-of-band" means
 can then verify the CA's self-certificate and, hence, the other
@@ -3497,14 +3521,14 @@ attributes contained therein.
 The data structure used to carry the fingerprint may be the OOBCertHash, see {{sect-5.2.5}}.
 
 
-## Root CA Key Update
+## Trusted CA Key Update
 {: id="sect-6.2"}
 
 CA keys (as all other keys) have a finite lifetime and will have to
 be updated on a periodic basis.  The certificates NewWithNew,
 NewWithOld, and OldWithNew (see {{sect-4.4.1}}) MAY be issued by the
-CA to aid existing end entities who hold the current self-signed CA
-certificate (OldWithOld) to transition securely to the new self-signed
+CA to aid existing end entities who hold the current trusted CA
+certificate (OldWithOld) to transition securely to the new trusted
 CA certificate (NewWithNew), and to aid new end entities who
 will hold NewWithNew to acquire OldWithOld securely for verification
 of existing data.
@@ -3653,7 +3677,7 @@ entities requires at least two steps:
 
 * acquisition of PKI information
 
-* out-of-band verification of one root-CA public key
+* out-of-band verification of one trusted CA public key
 
 (other possible steps include the retrieval of trust condition
 information and/or out-of-band verification of other CA public keys).
@@ -3664,10 +3688,10 @@ information and/or out-of-band verification of other CA public keys).
 The information REQUIRED is:
 
 
-* the current root-CA public key
+* the current trusted CA public key
 
-* (if the certifying CA is not a root-CA) the certification path
-  from the root CA to the certifying CA together with appropriate
+* (if the certifying CA is not a trusted CA) the certification path
+  from the trusted CA to the certifying CA together with appropriate
   revocation lists
 
 * the algorithms and algorithm parameters that the certifying CA
@@ -3684,10 +3708,10 @@ but the CA doesn't allow that).
 The required information MAY be acquired as described in {{sect-6.5}}.
 
 
-### Out-of-Band Verification of Root-CA Key
+### Out-of-Band Verification of Trusted CA Key
 {: id="sect-6.7.2"}
 
-An end entity must securely possess the public key of its root CA.
+An end entity must securely possess the public key of its trusted CA.
 One method to achieve this is to provide the end entity with the CA's
 self-certificate fingerprint via some secure "out-of-band" means.
 The end entity can then securely use the CA's self-certificate.
@@ -3910,7 +3934,7 @@ different key pairs, the security of the shared secret information should
 exceed the security strength of each individual key pair.
 
 For the case of a PKI management operation that delivers a new trust anchor
-(e.g., a root CA certificate) using caPubs or genp that is (a) not concluded
+(e.g., a trusted CA certificate) using caPubs or genp that is (a) not concluded
 in a timely manner or (b) where the shared secret information is reused
 for several key management operations, the entropy of the shared secret information,
 if known, should not be less than the security strength of the trust anchor
@@ -4638,7 +4662,7 @@ Profiles for the PKIMessages used in the following PKI management
 operations are provided:
 
 
-* root CA key update
+* trusted CA key update
 
 * information request/response
 
@@ -4672,27 +4696,29 @@ Identical to {{sect-c.2}}.
 ## Self-Signed Certificates
 {: id="sect-d.3"}
 
-Profile of how a Certificate structure may be "self-signed".  These
-structures are used for distribution of CA public keys.  This can
+Profile of how a certificate structure may be "self-signed".  These
+structures are used for distribution of new trusted CA public keys as self-signed certificate.  This can
 occur in one of three ways (see {{sect-4.4}} above for a description
 of the use of these structures):
 
 |Type | Function |
 |:----|:---------|
-| newWithNew |a true "self-signed" certificate; the contained public key MUST be usable to verify the signature (though this provides only integrity and no authentication whatsoever) |
-| oldWithNew | previous root CA public key signed with new private key |
-| newWithOld | new root CA public key signed with previous private key |
+| newWithNew | a self-signed CA certificate; the contained public key MUST be usable to verify the signature (though this provides only integrity and no authentication whatsoever) |
+| oldWithNew | previous trusted CA public key signed with new private key |
+| newWithOld | new CA public key signed with previous trusted CA private key |
 
-Such certificates (including relevant extensions) must contain
+A newWithNew certificate (including relevant extensions) must contain
 "sensible" values for all fields.  For example, when present,
 subjectAltName MUST be identical to issuerAltName, and, when present,
 keyIdentifiers must contain appropriate values, et cetera.
 
+Note that the newWithNew and oldWithOld certificates not necessarily refer to self-signed certificate, but more generally to trusted CA certificates.
 
-## Root CA Key Update
+
+## Trusted CA Key Update
 {: id="sect-d.4"}
 
-A root CA updates its key pair.  It then produces a CA key update
+A trusted CA updates its key pair.  It then produces a CA key update
 announcement message that can be made available (via some transport
 mechanism) to the relevant end entities.  A confirmation message is
 not required from the end entities.
@@ -4784,13 +4810,12 @@ PreferredSymmAlg     present (object identifier one
                      value
   -- the symmetric algorithm that this CA expects to be used
   -- in later PKI messages (for encryption)
-RootCaKeyUpdate      optionally present, with
-                     relevant value
+RootCaKeyUpdate      optionally present, with relevant value
   -- Use RootCaKeyUpdate; if backward compatibility with cmp2000 is
   -- required, use CAKeyUpdateInfo.
-  -- The CA MAY provide information about a relevant root CA
+  -- The CA MAY provide information about a relevant trusted CA
   -- key pair using this field (note that this does not imply
-  -- that the responding CA is the root CA in question)
+  -- that the responding CA is the trusted CA in question)
 CurrentCRL           optionally present, with relevant value
   -- the CA MAY provide a copy of a complete CRL (i.e.,
   -- fullest possible one)
@@ -5682,13 +5707,13 @@ RsaKeyLenCtrl ::= INTEGER (1..MAX)
 
 RootCaKeyUpdateContent ::= SEQUENCE {
    newWithNew       CMPCertificate,
-   -- new root CA certificate
+   -- new trusted CA certificate
    newWithOld   [0] CMPCertificate OPTIONAL,
-   -- X.509 certificate containing the new public root CA key
-   -- signed with the old private root CA key
+   -- X.509 certificate containing the new trusted CA public key
+   -- signed with the old trusted CA private key
    oldWithNew   [1] CMPCertificate OPTIONAL
-   -- X.509 certificate containing the old public root CA key
-   -- signed with the new private root CA key
+   -- X.509 certificate containing the old trusted CA public key
+   -- signed with the new trusted CA private key
    }
 
 CRLSource ::= CHOICE {
@@ -5875,6 +5900,11 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 16 -> 17:
+
+* Addressing DISCUSS from Paul Wouters by replacing "root CA" with "trusted CA" and extending Sections 3.1.1.2 and 4.4.1
+
 
 From version 15 -> 16:
 
