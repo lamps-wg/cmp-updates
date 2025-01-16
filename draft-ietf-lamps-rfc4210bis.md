@@ -2252,7 +2252,7 @@ See {{RFC4211}} for CertId syntax.
 ### Out-of-band trusted CA Public Key
 {: id="sect-5.2.5"}
 
-Each trusted CA must be able to publish its current public key via some
+Each trusted CA that provides its self-signed certificate must be able to publish its current public key via some
 "out-of-band" means or together with the respective link certificate using an online mechanism.  While such mechanisms are beyond the scope of
 this document, we define data structures that can support such
 mechanisms.
@@ -3712,9 +3712,9 @@ The required information MAY be acquired as described in {{sect-6.5}}.
 {: id="sect-6.7.2"}
 
 An end entity must securely possess the public key of its trusted CA.
-One method to achieve this is to provide the end entity with the CA's
-self-certificate fingerprint via some secure "out-of-band" means.
-The end entity can then securely use the CA's self-certificate.
+One method to achieve this is to provide the end entity with the trusted CA's
+certificate fingerprint via some secure "out-of-band" means.
+The end entity can then securely use the trusted CA's certificate.
 
 See {{sect-6.1}} for further details.
 
@@ -3934,7 +3934,7 @@ different key pairs, the security of the shared secret information should
 exceed the security strength of each individual key pair.
 
 For the case of a PKI management operation that delivers a new trust anchor
-(e.g., a trusted CA certificate) using caPubs or genp that is (a) not concluded
+(i.e., a trusted CA certificate) using caPubs or genp that is (a) not concluded
 in a timely manner or (b) where the shared secret information is reused
 for several key management operations, the entropy of the shared secret information,
 if known, should not be less than the security strength of the trust anchor
