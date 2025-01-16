@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-14T01:23:03.800247+00:00",
+  "timestamp": "2025-01-16T01:24:03.479197+00:00",
   "repo": "lamps-wg/cmp-updates",
   "labels": [
     {
@@ -2522,6 +2522,22 @@
           "updatedAt": "2024-09-05T15:51:15Z"
         }
       ]
+    },
+    {
+      "number": 65,
+      "id": "I_kwDOInbtzM6mSqjF",
+      "title": "Update terminology from 'root CA' to 'trust anchor' or 'trusted CA'",
+      "url": "https://github.com/lamps-wg/cmp-updates/issues/65",
+      "state": "OPEN",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "If we change the terminology in rfc4210bis, the following must be checked for breaking changes first:\r\n\r\n- RFC 9483 (Lightweight CMP Profile), RFC 9481 (CMP Algorithms), RFC 9482 (CoAP transfer for CMP), BRSKI-AE and  rfc6712bis (HTTP transfer for CMP), and  BRSKI-AE\r\n- All further references of RFC 4210, see https://datatracker.ietf.org/doc/rfc4210/referencedby/",
+      "createdAt": "2025-01-15T13:52:30Z",
+      "updatedAt": "2025-01-15T13:52:30Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
