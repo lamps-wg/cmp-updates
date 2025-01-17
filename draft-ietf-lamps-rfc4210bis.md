@@ -112,6 +112,14 @@ informative:
     - name: J. Alex Halderman
       org: University of Michigan
     date: 2012-08
+  X509.2019:
+    target: https://handle.itu.int/11.1002/1000/14033
+    title: 'Information technology - Open Systems Interconnection - The Directory: Public-key and attribute certificate frameworks'
+    author:
+    - org: International Telecommunications Union (ITU)
+    date: 2019-10-14
+    seriesinfo:
+      ITU: Recommendation X.509 (10/2019)
   ISO.20543-2019:
     title: Information technology -- Security techniques -- Test and analysis methods for random bit generators within ISO/IEC 19790 and ISO/IEC 15408
     author:
@@ -479,7 +487,17 @@ We use the term "root CA" to indicate a CA that is directly trusted
 by an end entity; that is, securely acquiring the value of a root CA
 public key requires some out-of-band step(s). This term is not meant
 to imply that a root CA is necessarily at the top of any hierarchy,
-simply that the CA in question is trusted directly.
+simply that the CA in question is trusted directly.  The "root CA"
+may provide its trust anchor information with or without using a
+certificate.  In some circumstances such a certificate may be
+self-signed, but in other circumstances it may be cross signed,
+signed by a peer, signed by a superior CA, or unsigned.
+
+Note that other documents like {{X509.2019}} and {{RFC5280}} use the
+term "trusted CA" or "trust anchor" instead of "root CA".  This
+documents continues using "root CA" based on the above definition
+because it is also present in the ASN.1 syntax that cannot be changed
+easily.
 
 A "subordinate CA" is one that is not a root CA for the end entity in
 question.  Often, a subordinate CA will not be a root CA for any
@@ -1191,10 +1209,10 @@ the new CA public key, it must load the new trust anchor information
 into its trusted store.
 
 The data structure used to protect the new and old CA public keys is
-typically a standard X.509 v3 self-signed certificate (which may also
+typically a standard X.509 v3 certificate (which may also
 contain extensions).  There are no new data structures required.
 
-Note: Sometimes root CA certificates do not make use of
+Note: Sometimes self-signed root CA certificates do not make use of
 X.509 v3 extensions and may be X.509 v1 certificates. Therefore, a
 root CA key update must be able to work for version 1 certificates.
 The use of the X.509 v3 KeyIdentifier extension is recommended for
@@ -1230,7 +1248,8 @@ To change the key of the CA, the CA operator does the following:
 1. Generate a new key pair.
 
 1. Create a certificate containing the new CA public key signed with
-  the new private key (the "new with new" certificate).
+  the new private key or by the private key of some other CA (the
+  "new with new" certificate).
 
 1. Optionally: Create a link certificate containing the new CA public
   key signed with the old private key (the "new with old"
@@ -2232,7 +2251,7 @@ See {{RFC4211}} for CertId syntax.
 ### Out-of-band root CA Public Key
 {: id="sect-5.2.5"}
 
-Each root CA must be able to publish its current public key via some
+Each root CA that provides a self-signed certificate must be able to publish its current public key via some
 "out-of-band" means or together with the respective link certificate using an online mechanism.  While such mechanisms are beyond the scope of
 this document, we define data structures that can support such
 mechanisms.
@@ -3483,11 +3502,11 @@ that MUST be supported for specific use cases.
 {: id="sect-6.1"}
 \[See {{sect-3.1.1.2}} for this document's definition of "root CA".\]
 
-A newly created root CA must produce a "self-certificate", which is a
-Certificate structure with the profile defined for the "newWithNew"
+If the newly created root CA is the top of a PKI hierarchy, it must produce a "self-certificate", which is a
+certificate structure with the profile defined for the "newWithNew"
 certificate issued following a root CA key update.
 
-In order to make the CA's self certificate useful to end entities
+In order to make the CA's self-certificate useful to end entities
 that do not acquire the self certificate via "out-of-band" means, the
 CA must also produce a fingerprint for its certificate.  End entities
 that acquire this fingerprint securely via some "out-of-band" means
@@ -3503,8 +3522,8 @@ The data structure used to carry the fingerprint may be the OOBCertHash, see {{s
 CA keys (as all other keys) have a finite lifetime and will have to
 be updated on a periodic basis.  The certificates NewWithNew,
 NewWithOld, and OldWithNew (see {{sect-4.4.1}}) MAY be issued by the
-CA to aid existing end entities who hold the current self-signed CA
-certificate (OldWithOld) to transition securely to the new self-signed
+CA to aid existing end entities who hold the current root CA
+certificate (OldWithOld) to transition securely to the new root
 CA certificate (NewWithNew), and to aid new end entities who
 will hold NewWithNew to acquire OldWithOld securely for verification
 of existing data.
@@ -3684,7 +3703,7 @@ but the CA doesn't allow that).
 The required information MAY be acquired as described in {{sect-6.5}}.
 
 
-### Out-of-Band Verification of Root-CA Key
+### Out-of-Band Verification of Root CA Key
 {: id="sect-6.7.2"}
 
 An end entity must securely possess the public key of its root CA.
@@ -3910,7 +3929,7 @@ different key pairs, the security of the shared secret information should
 exceed the security strength of each individual key pair.
 
 For the case of a PKI management operation that delivers a new trust anchor
-(e.g., a root CA certificate) using caPubs or genp that is (a) not concluded
+(i.e., a root CA certificate) using caPubs or genp that is (a) not concluded
 in a timely manner or (b) where the shared secret information is reused
 for several key management operations, the entropy of the shared secret information,
 if known, should not be less than the security strength of the trust anchor
@@ -4672,22 +4691,25 @@ Identical to {{sect-c.2}}.
 ## Self-Signed Certificates
 {: id="sect-d.3"}
 
-Profile of how a Certificate structure may be "self-signed".  These
-structures are used for distribution of CA public keys.  This can
+Profile of how a certificate structure may be "self-signed".  These
+structures are used for distribution of new root CA public keys in a self-signed certificate.  This can
 occur in one of three ways (see {{sect-4.4}} above for a description
 of the use of these structures):
 
 |Type | Function |
 |:----|:---------|
-| newWithNew |a true "self-signed" certificate; the contained public key MUST be usable to verify the signature (though this provides only integrity and no authentication whatsoever) |
+| newWithNew | a "self-signed" certificate; the contained public key MUST be usable to verify the signature (though this provides only integrity and no authentication whatsoever) |
 | oldWithNew | previous root CA public key signed with new private key |
 | newWithOld | new root CA public key signed with previous private key |
 
-Such certificates (including relevant extensions) must contain
+A newWithNew certificate (including relevant extensions) must contain
 "sensible" values for all fields.  For example, when present,
 subjectAltName MUST be identical to issuerAltName, and, when present,
 keyIdentifiers must contain appropriate values, et cetera.
 
+Note that in general newWithNew and oldWithOld certificates not	necessarily
+refer to self-signed certificate, but to root CA certificates as defined in
+{{sect-3.1.1.2}}.
 
 ## Root CA Key Update
 {: id="sect-d.4"}
@@ -5875,6 +5897,11 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 16 -> 17:
+
+*  Addressing DISCUSS from Paul Wouters by extending text of Sections 3.1.1.2, 4.4, 5.2.5, 6, and D.3.
+
 
 From version 15 -> 16:
 
