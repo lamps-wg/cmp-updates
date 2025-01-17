@@ -2252,7 +2252,7 @@ See {{RFC4211}} for CertId syntax.
 ### Out-of-band trusted CA Public Key
 {: id="sect-5.2.5"}
 
-Each trusted CA that provides its self-signed certificate must be able to publish its current public key via some
+Each trusted CA that provides a self-signed certificate must be able to publish its current public key via some
 "out-of-band" means or together with the respective link certificate using an online mechanism.  While such mechanisms are beyond the scope of
 this document, we define data structures that can support such
 mechanisms.
@@ -4712,7 +4712,7 @@ A newWithNew certificate (including relevant extensions) must contain
 subjectAltName MUST be identical to issuerAltName, and, when present,
 keyIdentifiers must contain appropriate values, et cetera.
 
-Note that the newWithNew and oldWithOld certificates not necessarily refer to self-signed certificate, but more generally to trusted CA certificates.
+Note that in general newWithNew and oldWithOld certificates not necessarily refer to self-signed certificate, but to trusted CA certificates as defined in {{sect-3.1.1.2}}.
 
 
 ## Trusted CA Key Update
