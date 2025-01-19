@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-16T01:24:03.479197+00:00",
+  "timestamp": "2025-01-19T01:37:07.127991+00:00",
   "repo": "lamps-wg/cmp-updates",
   "labels": [
     {
@@ -2535,9 +2535,24 @@
       "labels": [],
       "body": "If we change the terminology in rfc4210bis, the following must be checked for breaking changes first:\r\n\r\n- RFC 9483 (Lightweight CMP Profile), RFC 9481 (CMP Algorithms), RFC 9482 (CoAP transfer for CMP), BRSKI-AE and  rfc6712bis (HTTP transfer for CMP), and  BRSKI-AE\r\n- All further references of RFC 4210, see https://datatracker.ietf.org/doc/rfc4210/referencedby/",
       "createdAt": "2025-01-15T13:52:30Z",
-      "updatedAt": "2025-01-15T13:52:30Z",
+      "updatedAt": "2025-01-16T16:35:16Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I checked all references of RFC 4210.\nRoughly twice as many documents use 'trusted CA' or 'trust anchor' than 'root CA'.\nTwo I-D could to adapt its terminology.\nRFC 7030 and RFC 9483 would need a erratum to state this change for a potential update.\nRFC 8994 anyhow got the reference wrong and needs an erratum.\nFor details see the attached PDF [References to RFC4210 root CA terminology.pdf](https://github.com/user-attachments/files/18442717/References.to.RFC4210.root.CA.terminology.pdf).",
+          "createdAt": "2025-01-16T16:30:31Z",
+          "updatedAt": "2025-01-16T16:30:31Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I did potential changes removing the terminology \"root CA\" in the PR #66 \nI just gave it a try and my not be perfect.\n\n@John, @ Mike, @David, what do you think, is it worth bringing this PR to the attention of the ADs or will it course too much discussion.",
+          "createdAt": "2025-01-16T16:35:15Z",
+          "updatedAt": "2025-01-16T16:35:15Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -3696,6 +3711,151 @@
       "mergeCommit": {
         "oid": "45ce64bb6a8c5fa0cef67aa2f8821bea9bfd02c1"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 66,
+      "id": "PR_kwDOInbtzM6ICNH4",
+      "title": "Remove root ca terminology",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/66",
+      "state": "OPEN",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Implements #65 ",
+      "createdAt": "2025-01-16T16:31:29Z",
+      "updatedAt": "2025-01-17T09:32:38Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "8d310a4d4592005cb778e1dda7fd63819821e882",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "remove_root-CA_terminology",
+      "headRefOid": "2dc38b5da189ced7d61b6214647ee5a8a143cffe",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOInbtzM6YZSez",
+          "commit": {
+            "abbreviatedOid": "d427681"
+          },
+          "author": "johngray-dev",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Just a few minor comments.  Generally it seems to make things clearer I think, but it does differ in language from other RFCs",
+          "createdAt": "2025-01-16T17:11:54Z",
+          "updatedAt": "2025-01-16T17:19:23Z",
+          "comments": [
+            {
+              "originalPosition": 142,
+              "body": "Could also say \"How to bridge trust to a newly trusted CA Certificate in a CA DN change...\"",
+              "createdAt": "2025-01-16T17:11:54Z",
+              "updatedAt": "2025-01-16T17:19:23Z"
+            },
+            {
+              "originalPosition": 393,
+              "body": "I think I would say \"newly trusted\"",
+              "createdAt": "2025-01-16T17:16:00Z",
+              "updatedAt": "2025-01-16T17:19:23Z"
+            },
+            {
+              "originalPosition": 430,
+              "body": "Should this name change from RootCAKeyUpdate to TrustedCaKeyUpdate?",
+              "createdAt": "2025-01-16T17:17:57Z",
+              "updatedAt": "2025-01-16T17:19:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM6YZYME",
+          "commit": {
+            "abbreviatedOid": "d427681"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-16T17:23:01Z",
+          "updatedAt": "2025-01-16T17:23:01Z",
+          "comments": [
+            {
+              "originalPosition": 142,
+              "body": "done",
+              "createdAt": "2025-01-16T17:23:01Z",
+              "updatedAt": "2025-01-16T17:23:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM6YZYgH",
+          "commit": {
+            "abbreviatedOid": "d427681"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-16T17:23:38Z",
+          "updatedAt": "2025-01-16T17:23:38Z",
+          "comments": [
+            {
+              "originalPosition": 393,
+              "body": "done",
+              "createdAt": "2025-01-16T17:23:38Z",
+              "updatedAt": "2025-01-16T17:23:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOInbtzM6YZavP",
+          "commit": {
+            "abbreviatedOid": "d427681"
+          },
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-16T17:28:02Z",
+          "updatedAt": "2025-01-16T17:28:02Z",
+          "comments": [
+            {
+              "originalPosition": 430,
+              "body": "It would be great to also update the types. But this would be a breaking change for RFC 9483 because we introduced the new types already with RFC 9480 and we also registered some OIDs using the old language. Therefore, I think we should keep the syntax and address this with the note.",
+              "createdAt": "2025-01-16T17:28:02Z",
+              "updatedAt": "2025-01-16T17:28:02Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 67,
+      "id": "PR_kwDOInbtzM6IInhH",
+      "title": "Option 2 - addressing DISCUSS from Paul Wouters",
+      "url": "https://github.com/lamps-wg/cmp-updates/pull/67",
+      "state": "OPEN",
+      "author": "HBrock",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\u20261.1.2, 4.4, 5.2.5, 6, and D.3.",
+      "createdAt": "2025-01-17T10:19:46Z",
+      "updatedAt": "2025-01-17T10:20:30Z",
+      "baseRepository": "lamps-wg/cmp-updates",
+      "baseRefName": "main",
+      "baseRefOid": "8d310a4d4592005cb778e1dda7fd63819821e882",
+      "headRepository": "lamps-wg/cmp-updates",
+      "headRefName": "option2-solving-DISCUSS",
+      "headRefOid": "1d4e2504d0982ae9e67fe03a832b407f207766d5",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
