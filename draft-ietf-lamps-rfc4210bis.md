@@ -3502,12 +3502,12 @@ that MUST be supported for specific use cases.
 {: id="sect-6.1"}
 \[See {{sect-3.1.1.2}} for this document's definition of "root CA".\]
 
-If the newly created root CA is the top of a PKI hierarchy, it must produce a "self-certificate", which is a
+If a newly created root CA is at the top of a PKI hierarchy, it usually produced produce a "self-certificate", which is a
 certificate structure with the profile defined for the "newWithNew"
 certificate issued following a root CA key update.
 
 In order to make the CA's self-certificate useful to end entities
-that do not acquire the self certificate via "out-of-band" means, the
+that do not acquire the self-certificate via "out-of-band" means, the
 CA must also produce a fingerprint for its certificate.  End entities
 that acquire this fingerprint securely via some "out-of-band" means
 can then verify the CA's self-certificate and, hence, the other
@@ -3929,7 +3929,7 @@ different key pairs, the security of the shared secret information should
 exceed the security strength of each individual key pair.
 
 For the case of a PKI management operation that delivers a new trust anchor
-(i.e., a root CA certificate) using caPubs or genp that is (a) not concluded
+(e.g., a root CA certificate) using caPubs or genp that is (a) not concluded
 in a timely manner or (b) where the shared secret information is reused
 for several key management operations, the entropy of the shared secret information,
 if known, should not be less than the security strength of the trust anchor
