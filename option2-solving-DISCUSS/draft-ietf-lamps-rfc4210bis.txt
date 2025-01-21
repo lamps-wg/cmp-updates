@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 21 July 2025                                            Entrust
-                                                         17 January 2025
+Expires: 25 July 2025                                            Entrust
+                                                         21 January 2025
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 July 2025.
+   This Internet-Draft will expire on 25 July 2025.
 
 Copyright Notice
 
@@ -3550,13 +3550,13 @@ Table of Contents
 
    [See Section 3.1.1.2 for this document's definition of "root CA".]
 
-   If the newly created root CA is the top of a PKI hierarchy, it must
-   produce a "self-certificate", which is a certificate structure with
-   the profile defined for the "newWithNew" certificate issued following
-   a root CA key update.
+   If a newly created root CA is at the top of a PKI hierarchy, it
+   usually produced produce a "self-certificate", which is a certificate
+   structure with the profile defined for the "newWithNew" certificate
+   issued following a root CA key update.
 
    In order to make the CA's self-certificate useful to end entities
-   that do not acquire the self certificate via "out-of-band" means, the
+   that do not acquire the self-certificate via "out-of-band" means, the
    CA must also produce a fingerprint for its certificate.  End entities
    that acquire this fingerprint securely via some "out-of-band" means
    can then verify the CA's self-certificate and, hence, the other
@@ -3967,7 +3967,7 @@ Table of Contents
    individual key pair.
 
    For the case of a PKI management operation that delivers a new trust
-   anchor (i.e., a root CA certificate) using caPubs or genp that is (a)
+   anchor (e.g., a root CA certificate) using caPubs or genp that is (a)
    not concluded in a timely manner or (b) where the shared secret
    information is reused for several key management operations, the
    entropy of the shared secret information, if known, should not be

@@ -1070,7 +1070,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 21 July 2025</td>
+<td class="center">Expires 25 July 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1089,12 +1089,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-01-17" class="published">17 January 2025</time>
+<time datetime="2025-01-21" class="published">21 January 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-07-21">21 July 2025</time></dd>
+<dd class="expires"><time datetime="2025-07-25">25 July 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1168,7 +1168,7 @@ Section 9 of RFC 5912.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 July 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 July 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -5921,11 +5921,11 @@ that <span class="bcp14">MUST</span> be supported for specific use cases.<a href
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-root-ca-initialization" class="section-name selfRef">Root CA Initialization</a>
         </h3>
 <p id="section-6.1-1">[See <a href="#sect-3.1.1.2" class="auto internal xref">Section 3.1.1.2</a> for this document's definition of "root CA".]<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2">If the newly created root CA is the top of a PKI hierarchy, it must produce a "self-certificate", which is a
+<p id="section-6.1-2">If a newly created root CA is at the top of a PKI hierarchy, it usually produced produce a "self-certificate", which is a
 certificate structure with the profile defined for the "newWithNew"
 certificate issued following a root CA key update.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
 <p id="section-6.1-3">In order to make the CA's self-certificate useful to end entities
-that do not acquire the self certificate via "out-of-band" means, the
+that do not acquire the self-certificate via "out-of-band" means, the
 CA must also produce a fingerprint for its certificate.  End entities
 that acquire this fingerprint securely via some "out-of-band" means
 can then verify the CA's self-certificate and, hence, the other
@@ -6384,7 +6384,7 @@ strength of that key pair; if the shared secret information is reused for
 different key pairs, the security of the shared secret information should
 exceed the security strength of each individual key pair.<a href="#section-8.7-3" class="pilcrow">¶</a></p>
 <p id="section-8.7-4">For the case of a PKI management operation that delivers a new trust anchor
-(i.e., a root CA certificate) using caPubs or genp that is (a) not concluded
+(e.g., a root CA certificate) using caPubs or genp that is (a) not concluded
 in a timely manner or (b) where the shared secret information is reused
 for several key management operations, the entropy of the shared secret information,
 if known, should not be less than the security strength of the trust anchor
