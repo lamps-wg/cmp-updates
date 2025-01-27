@@ -495,7 +495,7 @@ signed by a peer, signed by a superior CA, or unsigned.
 
 Note that other documents like {{X509.2019}} and {{RFC5280}} use the
 term "trusted CA" or "trust anchor" instead of "root CA".  This
-documents continues using "root CA" based on the above definition
+document continues using "root CA" based on the above definition
 because it is also present in the ASN.1 syntax that cannot be changed
 easily.
 
@@ -3502,7 +3502,8 @@ that MUST be supported for specific use cases.
 {: id="sect-6.1"}
 \[See {{sect-3.1.1.2}} for this document's definition of "root CA".\]
 
-If a newly created root CA is at the top of a PKI hierarchy, it usually produced produce a "self-certificate", which is a
+If a newly created root CA is at the top of a PKI hierarchy, it usually
+produces a "self-certificate", which is a
 certificate structure with the profile defined for the "newWithNew"
 certificate issued following a root CA key update.
 
@@ -4692,7 +4693,7 @@ Identical to {{sect-c.2}}.
 {: id="sect-d.3"}
 
 Profile of how a certificate structure may be "self-signed".  These
-structures are used for distribution of new root CA public keys in a self-signed certificate.  This can
+structures are used for distribution of new root CA public keys.  This can
 occur in one of three ways (see {{sect-4.4}} above for a description
 of the use of these structures):
 
@@ -5900,7 +5901,9 @@ Note: This appendix will be deleted in the final version of the document.
 
 From version 16 -> 17:
 
-*  Addressing DISCUSS from Paul Wouters by extending text of Sections 3.1.1.2, 4.4, 5.2.5, 6, and D.3.
+* Addressing DISCUSS from Paul Wouters by extending text of Sections 3.1.1.2, 4.4, 5.2.5, 6, and D.3.
+
+* Updated IPSEC -> IPsec
 
 
 From version 15 -> 16:
