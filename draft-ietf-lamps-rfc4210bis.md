@@ -3426,7 +3426,7 @@ response message.
                                 Start
                                   |
                                   | Send request
-                                  |
+                                  v
              +----------- Receive response ------------+
              |                                         |
              | ip/cp/kup/krp/ccp/error with            | other
@@ -3438,9 +3438,9 @@ response message.
  |           | Send pollReq                            |
  |           | Receive response                        |
  |           |                                         |
- |   pollRep | other response                          |
+ |           v                                         |
  +-----------+------------------->+<-------------------+
-                                  |
+     pollRep   other response     |
                                   v
                             Handle response
                                   |
