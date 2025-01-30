@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-28T01:24:04.875382+00:00",
+  "timestamp": "2025-01-30T01:23:03.788443+00:00",
   "repo": "lamps-wg/cmp-updates",
   "labels": [
     {
@@ -2528,15 +2528,15 @@
       "id": "I_kwDOInbtzM6mSqjF",
       "title": "How to address Paul's DISCUSS issue",
       "url": "https://github.com/lamps-wg/cmp-updates/issues/65",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "HBrock",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "If we change the terminology in rfc4210bis, the following must be checked for breaking changes first:\r\n\r\n- RFC 9483 (Lightweight CMP Profile), RFC 9481 (CMP Algorithms), RFC 9482 (CoAP transfer for CMP), BRSKI-AE and  rfc6712bis (HTTP transfer for CMP), and  BRSKI-AE\r\n- All further references of RFC 4210, see https://datatracker.ietf.org/doc/rfc4210/referencedby/",
       "createdAt": "2025-01-15T13:52:30Z",
-      "updatedAt": "2025-01-27T11:57:14Z",
-      "closedAt": null,
+      "updatedAt": "2025-01-28T11:36:09Z",
+      "closedAt": "2025-01-28T11:36:07Z",
       "comments": [
         {
           "author": "HBrock",
@@ -2572,6 +2572,13 @@
           "body": "I merged #67 as it is the preferred option to handle Paul's DISCUSS",
           "createdAt": "2025-01-27T11:57:13Z",
           "updatedAt": "2025-01-27T11:57:13Z"
+        },
+        {
+          "author": "HBrock",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "There is agreement among the authors to submit the version containing #67.",
+          "createdAt": "2025-01-28T11:36:07Z",
+          "updatedAt": "2025-01-28T11:36:07Z"
         }
       ]
     }
