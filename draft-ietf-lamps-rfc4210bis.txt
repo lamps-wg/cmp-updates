@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 31 July 2025                                            Entrust
-                                                         27 January 2025
+Expires: 3 August 2025                                           Entrust
+                                                         30 January 2025
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 July 2025.
+   This Internet-Draft will expire on 3 August 2025.
 
 Copyright Notice
 
@@ -5051,10 +5051,6 @@ D.3.  Self-Signed Certificates
    subjectAltName MUST be identical to issuerAltName, and, when present,
    keyIdentifiers must contain appropriate values, et cetera.
 
-   Note that in general newWithNew and oldWithOld certificates not
-   necessarily refer to self-signed certificate, but to root CA
-   certificates as defined in Section 3.1.1.2.
-
 D.4.  Root CA Key Update
 
    A root CA updates its key pair.  It then produces a CA key update
@@ -6248,6 +6244,11 @@ Appendix G.  History of Changes
 
    Note: This appendix will be deleted in the final version of the
    document.
+
+   From version 17 -> 18:
+
+   *  Deleted last paragraph of Appendix D.3 to resolve the DISCUSS from
+      Paul Wouters
 
    From version 16 -> 17:
 

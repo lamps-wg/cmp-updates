@@ -1059,7 +1059,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 31 July 2025</td>
+<td class="center">Expires 3 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1075,12 +1075,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc6712%209480" class="eref">6712 9480</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-01-27" class="published">27 January 2025</time>
+<time datetime="2025-01-30" class="published">30 January 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-07-31">31 July 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-03">3 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1142,7 +1142,7 @@ RFC 9480.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 31 July 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1368,7 +1368,7 @@ Section 4.11 of <span>[<a href="#RFC9205" class="cite xref">RFC9205</a>]</span>.
         <h3 id="name-general-form">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-general-form" class="section-name selfRef">General Form</a>
         </h3>
-<p id="section-3.1-1">A DER-encoded <span>[<a href="#ITU.X690.1994" class="cite xref">ITU.X690.1994</a>]</span> PKIMessage (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-16#section-5.1" class="relref">Section 5.1</a> of [<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span>) <span class="bcp14">MUST</span> be sent as the
+<p id="section-3.1-1">A DER-encoded <span>[<a href="#ITU.X690.1994" class="cite xref">ITU.X690.1994</a>]</span> PKIMessage (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-17#section-5.1" class="relref">Section 5.1</a> of [<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span>) <span class="bcp14">MUST</span> be sent as the
 content of an HTTP POST request.  If this HTTP request is
 successful, the server returns the CMP response in the content of the
 HTTP response.  The HTTP response status code in this case <span class="bcp14">MUST</span> be
@@ -1469,7 +1469,7 @@ no request messages are specified for those announcements, they can
 only be pushed to the recipient.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
 <p id="section-3.5-2">If an EE wants to poll for a potential CA Key Update Announcement or
 the current CRL, a PKI Information Request using a General Message as
-described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-16#appendix-D.5" class="relref">Appendix D.5</a> of [<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span> can be used.<a href="#section-3.5-2" class="pilcrow">¶</a></p>
+described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-17#appendix-D.5" class="relref">Appendix D.5</a> of [<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span> can be used.<a href="#section-3.5-2" class="pilcrow">¶</a></p>
 <p id="section-3.5-3">When pushing announcement messages, PKIMessage structures <span class="bcp14">MUST</span> be sent as
 the content of an HTTP POST request.<a href="#section-3.5-3" class="pilcrow">¶</a></p>
 <p id="section-3.5-4">Suitable recipients for CMP announcements might, for example, be
@@ -1477,7 +1477,7 @@ repositories storing the announced information, such as directory
 services.  Those services listen for incoming messages, utilizing the
 same HTTP Request-URI scheme as defined in <a href="#sect-3.4" class="auto internal xref">Section 3.4</a>.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
 <p id="section-3.5-5">The following types of PKIMessage are announcements that may be pushed by a
-CA.  The prefixed numbers reflect ASN.1 tags of the PKIBody structure (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-16#section-5.1.2" class="relref">Section 5.1.2</a> of [<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span>).<a href="#section-3.5-5" class="pilcrow">¶</a></p>
+CA.  The prefixed numbers reflect ASN.1 tags of the PKIBody structure (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-17#section-5.1.2" class="relref">Section 5.1.2</a> of [<a href="#I-D.ietf-lamps-rfc4210bis" class="cite xref">I-D.ietf-lamps-rfc4210bis</a>]</span>).<a href="#section-3.5-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.5-6">
 <pre>
    [15] CA Key Update Announcement
@@ -1627,7 +1627,7 @@ original authors of <span>[<a href="#RFC6712" class="cite xref">RFC6712</a>]</sp
 <dd class="break"></dd>
 <dt id="I-D.ietf-lamps-rfc4210bis">[I-D.ietf-lamps-rfc4210bis]</dt>
         <dd>
-<span class="refAuthor">Brockhaus, H.</span>, <span class="refAuthor">von Oheimb, D.</span>, <span class="refAuthor">Ounsworth, M.</span>, and <span class="refAuthor">J. Gray</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure -- Certificate Management Protocol (CMP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-rfc4210bis-16</span>, <time datetime="2025-01-09" class="refDate">9 January 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-16">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-16</a>&gt;</span>. </dd>
+<span class="refAuthor">Brockhaus, H.</span>, <span class="refAuthor">von Oheimb, D.</span>, <span class="refAuthor">Ounsworth, M.</span>, and <span class="refAuthor">J. Gray</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure -- Certificate Management Protocol (CMP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-rfc4210bis-17</span>, <time datetime="2025-01-28" class="refDate">28 January 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-17">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-rfc4210bis-17</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ITU.X690.1994">[ITU.X690.1994]</dt>
         <dd>
