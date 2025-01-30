@@ -4708,9 +4708,6 @@ A newWithNew certificate (including relevant extensions) must contain
 subjectAltName MUST be identical to issuerAltName, and, when present,
 keyIdentifiers must contain appropriate values, et cetera.
 
-Note that in general newWithNew and oldWithOld certificates not	necessarily
-refer to self-signed certificate, but to root CA certificates as defined in
-{{sect-3.1.1.2}}.
 
 ## Root CA Key Update
 {: id="sect-d.4"}
@@ -5898,6 +5895,11 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 17 -> 18:
+
+* Deleted last paragraph of Appendix D.3 to resolve the DISCUSS from Paul Wouters
+
 
 From version 16 -> 17:
 
