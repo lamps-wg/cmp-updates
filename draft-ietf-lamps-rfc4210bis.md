@@ -1705,11 +1705,11 @@ The certificate profile names in the CertProfileValue sequence relate to the Cer
 A PKI entity MAY provide the KEM ciphertext for MAC-based message protection using KEM (see Section 5.1.3.4) in the generalInfo field of a request message to a PKI management entity if it knows that the PKI management entity uses a KEM key pair and has its public key.
 
 ~~~~ asn.1
-  id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
+  id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it 24 }
   KemCiphertextInfoValue ::= KemCiphertextInfo
 ~~~~
 
-For more details of KEM-based message protection see {{sect-5.1.3.4}}. See {{sect-5.3.19.18}} for the definition of {id-it TBD1}.
+For more details of KEM-based message protection see {{sect-5.1.3.4}}. See {{sect-5.3.19.18}} for the definition of {id-it 24}.
 
 
 ### PKI Message Body
@@ -3229,8 +3229,8 @@ This MAY be used by a PKI entity to get the KEM ciphertext for MAC-based message
 The PKI entity which possesses a KEM key pair can request the ciphertext by sending an InfoTypeAndValue structure of type KemCiphertextInfo where the infoValue is absent. The ciphertext can be provided in the following genp message with an InfoTypeAndValue structure of the same type.
 
 ~~~~
-  GenMsg:    {id-it TBD1}, < absent >
-  GenRep:    {id-it TBD1}, KemCiphertextInfo
+  GenMsg:    {id-it 24}, < absent >
+  GenRep:    {id-it 24}, KemCiphertextInfo
 ~~~~
 
 ~~~~ asn.1
@@ -4014,13 +4014,13 @@ If a certificate or its precertificate was published in a CT log it must be revo
 
 # IANA Considerations {#sect-9}
 
-This document updates the ASN.1 modules of CMP Updates Appendix A.2 {{RFC9480}}. The OID TBD2 (id-mod-cmp2023-02) was registered in the "SMI Security for PKIX Module Identifier" registry to identify the updated ASN.1 module.
+This document updates the ASN.1 modules of CMP Updates Appendix A.2 {{RFC9480}}. The decimal 116 (id-mod-cmp2023-02) was registered in the "SMI Security for PKIX Module Identifier (1.3.6.1.5.5.7.0)" registry to identify the updated ASN.1 module.
 
 In the SMI-numbers registry "SMI Security for PKIX CMP Information Types (1.3.6.1.5.5.7.4)" (see https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.4) as defined in {{RFC7299}} one addition has been performed.
 
 One new entry has been added:
 
-   Decimal: TBD1
+   Decimal: 24
 
    Description: id-it-KemCiphertextInfo
 
@@ -5155,7 +5155,7 @@ as well as changes made in this document.
 PKIXCMP-2023
     { iso(1) identified-organization(3) dod(6) internet(1)
     security(5) mechanisms(5) pkix(7) id-mod(0)
-    id-mod-cmp2023-02(TBD2) }
+    id-mod-cmp2023-02(116) }
 DEFINITIONS EXPLICIT TAGS ::=
 BEGIN
 IMPORTS
@@ -5241,10 +5241,10 @@ FROM KEMAlgorithmInformation-2023  -- [RFC9629]
 --    1988 Syntax, PKIXCMP, 1.3.6.1.5.5.7.0.99 (id-mod-cmp2021-88)
 --    2002 Syntax, PKIXCMP-2021, 1.3.6.1.5.5.7.0.100
 --                               (id-mod-cmp2021-02)
---    Obsoleted by [RFCXXXX] PKIXCMP-2023, 1.3.6.1.5.5.7.0.TBD2
+--    Obsoleted by [RFCXXXX] PKIXCMP-2023, 1.3.6.1.5.5.7.0.116
 --                                         (id-mod-cmp2023-02)
 -- [RFCXXXX]
---    2002 Syntax, PKIXCMP-2023, 1.3.6.1.5.5.7.0.TBD2
+--    2002 Syntax, PKIXCMP-2023, 1.3.6.1.5.5.7.0.116
 --                               (id-mod-cmp2023-02)
 
 
@@ -5814,7 +5814,7 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --      CRLsValue               ::= SEQUENCE SIZE (1..MAX) OF
 --                                            CertificateList
 --      - id-it-crls added in [RFC9480]
---   id-it-KemCiphertextInfo    OBJECT IDENTIFIER ::= {id-it TBD1}
+--   id-it-KemCiphertextInfo    OBJECT IDENTIFIER ::= {id-it 24}
 --      KemCiphertextInfoValue  ::= KemCiphertextInfo
 --      - id-it-KemCiphertextInfo was added in [RFCXXXX]
 --
@@ -5895,6 +5895,11 @@ END
 # History of Changes {#sect-g}
 
 Note: This appendix will be deleted in the final version of the document.
+
+From version 18 -> 19:
+
+* Added OIDs registered by IANA
+
 
 From version 17 -> 18:
 
