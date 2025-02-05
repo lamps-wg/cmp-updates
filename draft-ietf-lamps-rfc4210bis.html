@@ -29,13 +29,13 @@ RootCaKeyUpdateContent in ckuann messages.
 and it also obsoletes RFC 9480. Appendix F of this document updates the
 Section 9 of RFC 5912. 
     " name="description">
-<meta content="xml2rfc 3.25.0" name="generator">
+<meta content="xml2rfc 3.26.0" name="generator">
 <meta content="CMP" name="keyword">
 <meta content="Certificate Management" name="keyword">
 <meta content="PKI" name="keyword">
 <meta content="draft-ietf-lamps-rfc4210bis-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.25.0
+  xml2rfc 3.26.0
     Python 3.12.8
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
@@ -1066,11 +1066,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">CMP</td>
-<td class="right">January 2025</td>
+<td class="right">February 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Brockhaus, et al.</td>
-<td class="center">Expires 3 August 2025</td>
+<td class="center">Expires 9 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1089,12 +1089,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc5912" class="eref">5912</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-01-30" class="published">30 January 2025</time>
+<time datetime="2025-02-05" class="published">5 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-03">3 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-09">9 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1168,7 +1168,7 @@ Section 9 of RFC 5912.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 9 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3559,11 +3559,11 @@ requesting a new certificate or a certificate request template; see <a href="#se
 <p id="section-5.1.1.5-1">A PKI entity <span class="bcp14">MAY</span> provide the KEM ciphertext for MAC-based message protection using KEM (see Section 5.1.3.4) in the generalInfo field of a request message to a PKI management entity if it knows that the PKI management entity uses a KEM key pair and has its public key.<a href="#section-5.1.1.5-1" class="pilcrow">¶</a></p>
 <div class="lang-asn.1 sourcecode" id="section-5.1.1.5-2">
 <pre>
-  id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
+  id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it 24 }
   KemCiphertextInfoValue ::= KemCiphertextInfo
 </pre><a href="#section-5.1.1.5-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1.1.5-3">For more details of KEM-based message protection see <a href="#sect-5.1.3.4" class="auto internal xref">Section 5.1.3.4</a>. See <a href="#sect-5.3.19.18" class="auto internal xref">Section 5.3.19.18</a> for the definition of {id-it TBD1}.<a href="#section-5.1.1.5-3" class="pilcrow">¶</a></p>
+<p id="section-5.1.1.5-3">For more details of KEM-based message protection see <a href="#sect-5.1.3.4" class="auto internal xref">Section 5.1.3.4</a>. See <a href="#sect-5.3.19.18" class="auto internal xref">Section 5.3.19.18</a> for the definition of {id-it 24}.<a href="#section-5.1.1.5-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -5333,8 +5333,8 @@ those CRLs that are more recent than the ones indicated by the client.<a href="#
 <p id="section-5.3.19.18-2">The PKI entity which possesses a KEM key pair can request the ciphertext by sending an InfoTypeAndValue structure of type KemCiphertextInfo where the infoValue is absent. The ciphertext can be provided in the following genp message with an InfoTypeAndValue structure of the same type.<a href="#section-5.3.19.18-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.3.19.18-3">
 <pre>
-  GenMsg:    {id-it TBD1}, &lt; absent &gt;
-  GenRep:    {id-it TBD1}, KemCiphertextInfo
+  GenMsg:    {id-it 24}, &lt; absent &gt;
+  GenRep:    {id-it 24}, KemCiphertextInfo
 </pre><a href="#section-5.3.19.18-3" class="pilcrow">¶</a>
 </div>
 <div class="lang-asn.1 sourcecode" id="section-5.3.19.18-4">
@@ -6478,10 +6478,10 @@ such an EKU.<a href="#section-8.10-1" class="pilcrow">¶</a></p>
       <h2 id="name-iana-considerations">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-9-1">This document updates the ASN.1 modules of CMP Updates Appendix A.2 <span>[<a href="#RFC9480" class="cite xref">RFC9480</a>]</span>. The OID TBD2 (id-mod-cmp2023-02) was registered in the "SMI Security for PKIX Module Identifier" registry to identify the updated ASN.1 module.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-1">This document updates the ASN.1 modules of CMP Updates Appendix A.2 <span>[<a href="#RFC9480" class="cite xref">RFC9480</a>]</span>. The OID 116 (id-mod-cmp2023-02) was registered in the "SMI Security for PKIX Module Identifier (1.3.6.1.5.5.7.0)" registry to identify the updated ASN.1 module.<a href="#section-9-1" class="pilcrow">¶</a></p>
 <p id="section-9-2">In the SMI-numbers registry "SMI Security for PKIX CMP Information Types (1.3.6.1.5.5.7.4)" (see https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.4) as defined in <span>[<a href="#RFC7299" class="cite xref">RFC7299</a>]</span> one addition has been performed.<a href="#section-9-2" class="pilcrow">¶</a></p>
 <p id="section-9-3">One new entry has been added:<a href="#section-9-3" class="pilcrow">¶</a></p>
-<p id="section-9-4">Decimal: TBD1<a href="#section-9-4" class="pilcrow">¶</a></p>
+<p id="section-9-4">Decimal: 24<a href="#section-9-4" class="pilcrow">¶</a></p>
 <p id="section-9-5">Description: id-it-KemCiphertextInfo<a href="#section-9-5" class="pilcrow">¶</a></p>
 <p id="section-9-6">Reference: [RFCXXXX]<a href="#section-9-6" class="pilcrow">¶</a></p>
 <p id="section-9-7">The new OID 1.2.840.113533.7.66.16 was registered by Entrust for id-KemBasedMac in the arch 1.2.840.113533.7.66. Entrust registered also the OIDs for id-PasswordBasedMac and id-DHBasedMac there.<a href="#section-9-7" class="pilcrow">¶</a></p>
@@ -6681,7 +6681,7 @@ Tomi Kause, and Tero Mononen, the original authors of <span>[<a href="#RFC4210" 
 <dd class="break"></dd>
 <dt id="I-D.ietf-lamps-kyber-certificates">[I-D.ietf-lamps-kyber-certificates]</dt>
         <dd>
-<span class="refAuthor">Turner, S.</span>, <span class="refAuthor">Kampanakis, P.</span>, <span class="refAuthor">Massimo, J.</span>, and <span class="refAuthor">B. Westerbaan</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure - Algorithm Identifiers for the Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-kyber-certificates-07</span>, <time datetime="2025-01-07" class="refDate">7 January 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-kyber-certificates-07">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-kyber-certificates-07</a>&gt;</span>. </dd>
+<span class="refAuthor">Turner, S.</span>, <span class="refAuthor">Kampanakis, P.</span>, <span class="refAuthor">Massimo, J.</span>, and <span class="refAuthor">B. Westerbaan</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure - Algorithm Identifiers for the Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-kyber-certificates-08</span>, <time datetime="2025-02-02" class="refDate">2 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-kyber-certificates-08">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-kyber-certificates-08</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="NIST.SP.800_90Ar1">[NIST.SP.800_90Ar1]</dt>
         <dd>
@@ -8341,7 +8341,7 @@ as well as changes made in this document.<a href="#appendix-F-1" class="pilcrow"
 PKIXCMP-2023
     { iso(1) identified-organization(3) dod(6) internet(1)
     security(5) mechanisms(5) pkix(7) id-mod(0)
-    id-mod-cmp2023-02(TBD2) }
+    id-mod-cmp2023-02(116) }
 DEFINITIONS EXPLICIT TAGS ::=
 BEGIN
 IMPORTS
@@ -8427,10 +8427,10 @@ FROM KEMAlgorithmInformation-2023  -- [RFC9629]
 --    1988 Syntax, PKIXCMP, 1.3.6.1.5.5.7.0.99 (id-mod-cmp2021-88)
 --    2002 Syntax, PKIXCMP-2021, 1.3.6.1.5.5.7.0.100
 --                               (id-mod-cmp2021-02)
---    Obsoleted by [RFCXXXX] PKIXCMP-2023, 1.3.6.1.5.5.7.0.TBD2
+--    Obsoleted by [RFCXXXX] PKIXCMP-2023, 1.3.6.1.5.5.7.0.116
 --                                         (id-mod-cmp2023-02)
 -- [RFCXXXX]
---    2002 Syntax, PKIXCMP-2023, 1.3.6.1.5.5.7.0.TBD2
+--    2002 Syntax, PKIXCMP-2023, 1.3.6.1.5.5.7.0.116
 --                               (id-mod-cmp2023-02)
 
 
@@ -9000,7 +9000,7 @@ SupportedInfoSet INFO-TYPE-AND-VALUE ::= { ... }
 --      CRLsValue               ::= SEQUENCE SIZE (1..MAX) OF
 --                                            CertificateList
 --      - id-it-crls added in [RFC9480]
---   id-it-KemCiphertextInfo    OBJECT IDENTIFIER ::= {id-it TBD1}
+--   id-it-KemCiphertextInfo    OBJECT IDENTIFIER ::= {id-it 24}
 --      KemCiphertextInfoValue  ::= KemCiphertextInfo
 --      - id-it-KemCiphertextInfo was added in [RFCXXXX]
 --
@@ -9085,283 +9085,289 @@ END
 <a href="#appendix-G" class="section-number selfRef">Appendix G. </a><a href="#name-history-of-changes" class="section-name selfRef">History of Changes</a>
       </h2>
 <p id="appendix-G-1">Note: This appendix will be deleted in the final version of the document.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
-<p id="appendix-G-2">From version 17 -&gt; 18:<a href="#appendix-G-2" class="pilcrow">¶</a></p>
+<p id="appendix-G-2">From version 18 -&gt; 19:<a href="#appendix-G-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-3.1">
-          <p id="appendix-G-3.1.1">Deleted last paragraph of Appendix D.3 to resolve the DISCUSS from Paul Wouters<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-3.1.1">Added OIDs registered by IANA<a href="#appendix-G-3.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-4">From version 16 -&gt; 17:<a href="#appendix-G-4" class="pilcrow">¶</a></p>
+<p id="appendix-G-4">From version 17 -&gt; 18:<a href="#appendix-G-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-5.1">
-          <p id="appendix-G-5.1.1">Addressing DISCUSS from Paul Wouters by extending text of Sections 3.1.1.2, 4.4, 5.2.5, 6, and D.3.<a href="#appendix-G-5.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-5.2">
-          <p id="appendix-G-5.2.1">Updated IPSEC -&gt; IPsec<a href="#appendix-G-5.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-5.1.1">Deleted last paragraph of Appendix D.3 to resolve the DISCUSS from Paul Wouters<a href="#appendix-G-5.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-6">From version 15 -&gt; 16:<a href="#appendix-G-6" class="pilcrow">¶</a></p>
+<p id="appendix-G-6">From version 16 -&gt; 17:<a href="#appendix-G-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-7.1">
-          <p id="appendix-G-7.1.1">Addressed IESG review comments from Erik Kline, Gunter Van de Velde, Orie Steele, Zaheduzzaman Sarker, Éric Vyncke, and Paul Wouters, except the DISCUSS issue Paul raised<a href="#appendix-G-7.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-7.1.1">Addressing DISCUSS from Paul Wouters by extending text of Sections 3.1.1.2, 4.4, 5.2.5, 6, and D.3.<a href="#appendix-G-7.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-7.2">
+          <p id="appendix-G-7.2.1">Updated IPSEC -&gt; IPsec<a href="#appendix-G-7.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-8">From version 14 -&gt; 15:<a href="#appendix-G-8" class="pilcrow">¶</a></p>
+<p id="appendix-G-8">From version 15 -&gt; 16:<a href="#appendix-G-8" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-9.1">
-          <p id="appendix-G-9.1.1">Addressed SECDIR, OPSDIR, and TSVART review comments<a href="#appendix-G-9.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-9.1.1">Addressed IESG review comments from Erik Kline, Gunter Van de Velde, Orie Steele, Zaheduzzaman Sarker, Éric Vyncke, and Paul Wouters, except the DISCUSS issue Paul raised<a href="#appendix-G-9.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-10">From version 13 -&gt; 14:<a href="#appendix-G-10" class="pilcrow">¶</a></p>
+<p id="appendix-G-10">From version 14 -&gt; 15:<a href="#appendix-G-10" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-11.1">
-          <p id="appendix-G-11.1.1">Implemented some editorial changes throughout the document, specifically in Sections 5.1.1, 5.1.1.3, 5.1.3.4, 5.2.2, 5.2.8.3, 5.3.18, 5.3.19.2, 5.2.22, 7, C.1, and C.4<a href="#appendix-G-11.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-11.2">
-          <p id="appendix-G-11.2.1">Aligned formatting of message flow diagrams<a href="#appendix-G-11.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-11.3">
-          <p id="appendix-G-11.3.1">Updated the page header to 'CMP'<a href="#appendix-G-11.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-11.4">
-          <p id="appendix-G-11.4.1">Removed one instruction to RFC Editors<a href="#appendix-G-11.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-11.5">
-          <p id="appendix-G-11.5.1">Fixed some nits in Section 5.2.2<a href="#appendix-G-11.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-11.6">
-          <p id="appendix-G-11.6.1">Fixed one reference to RFC 9629 in the ASN.1 Module<a href="#appendix-G-11.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-11.1.1">Addressed SECDIR, OPSDIR, and TSVART review comments<a href="#appendix-G-11.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-12">From version 12 -&gt; 13:<a href="#appendix-G-12" class="pilcrow">¶</a></p>
+<p id="appendix-G-12">From version 13 -&gt; 14:<a href="#appendix-G-12" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-13.1">
-          <p id="appendix-G-13.1.1">Updated the definition of "NULL-DN" in Section 5.1.1 and Appendix D.1 and added a specification of how the RA/CA shall generate the rid content to Section 5.2.8.3.3 to clarify direct POP (see thread "CMS RecipientInfo for EnvelopedData in CMC")<a href="#appendix-G-13.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-13.1.1">Implemented some editorial changes throughout the document, specifically in Sections 5.1.1, 5.1.1.3, 5.1.3.4, 5.2.2, 5.2.8.3, 5.3.18, 5.3.19.2, 5.2.22, 7, C.1, and C.4<a href="#appendix-G-13.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-13.2">
-          <p id="appendix-G-13.2.1">Added one minor clarification in Section 5.2.2<a href="#appendix-G-13.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-13.2.1">Aligned formatting of message flow diagrams<a href="#appendix-G-13.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-13.3">
-          <p id="appendix-G-13.3.1">Updated reference from draft-ietf-lamps-cms-kemri to RFC 9629<a href="#appendix-G-13.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-13.3.1">Updated the page header to 'CMP'<a href="#appendix-G-13.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-13.4">
+          <p id="appendix-G-13.4.1">Removed one instruction to RFC Editors<a href="#appendix-G-13.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-13.5">
+          <p id="appendix-G-13.5.1">Fixed some nits in Section 5.2.2<a href="#appendix-G-13.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-13.6">
+          <p id="appendix-G-13.6.1">Fixed one reference to RFC 9629 in the ASN.1 Module<a href="#appendix-G-13.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-14">From version 11 -&gt; 12:<a href="#appendix-G-14" class="pilcrow">¶</a></p>
+<p id="appendix-G-14">From version 12 -&gt; 13:<a href="#appendix-G-14" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-15.1">
-          <p id="appendix-G-15.1.1">Adding a paragraph to Section 5.2.8.3.2 to clarify Indirect POP (see thread "Using cms-kemri this CMP Indirect POP")<a href="#appendix-G-15.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-15.1.1">Updated the definition of "NULL-DN" in Section 5.1.1 and Appendix D.1 and added a specification of how the RA/CA shall generate the rid content to Section 5.2.8.3.3 to clarify direct POP (see thread "CMS RecipientInfo for EnvelopedData in CMC")<a href="#appendix-G-15.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-15.2">
-          <p id="appendix-G-15.2.1">Updated Appendix F addressing comments from Russ (see thread "WG Last Call for draft-ietf-lamps-rfc4210bis and draft-ietf-lamps-rfc6712bis")<a href="#appendix-G-15.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-15.2.1">Added one minor clarification in Section 5.2.2<a href="#appendix-G-15.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-15.3">
-          <p id="appendix-G-15.3.1">Extended the Acknowledgments section.<a href="#appendix-G-15.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-15.3.1">Updated reference from draft-ietf-lamps-cms-kemri to RFC 9629<a href="#appendix-G-15.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-16">From version 10 -&gt; 11:<a href="#appendix-G-16" class="pilcrow">¶</a></p>
+<p id="appendix-G-16">From version 11 -&gt; 12:<a href="#appendix-G-16" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-17.1">
-          <p id="appendix-G-17.1.1">Updated Section 4.2.2 addressing the comment from Tomas Gustavsson and as presented during IETF 119 (see thread "draft-ietf-lamps-rfc4210bis-v10 Section 4.2.2 - removing normative language")<a href="#appendix-G-17.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-17.1.1">Adding a paragraph to Section 5.2.8.3.2 to clarify Indirect POP (see thread "Using cms-kemri this CMP Indirect POP")<a href="#appendix-G-17.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-17.2">
+          <p id="appendix-G-17.2.1">Updated Appendix F addressing comments from Russ (see thread "WG Last Call for draft-ietf-lamps-rfc4210bis and draft-ietf-lamps-rfc6712bis")<a href="#appendix-G-17.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-17.3">
+          <p id="appendix-G-17.3.1">Extended the Acknowledgments section.<a href="#appendix-G-17.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-18">From version 09 -&gt; 10:<a href="#appendix-G-18" class="pilcrow">¶</a></p>
+<p id="appendix-G-18">From version 10 -&gt; 11:<a href="#appendix-G-18" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-19.1">
-          <p id="appendix-G-19.1.1">Implemented some minor editorial changes modernizing the text in Section 3, 4, and 5.2.8 as proposed during IETF 119, without changing normative language.<a href="#appendix-G-19.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-19.2">
-          <p id="appendix-G-19.2.1">Added to Section 4.2.2 two ToDos for further discussion, based on the comment from Tomas Gustavsson as presented during IETF 119.<a href="#appendix-G-19.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-19.3">
-          <p id="appendix-G-19.3.1">Addressed erratum 7888<a href="#appendix-G-19.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-19.1.1">Updated Section 4.2.2 addressing the comment from Tomas Gustavsson and as presented during IETF 119 (see thread "draft-ietf-lamps-rfc4210bis-v10 Section 4.2.2 - removing normative language")<a href="#appendix-G-19.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-20">From version 08 -&gt; 09:<a href="#appendix-G-20" class="pilcrow">¶</a></p>
+<p id="appendix-G-20">From version 09 -&gt; 10:<a href="#appendix-G-20" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-21.1">
-          <p id="appendix-G-21.1.1">Changed reference from ITU-T X.509 to RFC 5280 (see thread " CMP vs RFC5280").<a href="#appendix-G-21.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-21.1.1">Implemented some minor editorial changes modernizing the text in Section 3, 4, and 5.2.8 as proposed during IETF 119, without changing normative language.<a href="#appendix-G-21.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-21.2">
-          <p id="appendix-G-21.2.1">Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent in CMP V3 as proposed by Tomas.<a href="#appendix-G-21.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-21.2.1">Added to Section 4.2.2 two ToDos for further discussion, based on the comment from Tomas Gustavsson as presented during IETF 119.<a href="#appendix-G-21.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-21.3">
-          <p id="appendix-G-21.3.1">Updated Section 4.4 incorporating RootCaKeyUpdateContent as alternative to using a repository for providing root CA key updates.<a href="#appendix-G-21.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-21.4">
-          <p id="appendix-G-21.4.1">Deleting an obsolete sentence in Section 8.8.<a href="#appendix-G-21.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-21.5">
-          <p id="appendix-G-21.5.1">Added IANA considerations addressing IANA early review.<a href="#appendix-G-21.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-21.3.1">Addressed erratum 7888<a href="#appendix-G-21.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-22">From version 07 -&gt; 08:<a href="#appendix-G-22" class="pilcrow">¶</a></p>
+<p id="appendix-G-22">From version 08 -&gt; 09:<a href="#appendix-G-22" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-23.1">
-          <p id="appendix-G-23.1.1">Aligned with released RFC 9480 - RFC 9483<a href="#appendix-G-23.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-23.1.1">Changed reference from ITU-T X.509 to RFC 5280 (see thread " CMP vs RFC5280").<a href="#appendix-G-23.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-23.2">
-          <p id="appendix-G-23.2.1">Updated Section 1.3<a href="#appendix-G-23.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-23.2.1">Deprecated CAKeyUpdAnnContent in favor of RootCaKeyUpdateContent in CMP V3 as proposed by Tomas.<a href="#appendix-G-23.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-23.3">
-          <p id="appendix-G-23.3.1">Added text on usage of transactionID with KEM-bases message protection to Section 5.1.1<a href="#appendix-G-23.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-23.3.1">Updated Section 4.4 incorporating RootCaKeyUpdateContent as alternative to using a repository for providing root CA key updates.<a href="#appendix-G-23.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-23.4">
-          <p id="appendix-G-23.4.1">Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text and adding some text explaining when a key expansion is required.<a href="#appendix-G-23.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-23.4.1">Deleting an obsolete sentence in Section 8.8.<a href="#appendix-G-23.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-23.5">
-          <p id="appendix-G-23.5.1">Consolidated the definition and transferal of KemCiphertextInfo. Added a new Section 5.1.1.5 introducing KemCiphertextInfo in the generalInfo filed and moving text on how to request a KEM ciphertext using genm/genp from Section 5.1.3.4 to Section 5.3.19.18<a href="#appendix-G-23.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-23.6">
-          <p id="appendix-G-23.6.1">Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117. Also introducing optional field kemContext to KemBasedMac and KemOtherInfo as CMP-specific alternative to ukm in cms-kemri.<a href="#appendix-G-23.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-23.7">
-          <p id="appendix-G-23.7.1">Added ToDo for reviewing the reduced content of KemOtherInfo to Section 5.1.3.4<a href="#appendix-G-23.7.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-23.8">
-          <p id="appendix-G-23.8.1">Added a cross-reference to Section 5.1.1.3 regarding use of OrigPKIMessage to Section 5.1.3.5<a href="#appendix-G-23.8.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-23.9">
-          <p id="appendix-G-23.9.1">Added POP for KEM keys to Section 5.2.8. Restructured the section and fixed some references which broke from RFC2510 to RFC4210. Introduced a section on the usage of raVerified.<a href="#appendix-G-23.9.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-23.10">
-          <p id="appendix-G-23.10.1">Fixed the issue in Section 5.3.19.15, resulting from a change made in draft-ietf-lamps-cmp-updates-14, that no plain public-key can be used in the request message in CMPCertificate.<a href="#appendix-G-23.10.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-23.11">
-          <p id="appendix-G-23.11.1">Updated Appendix B regarding KEM-based message protection and usage of CMS EnvelopedData<a href="#appendix-G-23.11.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-23.5.1">Added IANA considerations addressing IANA early review.<a href="#appendix-G-23.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-24">From version 06 -&gt; 07:<a href="#appendix-G-24" class="pilcrow">¶</a></p>
+<p id="appendix-G-24">From version 07 -&gt; 08:<a href="#appendix-G-24" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-25.1">
-          <p id="appendix-G-25.1.1">Updated section 5.1.1.4 addressing a question from Liao Lijun on how to interpret less profile names than certReqMsgs<a href="#appendix-G-25.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-25.1.1">Aligned with released RFC 9480 - RFC 9483<a href="#appendix-G-25.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-25.2">
-          <p id="appendix-G-25.2.1">Updated section 5.1.3.4 specifying establishing a shares secret key for one arbitrary side of the CMP communication only<a href="#appendix-G-25.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-25.2.1">Updated Section 1.3<a href="#appendix-G-25.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-25.3">
-          <p id="appendix-G-25.3.1">Removed the note and the security consideration regarding combiner function for HPKE<a href="#appendix-G-25.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-25.3.1">Added text on usage of transactionID with KEM-bases message protection to Section 5.1.1<a href="#appendix-G-25.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-25.4">
-          <p id="appendix-G-25.4.1">Added security considerations 8.1 and 8.8<a href="#appendix-G-25.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-25.4.1">Reverted a change to Section 5.1.3.1 from -02 and reinserting the deleted text and adding some text explaining when a key expansion is required.<a href="#appendix-G-25.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-25.5">
-          <p id="appendix-G-25.5.1">Updates IANA Considerations in section 9 to add new OID for the updates ASN.1 module and for id-it-KemCiphertextInfo<a href="#appendix-G-25.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-25.5.1">Consolidated the definition and transferal of KemCiphertextInfo. Added a new Section 5.1.1.5 introducing KemCiphertextInfo in the generalInfo filed and moving text on how to request a KEM ciphertext using genm/genp from Section 5.1.3.4 to Section 5.3.19.18<a href="#appendix-G-25.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-25.6">
-          <p id="appendix-G-25.6.1">Added new appendix E showing different variants of using KEM keys for PKI message protection<a href="#appendix-G-25.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-25.6.1">Some editorial changes to Section 5.1.3.4 and Appendix E after discussion with David resolving #30 and discussing at IETF 117. Also introducing optional field kemContext to KemBasedMac and KemOtherInfo as CMP-specific alternative to ukm in cms-kemri.<a href="#appendix-G-25.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-25.7">
-          <p id="appendix-G-25.7.1">Updates ASN.1 module in appendix F<a href="#appendix-G-25.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-25.7.1">Added ToDo for reviewing the reduced content of KemOtherInfo to Section 5.1.3.4<a href="#appendix-G-25.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-25.8">
+          <p id="appendix-G-25.8.1">Added a cross-reference to Section 5.1.1.3 regarding use of OrigPKIMessage to Section 5.1.3.5<a href="#appendix-G-25.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-25.9">
+          <p id="appendix-G-25.9.1">Added POP for KEM keys to Section 5.2.8. Restructured the section and fixed some references which broke from RFC2510 to RFC4210. Introduced a section on the usage of raVerified.<a href="#appendix-G-25.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-25.10">
+          <p id="appendix-G-25.10.1">Fixed the issue in Section 5.3.19.15, resulting from a change made in draft-ietf-lamps-cmp-updates-14, that no plain public-key can be used in the request message in CMPCertificate.<a href="#appendix-G-25.10.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-25.11">
+          <p id="appendix-G-25.11.1">Updated Appendix B regarding KEM-based message protection and usage of CMS EnvelopedData<a href="#appendix-G-25.11.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-26">From version 05 -&gt; 06:<a href="#appendix-G-26" class="pilcrow">¶</a></p>
+<p id="appendix-G-26">From version 06 -&gt; 07:<a href="#appendix-G-26" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-27.1">
-          <p id="appendix-G-27.1.1">Updated section 5.1.3.4 exchanging HPKE with plain KEM+KDF as also used in draft-ietf-lamps-cms-kemri<a href="#appendix-G-27.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-27.1.1">Updated section 5.1.1.4 addressing a question from Liao Lijun on how to interpret less profile names than certReqMsgs<a href="#appendix-G-27.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-27.2">
+          <p id="appendix-G-27.2.1">Updated section 5.1.3.4 specifying establishing a shares secret key for one arbitrary side of the CMP communication only<a href="#appendix-G-27.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-27.3">
+          <p id="appendix-G-27.3.1">Removed the note and the security consideration regarding combiner function for HPKE<a href="#appendix-G-27.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-27.4">
+          <p id="appendix-G-27.4.1">Added security considerations 8.1 and 8.8<a href="#appendix-G-27.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-27.5">
+          <p id="appendix-G-27.5.1">Updates IANA Considerations in section 9 to add new OID for the updates ASN.1 module and for id-it-KemCiphertextInfo<a href="#appendix-G-27.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-27.6">
+          <p id="appendix-G-27.6.1">Added new appendix E showing different variants of using KEM keys for PKI message protection<a href="#appendix-G-27.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-27.7">
+          <p id="appendix-G-27.7.1">Updates ASN.1 module in appendix F<a href="#appendix-G-27.7.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-28">From version 04 -&gt; 05:<a href="#appendix-G-28" class="pilcrow">¶</a></p>
+<p id="appendix-G-28">From version 05 -&gt; 06:<a href="#appendix-G-28" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-29.1">
-          <p id="appendix-G-29.1.1">Updated sections 5.1.3.4, 5.2.2, and 8.9 addressing comments from Russ (see thread "I-D Action: draft-ietf-lamps-rfc4210bis-04.txt")<a href="#appendix-G-29.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-29.1.1">Updated section 5.1.3.4 exchanging HPKE with plain KEM+KDF as also used in draft-ietf-lamps-cms-kemri<a href="#appendix-G-29.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-30">From version 03 -&gt; 04:<a href="#appendix-G-30" class="pilcrow">¶</a></p>
+<p id="appendix-G-30">From version 04 -&gt; 05:<a href="#appendix-G-30" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-31.1">
-          <p id="appendix-G-31.1.1">Added Section 4.3.4 regarding POP for KEM keys<a href="#appendix-G-31.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-31.2">
-          <p id="appendix-G-31.2.1">Added Section 5.1.3.4 on message protection using KEM keys and HPKE<a href="#appendix-G-31.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-31.3">
-          <p id="appendix-G-31.3.1">Aligned Section 5.2.2 on guidance which CMS key management technique to use with encrypted values (see thread "CMS: selection of key management technique to use for EnvelopedData") also adding support for KEM keys<a href="#appendix-G-31.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-31.4">
-          <p id="appendix-G-31.4.1">Added Section 8.9 and extended Section 3.1.2 regarding use of Certificate Transparency logs<a href="#appendix-G-31.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-31.5">
-          <p id="appendix-G-31.5.1">Deleted former Appendix C as announced in the -03<a href="#appendix-G-31.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-31.6">
-          <p id="appendix-G-31.6.1">Fixed some nits resulting from XML -&gt; MD conversion<a href="#appendix-G-31.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-31.1.1">Updated sections 5.1.3.4, 5.2.2, and 8.9 addressing comments from Russ (see thread "I-D Action: draft-ietf-lamps-rfc4210bis-04.txt")<a href="#appendix-G-31.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-32">From version 02 -&gt; 03:<a href="#appendix-G-32" class="pilcrow">¶</a></p>
+<p id="appendix-G-32">From version 03 -&gt; 04:<a href="#appendix-G-32" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-33.1">
-          <p id="appendix-G-33.1.1">Updated Section 4.4.1 clarifying the definition of "new with new" certificate
-validity period (see thread "RFC4210bis - notAfter time of newWithNew certificate")<a href="#appendix-G-33.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-33.1.1">Added Section 4.3.4 regarding POP for KEM keys<a href="#appendix-G-33.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-33.2">
-          <p id="appendix-G-33.2.1">Added ToDo to Section 4.3 and 5.2.8 on required alignment regarding POP for
-KEM keys.<a href="#appendix-G-33.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-33.2.1">Added Section 5.1.3.4 on message protection using KEM keys and HPKE<a href="#appendix-G-33.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-33.3">
-          <p id="appendix-G-33.3.1">Updated Sections 5.2.1, 5.2.8, and 5.2.8.1 incorporating text of former Appendix
-C (see thread "draft-ietf-lamps-rfc4210bis - ToDo on review of Appendix C")<a href="#appendix-G-33.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-33.3.1">Aligned Section 5.2.2 on guidance which CMS key management technique to use with encrypted values (see thread "CMS: selection of key management technique to use for EnvelopedData") also adding support for KEM keys<a href="#appendix-G-33.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-33.4">
-          <p id="appendix-G-33.4.1">Added a ToDo to Appendix B to indicate additional review need to try pushing
-the content to Sections 4 and Section 5<a href="#appendix-G-33.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-33.4.1">Added Section 8.9 and extended Section 3.1.2 regarding use of Certificate Transparency logs<a href="#appendix-G-33.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-33.5">
+          <p id="appendix-G-33.5.1">Deleted former Appendix C as announced in the -03<a href="#appendix-G-33.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-33.6">
+          <p id="appendix-G-33.6.1">Fixed some nits resulting from XML -&gt; MD conversion<a href="#appendix-G-33.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-34">From version 01 -&gt; 02:<a href="#appendix-G-34" class="pilcrow">¶</a></p>
+<p id="appendix-G-34">From version 02 -&gt; 03:<a href="#appendix-G-34" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-35.1">
-          <p id="appendix-G-35.1.1">Added Section 3.1.1.4 introducing the Key Generation Authority<a href="#appendix-G-35.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-35.1.1">Updated Section 4.4.1 clarifying the definition of "new with new" certificate
+validity period (see thread "RFC4210bis - notAfter time of newWithNew certificate")<a href="#appendix-G-35.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-35.2">
-          <p id="appendix-G-35.2.1">Added Section 5.1.1.3 containing description of origPKIMessage content moved
-here from Section 5.1.3.4<a href="#appendix-G-35.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-35.2.1">Added ToDo to Section 4.3 and 5.2.8 on required alignment regarding POP for
+KEM keys.<a href="#appendix-G-35.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-35.3">
-          <p id="appendix-G-35.3.1">Added ToDos on defining POP and message protection using KEM keys<a href="#appendix-G-35.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-35.3.1">Updated Sections 5.2.1, 5.2.8, and 5.2.8.1 incorporating text of former Appendix
+C (see thread "draft-ietf-lamps-rfc4210bis - ToDo on review of Appendix C")<a href="#appendix-G-35.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-35.4">
-          <p id="appendix-G-35.4.1">Added a ToDo to Section 4.4.3<a href="#appendix-G-35.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-35.5">
-          <p id="appendix-G-35.5.1">Added a ToDo to Appendix C to do a more detailed review<a href="#appendix-G-35.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-35.6">
-          <p id="appendix-G-35.6.1">Removed concrete algorithms and referred to CMP Algorithms instead<a href="#appendix-G-35.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-35.7">
-          <p id="appendix-G-35.7.1">Added references to Appendix D and E as well as the Lightweight CMP Profile
-for further information<a href="#appendix-G-35.7.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-35.8">
-          <p id="appendix-G-35.8.1">Broaden the scope from human users also to devices and services<a href="#appendix-G-35.8.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-35.9">
-          <p id="appendix-G-35.9.1">Addressed idnits feedback, specifically changing from historic LDAP V2 to
-LDAP V3 (RFC4511)<a href="#appendix-G-35.9.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-G-35.10">
-          <p id="appendix-G-35.10.1">Did some further editorial alignment to the XML<a href="#appendix-G-35.10.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-35.4.1">Added a ToDo to Appendix B to indicate additional review need to try pushing
+the content to Sections 4 and Section 5<a href="#appendix-G-35.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-36">From version 00 -&gt; 01:<a href="#appendix-G-36" class="pilcrow">¶</a></p>
+<p id="appendix-G-36">From version 01 -&gt; 02:<a href="#appendix-G-36" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-G-37.1">
-          <p id="appendix-G-37.1.1">Performed all updates specified in CMP Updates Section 2 and Appendix A.2.<a href="#appendix-G-37.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-37.1.1">Added Section 3.1.1.4 introducing the Key Generation Authority<a href="#appendix-G-37.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-G-37.2">
-          <p id="appendix-G-37.2.1">Did some editorial alignment to the XML<a href="#appendix-G-37.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-G-37.2.1">Added Section 5.1.1.3 containing description of origPKIMessage content moved
+here from Section 5.1.3.4<a href="#appendix-G-37.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-37.3">
+          <p id="appendix-G-37.3.1">Added ToDos on defining POP and message protection using KEM keys<a href="#appendix-G-37.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-37.4">
+          <p id="appendix-G-37.4.1">Added a ToDo to Section 4.4.3<a href="#appendix-G-37.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-37.5">
+          <p id="appendix-G-37.5.1">Added a ToDo to Appendix C to do a more detailed review<a href="#appendix-G-37.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-37.6">
+          <p id="appendix-G-37.6.1">Removed concrete algorithms and referred to CMP Algorithms instead<a href="#appendix-G-37.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-37.7">
+          <p id="appendix-G-37.7.1">Added references to Appendix D and E as well as the Lightweight CMP Profile
+for further information<a href="#appendix-G-37.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-37.8">
+          <p id="appendix-G-37.8.1">Broaden the scope from human users also to devices and services<a href="#appendix-G-37.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-37.9">
+          <p id="appendix-G-37.9.1">Addressed idnits feedback, specifically changing from historic LDAP V2 to
+LDAP V3 (RFC4511)<a href="#appendix-G-37.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-37.10">
+          <p id="appendix-G-37.10.1">Did some further editorial alignment to the XML<a href="#appendix-G-37.10.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-G-38">Version 00:<a href="#appendix-G-38" class="pilcrow">¶</a></p>
-<p id="appendix-G-39">This version consists of the text of RFC4210 with the following changes:<a href="#appendix-G-39" class="pilcrow">¶</a></p>
+<p id="appendix-G-38">From version 00 -&gt; 01:<a href="#appendix-G-38" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-G-40.1">
-          <p id="appendix-G-40.1.1">Introduced the authors of this document and thanked the authors of RFC4210
-for their work.<a href="#appendix-G-40.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-G-39.1">
+          <p id="appendix-G-39.1.1">Performed all updates specified in CMP Updates Section 2 and Appendix A.2.<a href="#appendix-G-39.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-G-40.2">
-          <p id="appendix-G-40.2.1">Added a paragraph to the introduction explaining the background of this document.<a href="#appendix-G-40.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-G-39.2">
+          <p id="appendix-G-39.2.1">Did some editorial alignment to the XML<a href="#appendix-G-39.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-G-40.3">
-          <p id="appendix-G-40.3.1">Added the change history to this appendix.<a href="#appendix-G-40.3.1" class="pilcrow">¶</a></p>
+      </ul>
+<p id="appendix-G-40">Version 00:<a href="#appendix-G-40" class="pilcrow">¶</a></p>
+<p id="appendix-G-41">This version consists of the text of RFC4210 with the following changes:<a href="#appendix-G-41" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-G-42.1">
+          <p id="appendix-G-42.1.1">Introduced the authors of this document and thanked the authors of RFC4210
+for their work.<a href="#appendix-G-42.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-42.2">
+          <p id="appendix-G-42.2.1">Added a paragraph to the introduction explaining the background of this document.<a href="#appendix-G-42.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-42.3">
+          <p id="appendix-G-42.3.1">Added the change history to this appendix.<a href="#appendix-G-42.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
