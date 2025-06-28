@@ -7,8 +7,8 @@ Internet-Draft                                             D. von Oheimb
 Obsoletes: 4210 9480 (if approved)                               Siemens
 Updates: 5912 (if approved)                                 M. Ounsworth
 Intended status: Standards Track                                 J. Gray
-Expires: 21 July 2025                                            Entrust
-                                                         17 January 2025
+Expires: 30 December 2025                                        Entrust
+                                                            28 June 2025
 
 
    Internet X.509 Public Key Infrastructure -- Certificate Management
@@ -27,15 +27,6 @@ Abstract
    a Key Encapsulation Mechanism (KEM) public key and use EnvelopedData
    instead of EncryptedValue.  This document also includes the updates
    specified in Section 2 and Appendix A.2 of RFC 9480.
-
-   The updates maintain backward compatibility with CMP version 2
-   wherever possible.  Updates to CMP version 2 are improving crypto
-   agility, extending the polling mechanism, adding new general message
-   types, and adding extended key usages to identify special CMP server
-   authorizations.  CMP version 3 is introduced for changes to the ASN.1
-   syntax, which are support of EnvelopedData, certConf with hashAlg,
-   POPOPrivKey with agreeMAC, and RootCaKeyUpdateContent in ckuann
-   messages.
 
    This document obsoletes RFC 4210 and together with I-D.ietf-lamps-
    rfc6712bis and it also obsoletes RFC 9480.  Appendix F of this
@@ -68,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 July 2025.
+   This Internet-Draft will expire on 30 December 2025.
 
 Copyright Notice
 
@@ -116,7 +107,7 @@ Table of Contents
        4.3.2.  Encryption Keys
        4.3.3.  Key Agreement Keys
        4.3.4.  Key Encapsulation Mechanism Keys
-     4.4.  Trusted CA Key Update
+     4.4.  Root CA Key Update
        4.4.1.  CA Operator Actions
        4.4.2.  Verifying Certificates
          4.4.2.1.  Verification in Cases 1 and 4
@@ -144,7 +135,7 @@ Table of Contents
        5.2.2.  Encrypted Values
        5.2.3.  Status Codes and Failure Information for PKI Messages
        5.2.4.  Certificate Identification
-       5.2.5.  Out-of-band trusted CA Public Key
+       5.2.5.  Out-of-band root CA Public Key
        5.2.6.  Archive Options
        5.2.7.  Publication Information
        5.2.8.  Proof-of-Possession Structures
@@ -187,7 +178,7 @@ Table of Contents
          5.3.19.12. Original PKIMessage
          5.3.19.13. Supported Language Tags
          5.3.19.14. CA Certificates
-         5.3.19.15. Trusted CA Update
+         5.3.19.15. Root CA Update
          5.3.19.16. Certificate Request Template
          5.3.19.17. CRL Update Retrieval
          5.3.19.18. KEM Ciphertext
@@ -195,8 +186,8 @@ Table of Contents
        5.3.21. Error Message Content
        5.3.22. Polling Request and Response
    6.  Mandatory PKI Management Functions
-     6.1.  Trusted CA Initialization
-     6.2.  Trusted CA Key Update
+     6.1.  Root CA Initialization
+     6.2.  Root CA Key Update
      6.3.  Subordinate CA Initialization
      6.4.  CRL production
      6.5.  PKI Information Request
@@ -204,7 +195,7 @@ Table of Contents
        6.6.1.  One-Way Request-Response Scheme:
      6.7.  End Entity Initialization
        6.7.1.  Acquisition of PKI Information
-       6.7.2.  Out-of-Band Verification of Trusted CA Key
+       6.7.2.  Out-of-Band Verification of Root CA Key
      6.8.  Certificate Request
      6.9.  Key Update
    7.  Version Negotiation
@@ -244,7 +235,7 @@ Table of Contents
      D.1.  General Rules for Interpretation of These Profiles.
      D.2.  Algorithm Use Profile
      D.3.  Self-Signed Certificates
-     D.4.  Trusted CA Key Update
+     D.4.  Root CA Key Update
      D.5.  PKI Information Request/Response
      D.6.  Cross Certification Request/Response (1-way)
      D.7.  In-Band Initialization Using External Identity Certificate
@@ -281,8 +272,17 @@ Table of Contents
    This document describes the Internet X.509 Public Key Infrastructure
    (PKI) Certificate Management Protocol (CMP).  Protocol messages are
    defined for certificate creation and management.  The term
-   "certificate" in this document refers to an X.509v3 Certificate as
+   "certificate" in this document refers to an X.509v3 certificate as
    defined in [RFC5280].
+
+   The updates maintain backward compatibility with CMP version 2
+   wherever possible.  Updates to CMP version 2 are improving crypto
+   agility, extending the polling mechanism, adding new general message
+   types, and adding extended key usages to identify special CMP server
+   authorizations.  CMP version 3 is introduced for changes to the ASN.1
+   syntax, which are support of EnvelopedData, certConf with hashAlg,
+   POPOPrivKey with agreeMAC, and RootCaKeyUpdateContent in ckuann
+   messages.
 
 1.1.  Changes Made by RFC 4210
 
@@ -340,11 +340,12 @@ Table of Contents
       structure a choice of EncryptedValue and EnvelopedData for
       migration to EnvelopedData.
 
-   *  Offer an optional hashAlg field in CertStatus supporting cases
-      that a certificate needs to be confirmed that has a signature
-      algorithm that does not indicate a specific hash algorithm to use
-      for computing the certHash.  This is also in preparation for
-      upcoming post-quantum algorithms.
+   *  Offer an optional hashAlg field in CertStatus to support cases
+      where a hash function is required in order to compute the certHash
+      as part of confirming the certificate, but the certificate's
+      signature algorithm does not specify a hash algorithm, so one
+      needs to be specified in the CMP message instead.  This is also in
+      preparation for upcoming post-quantum algorithms.
 
    *  Added new general message types to request CA certificates, a root
       CA update, a certificate request template, or Certificate
@@ -361,12 +362,9 @@ Table of Contents
 1.3.  Changes Made by This Document
 
    This document obsoletes [RFC4210] and [RFC9480].  It includes the
-   changes specified by Section 2 and Appendix C.2 of [RFC9480] as
+   changes specified by Section 2 and Appendix A of [RFC9480] as
    described in Section 1.2.  Additionally this document updates the
    content of [RFC4210] in the following areas:
-
-   *  Changes terminology of "root CA" to "trusted CA" to align with
-      [X509.2019] and [RFC5280].
 
    *  Added Section 3.1.1.4 introducing the Key Generation Authority.
 
@@ -374,7 +372,7 @@ Table of Contents
       logs.
 
    *  Updated Section 4.4 introducing RootCaKeyUpdateContent as
-      alternative to using a repository to acquire new trusted CA
+      alternative to using a repository to acquire new root CA
       certificates.
 
    *  Added Section 5.1.1.3 containing description of origPKIMessage
@@ -524,24 +522,24 @@ Table of Contents
    "off-line" component.  This is, however, a matter for implementers
    (though it is also relevant as a policy issue).
 
-   We use the term "trusted CA" to indicate a CA that is directly
-   trusted by an end entity; that is, securely acquiring the value of a
-   trusted CA public key requires some out-of-band step(s).  This term
-   is not meant to imply that a trusted CA is necessarily at the top of
-   any hierarchy, simply that the CA in question is trusted directly.
-   The "trusted CA" may provide its trust anchor information with or
-   without using a certificate.  In some circumstances such a
-   certificate may be self- signed, but in other circumstances it may be
-   cross signed, signed by a peer, signed by a superior CA, or unsigned.
+   We use the term "root CA" to indicate a CA that is directly trusted
+   by an end entity; that is, securely acquiring the value of a root CA
+   public key requires some out-of-band step(s).  This term is not meant
+   to imply that a root CA is necessarily at the top of any hierarchy,
+   simply that the CA in question is trusted directly.  The "root CA"
+   may provide its trust anchor information with or without using a
+   certificate.  In some circumstances such a certificate may be self-
+   signed, but in other circumstances it may be cross signed, signed by
+   a peer, signed by a superior CA, or unsigned.
 
-   Note that in [RFC4210] the term "root CA" was used as synonym to
-   "trusted CA".  This was updated to align with [X509.2019] and
-   [RFC5280].  The term root CA can still be found in the ASN.1 syntax.
+   Note that other documents like [X509.2019] and [RFC5280] use the term
+   "trusted CA" or "trust anchor" instead of "root CA".  This document
+   continues using "root CA" based on the above definition because it is
+   also present in the ASN.1 syntax that cannot be changed easily.
 
-   A "subordinate CA" is one that is signed by another CA and that is
-   not a trusted CA for the end entity in question.  Often, a
-   subordinate CA will not be a trusted CA for any entity, but this is
-   not mandatory.
+   A "subordinate CA" is one that is not a root CA for the end entity in
+   question.  Often, a subordinate CA will not be a root CA for any
+   entity, but this is not mandatory.
 
 3.1.1.3.  Registration Authority
 
@@ -604,7 +602,7 @@ Table of Contents
    management
 
    1.   PKI management must conform to the ISO/IEC 9594-8/ITU-T X.509
-        standards.
+        standards, in particular [X509.2019].
 
    2.   It must be possible to regularly update any key pair without
         affecting any other key pair.
@@ -637,10 +635,10 @@ Table of Contents
         attacks, which are possible, are not made simpler.
 
    8.   PKI management protocols must be usable over a variety of
-        "transport" mechanisms, specifically including mail, Hypertext
+        "transport" mechanisms, specifically including email, Hypertext
         Transfer Protocol (HTTP), Message Queuing Telemetry Transport
-        (MQTT), Constrained Application Protocol (CoAP), and off-line
-        file-based.
+        (MQTT), Constrained Application Protocol (CoAP), and various
+        off-line and non-networked file transfer methods.
 
    9.   Final authority for certification creation rests with the CA.
         No RA or end entity equipment can assume that any certificate
@@ -739,7 +737,7 @@ Table of Contents
        required (e.g., production of initial CRLs, export of CA public
        key).
 
-   2.  End entity initialization: This includes importing a trusted CA
+   2.  End entity initialization: This includes importing a root CA
        public key and requesting information about the options supported
        by a PKI management entity.
 
@@ -871,8 +869,7 @@ Table of Contents
 
    The first step for an end entity in dealing with PKI management
    entities is to request information about the PKI functions supported
-   and to securely acquire a copy of the relevant trusted CA public
-   key(s).
+   and to securely acquire a copy of the relevant root CA public key(s).
 
 4.2.  Initial Registration/Certification
 
@@ -886,7 +883,7 @@ Table of Contents
    schemes that are supported by this specification.  Note that the word
    "initial", above, is crucial: we are dealing with the situation where
    the end entity in question has had no previous contact with the PKI,
-   except having received the trusted CA certificate of that PKI by some
+   except having received the root CA certificate of that PKI by some
    zero-touch method like BRSKI [RFC8995] and [I-D.ietf-anima-brski-ae]
    or SZTP [RFC8572].  In case the end entity already possesses
    certified keys, then some simplifications/alternatives are possible.
@@ -905,8 +902,9 @@ Table of Contents
    as well as in the Lightweight CMP Profile [RFC9483] on fully
    automating certificate management in a machine-to-machine and IoT
    environment.  Also industry standards like [ETSI-3GPP.33.310] for
-   mobile networks and [UNISIG.Subset-137] for Rail Automation adopted
-   CMP and have specified a set of mandatory schemes for their use case.
+   mobile networks and [UNISIG.Subset-137] for Rail Automation have
+   adopted CMP as their certificate management protocol, and have
+   specified mandatory profiles for their use case.
 
    We will now describe the classification of initial registration/
    certification schemes.
@@ -952,9 +950,9 @@ Table of Contents
 
    Note 1: We do not discuss the authentication of the 'PKI management
    entity -> end entity' messages here, as this is always REQUIRED.  In
-   any case, it can be achieved simply once the trusted CA public key
-   has been installed at the end entity's equipment or it can be based
-   on the initial authentication key.
+   any case, it can be achieved simply once the root-CA public key has
+   been installed at the end entity's equipment or it can be based on
+   the initial authentication key.
 
    Note 2: An initial registration/certification procedure can be secure
    where the messages from the end entity are authenticated via some
@@ -1173,7 +1171,7 @@ Table of Contents
    see Section 5.2.8, in the popo field of CertReqMsg as long as no KEM-
    specific choice is available.
 
-4.4.  Trusted CA Key Update
+4.4.  Root CA Key Update
 
    This discussion only applies to CAs that are directly trusted by some
    end entities.  Recognizing whether a self-signed or non-self-signed
@@ -1191,8 +1189,8 @@ Table of Contents
    RootCaKeyUpdateContent is updated to specify these link certificates
    as optional.
 
-   Note: When an LDAP directory is used to publish trusted CA updates,
-   the old and new CA certificates together with the two link
+   Note: When an LDAP directory is used to publish root CA updates, the
+   old and new root CA certificates together with the two link
    certificates are stored as cACertificate attribute values.
 
    When a CA changes its key pair, those entities who have acquired the
@@ -1205,14 +1203,14 @@ Table of Contents
    trusted store.
 
    The data structure used to protect the new and old CA public keys is
-   typically a standard X.509 v3 certificate (which may also contain
+   typically a standard X.509v3 certificate (which may also contain
    extensions).  There are no new data structures required.
 
-   Note: Sometimes self-signed trusted CA certificates do not make use
-   of X.509 v3 extensions and may be X.509 v1 certificates.  Therefore,
-   a trusted CA key update must be able to work for version 1
-   certificates.  The use of the X.509 v3 KeyIdentifier extension is
-   recommended for easier path building.
+   Note: Sometimes self-signed root CA certificates do not make use of
+   X.509v3 extensions and may be X.509v1 certificates.  Therefore, a
+   root CA key update must be able to work for version 1 certificates.
+   The use of the X.509v3 KeyIdentifier extension is recommended for
+   easier path building.
 
    Note: While the scheme could be generalized to cover cases where the
    CA updates its key pair more than once during the validity period of
@@ -1229,10 +1227,10 @@ Table of Contents
    other times do not necessarily require this (depending on the end
    entity's equipment).
 
-   Note: In practice, a new trusted CA may have a slightly different
+   Note: In practice, a new root CA may have a slightly different
    subject DN, e.g., indicating a generation identifier like the year of
    issuance or a version number, for instance in an OU element.  How to
-   bridge trust to a newly trusted CA certificate in a CA DN change or a
+   bridge trust to the new root CA certificate in a CA DN change or a
    cross-certificate scenario is out of scope for this document.
 
 4.4.1.  CA Operator Actions
@@ -1278,9 +1276,9 @@ Table of Contents
    The "old with new" certificate must have a validity period with the
    same notBefore and notAfter time as the "old with old" certificate.
 
-   Note: Further operational considerations on transition from one
-   trusted CA certificate to the next is available in RFC 8649 Section 5
-   [RFC8649].
+   Note: Further operational considerations on transition from one root
+   CA self-signed certificate to the next is available in RFC 8649
+   Section 5 [RFC8649].
 
 4.4.2.  Verifying Certificates
 
@@ -1335,14 +1333,14 @@ Table of Contents
            from the "certs-only" CMS message.
 
        3.  If a CMP server is available, request the certificates using
-           the trusted CA update general message, see Section 5.3.19.15.
+           the root CA update general message, see Section 5.3.19.15.
 
        4.  Otherwise, get the certificates "out-of-band" using any
            trustworthy mechanism.
 
    2.  If received the certificates, check that the validity periods and
        the subject and issuer fields match.  Verify the signatures using
-       the old trusted CA key (which the verifier has locally).
+       the old root CA key (which the verifier has locally).
 
    3.  If all checks were successful, securely store the new trust
        anchor information and validate the signer's certificate.
@@ -1368,10 +1366,10 @@ Table of Contents
        2.  If a HTTP or FTP server is available, pick the certificate
            from the "certs-only" CMS message.
 
-       3.  If a CMP server and an untrusted copy of the old trusted CA
+       3.  If a CMP server and an untrusted copy of the old root CA
            certificate is available (e.g., the signer provided it in-
            band in the CMP extraCerts filed), request the certificate
-           using the trusted CA update general message, see
+           using the root CA update general message, see
            Section 5.3.19.15.
 
        4.  Otherwise, get the certificate "out-of-band" using any
@@ -1379,7 +1377,7 @@ Table of Contents
 
    2.  If received the certificate, check that the validity periods and
        the subject and issuer fields match.  Verify the signatures using
-       the new trusted CA key (which the verifier has locally).
+       the new root CA key (which the verifier has locally).
 
    3.  If all checks were successful, securely store the old trust
        anchor information and validate the signer's certificate.
@@ -1479,9 +1477,9 @@ Table of Contents
    the recipient.  For example, this can be used by a CA or RA to
    present an end entity with certificates that it needs to verify its
    own new certificate (if, for example, the CA that issued the end
-   entity's certificate is not a trusted CA for the end entity).  Note
-   that this field does not necessarily contain a certification path;
-   the recipient may have to sort, select from, or otherwise process the
+   entity's certificate is not a root CA for the end entity).  Note that
+   this field does not necessarily contain a certification path; the
+   recipient may have to sort, select from, or otherwise process the
    extra certificates in order to use them.
 
 5.1.1.  PKI Message Header
@@ -1695,11 +1693,11 @@ Table of Contents
    of a request message to a PKI management entity if it knows that the
    PKI management entity uses a KEM key pair and has its public key.
 
-     id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it TBD1 }
+     id-it-KemCiphertextInfo OBJECT IDENTIFIER ::= { id-it 24 }
      KemCiphertextInfoValue ::= KemCiphertextInfo
 
    For more details of KEM-based message protection see Section 5.1.3.4.
-   See Section 5.3.19.18 for the definition of {id-it TBD1}.
+   See Section 5.3.19.18 for the definition of {id-it 24}.
 
 5.1.2.  PKI Message Body
 
@@ -2313,10 +2311,10 @@ Table of Contents
 
    See [RFC4211] for CertId syntax.
 
-5.2.5.  Out-of-band trusted CA Public Key
+5.2.5.  Out-of-band root CA Public Key
 
-   Each trusted CA that provides a self-signed certificate must be able
-   to publish its current public key via some "out-of-band" means or
+   Each root CA that provides a self-signed certificate must be able to
+   publish its current public key via some "out-of-band" means or
    together with the respective link certificate using an online
    mechanism.  While such mechanisms are beyond the scope of this
    document, we define data structures that can support such mechanisms.
@@ -2326,9 +2324,9 @@ Table of Contents
    available via the directory (or equivalent) and the CA publishes a
    hash of this value to allow verification of its integrity before use.
 
-   Note: As an alternative to out-of-band distribution of trusted CA
-   public keys, the CA can provide the self-signed certificate together
-   with link certificates, e.g., using RootCaKeyUpdateContent
+   Note: As an alternative to out-of-band distribution of root CA public
+   keys, the CA can provide the self-signed certificate together with
+   link certificates, e.g., using RootCaKeyUpdateContent
    (Section 5.3.19.15).
 
      OOBCert ::= Certificate
@@ -2728,7 +2726,7 @@ Table of Contents
    See Section 5.3.4 for CertRepMessage syntax.  Note that if the PKI
    Message Protection is "shared secret information" (see
    Section 5.1.3.1), then any certificate transported in the caPubs
-   field may be directly trusted as a trusted CA certificate by the
+   field may be directly trusted as a root CA certificate by the
    initiator.
 
 5.3.3.  Certification Request
@@ -2931,9 +2929,6 @@ Table of Contents
    In contrast to CAKeyUpdAnnContent as supported with cmp2000,
    RootCaKeyUpdateContent offers omitting newWithOld and oldWithNew,
    depending on the needs of the EE.
-
-   Note that the term 'RootCa' in the ASN.1 types not necessarily refers
-   to a self-signed root CA, but more generally to a trusted CA.
 
 5.3.14.  Certificate Announcement
 
@@ -3177,15 +3172,15 @@ Table of Contents
      GenRep:    {id-it 17}, SEQUENCE SIZE (1..MAX) OF
                               CMPCertificate | < absent >
 
-5.3.19.15.  Trusted CA Update
+5.3.19.15.  Root CA Update
 
-   This MAY be used by the client to get an update of a trusted CA
+   This MAY be used by the client to get an update of a root CA
    certificate, which is provided in the body of the request message.
    In contrast to the ckuann message, this approach follows the request/
    response model.
 
    The EE SHOULD reference its current trust anchor in RootCaCertValue
-   in the request body, giving the trusted CA certificate if available.
+   in the request body, giving the root CA certificate if available.
 
      GenMsg:    {id-it 20}, RootCaCertValue | < absent >
      GenRep:    {id-it 18}, RootCaKeyUpdateValue | < absent >
@@ -3203,9 +3198,6 @@ Table of Contents
    Note: In contrast to CAKeyUpdAnnContent (which was deprecated with
    pvno cmp2021), RootCaKeyUpdateContent offers omitting newWithOld and
    oldWithNew, depending on the needs of the EE.
-
-   Note that the term 'RootCa' in the ASN.1 types not necessarily refers
-   to a self-signed root CA, but more generally to a trusted CA.
 
 5.3.19.16.  Certificate Request Template
 
@@ -3298,8 +3290,8 @@ Table of Contents
    be provided in the following genp message with an InfoTypeAndValue
    structure of the same type.
 
-     GenMsg:    {id-it TBD1}, < absent >
-     GenRep:    {id-it TBD1}, KemCiphertextInfo
+     GenMsg:    {id-it 24}, < absent >
+     GenRep:    {id-it 24}, KemCiphertextInfo
 
      KemCiphertextInfo ::= SEQUENCE {
        kem              AlgorithmIdentifier{KEM-ALGORITHM, {...}},
@@ -3490,7 +3482,7 @@ Table of Contents
                                    Start
                                      |
                                      | Send request
-                                     |
+                                     v
                 +----------- Receive response ------------+
                 |                                         |
                 | ip/cp/kup/krp/ccp/error with            | other
@@ -3502,9 +3494,9 @@ Table of Contents
     |           | Send pollReq                            |
     |           | Receive response                        |
     |           |                                         |
-    |   pollRep | other response                          |
+    |           v                                         |
     +-----------+------------------->+<-------------------+
-                                     |
+        pollRep   other response     |
                                      v
                                Handle response
                                      |
@@ -3556,14 +3548,14 @@ Table of Contents
    See [RFC9483] Section 7 and Appendix C for profiles of the PKIMessage
    structures that MUST be supported for specific use cases.
 
-6.1.  Trusted CA Initialization
+6.1.  Root CA Initialization
 
-   [See Section 3.1.1.2 for this document's definition of "trusted CA".]
+   [See Section 3.1.1.2 for this document's definition of "root CA".]
 
-   If the newly created trusted CA is the top of a PKI hierarchy, it
-   must produce a "self-certificate", which is a certificate structure
-   with the profile defined for the "newWithNew" certificate issued
-   following a trusted CA key update.
+   If a newly created root CA is at the top of a PKI hierarchy, it
+   usually produces a "self-certificate", which is a certificate
+   structure with the profile defined for the "newWithNew" certificate
+   issued following a root CA key update.
 
    In order to make the CA's self-certificate useful to end entities
    that do not acquire the self-certificate via "out-of-band" means, the
@@ -3575,13 +3567,13 @@ Table of Contents
    The data structure used to carry the fingerprint may be the
    OOBCertHash, see Section 5.2.5.
 
-6.2.  Trusted CA Key Update
+6.2.  Root CA Key Update
 
    CA keys (as all other keys) have a finite lifetime and will have to
    be updated on a periodic basis.  The certificates NewWithNew,
    NewWithOld, and OldWithNew (see Section 4.4.1) MAY be issued by the
-   CA to aid existing end entities who hold the current trusted CA
-   certificate (OldWithOld) to transition securely to the new trusted CA
+   CA to aid existing end entities who hold the current root CA
+   certificate (OldWithOld) to transition securely to the new root CA
    certificate (NewWithNew), and to aid new end entities who will hold
    NewWithNew to acquire OldWithOld securely for verification of
    existing data.
@@ -3718,7 +3710,7 @@ Table of Contents
 
    *  acquisition of PKI information
 
-   *  out-of-band verification of one trusted CA public key
+   *  out-of-band verification of one root-CA public key
 
    (other possible steps include the retrieval of trust condition
    information and/or out-of-band verification of other CA public keys).
@@ -3727,10 +3719,10 @@ Table of Contents
 
    The information REQUIRED is:
 
-   *  the current trusted CA public key
+   *  the current root-CA public key
 
-   *  (if the certifying CA is not a trusted CA) the certification path
-      from the trusted CA to the certifying CA together with appropriate
+   *  (if the certifying CA is not a root-CA) the certification path
+      from the root CA to the certifying CA together with appropriate
       revocation lists
 
    *  the algorithms and algorithm parameters that the certifying CA
@@ -3746,13 +3738,12 @@ Table of Contents
 
    The required information MAY be acquired as described in Section 6.5.
 
-6.7.2.  Out-of-Band Verification of Trusted CA Key
+6.7.2.  Out-of-Band Verification of Root CA Key
 
-   An end entity must securely possess the public key of its trusted CA.
-   One method to achieve this is to provide the end entity with the
-   trusted CA's certificate fingerprint via some secure "out-of-band"
-   means.  The end entity can then securely use the trusted CA's
-   certificate.
+   An end entity must securely possess the public key of its root CA.
+   One method to achieve this is to provide the end entity with the CA's
+   self-certificate fingerprint via some secure "out-of-band" means.
+   The end entity can then securely use the CA's self-certificate.
 
    See Section 6.1 for further details.
 
@@ -3966,9 +3957,10 @@ Table of Contents
    no CSRNG is used, the entropy of shared secret information depends on
    the details of the generation process and cannot be measured securely
    after it has been generated.  If user-generated passwords are used as
-   shared secret information, their entropy cannot be measured and are
-   typically insufficient for protected delivery of centrally generated
-   keys or trust anchors.
+   shared secret information, their entropy cannot be measured.
+   Passwords generated from user generated entropy are typically
+   insufficient for protected delivery of centrally generated keys or
+   trust anchors.
 
    If the entropy of shared secret information protecting the delivery
    of a centrally generated key pair is known, it should not be less
@@ -3978,8 +3970,8 @@ Table of Contents
    individual key pair.
 
    For the case of a PKI management operation that delivers a new trust
-   anchor (i.e., a trusted CA certificate) using caPubs or genp that is
-   (a) not concluded in a timely manner or (b) where the shared secret
+   anchor (e.g., a root CA certificate) using caPubs or genp that is (a)
+   not concluded in a timely manner or (b) where the shared secret
    information is reused for several key management operations, the
    entropy of the shared secret information, if known, should not be
    less than the security strength of the trust anchor being managed by
@@ -4069,9 +4061,9 @@ Table of Contents
 9.  IANA Considerations
 
    This document updates the ASN.1 modules of CMP Updates Appendix A.2
-   [RFC9480].  The OID TBD2 (id-mod-cmp2023-02) was registered in the
-   "SMI Security for PKIX Module Identifier" registry to identify the
-   updated ASN.1 module.
+   [RFC9480].  The decimal 116 (id-mod-cmp2023-02) was registered in the
+   "SMI Security for PKIX Module Identifier (1.3.6.1.5.5.7.0)" registry
+   to identify the updated ASN.1 module.
 
    In the SMI-numbers registry "SMI Security for PKIX CMP Information
    Types (1.3.6.1.5.5.7.4)" (see https://www.iana.org/assignments/smi-
@@ -4080,15 +4072,17 @@ Table of Contents
 
    One new entry has been added:
 
-   Decimal: TBD1
+   Decimal: 24
 
    Description: id-it-KemCiphertextInfo
 
    Reference: [RFCXXXX]
 
-   The new OID 1.2.840.113533.7.66.16 was registered by Entrust for id-
-   KemBasedMac in the arch 1.2.840.113533.7.66.  Entrust registered also
-   the OIDs for id-PasswordBasedMac and id-DHBasedMac there.
+   Note that the new OID 1.2.840.113533.7.66.16 was registered by
+   Entrust, and not by IANA, for id-KemBasedMac in the arch
+   1.2.840.113533.7.66.  This was done to match the previous
+   registrations for id-PasswordBasedMac and id-DHBasedMac which are
+   also on the Entrust private arch.
 
    All existing references to [RFC2510], [RFC4210], and [RFC9480] at
    https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml except
@@ -4319,9 +4313,9 @@ Table of Contents
               Westerbaan, "Internet X.509 Public Key Infrastructure -
               Algorithm Identifiers for the Module-Lattice-Based Key-
               Encapsulation Mechanism (ML-KEM)", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-kyber-certificates-07, 7
-              January 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lamps-kyber-certificates-07>.
+              Internet-Draft, draft-ietf-lamps-kyber-certificates-10, 16
+              April 2025, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-lamps-kyber-certificates-10>.
 
    [NIST.SP.800_90Ar1]
               Barker, E. B., Kelsey, J. M., and NIST, "Recommendation
@@ -4627,10 +4621,10 @@ C.2.  Algorithm Use Profile
 
 C.3.  Proof-of-Possession Profile
 
-   POP fields for use (in signature field of pop field of
-   ProofOfPossession structure) when proving possession of a private
-   signing key that corresponds to a public verification key for which a
-   certificate has been requested.
+   The table below describes the POP fields for use (in signature field
+   of pop field of ProofOfPossession structure) when proving possession
+   of a private signing key that corresponds to a public verification
+   key for which a certificate has been requested.
 
      +=====================+=============+===========================+
      | Field               | Value       | Comment                   |
@@ -4714,9 +4708,9 @@ C.4.  Initial Registration/Certification (Basic Authenticated Scheme)
    one (i.e., no use of "waiting" status value).
 
    The end entity has an out-of-band interaction with the CA/RA.  This
-   transaction established the shared secret, the referenceNumber and
-   OPTIONALLY the distinguished name used for both sender and subject
-   name in the certificate template.  See Section 8.7 for security
+   transaction established the shared secret, the referenceNumber and an
+   OPTIONAL distinguished name used for both sender and subject name in
+   the certificate template.  See Section 8.7 for security
    considerations on quality of shared secret information.
 
    Initialization Request -- ir
@@ -4975,29 +4969,28 @@ C.6.  Key Update Request
    The profile for this exchange is identical to that given in
    Appendix C.4, with the following exceptions:
 
-   1.  sender name SHOULD be present
+   *  sender name SHOULD be present
 
-   2.  protectionAlg of MSG_SIG_ALG MUST be supported (MSG_MAC_ALG MAY
-       also be supported) in request, response, certConfirm, and
-       PKIConfirm messages;
+   *  protectionAlg of MSG_SIG_ALG MUST be supported (MSG_MAC_ALG MAY
+      also be supported) in request, response, certConfirm, and
+      PKIConfirm messages;
 
-   3.  senderKID and recipKID are only present if required for message
-       verification;
+   *  senderKID and recipKID are only present if required for message
+      verification;
 
-   4.  body is kur or kup;
+   *  body is kur or kup;
 
-   5.  body may contain one or two CertReqMsg structures, but either
-       CertReqMsg may be used to request certification of a locally-
-       generated public key or a centrally-generated public key
-       (i.e.,the position-dependence requirement of Appendix C.4 is
-       removed);
+   *  body may contain one or two CertReqMsg structures, but either
+      CertReqMsg may be used to request certification of a locally-
+      generated public key or a centrally-generated public key (i.e.,the
+      position-dependence requirement of Appendix C.4 is removed);
 
-   6.  protection bits are calculated according to the protectionAlg
-       field;
+   *  protection bits are calculated according to the protectionAlg
+      field;
 
-   7.  regCtrl OldCertId SHOULD be used (unless it is clear to both
-       sender and receiver -- by means not specified in this document --
-       that it is not needed).
+   *  regCtrl OldCertId SHOULD be used (unless it is clear to both
+      sender and receiver -- by means not specified in this document --
+      that it is not needed).
 
 Appendix D.  PKI Management Message Profiles (OPTIONAL)
 
@@ -5007,7 +5000,7 @@ Appendix D.  PKI Management Message Profiles (OPTIONAL)
    Profiles for the PKIMessages used in the following PKI management
    operations are provided:
 
-   *  trusted CA key update
+   *  root CA key update
 
    *  information request/response
 
@@ -5035,24 +5028,24 @@ D.2.  Algorithm Use Profile
 
 D.3.  Self-Signed Certificates
 
-   Profile of how a certificate structure may be "self-signed".  These
-   structures are used for distribution of newly trusted CA public keys
-   as self-signed certificate.  This can occur in one of three ways (see
+   The table below provides a profile of how a certificate structure may
+   be "self-signed".  These structures are used for distribution of new
+   root CA public keys.  This can occur in one of three ways (see
    Section 4.4 above for a description of the use of these structures):
 
        +============+=============================================+
        | Type       | Function                                    |
        +============+=============================================+
-       | newWithNew | a self-signed CA certificate; the contained |
+       | newWithNew | a "self-signed" certificate; the contained  |
        |            | public key MUST be usable to verify the     |
        |            | signature (though this provides only        |
        |            | integrity and no authentication whatsoever) |
        +------------+---------------------------------------------+
-       | oldWithNew | previous trusted CA public key signed with  |
-       |            | new private key                             |
+       | oldWithNew | previous root CA public key signed with new |
+       |            | private key                                 |
        +------------+---------------------------------------------+
-       | newWithOld | new CA public key signed with previous      |
-       |            | trusted CA private key                      |
+       | newWithOld | new root CA public key signed with previous |
+       |            | private key                                 |
        +------------+---------------------------------------------+
 
                                  Table 3
@@ -5062,13 +5055,9 @@ D.3.  Self-Signed Certificates
    subjectAltName MUST be identical to issuerAltName, and, when present,
    keyIdentifiers must contain appropriate values, et cetera.
 
-   Note that in general newWithNew and oldWithOld certificates not
-   necessarily refer to self-signed certificate, but to trusted CA
-   certificates as defined in Section 3.1.1.2.
+D.4.  Root CA Key Update
 
-D.4.  Trusted CA Key Update
-
-   A trusted CA updates its key pair.  It then produces a CA key update
+   A root CA updates its key pair.  It then produces a CA key update
    announcement message that can be made available (via some transport
    mechanism) to the relevant end entities.  A confirmation message is
    not required from the end entities.
@@ -5171,12 +5160,13 @@ D.5.  PKI Information Request/Response
                         value
      -- the symmetric algorithm that this CA expects to be used
      -- in later PKI messages (for encryption)
-   RootCaKeyUpdate      optionally present, with relevant value
+   RootCaKeyUpdate      optionally present, with
+                        relevant value
      -- Use RootCaKeyUpdate; if backward compatibility with cmp2000 is
      -- required, use CAKeyUpdateInfo.
-     -- The CA MAY provide information about a relevant trusted CA
+     -- The CA MAY provide information about a relevant root CA
      -- key pair using this field (note that this does not imply
-     -- that the responding CA is the trusted CA in question)
+     -- that the responding CA is the root CA in question)
    CurrentCRL           optionally present, with relevant value
      -- the CA MAY provide a copy of a complete CRL (i.e.,
      -- fullest possible one)
@@ -5188,10 +5178,10 @@ D.5.  PKI Information Request/Response
 
 D.6.  Cross Certification Request/Response (1-way)
 
-   Creation of a single cross-certificate (i.e., not two at once).  The
-   requesting CA MAY choose who is responsible for publication of the
-   cross-certificate created by the responding CA through use of the
-   PKIPublicationInfo control.
+   This section describes the creation of a single cross-certificate
+   (i.e., not two at once).  The requesting CA MAY choose who is
+   responsible for publication of the cross-certificate created by the
+   responding CA through use of the PKIPublicationInfo control.
 
    Preconditions:
 
@@ -5516,10 +5506,13 @@ Appendix F.  Compilable ASN.1 Definitions
    ASN.1 module from Appendix F of [RFC4210] that were specified in
    [RFC9480], as well as changes made in this document.
 
+   This module makes reference to ASN.1 structures defined in [RFC6268],
+   as well as the UTF-8 encoding defined in [RFC3629].
+
    PKIXCMP-2023
        { iso(1) identified-organization(3) dod(6) internet(1)
        security(5) mechanisms(5) pkix(7) id-mod(0)
-       id-mod-cmp2023-02(TBD2) }
+       id-mod-cmp2023-02(116) }
    DEFINITIONS EXPLICIT TAGS ::=
    BEGIN
    IMPORTS
@@ -5605,10 +5598,10 @@ Appendix F.  Compilable ASN.1 Definitions
    --    1988 Syntax, PKIXCMP, 1.3.6.1.5.5.7.0.99 (id-mod-cmp2021-88)
    --    2002 Syntax, PKIXCMP-2021, 1.3.6.1.5.5.7.0.100
    --                               (id-mod-cmp2021-02)
-   --    Obsoleted by [RFCXXXX] PKIXCMP-2023, 1.3.6.1.5.5.7.0.TBD2
+   --    Obsoleted by [RFCXXXX] PKIXCMP-2023, 1.3.6.1.5.5.7.0.116
    --                                         (id-mod-cmp2023-02)
    -- [RFCXXXX]
-   --    2002 Syntax, PKIXCMP-2023, 1.3.6.1.5.5.7.0.TBD2
+   --    2002 Syntax, PKIXCMP-2023, 1.3.6.1.5.5.7.0.116
    --                               (id-mod-cmp2023-02)
 
 
@@ -6066,13 +6059,13 @@ Appendix F.  Compilable ASN.1 Definitions
 
    RootCaKeyUpdateContent ::= SEQUENCE {
       newWithNew       CMPCertificate,
-      -- new trusted CA certificate
+      -- new root CA certificate
       newWithOld   [0] CMPCertificate OPTIONAL,
-      -- X.509 certificate containing the new trusted CA public key
-      -- signed with the old trusted CA private key
+      -- X.509 certificate containing the new public root CA key
+      -- signed with the old private root CA key
       oldWithNew   [1] CMPCertificate OPTIONAL
-      -- X.509 certificate containing the old trusted CA public key
-      -- signed with the new trusted CA private key
+      -- X.509 certificate containing the old public root CA key
+      -- signed with the new private root CA key
       }
 
    CRLSource ::= CHOICE {
@@ -6178,7 +6171,7 @@ Appendix F.  Compilable ASN.1 Definitions
    --      CRLsValue               ::= SEQUENCE SIZE (1..MAX) OF
    --                                            CertificateList
    --      - id-it-crls added in [RFC9480]
-   --   id-it-KemCiphertextInfo    OBJECT IDENTIFIER ::= {id-it TBD1}
+   --   id-it-KemCiphertextInfo    OBJECT IDENTIFIER ::= {id-it 24}
    --      KemCiphertextInfoValue  ::= KemCiphertextInfo
    --      - id-it-KemCiphertextInfo was added in [RFCXXXX]
    --
@@ -6259,10 +6252,21 @@ Appendix G.  History of Changes
    Note: This appendix will be deleted in the final version of the
    document.
 
+   From version 18 -> 19:
+
+   *  Added OIDs registered by IANA
+
+   From version 17 -> 18:
+
+   *  Deleted last paragraph of Appendix D.3 to resolve the DISCUSS from
+      Paul Wouters
+
    From version 16 -> 17:
 
-   *  Addressing DISCUSS from Paul Wouters by replacing "root CA" with
-      "trusted CA" and extending Sections 3.1.1.2 and 4.4.1
+   *  Addressing DISCUSS from Paul Wouters by extending text of Sections
+      3.1.1.2, 4.4, 5.2.5, 6, and D.3.
+
+   *  Updated IPSEC -> IPsec
 
    From version 15 -> 16:
 
