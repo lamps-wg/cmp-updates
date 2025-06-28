@@ -213,14 +213,6 @@ This document adds support for management of certificates containing a Key Encap
 EnvelopedData instead of EncryptedValue. This document also includes the
 updates specified in Section 2 and Appendix A.2 of RFC 9480.
 
-The updates maintain backward compatibility with CMP version 2 wherever
-possible. Updates to CMP version 2 are improving crypto agility, extending the
-polling mechanism, adding new general message types, and adding extended
-key usages to identify special CMP server authorizations. CMP version 3 is
-introduced for changes to the ASN.1 syntax, which are support of
-EnvelopedData, certConf with hashAlg, POPOPrivKey with agreeMAC, and
-RootCaKeyUpdateContent in ckuann messages.
-
 This document obsoletes RFC 4210 and together with I-D.ietf-lamps-rfc6712bis
 and it also obsoletes RFC 9480. Appendix F of this document updates the
 Section 9 of RFC 5912.
@@ -256,8 +248,16 @@ Please perform the following substitution.
 This document describes the Internet X.509 Public Key Infrastructure
 (PKI) Certificate Management Protocol (CMP).  Protocol messages are
 defined for certificate creation and management.  The term
-"certificate" in this document refers to an X.509v3 Certificate as
+"certificate" in this document refers to an X.509v3 certificate as
 defined in {{RFC5280}}.
+
+The updates maintain backward compatibility with CMP version 2 wherever
+possible. Updates to CMP version 2 are improving crypto agility, extending the
+polling mechanism, adding new general message types, and adding extended
+key usages to identify special CMP server authorizations. CMP version 3 is
+introduced for changes to the ASN.1 syntax, which are support of
+EnvelopedData, certConf with hashAlg, POPOPrivKey with agreeMAC, and
+RootCaKeyUpdateContent in ckuann messages.
 
 ## Changes Made by RFC 4210
 {: id="sect-1.1"}
@@ -315,10 +315,11 @@ Profile {{RFC9483}}, in the following areas:
 
 
 
-* Offer an optional hashAlg field in CertStatus supporting cases that a certificate
-  needs to be confirmed that has a signature algorithm that does not indicate
-  a specific hash algorithm to use for computing the certHash.  This is also in
-  preparation for upcoming post-quantum algorithms.
+* Offer an optional hashAlg field in CertStatus to support cases where a hash function
+  is required in order to compute the certHash as part of confirming the
+  certificate, but the certificate's signature algorithm
+  does not specify a hash algorithm, so one needs to be specified in the CMP message instead.
+  This is also in preparation for upcoming post-quantum algorithms.
 
 * Added new general message types to request CA certificates, a root CA update,
   a certificate request template, or Certificate Revocation List (CRL) updates.
@@ -333,7 +334,7 @@ Profile {{RFC9483}}, in the following areas:
 ## Changes Made by This Document
 {: id="sect-1.3"}
 
-This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes specified by Section 2 and Appendix C.2 of {{RFC9480}} as described in {{sect-1.2}}. Additionally this document updates the content of {{RFC4210}} in the following areas:
+This document obsoletes {{RFC4210}} and {{RFC9480}}. It includes the changes specified by Section 2 and Appendix A of {{RFC9480}} as described in {{sect-1.2}}. Additionally this document updates the content of {{RFC4210}} in the following areas:
 
 * Added {{sect-3.1.1.4}} introducing the Key Generation Authority.
 
@@ -570,7 +571,7 @@ management
 
 
 1. PKI management must conform to the ISO/IEC 9594-8/ITU-T X.509
-  standards.
+  standards, in particular {{X509.2019}}.
 
 1. It must be possible to regularly update any key pair without
   affecting any other key pair.
@@ -603,9 +604,10 @@ management
   attacks, which are possible, are not made simpler.
 
 1. PKI management protocols must be usable over a variety of
-  "transport" mechanisms, specifically including mail, Hypertext
+  "transport" mechanisms, specifically including email, Hypertext
   Transfer Protocol (HTTP), Message Queuing Telemetry Transport (MQTT),
-  Constrained Application Protocol (CoAP), and off-line file-based.
+  Constrained Application Protocol (CoAP), and various off-line and non-networked
+  file transfer methods.
 
 1. Final authority for certification creation rests with the CA.
   No RA or end entity equipment can assume that any certificate
@@ -896,8 +898,9 @@ different environments is available, e.g., in {{sect-c}} and
 as well as in the Lightweight CMP Profile {{RFC9483}} on fully
 automating certificate management in a machine-to-machine and IoT
 environment.  Also industry standards like {{ETSI-3GPP.33.310}} for
-mobile networks and {{UNISIG.Subset-137}} for Rail Automation adopted
-CMP and have specified a set of mandatory schemes for their use case.
+mobile networks and {{UNISIG.Subset-137}} for Rail Automation have adopted
+CMP as their certificate management protocol, and have specified
+mandatory profiles for their use case.
 
 We will now describe the classification of initial
 registration/certification schemes.
@@ -1209,13 +1212,13 @@ the new CA public key, it must load the new trust anchor information
 into its trusted store.
 
 The data structure used to protect the new and old CA public keys is
-typically a standard X.509 v3 certificate (which may also
+typically a standard X.509v3 certificate (which may also
 contain extensions).  There are no new data structures required.
 
 Note: Sometimes self-signed root CA certificates do not make use of
-X.509 v3 extensions and may be X.509 v1 certificates. Therefore, a
+X.509v3 extensions and may be X.509v1 certificates. Therefore, a
 root CA key update must be able to work for version 1 certificates.
-The use of the X.509 v3 KeyIdentifier extension is recommended for
+The use of the X.509v3 KeyIdentifier extension is recommended for
 easier path building.
 
 Note:  While the scheme could be generalized to cover cases where
@@ -3919,9 +3922,9 @@ generator (CSRNG), it is safe to assume that the entropy of the shared secret
 information equals its bit length. If no CSRNG is used, the entropy of
 shared secret information depends on the details of the generation process
 and cannot be measured securely after it has been generated. If user-generated
-passwords are used as shared secret information, their entropy cannot be
-measured and are typically insufficient for protected delivery of centrally
-generated keys or trust anchors.
+passwords are used as shared secret information, their entropy cannot be measured.
+Passwords generated from user generated entropy are typically insufficient
+for protected delivery of centrally generated keys or trust anchors.
 
 If the entropy of shared secret information protecting the delivery of
 a centrally generated key pair is known, it should not be less than the security
@@ -4026,7 +4029,7 @@ One new entry has been added:
 
    Reference: [RFCXXXX]
 
-The new OID 1.2.840.113533.7.66.16 was registered by Entrust for id-KemBasedMac in the arch 1.2.840.113533.7.66. Entrust registered also the OIDs for id-PasswordBasedMac and id-DHBasedMac there.
+Note that the new OID 1.2.840.113533.7.66.16 was registered by Entrust, and not by IANA, for id-KemBasedMac in the arch 1.2.840.113533.7.66. This was done to match the previous registrations for id-PasswordBasedMac and id-DHBasedMac which are also on the Entrust private arch.
 
 All existing references to {{RFC2510}}, {{RFC4210}}, and {{RFC9480}} at https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml except those in the "SMI Security for PKIX Module Identifier" registry should be replaced with references to this document.
 
@@ -4264,7 +4267,7 @@ conforming implementations, please refer to Section 7.1 of CMP Algorithms {{RFC9
 ## Proof-of-Possession Profile
 {: id="sect-c.3"}
 
-POP fields for use (in signature field of pop field of
+The table below describes the POP fields for use (in signature field of pop field of
 ProofOfPossession structure) when proving possession of a private
 signing key that corresponds to a public verification key for which a
 certificate has been requested.
@@ -4348,8 +4351,8 @@ For simplicity, we also mandate that this message MUST be the final
 one (i.e., no use of "waiting" status value).
 
 The end entity has an out-of-band interaction with the CA/RA.  This
-transaction established the shared secret, the referenceNumber and
-OPTIONALLY the distinguished name used for both sender and subject
+transaction established the shared secret, the referenceNumber and an
+OPTIONAL distinguished name used for both sender and subject
 name in the certificate template. See {{sect-8.7}} for security
 considerations on quality of shared secret information.
 
@@ -4624,26 +4627,26 @@ The profile for this exchange is identical to that given in {{sect-c.4}},
 with the following exceptions:
 
 
-1. sender name SHOULD be present
+* sender name SHOULD be present
 
-1. protectionAlg of MSG_SIG_ALG MUST be supported (MSG_MAC_ALG MAY
+* protectionAlg of MSG_SIG_ALG MUST be supported (MSG_MAC_ALG MAY
   also be supported) in request, response, certConfirm, and
   PKIConfirm messages;
 
-1. senderKID and recipKID are only present if required for message
+* senderKID and recipKID are only present if required for message
   verification;
 
-1. body is kur or kup;
+* body is kur or kup;
 
-1. body may contain one or two CertReqMsg structures, but either
+* body may contain one or two CertReqMsg structures, but either
   CertReqMsg may be used to request certification of a locally-generated
   public key or a centrally-generated public key (i.e.,the
   position-dependence requirement of {{sect-c.4}} is removed);
 
-1. protection bits are calculated according to the protectionAlg
+* protection bits are calculated according to the protectionAlg
   field;
 
-1. regCtrl OldCertId SHOULD be used (unless it is clear to both
+* regCtrl OldCertId SHOULD be used (unless it is clear to both
   sender and receiver -- by means not specified in this document --
   that it is not needed).
 
@@ -4692,7 +4695,7 @@ Identical to {{sect-c.2}}.
 ## Self-Signed Certificates
 {: id="sect-d.3"}
 
-Profile of how a certificate structure may be "self-signed".  These
+The table below provides a profile of how a certificate structure may be "self-signed".  These
 structures are used for distribution of new root CA public keys.  This can
 occur in one of three ways (see {{sect-4.4}} above for a description
 of the use of these structures):
@@ -4825,7 +4828,7 @@ extraCerts           optionally present
 ## Cross Certification Request/Response (1-way)
 {: id="sect-d.6"}
 
-Creation of a single cross-certificate (i.e., not two at once).  The
+This section describes the creation of a single cross-certificate (i.e., not two at once).  The
 requesting CA MAY choose who is responsible for publication of the
 cross-certificate created by the responding CA through use of the
 PKIPublicationInfo control.
@@ -5150,6 +5153,9 @@ This module replaces the module in Section 9 of {{RFC5912}}.
 The module contains those changes to the normative ASN.1 module from
 Appendix F of {{RFC4210}} that were specified in {{RFC9480}},
 as well as changes made in this document.
+
+This module makes reference to ASN.1 structures defined in {{RFC6268}},
+as well as the UTF-8 encoding defined in {{RFC3629}}.
 
 ~~~~ asn.1
 PKIXCMP-2023
